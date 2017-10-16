@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>GameEngine.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+GameEngine.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">edu.univorleans.simon; 
+ 
+</span><span class="s0">import </span><span class="s1">java.util.Random; 
+ 
+ 
+</span><span class="s0">public class </span><span class="s1">GameEngine { 
+ 
+    </span><span class="s0">private static final int </span><span class="s1">NEXT_DELAY = </span><span class="s2">1000</span><span class="s1">; 
+ 
+    Board board; 
+    </span><span class="s0">int</span><span class="s1">[] sequence; 
+    </span><span class="s0">int </span><span class="s1">rank; 
+    </span><span class="s0">int </span><span class="s1">played; 
+ 
+ 
+    </span><span class="s0">public </span><span class="s1">GameEngine(Board board){ 
+        </span><span class="s0">this</span><span class="s1">. board = board; 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">init(){ 
+        sequence = </span><span class="s0">new int</span><span class="s1">[board.getSequenceSize()]; 
+        played = </span><span class="s2">0</span><span class="s1">; 
+        rank = </span><span class="s2">1</span><span class="s1">; 
+        Random random = </span><span class="s0">new </span><span class="s1">Random(); 
+        </span><span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s2">0</span><span class="s1">; i&lt; sequence.length;i++) 
+            sequence[i] = random.nextInt(board.getSize()); 
+        board.setRank(rank); 
+ 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">execute(</span><span class="s0">int </span><span class="s1">delay){ 
+       </span><span class="s0">new </span><span class="s1">Thread(</span><span class="s0">new </span><span class="s1">Player(board, rank, sequence, delay)).start(); 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">execute(){execute(</span><span class="s2">0</span><span class="s1">);} 
+ 
+    </span><span class="s0">public void </span><span class="s1">play(</span><span class="s0">int </span><span class="s1">i){ 
+        board.light(i); 
+        </span><span class="s0">if </span><span class="s1">(sequence[played] != i) { 
+            played = </span><span class="s2">0</span><span class="s1">; 
+            board.playLooseSound(); 
+        } </span><span class="s0">else </span><span class="s1">{ 
+            played++; 
+            </span><span class="s0">if </span><span class="s1">(played == rank) { 
+                played = </span><span class="s2">0</span><span class="s1">; 
+                rank++; 
+                execute(NEXT_DELAY); 
+                board.setRank(rank); 
+            } 
+        } 
+    } 
+}</span></pre>
+</body>
+</html>

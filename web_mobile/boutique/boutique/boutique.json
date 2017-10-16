@@ -1,0 +1,9 @@
+{
+	"boutique" : [
+		{ "id" : "ordi", "nom" : "Ordinateur/Électronique", "stock" : "9"},
+		{ "id" : "sport", "nom" : "Sport/Jeux", "stock" : "10"},
+		{ "id" : "cuisine", "nom" : "Ustensiles de cuisine", "stock" : "0"},
+		{ "id" : "habillement", "nom" : "Habillement", "stock" : "0"},
+		{ "id" : "velo", "nom" : "Accessoires de vélo", "stock" : "0"}
+	]
+}

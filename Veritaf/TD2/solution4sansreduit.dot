@@ -1,0 +1,23 @@
+digraph system {
+_3[label="", shape=none ];
+_3->3;
+3 [label= "3 [p0.Debut, p1.Debut, s1.libre, s2.libre]"];
+9 [label= "9 [p0.R2, p1.Debut, s1.libre, s2.occupe]"];
+17 [label= "17 [p0.Debut, p1.R2, s1.libre, s2.occupe]"];
+6 [label= "6 [p0.R1, p1.Debut, s1.occupe, s2.libre]"];
+34 [label= "34 [p0.Debut, p1.R1, s1.occupe, s2.libre]"];
+20 [label= "20 [p0.R1, p1.R2, s1.occupe, s2.occupe]"];
+40 [label= "40 [p0.R2, p1.R1, s1.occupe, s2.occupe]"];
+9->3 [label= "P0Lib2"];
+40->34 [label= "P0Lib2"];
+3->6 [label= "P0prendR1"];
+17->20 [label= "P0prendR1"];
+3->9 [label= "P0prendR2"];
+34->40 [label= "P0prendR2"];
+34->3 [label= "P1Lib1"];
+40->9 [label= "P1Lib1"];
+3->34 [label= "P1prendR1"];
+9->40 [label= "P1prendR1"];
+3->17 [label= "P1prendR2"];
+6->20 [label= "P1prendR2"];
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.univorleans.winteriscoming.WeatherActivity"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/layout1"
+        android:name="edu.univorleans.winteriscoming.WeatherFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="10" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/colorElement"
+        android:drawableLeft="@mipmap/ic_map"
+        android:onClick="onClick"
+        android:paddingVertical="10dp"
+        android:text="Map "
+        android:textAlignment="textEnd"
+        android:textSize="18sp" />
+
+</LinearLayout>
+
+

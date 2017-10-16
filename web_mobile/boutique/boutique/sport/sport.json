@@ -1,0 +1,114 @@
+{
+	"articles" : [
+	    {
+	    	"id" : "1",
+	    	"nom" : "Casque de football Américain",
+	    	"marque" : "Adidas",
+	    	"tailles_modele" : ["56","58","60"],
+	    	"prix" : ["25","25","27"],
+	    	"info" : "Purus Bibendum Tristique Dapibus Consectetur",
+	    	"detail" : "Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.",
+	    	"livraison" : "1 semaine après confirmation de la commande",
+	    	"image" : "american-football-casque.png"
+	    },
+	    {
+	    	"id" : "2",
+	    	"nom" : "Sac de jeu de société",
+	    	"marque" : "Adidas",
+	    	"tailles_modele" : ["Unique"],
+	    	"prix" : ["30"],
+	    	"info" : "Inceptos Parturient Nullam Etiam Magna",
+	    	"detail" : "Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
+	    	"livraison" : "1 à 3 jours après confirmation de la commande",
+	    	"image" : "baggs-jeu.png"
+	    },
+	    {
+	    	"id" : "3",
+	    	"nom" : "Balle de football",
+	    	"marque" : "Nike",
+	    	"tailles_modele" : ["5","7"],
+	    	"prix" : ["20","25"],
+	    	"info" : "Tortor Sollicitudin Pharetra Ullamcorper Sit",
+	    	"detail" : "Donec ullamcorper nulla non metus auctor fringilla. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.",
+	    	"livraison" : "1 à 3 jours après confirmation de la commande",
+	    	"image" : "balle-football.png"
+	    },
+	    {
+	    	"id" : "4",
+	    	"nom" : "Balles de golf",
+	    	"marque" : "Golf Genius",
+	    	"tailles_modele" : ["6 balles","12 balles","24 balles"],
+	    	"prix" : ["16","30","55"],
+	    	"info" : "Vestibulum id ligula porta felis euismod semper.",
+	    	"detail" : "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec ullamcorper nulla non metus auctor fringilla. Maecenas faucibus mollis interdum.",
+	    	"livraison" : "1 à 3 jours après confirmation de la commande",
+	    	"image" : "balle-golf.png"
+	    },
+	    {
+	    	"id" : "5",
+	    	"nom" : "Balles de tennis",
+	    	"marque" : "Dunlop",
+	    	"tailles_modele" : ["4 balles","8 balles"],
+	    	"prix" : ["6.90","12"],
+	    	"info" : "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean lacinia bibendum nulla sed consectetur.",
+	    	"detail" : "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis. Maecenas faucibus mollis interdum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.",
+	    	"livraison" : "1 à 3 jours après confirmation de la commande",
+	    	"image" : "balle-sport-tennis.png"
+	    },
+	    {
+	    	"id" : "6",
+	    	"nom" : "Raquette de tennis de table",
+	    	"marque" : "Dunlop",
+	    	"tailles_modele" : ["La paire"],
+	    	"prix" : ["13.50"],
+	    	"info" : "Etiam Risus Adipiscing Purus Quam",
+	    	"detail" : "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis interdum.",
+	    	"livraison" : "1 à 3 jours après confirmation de la commande",
+	    	"image" : "raquette-tennis-table.png"
+	    },
+	    {
+	    	"id" : "7",
+	    	"nom" : "Jeu Backgammon",
+	    	"marque" : "Middleton Games",
+	    	"tailles_modele" : ["Bois rare"],
+	    	"prix" : ["105"],
+	    	"info" : "Porta Quam Vulputate Euismod Nibh",
+	    	"detail" : "Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor fringilla. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
+	    	"livraison" : "1 à 3 jours après confirmation de la commande",
+	    	"image" : "jeu-backgammon.png"
+	    },
+	    {
+	    	"id" : "8",
+	    	"nom" : "Gant de boxe",
+	    	"marque" : "Adidas",
+	    	"tailles_modele" : ["XS","S","M","L","XL"],
+	    	"prix" : ["22.5","25","30","35","40"],
+	    	"info" : "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
+	    	"detail" : "Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
+	    	"livraison" : "1 semaine après confirmation de la commande",
+	    	"image" : "la-boxe-gants.png"
+	    },
+	    {
+	    	"id" : "9",
+	    	"nom" : "Casque de baseball",
+	    	"marque" : "Nike",
+	    	"tailles_modele" : ["56","58","60"],
+	    	"prix" : ["20","20","25"],
+	    	"info" : "Fermentum Dapibus Quam Magna Vehicula",
+	    	"detail" : "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
+	    	"livraison" : "1 à 3 jours après confirmation de la commande",
+	    	"image" : "le-baseball-casque.png"
+	    },
+	    {
+	    	"id" : "10",
+	    	"nom" : "Manette de jeu",
+	    	"marque" : "Microsoft",
+	    	"tailles_modele" : ["Sans-fil"],
+	    	"prix" : ["80"],
+	    	"info" : "Malesuada Fusce Ipsum Elit Parturient",
+	    	"detail" : "Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec sed odio dui. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "manette-jeu.png"
+	    }
+	]
+}

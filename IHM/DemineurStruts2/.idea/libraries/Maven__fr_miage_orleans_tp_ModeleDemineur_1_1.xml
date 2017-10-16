@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: fr.miage.orleans.tp:ModeleDemineur:1.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/fr/miage/orleans/tp/ModeleDemineur/1.1/ModeleDemineur-1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/fr/miage/orleans/tp/ModeleDemineur/1.1/ModeleDemineur-1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/fr/miage/orleans/tp/ModeleDemineur/1.1/ModeleDemineur-1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

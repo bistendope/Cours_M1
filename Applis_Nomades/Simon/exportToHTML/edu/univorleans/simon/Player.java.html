@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Player.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+Player.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">edu.univorleans.simon; 
+ 
+ 
+</span><span class="s0">public class </span><span class="s1">Player </span><span class="s0">implements </span><span class="s1">Runnable { 
+ 
+    </span><span class="s0">private final static int </span><span class="s1">DELAY = </span><span class="s2">600</span><span class="s1">; 
+ 
+    Board board; 
+    </span><span class="s0">int </span><span class="s1">[] sequence; 
+    </span><span class="s0">int </span><span class="s1">rank; 
+    </span><span class="s0">int </span><span class="s1">delay; 
+ 
+    </span><span class="s0">public </span><span class="s1">Player(Board board, </span><span class="s0">int </span><span class="s1">rank, </span><span class="s0">int</span><span class="s1">[] sequence, </span><span class="s0">int </span><span class="s1">delay){ 
+        </span><span class="s0">this</span><span class="s1">.board = board; 
+        </span><span class="s0">this</span><span class="s1">.sequence = sequence; 
+        </span><span class="s0">this</span><span class="s1">.rank = rank; 
+        </span><span class="s0">this</span><span class="s1">.delay = delay; 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">run() { 
+        </span><span class="s0">try </span><span class="s1">{ 
+            </span><span class="s0">if </span><span class="s1">(delay &gt; </span><span class="s2">0</span><span class="s1">) Thread.sleep(delay); 
+            </span><span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s2">0</span><span class="s1">; i &lt; rank; i++) { 
+                board.light(sequence[i]); 
+                Thread.sleep(DELAY); 
+            } 
+        }</span><span class="s0">catch </span><span class="s1">(InterruptedException e) { 
+           e.printStackTrace(); 
+        } 
+    } 
+} 
+</span></pre>
+</body>
+</html>

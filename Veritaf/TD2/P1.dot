@@ -1,0 +1,10 @@
+digraph system {
+_0[label="", shape=none ];
+_0->0;
+0 [label= "0 [Debut]"];
+2 [label= "2 [R1]"];
+1 [label= "1 [R2]"];
+0->1 [label= "pr2"];
+2->0 [label= "lib1"];
+0->2 [label= "pr1"];
+}

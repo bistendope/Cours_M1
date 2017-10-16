@@ -1,0 +1,52 @@
+P0 = [Debut, R1, R2]{
+etat=3;
+init=0;
+0=Debut;
+1=R1;
+2=R2;
+
+0->1[pr1];
+0->2[pr2];
+2->0[lib2];
+};;
+
+P1 = [Debut, R1, R2]{
+etat=3;
+init=0;
+0=Debut;
+1=R2;
+2=R1;
+
+0->1[pr2];
+0->2[pr1];
+2->0[lib1];
+};;
+
+todot P0.dot P0;;
+todot P1.dot P1;;
+
+S = [libre, occupe]{
+	etat=2;
+	init=1;
+	0=occupe;
+	1=libre;
+
+	0->1[V];
+	1->0[P];
+};;
+
+todot S.dot S;;
+
+Systeme = <S s1, S s2, P0 p0, P1 p1>{
+	<P, _, pr1, _> ->P0prendR1;
+	<_, P, pr2, _> ->P0prendR2;
+	<_,V,lib2,_> ->P0Lib2;
+	
+	<P, _, _, pr1> ->P1prendR1;
+	<_, P, _, pr2> ->P1prendR2;
+	<V, _, _, lib1> ->P1Lib1;
+
+};;
+
+
+todot solution4sansreduit.dot Systeme;;

@@ -1,0 +1,56 @@
+P0 = [debut, useR1, useR2, libS1, fin]{
+etat=5;
+init=0;
+0=debut;
+1=useR1;
+2=useR1,useR2;
+3=libS1;
+4=fin;
+
+0->1 [PS1];
+1->2 [PS2];
+2->3 [VS1];
+3->4 [VS2];
+};;
+
+P1 = [debut, useR1, useR2, libS2, fin]{
+etat=5;
+init=0;
+0=debut;
+1=useR2;
+2=useR1,useR2;
+3=libS2;
+4=fin;
+
+0->1 [PS2];
+1->2 [PS1];
+2->3 [VS2];
+3->4 [VS1];
+};;
+
+todot P0.dot P0;;
+
+S = [libre, occupe]{
+	etat=2;
+	init=1;
+	0=occupe;
+	1=libre;
+
+	0->1[V];
+	1->0[P];
+};;
+
+Systeme = <S s1, S s2, P0 p0, P1 p1>{
+	<P,_, PS1,_> ->P0prendR1;
+	<_,P, PS2,_> ->P0prendR2;
+	<V,_,VS1,_> ->P0Lib1;
+	<_,V,VS2,_> ->P0Lib2;
+	
+	<P,_,_,PS1> ->P1prendR1;
+	<_,P,_,PS2> ->P1prendR2;
+	<V,_,_,VS1> ->P1Lib1;
+	<_,V,_,VS2> ->P1Lib2;
+
+};;
+
+todot solution4correction.dot Systeme;;

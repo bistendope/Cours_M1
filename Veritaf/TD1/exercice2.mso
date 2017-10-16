@@ -1,0 +1,58 @@
+/*systeme generique*/
+S1=[g,d] {
+	  etat=2;
+	  init=0;
+	  0=g;
+	  1=d;
+	  0->1 [inc];
+	  1->0 [dec];
+};;
+
+
+
+systeme = <S1 lulu,S1 s, S1 p, S1 l, S1 b, S1 f> {
+	<inc,_,_,_,_,_>;
+	<inc,inc,_,_,_,_>;
+	<inc,_,inc,_,_,_>;
+	<inc,_,_,inc,_,_>;
+	<inc,_,_,_,inc,_>;
+	<inc,_,_,_,_,inc>;	
+	<inc,inc,inc,_,_,_>;
+	<inc,_,inc,inc,_,_>;
+	<inc,_,_,inc,inc,_>;
+	<inc,_,_,_,inc,inc>;	
+	<inc,inc,_,inc,_,_>;
+	<inc,_,inc,_,inc,_>;
+	<inc,_,_,inc,_,inc>;	
+	<inc,inc,_,_,inc,_>;
+	<inc,_,inc,_,_,inc>;	
+	<inc,inc,_,_,_,inc>;
+	
+	<dec,_,_,_,_,_>;
+	<dec,dec,_,_,_,_>;
+	<dec,_,dec,_,_,_>;
+	<dec,_,_,dec,_,_>;
+	<dec,_,_,_,dec,_>;
+	<dec,_,_,_,_,dec>;	
+	<dec,dec,dec,_,_,_>;
+	<dec,_,dec,dec,_,_>;
+	<dec,_,_,dec,dec,_>;
+	<dec,_,_,_,dec,dec>;	
+	<dec,dec,_,dec,_,_>;
+	<dec,_,dec,_,dec,_>;
+	<dec,_,_,dec,_,dec>;	
+	<dec,dec,_,_,dec,_>;
+	<dec,_,dec,_,_,dec>;
+	<dec,dec,_,_,_,dec>;
+};;
+
+
+reduit = systeme | lulu.g && !((p.d && s.d)||(l.d && p.d)||(b.d && l.d)||(f.d && b.d)) || lulu.d && !((p.g && s.g)||(l.g && p.g)||(b.g && l.g)||(f.g && b.g));;
+
+solution = reduit -> lulu.d && l.d && p.d && s.d && b.d && f.d;;
+todot solution2.dot solution;;
+
+
+
+
+

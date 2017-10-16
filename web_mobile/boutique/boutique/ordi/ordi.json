@@ -1,0 +1,103 @@
+{
+	"articles" : [
+	    {
+	    	"id" : "1",
+	    	"nom" : "Casque audio",
+	    	"marque" : "Casio",
+	    	"tailles_modele" : ["XS","S","M","L"],
+	    	"prix" : ["18","18","18","22"],
+	    	"info" : "Vehicula Ridiculus Mattis Tristique Pharetra",
+	    	"detail" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec sed odio dui. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "audio-casque.png"
+	    },
+	    {
+	    	"id" : "2",
+	    	"nom" : "Microphone sans fil",
+	    	"marque" : "LG",
+	    	"tailles_modele" : ["Unique"],
+	    	"prix" : ["99"],
+	    	"info" : "Inceptos Parturient Sollicitudin Lorem Ridiculus",
+	    	"detail" : "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "audio-micro.png"
+	    },
+	    {
+	    	"id" : "3",
+	    	"nom" : "Calculatrice",
+	    	"marque" : "Texas Instruments",
+	    	"tailles_modele" : ["Collège", "Lycée"],
+	    	"prix" : ["45.50","52.50"],
+	    	"info" : "Ultricies Inceptos Amet Ornare",
+	    	"detail" : "Nulla vitae elit libero, a pharetra augue. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec id elit non mi porta gravida at eget metus.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "calculatrice.png"
+	    },
+	    {
+	    	"id" : "4",
+	    	"nom" : "Ecran",
+	    	"marque" : "Iyama",
+	    	"tailles_modele" : ["15 pouces","17 pouces","19 pouces","21 pouces"],
+	    	"prix" : ["100","120","200","300"],
+	    	"info" : "Dapibus Cursus Ullamcorper Inceptos Purus",
+	    	"detail" : "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "ecran.png"
+	    },
+	    {
+	    	"id" : "5",
+	    	"nom" : "Manette de jeu",
+	    	"marque" : "Microsoft",
+	    	"tailles_modele" : ["Sans-fil"],
+	    	"prix" : ["80"],
+	    	"info" : "Malesuada Fusce Ipsum Elit Parturient",
+	    	"detail" : "Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec sed odio dui. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "manette-jeu.png"
+	    },
+	    {
+	    	"id" : "6",
+	    	"nom" : "Oridnateur de bureau",
+	    	"marque" : "Dell",
+	    	"tailles_modele" : ["Ordi complet"],
+	    	"prix" : ["780"],
+	    	"info" : "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+	    	"detail" : "Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit sit amet non magna.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "ordinateur-bureau.png"
+	    },
+	    {
+	    	"id" : "7",
+	    	"nom" : "Oridnateur portable",
+	    	"marque" : "HP",
+	    	"tailles_modele" : ["15 pouces"],
+	    	"prix" : ["650"],
+	    	"info" : "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+	    	"detail" : "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mattis consectetur purus sit amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "ordinateur-portable.png"
+	    },
+	    {
+	    	"id" : "8",
+	    	"nom" : "Tour d'ordinateur",
+	    	"marque" : "Apple",
+	    	"tailles_modele" : ["Serveur"],
+	    	"prix" : ["1300"],
+	    	"info" : "Risus Commodo Ridiculus Purus Fermentum",
+	    	"detail" : "Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas sed diam eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam id dolor id nibh ultricies vehicula ut id elit. Vestibulum id ligula porta felis euismod semper.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "ordinateur-tour.png"
+	    },
+	    {
+	    	"id" : "9",
+	    	"nom" : "Robot",
+	    	"marque" : "Wishtime",
+	    	"tailles_modele" : ["v2"],
+	    	"prix" : ["60"],
+	    	"info" : "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
+	    	"detail" : "Curabitur blandit tempus porttitor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
+	    	"livraison" : "2 à 3 jours après confirmation de la commande",
+	    	"image" : "robot.png"
+	    }
+	]
+}

@@ -1,0 +1,13 @@
+digraph system {
+_0[label="", shape=none ];
+_0->0;
+3 [label= "3 [libS1]"];
+1 [label= "1 [useR1]"];
+2 [label= "2 [useR1, useR2]"];
+4 [label= "4 [fin]"];
+0 [label= "0 [debut]"];
+0->1 [label= "PS1"];
+1->2 [label= "PS2"];
+2->3 [label= "VS1"];
+3->4 [label= "VS2"];
+}

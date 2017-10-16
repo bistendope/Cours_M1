@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>MapFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+MapFragment.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">edu.univorleans.winteriscoming; 
+ 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+</span><span class="s0">import </span><span class="s1">android.util.Log; 
+</span><span class="s0">import </span><span class="s1">android.view.LayoutInflater; 
+</span><span class="s0">import </span><span class="s1">android.view.View; 
+</span><span class="s0">import </span><span class="s1">android.view.ViewGroup; 
+ 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.maps.CameraUpdateFactory; 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.maps.GoogleMap; 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.maps.MapView; 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.maps.OnMapReadyCallback; 
+ 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.maps.SupportMapFragment; 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.maps.model.MarkerOptions; 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.maps.model.TileOverlayOptions; 
+ 
+</span><span class="s0">import </span><span class="s1">edu.univorleans.winteriscoming.openWeatherMap.OpenWeatherMap; 
+ 
+</span><span class="s2">/** 
+ * Created by fredericdabrowski on 09/09/2017. 
+ */</span><span class="s1"> 
+ 
+</span><span class="s0">public class </span><span class="s1">MapFragment </span><span class="s0">extends </span><span class="s1">SupportMapFragment </span><span class="s0">implements </span><span class="s1">OnMapReadyCallback { 
+ 
+    MapView mapView; 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater, ViewGroup container, 
+                             Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreateView(inflater, container, savedInstanceState); 
+        View v = inflater.inflate(R.layout.fragment_map, container, </span><span class="s0">false</span><span class="s1">); 
+        mapView = v.findViewById(R.id.mapView); 
+        mapView.onCreate(savedInstanceState); 
+        mapView.getMapAsync(</span><span class="s0">this</span><span class="s1">); 
+        </span><span class="s0">return </span><span class="s1">v; 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">onMapReady(GoogleMap googleMap) { 
+ 
+        googleMap.addMarker(</span><span class="s0">new </span><span class="s1">MarkerOptions().position(WeatherActivity.cityCoord).title(</span><span class="s3">&quot;Marker&quot;</span><span class="s1">)); 
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(WeatherActivity.cityCoord)); 
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(</span><span class="s4">3.0f</span><span class="s1">)); 
+        OpenWeatherMap openWeatherMap = </span><span class="s0">new </span><span class="s1">OpenWeatherMap(); 
+        googleMap.addTileOverlay(</span><span class="s0">new </span><span class="s1">TileOverlayOptions().tileProvider(openWeatherMap)); 
+        mapView.onResume(); 
+ 
+    } 
+ 
+} 
+</span></pre>
+</body>
+</html>

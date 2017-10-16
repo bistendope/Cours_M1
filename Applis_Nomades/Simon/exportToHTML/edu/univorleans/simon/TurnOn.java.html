@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>TurnOn.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+TurnOn.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">edu.univorleans.simon; 
+ 
+</span><span class="s0">import </span><span class="s1">android.media.SoundPool; 
+</span><span class="s0">import </span><span class="s1">android.widget.Button; 
+ 
+</span><span class="s0">public class </span><span class="s1">TurnOn </span><span class="s0">implements </span><span class="s1">Runnable { 
+ 
+    GameActivity activity; 
+    Button b; 
+    SoundPool soundPool; 
+    </span><span class="s0">float </span><span class="s1">volume; 
+ 
+    </span><span class="s0">public </span><span class="s1">TurnOn(GameActivity activity, Button b, SoundPool soundPool, </span><span class="s0">float </span><span class="s1">volume) { 
+        </span><span class="s0">this</span><span class="s1">.activity = activity; 
+        </span><span class="s0">this</span><span class="s1">.volume = volume; 
+        </span><span class="s0">this</span><span class="s1">.soundPool = soundPool; 
+        </span><span class="s0">this</span><span class="s1">.b = b; 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">run() { 
+        b.setBackgroundColor((Integer) b.getTag(R.string.lightColor)); 
+        activity.runOnUiThread(</span><span class="s0">new </span><span class="s1">TurnOff(b), </span><span class="s2">500</span><span class="s1">); 
+        soundPool.play((Integer) b.getTag(R.string.sound),  volume, volume, </span><span class="s2">1</span><span class="s1">, </span><span class="s2">0</span><span class="s1">, </span><span class="s2">1f</span><span class="s1">); 
+    } 
+} 
+</span></pre>
+</body>
+</html>

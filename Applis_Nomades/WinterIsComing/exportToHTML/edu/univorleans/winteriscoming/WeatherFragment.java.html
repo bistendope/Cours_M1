@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>WeatherFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+WeatherFragment.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">edu.univorleans.winteriscoming; 
+ 
+ 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+</span><span class="s0">import </span><span class="s1">android.support.v4.app.Fragment; 
+</span><span class="s0">import </span><span class="s1">android.view.LayoutInflater; 
+</span><span class="s0">import </span><span class="s1">android.view.View; 
+</span><span class="s0">import </span><span class="s1">android.view.ViewGroup; 
+</span><span class="s0">import </span><span class="s1">android.widget.ImageView; 
+</span><span class="s0">import </span><span class="s1">android.widget.TextView; 
+ 
+</span><span class="s0">import </span><span class="s1">edu.univorleans.winteriscoming.openWeatherMap.City; 
+</span><span class="s0">import </span><span class="s1">edu.univorleans.winteriscoming.openWeatherMap.LoadCityTask; 
+ 
+ 
+</span><span class="s0">public class </span><span class="s1">WeatherFragment </span><span class="s0">extends </span><span class="s1">Fragment </span><span class="s0">implements </span><span class="s1">LoadCityTask.AsyncResponse { 
+ 
+ 
+    ImageView iconImageView; 
+    TextView textView, descTextView, tempTextView, windTextView, humidityTextView, pressureTextView; 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater, ViewGroup container, 
+                             Bundle savedInstanceState) { 
+ 
+        View v = inflater.inflate(R.layout.fragment_weather, container, </span><span class="s0">false</span><span class="s1">); 
+        iconImageView = v.findViewById(R.id.imageView); 
+        tempTextView = v.findViewById(R.id.tempTextView); 
+        windTextView = v.findViewById(R.id.windTextView); 
+        humidityTextView = v.findViewById(R.id.humidityTextView); 
+        pressureTextView =  v.findViewById(R.id.pressureTextView); 
+        descTextView = v.findViewById(R.id.descTextView); 
+        textView = v.findViewById(R.id.textView); 
+        </span><span class="s0">return </span><span class="s1">v; 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">onActivityCreated(Bundle bundle){ 
+        </span><span class="s0">super</span><span class="s1">.onActivityCreated(bundle); 
+        textView.setText(WeatherActivity.cityName); 
+        </span><span class="s0">new </span><span class="s1">LoadCityTask(</span><span class="s0">this</span><span class="s1">).execute(WeatherActivity.cityName); 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">publishResults(City city) { 
+ 
+        </span><span class="s0">if </span><span class="s1">(city != </span><span class="s0">null</span><span class="s1">) { 
+            descTextView.setText(city.getDescription()); 
+            tempTextView.setText(String.valueOf((</span><span class="s0">int</span><span class="s1">) city.getTemperature())+</span><span class="s2">&quot;°C&quot;</span><span class="s1">); 
+            windTextView.setText(String.valueOf((</span><span class="s0">int</span><span class="s1">) (city.getWind_speed()))+</span><span class="s2">&quot;km/h&quot;</span><span class="s1">); 
+            humidityTextView.setText(String.valueOf((</span><span class="s0">int</span><span class="s1">) city.getHumidity())+</span><span class="s2">&quot;%&quot;</span><span class="s1">); 
+            pressureTextView.setText(String.valueOf((</span><span class="s0">int</span><span class="s1">) city.getPressure())+</span><span class="s2">&quot;hPa&quot;</span><span class="s1">); 
+            iconImageView.setImageBitmap(city.getBitmap()); 
+        } 
+    } 
+} 
+</span></pre>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Simon</string>
+    <string name="color"/>
+    <string name="lightColor"/>
+    <string name="sound"/>
+    <string name="id"/>
+</resources>

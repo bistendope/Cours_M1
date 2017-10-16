@@ -1,0 +1,19 @@
+digraph system {
+_0[label="", shape=none ];
+_0->0;
+7 [label= "7 [f.d, l.d, p.d, p.g]"];
+11 [label= "11 [f.d, l.d, p.d]"];
+3 [label= "3 [f.d, l.d, p.g]"];
+9 [label= "9 [f.d, l.g, p.d]"];
+2 [label= "2 [f.g, l.d, p.g]"];
+4 [label= "4 [f.g, l.g, p.d, p.g]"];
+8 [label= "8 [f.g, l.g, p.d]"];
+0 [label= "0 [f.g, l.g, p.g]"];
+3->2 [label= ""];
+7->4 [label= ""];
+9->8 [label= ""];
+2->7 [label= ""];
+8->11 [label= ""];
+0->3 [label= ""];
+4->9 [label= ""];
+}

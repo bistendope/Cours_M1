@@ -1,0 +1,33 @@
+/*Fermier ou loup ou salade ou poule */
+S1=[g,d] {
+	  etat=2;
+	  init=0;
+	  0=g;
+	  1=d;
+	  0->1 [inc];
+	  1->0 [dec];
+};;
+
+
+
+systeme = <S1 f,S1 l, S1 p, S1 s> {
+	<inc,_,_,_>;
+	<inc,inc,_,_>;
+	<inc,_,inc,_>;
+	<inc,_,_,inc>;
+	<dec,_,_,_>;
+	<dec,dec,_,_>;
+	<dec,_,dec,_>;
+	<dec,_,_,dec>;
+};;
+
+
+reduit = systeme | (f.g && !((l.d && p.d)|| (p.d && s.d))) || (f.d && !((l.g && p.g) || (p.g && s.g)));;
+
+solution = reduit -> f.d && l.d && p.d && s.d;;
+todot solution1.dot solution;;
+
+
+
+
+

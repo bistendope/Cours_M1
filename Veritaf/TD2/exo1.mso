@@ -1,0 +1,33 @@
+P = [preCritique, SC, postCritique]{
+	etat=3;
+	init=0;
+	0=preCritique;
+	1=SC;
+	2=postCritique;
+
+	0->1[in_SC];
+	1->2[out_SC];
+};;
+
+Sem = [libre, occupe]{
+	etat=2;
+	init=1;
+	0=occupe;
+	1=libre;
+
+	0->1[V];
+	1->0[P];
+};;
+
+Systeme = <Sem s, P p1, P p2, P p3>{
+	<P, in_SC, _, _>;
+	<V, out_SC, _, _>;
+
+	<P, _, in_SC, _>;
+	<V, _, out_SC, _>;
+	
+	<P, _, _, in_SC>;
+	<V, _, _, out_SC>;
+};;
+
+todot solution1.dot Systeme;;
