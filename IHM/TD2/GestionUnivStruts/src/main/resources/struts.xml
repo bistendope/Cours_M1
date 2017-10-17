@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    
+    <constant name="struts.custom.i18n.resources" value="mesTextes"></constant>
+    
+    <package name="/" extends="struts-default">
+        <default-action-ref name="goToMenu"></default-action-ref>
+        <action name="goToMenu">
+            <result>/WEB-INF/views/menu.jsp</result>
+        </action>
+        <action name="goToAjouterProf">
+            <result>/WEB-INF/views/formAjouterProf.jsp</result>
+        </action>
+        <action name="goToAjouterFormation" class="actions.AfficherProfs">
+            <result>/WEB-INF/views/formAjouterFormation.jsp</result>
+        </action>
+        <action name="goToAjouterEtudiant">
+            <result>/WEB-INF/views/formAjouterEtudiant.jsp</result>
+        </action>
+        <action name="ajouterProf" class="actions.AjouterProf">
+            <result name="success">/WEB-INF/views/profAjoute.jsp</result>
+            <result name="input">/WEB-INF/views/profAjoute.jsp</result>
+        </action>
+        <action name="ajouterEtudiant" class="actions.AjouterEtudiant">
+            <result name="success">/WEB-INF/views/etudiantAjoute.jsp</result>
+            <result name="input">/WEB-INF/views/etudiantAjoute.jsp</result>
+        </action>
+        <action name="ajouterFormation" class="actions.AjouterFormation">
+            <result name="success">/WEB-INF/views/formationAjoutee.jsp</result>
+            <result name="input">/WEB-INF/views/formAjouterFormation.jsp</result>
+        </action>
+    </package>
+
+</struts>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.custom.i18n.resources" value="mesTextes"/>
+
+    <package name="default" namespace="/" extends="struts-default">
+
+        <default-action-ref name="GoToLogin"/>
+
+        <action name="GoToLogin" class="Actions.GoToLogin">
+            <result>/WEB-INF/Login.jsp</result>
+        </action>
+
+        <action name="GoToRegister" class="Actions.GoToRegister">
+            <result>/WEB-INF/Register.jsp</result>
+        </action>
+
+        <action name="GoToMenu" class="Actions.GoToMenu">
+            <result>/WEB-INF/Menu.jsp</result>
+        </action>
+
+        <action name="Register" class="Actions.Register">
+            <result>/WEB-INF/Login.jsp</result>
+            <result name="input">/WEB-INF/Register.jsp</result>
+        </action>
+
+        <action name="Login" class="Actions.Login">
+            <result name="success">/WEB-INF/Menu.jsp</result>
+            <result name="input">/WEB-INF/Login.jsp</result>
+        </action>
+
+        <action name="Logout" class="Actions.Logout">
+            <result name="success">/WEB-INF/Login.jsp</result>
+        </action>
+
+        <action name="ValidateRegister" class="Actions.ValidateRegister">
+            <result name="success">/WEB-INF/Menu.jsp</result>
+            <result name="error">/WEB-INF/Error.jsp</result>
+        </action>
+
+        <action name="InvalidateRegister" class="Actions.InvalidateRegister">
+            <result>/WEB-INF/Menu.jsp</result>
+        </action>
+
+
+    </package>
+
+    <!-- Add addition packages and configuration here. -->
+</struts>

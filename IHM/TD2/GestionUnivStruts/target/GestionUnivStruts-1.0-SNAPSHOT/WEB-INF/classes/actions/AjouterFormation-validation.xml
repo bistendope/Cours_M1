@@ -1,0 +1,14 @@
+<?xml version ="1.0"?>
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.3//EN"
+        "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<validators>
+    <!-- Plain Validator Syntax -->
+    <field name="libelle">
+        <field-validator type="stringlength">
+            <param name="maxLength">12</param>
+            <param name="minLength">5</param>
+            <message key="errors.tailleLibelle"/>
+        </field-validator>
+
+    </field>
+</validators>
