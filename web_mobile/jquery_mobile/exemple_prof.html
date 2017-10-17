@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Events</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" href="css/jquery.mobile.min.css" />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.mobile.min.js"></script>  </head>
+		
+</head>
+<body>
+	
+<div data-role="page" id="home">
+  <div data-role="header">
+    <h1>Test Events</h1>
+  </div>
+
+  <div data-role="content">
+	<h2>Evénements :</h2>
+	<div id="evt"></div>
+  </div> <!-- content -->
+
+  <div data-role="footer">
+	Fin test
+  </div> 
+</div> <!-- page -->
+
+</body>
+
+</html>
+
+<script>
+$("#home").on("tap", function (event) {
+	var texte = "Event = <b>tap</b>, ";
+	$("#evt").append (texte);
+});
+
+$("#home").on("taphold", function (event) {
+	var texte = "Event = <b>taphold</b>, ";
+	$("#evt").append (texte);
+});
+
+$("#home").on("swipe", function (event) {
+	var texte = "Event = <b>swipe</b>, ";
+	$("#evt").append (texte);
+});
+
+$("#home").on("swipeleft", function (event) {
+	var texte = "Event = <b>swipeleft</b>, ";
+	$("#evt").append(texte);
+});
+
+$("#home").on("swiperight", function (event) {
+	var texte = "Event = <b>swiperight</b>, ";
+	$("#evt").append(texte);
+});
+
+$("#home").on("scrollstart", function (event) {
+	var texte = "Event = <b>scrollstart</b>, ";
+	$("#evt").append (texte);
+});
+
+$("#home").on("scrollstop", function (event) {
+	var texte = "Event = <b>scrollstop</b>, ";
+	$("#evt").append (texte);
+});
+
+</script>
