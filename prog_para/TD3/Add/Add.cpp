@@ -9,6 +9,7 @@ using namespace std;
 
 /* à compléter : addition en anneau */ 
 void addition_ring  (int nthreads){
+
 }
 
 int main(int argc, char* argv[]){
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]){
     }
   int nthreads = atoi(argv[1]);  
   
-
+  
   /* à compléter
 
    */

@@ -38,16 +38,35 @@ void vecadd (int size, float* v1, float* v2, float* v3){
   }
 }
 
+void vecadd_aux (int taille_loc, float* v1, float* v2, float* v3, int idebut){
+  for (int i = idebut; i < idebut + taille_loc; i++){
+    v3[i] = v1[i] + v2[i];
+  }
+}
+
 
 
 // à compléter : addition parallèle
 void vecadd_parallel(int size, float* v1, float* v2, float* v3, int nthreads){
-  
+  thread th[nthreads];
+  int taille_loc, idebut;
+  taille_loc = size/nthreads;
+  for (int i = 0; i < nthreads; i++){
+    idebut = taille_loc*i;
+    th[i] = thread(vecadd_aux, taille_loc, v1, v2, v3, idebut);
+  }
+   for (int i = 0; i < nthreads; i++)
+    th[i].join();
 }
 
-// à compléter : vérification que c1 et c2 sont les mêmes
-void verif(float* c1, float* c2){
 
+
+// à compléter : vérification que c1 et c2 sont les mêmes
+void verif(int size, float* c1, float* c2){
+  for (int i =0; i<size; i++){
+    if(c1[i] != c2[i]) cout << "valeurs différentes trouvées: c1[" << i << "]=" << c1[i] << " et c2[" << i << "]=" << c2[i] << "." << endl;
+  }
+  cout << "Vérification terminée" << endl;
 }
 
 int main(int argc, char* argv[]){
@@ -76,8 +95,8 @@ int main(int argc, char* argv[]){
   
   
   BENCHMARK(vecadd(size, A, B, Cseq));
-
-  verif(Cseq, Cpar);
+  BENCHMARK(vecadd_parallel(size, A, B, Cpar, nthreads));
+  BENCHMARK(verif(size, Cseq, Cpar));
   
   
   delete [] A;
