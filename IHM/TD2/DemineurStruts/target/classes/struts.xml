@@ -12,13 +12,20 @@
     <package name="/" extends="struts-default">
         <default-action-ref name="accueil"></default-action-ref>
         <action name="connexion" class="actions.Connexion">
-            <result name="success">/WEB-INF/views/demineur.jsp</result>
+            <result name="success">/WEB-INF/views/menu.jsp</result>
             <result name="input">/WEB-INF/views/accueil.jsp</result>
         </action>
 
         <action name="accueil">
             <result>/WEB-INF/views/accueil.jsp</result>
         </action>
+
+        <action name="menu" class="actions.Menu">
+            <result name="success">/WEB-INF/views/demineur.jsp</result>
+            <result name="input">/WEB-INF/views/menu.jsp</result>
+        </action>
+
+
 
 
     </package>

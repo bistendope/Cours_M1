@@ -1,27 +1,23 @@
 package actions;
 
-import modele.Plateau;
+
+
+import com.opensymphony.xwork2.ActionContext;
+
+import java.util.Map;
 
 public class Connexion extends Environment {
     private String pseudo;
-    private Plateau plateau;
 
 
     public String execute() throws Exception{
         super.execute();
         facade.connexion(pseudo);
-        facade.associerNouvelleGrille(pseudo);
-        plateau = facade.getPlateau(pseudo);
+        Map session = ActionContext.getContext().getSession();
+        sessionMap.put("pseudo",pseudo);
         return SUCCESS;
     }
 
-    public Plateau getPlateau() {
-        return plateau;
-    }
-
-    public void setPlateau(Plateau plateau) {
-        this.plateau = plateau;
-    }
 
     public String getPseudo() {
         return pseudo;

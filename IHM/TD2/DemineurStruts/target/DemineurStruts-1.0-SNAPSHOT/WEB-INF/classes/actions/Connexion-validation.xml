@@ -12,6 +12,5 @@
         <field-validator type="requiredstring">
             <message key="errors.pseudoRequis"/>
         </field-validator>
-
     </field>
 </validators>

@@ -15,15 +15,16 @@
 </head>
 <body>
 <div class="container">
-    <table class="table-bordered">
-        <s:iterator value="plateau" var="ligneCase" status="iterStatus">
+    <table>
+        <s:iterator value="%{plateau.getMonPlateau}" var="ligneCase" status="iterStatus">
             <tr>
             <s:iterator value="#ligneCase" var="case">
-                <td><s:property value="case.getValeur()"></s:property></td>
+                <td><s:property value="%{#case.getValeur}"/></td>
             </s:iterator>
             <tr/>
         </s:iterator>
     </table>
+
 </div>
 
 </body>

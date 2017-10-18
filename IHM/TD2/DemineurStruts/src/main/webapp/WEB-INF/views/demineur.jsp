@@ -15,15 +15,22 @@
 </head>
 <body>
 <div class="container">
-    <table class="table-bordered">
-        <s:iterator value="plateau" var="ligneCase" status="iterStatus">
+    <table>
+        <s:iterator value="%{plateau.getMonPlateau}" var="ligneCase" status="statusX">
             <tr>
-            <s:iterator value="#ligneCase" var="case">
-                <td><s:property value="#case."></s:property></td>
+            <s:iterator value="#ligneCase" var="case" status="statusY">
+                <td>
+                    <s:url action="jouer" var="jeu">
+                        <s:param name="xplayed" value="statusX.index"></s:param>
+                        <s:param name="yplayed" value="statusY.index"></s:param>
+                    </s:url>
+                    <s:property value="%{#case.getValeur}"/>
+                </td>
             </s:iterator>
             <tr/>
         </s:iterator>
     </table>
+
 </div>
 
 </body>

@@ -1,13 +1,17 @@
 package actions;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import modele.GestionDemineur;
 import modele.GestionDemineurInterface;
 import org.apache.struts2.interceptor.ApplicationAware;
+import org.apache.struts2.interceptor.SessionAware;
+
 import java.util.Map;
 
-public class Environment extends ActionSupport implements ApplicationAware {
+public class Environment extends ActionSupport implements ApplicationAware, SessionAware {
 
+    protected Map sessionMap;
     private Map<String,Object> applicationScope;
     protected GestionDemineurInterface facade;
     private  final static String FACADE = "facade";
@@ -15,17 +19,15 @@ public class Environment extends ActionSupport implements ApplicationAware {
 
 
     public String execute() throws Exception{
-        //récupération des valeurs saisies dans le formulaire
-        //youpi! grace aux setter/getter
-
-        //envoi au modele
-
         facade = (GestionDemineurInterface) applicationScope.get(FACADE);
 
         if(facade == null){
             facade = new GestionDemineur();
             applicationScope.put(FACADE, facade);
         }
+
+
+
         return SUCCESS;
     }
 
@@ -48,5 +50,10 @@ public class Environment extends ActionSupport implements ApplicationAware {
 
     public void setFacade(GestionDemineurInterface facade) {
         this.facade = facade;
+    }
+
+    @Override
+    public void setSession(Map<String, Object> map) {
+        sessionMap = map;
     }
 }
