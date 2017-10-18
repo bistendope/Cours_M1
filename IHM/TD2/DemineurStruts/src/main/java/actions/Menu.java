@@ -1,8 +1,6 @@
 package actions;
-import com.opensymphony.xwork2.ActionContext;
 import modele.Plateau;
 
-import java.util.Map;
 
 public class Menu extends Environment {
     private int percentBombes;
@@ -50,5 +48,13 @@ public class Menu extends Environment {
 
     public void setTaille(int taille) {
         this.taille = taille;
+    }
+
+    public Plateau getPlateau() {
+        return plateau;
+    }
+
+    public void setPlateau(Plateau plateau) {
+        this.plateau = plateau;
     }
 }

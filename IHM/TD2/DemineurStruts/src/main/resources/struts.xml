@@ -24,7 +24,7 @@
             <result name="success">/WEB-INF/views/demineur.jsp</result>
             <result name="input">/WEB-INF/views/menu.jsp</result>
         </action>
-        <action name="jouer">
+        <action name="jouer" class="actions.Jouer">
             <result name="success">/WEB-INF/views/demineur.jsp</result>
             <result name="gagne">/WEB-INF/views/gagne.jsp</result>
             <result name="perdu">/WEB-INF/views/perdu.jsp</result>
