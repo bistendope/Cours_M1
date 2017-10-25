@@ -21,10 +21,7 @@ int main(int argc, char* argv[]){
     }
   int nthreads = atoi(argv[1]);  
   
-  
-  /* à compléter
-
-   */
+  th[i] = thread(vecadd_aux, taille_loc, v1, v2, v3, idebut);
   
   
   
