@@ -51,7 +51,7 @@ ssize_t bread(void *buf, ssize_t size, BFILE *stream)
 		ptr+=stream->fill-stream->pos;
 		more -= stream->fill - stream->pos;
 		stream->pos=0;
-		if ((stream->fill=read(stream->fd,stream->buf,size))<=0) {
+		if ((stream->fill=read(stream->fd,stream->buf,BBUFSIZ))<=0) {
 			
 			stream->eof=(stream->fill==0);
 			stream->fill=0;
@@ -63,43 +63,31 @@ ssize_t bread(void *buf, ssize_t size, BFILE *stream)
 	return size;
 }
 
-/*int bflush(BFILE *stream){
-	if (buf=NULL){
+int bflush(BFILE *stream){
+	if (stream != NULL){
 		stream->pos=0;
 		stream->fill=0; 
 		return 0;
 	}else{
 		return 1;
 	}
-}*/
+}
 
 ssize_t bwrite(void *buf, ssize_t size, BFILE *stream)
 {
-	char *ptr;
-	ssize_t more;
-
 	if ((stream==NULL)||(stream->mode!=BMODE_WRITE)) {
 		errno = EBADF;
 		return 0;
 	}
-	more=size;
-	ptr=buf;
-	while (stream->fill-stream->pos < more) {
-		
-		memcpy(&stream->buf[stream->pos],ptr,stream->fill-stream->pos);
-		ptr+=stream->fill-stream->pos;
-		more -= stream->fill - stream->pos;
-		stream->pos=0;
-		printf("avant");
-		if ((stream->fill=write(stream->fd,stream->buf,1))<=0) {
-			stream->eof=(stream->fill==0);
-			stream->fill=0;
-			return size-more;
-		}
+	if(BBUFSIZ - stream->fill < size){
+		bflush(stream);	
 	}
-	memcpy(&stream->buf[stream->pos],ptr,more);
-	stream->pos+=more;
-	printf("APRES");
+	printf("stream->pos = %ld et stream->fill = %ld \n", stream->pos, stream->fill);
+	memcpy(&stream->buf[stream->pos],buf,size);
+	write(stream->fd,&stream->buf[stream->pos],size);
+	stream->pos+=size;
+	stream->fill+=size;
+	printf("stream->pos = %ld et stream->fill = %ld \n", stream->pos, stream->fill);
 	return size;
 }
 

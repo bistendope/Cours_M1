@@ -1,0 +1,43 @@
+TP1 Système de fichiers (suite)
+
+date de retour pour bio+bcp : dim 5 novembre 2017 à 23:59 AoE
+via Celene ;-)
+
+- un indice (observé par un groupe) : si on fait des bread de 1, le bug disparaît, donc le bug est dans la boucle while de bread :-)
+
+- attention à ne pas coonfondre ./cat et cat...
+
+- debug : ajouter -g dans les CFLAGS du Makefile
+
+- questions à se poser : à quoi servent les variables locales (buf, size, stream, ptr, more) ? quel est l'algo ? suivre avec gdb un exemple simple...
+
+- ne pas oublier que : SEND + MORE = MONEY (https://en.wikipedia.org/wiki/Verbal_arithmetic)
+
+- le programme doit aussi fonctionner si dans cat.c on définit SZ 10000 et qu'on fait ./cat cat > /tmp/copycat
+
+- plus d'indices ? no more! (Hit the road Jack)
+
+- attention pour le buffering pour le cas RW
+
+- struct BFILE :
+    fd => le descripteur de fichier
+    mode => on l'a ouvert comment déjà ?
+    eof => est-ce qu'on est au bout du fichier ?
+    buf => le tampon de lecture/écriture
+    pos => position à partir de laquelle il est remplit
+    fill => position jusqu'où il est remplit
+
+[------xxxxxxxxxx---------] buf  (avec x le contenu utile)
+       ^         ^
+      pos       fill
+
+
+- Exemple avec RDWR avec buffer de 5 et fichier "abcdefghijkl":
+
+bopen("toto", BMODE_RW) :  [-----] pos=0 fill=0 .abcdefghijkl
+bread(3)="abc"          :  [abcde] pos=3 fill=5  abcde.fghijkl
+bwrite("blop")          :  [blope] pos=0 fill=4  abc.defghijkl
+bread(2)="hi"           :  [hijkl] pos=2 fill=5  abcblophijkl.
+bwrite("z")             :  [zijkl] pos=0 fill=1  abcblophijkl.
+bwrite("cake!")         :  [!cake] pos=0 fill=1  abcblophijklzcake.
+bflush()                :  [!cake] pos=0 fill=0  abcblophijklzcake!.
