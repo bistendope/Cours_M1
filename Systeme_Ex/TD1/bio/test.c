@@ -52,6 +52,7 @@ ssize_t bread(void *buf, ssize_t size, BFILE *stream)
 		more -= stream->fill - stream->pos;
 		stream->pos=0;
 		if ((stream->fill=read(stream->fd,stream->buf,BBUFSIZ))<=0) {
+			
 			stream->eof=(stream->fill==0);
 			stream->fill=0;
 			return size-more;
@@ -78,15 +79,20 @@ ssize_t bwrite(void *buf, ssize_t size, BFILE *stream)
 		errno = EBADF;
 		return 0;
 	}
-	if(BBUFSIZ - stream->fill < size){
-		bflush(stream);	
+
+	char *ptr = buf;
+	ssize_t more = size;
+
+	while (more > BBUFSIZ){
+		memcpy(&stream->buf,ptr,BBUFSIZ);
+		write(stream->fd,&stream->buf,BBUFSIZ);
+		ptr+=BBUFSIZ;
+		more -= BBUFSIZ;
 	}
-	printf("stream->pos = %ld et stream->fill = %ld \n", stream->pos, stream->fill);
-	memcpy(&stream->buf[stream->pos],buf,size);
-	write(stream->fd,&stream->buf[stream->pos],size);
-	stream->pos+=size;
-	stream->fill+=size;
-	printf("stream->pos = %ld et stream->fill = %ld \n", stream->pos, stream->fill);
+	bflush(stream);
+	memcpy(&stream->buf,ptr,more);
+	write(stream->fd,&stream->buf,more);
+	stream->fill = more;
 	return size;
 }
 

@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "bio.h"
 
-#define SZ 100
+#define SZ 10000
 
 int main(int argc, char *argv[])
 {
