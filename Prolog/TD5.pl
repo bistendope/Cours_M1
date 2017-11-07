@@ -1,3 +1,7 @@
+
+:-include('TD1.pl').
+	
+
 analyse([qui,est|L]):-
 	etat3(L).
 etat3([le|L]):-etat4(L).
@@ -27,5 +31,34 @@ etat9([]).
 
 etat10([mere|L]):-member(X, [mere, fille, soeur, grand_mere, petite_fille, tante, cousine]),
 	etat6(L).
+	
+motVide(M):-member(M, [qui, est, le, la, l, du, de, d]).
+
+nettoie([], []).
+nettoie([X|L], R):-
+	motVide(X),
+	!,
+	nettoie(L,R).
+nettoie([X|L], [X|R]):-
+	nettoie(L,R).
+	
+nettoieBis([X|L], R):-
+	nettoie(L, Q),
+	(motVide(X) -> R=Q ; R=[X|Q]).
+	
+reponse([P, Individu], X):-
+	!,
+	T=..[P,X,Individu],
+	call(T).
+	
 
 
+
+test_analyse(X):-L = [qui, est, le, frere, de, babar],
+	analyse(L),
+	nettoie(L, R),
+	reponse_imbriquee(R, X).
+	
+	
+	
+	
