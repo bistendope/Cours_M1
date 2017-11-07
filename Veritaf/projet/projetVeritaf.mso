@@ -1,0 +1,38 @@
+S = [libre, occupe]{
+	etat=2;
+	init=0;
+	0=occupe;
+	1=libre;
+	
+	0->1[V];
+	1->0[P];
+};;
+
+S1 = [libre, occupe]{
+	etat=2;
+	init=1;
+	0=occupe;
+	1=libre;
+	
+	0->1[V];
+	1->0[P];
+};;
+
+Fumeur = []{
+	etat=2;
+	init=1;
+	
+	0->1[finit];
+	1->0[fume];
+};;
+
+Systeme=<Fumeur fumeur_ab, Fumeur fumeur_ac, Fumeur fumeur_bc, S a, S b , S c, S1 s>{
+	<finit, _, _, V, V, _, V>;
+	<fume, _, _, P, P, _, P>;
+	<_, finit, _, V, _, V, V>;
+	<_, fume, _, P, _, P, P>;
+	<_, _, finit, _, V, V, V>;
+	<_, _, fume, _, P, P, P>;
+};;
+
+todot solution.dot Systeme;;
