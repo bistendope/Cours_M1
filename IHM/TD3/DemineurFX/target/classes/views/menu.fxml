@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.MenuDem">
    <children>
-      <Label text="MENU" />
+      <Label layoutX="182.0" layoutY="176.0" prefHeight="16.0" prefWidth="280.0" text="Menu de l'application Démineur" />
+      <Button fx:id="submit" layoutX="182.0" layoutY="233.0" mnemonicParsing="false" onAction="#lancerUnePartie" text="Lancer une partie" />
    </children>
 </AnchorPane>

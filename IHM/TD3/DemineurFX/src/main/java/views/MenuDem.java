@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import modele.Plateau;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,8 +54,8 @@ public class MenuDem {
     }
 
 
-    public void cliquer(ActionEvent actionEvent) {
-
+    public void lancerUnePartie(ActionEvent actionEvent) {
+        monControleur.lancerUnePartie();
     }
 
 
