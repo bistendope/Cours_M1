@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/TheDemineur.iml" filepath="$PROJECT_DIR$/.idea/TheDemineur.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appliJFXDemineur/appliJFXDemineur.iml" filepath="$PROJECT_DIR$/appliJFXDemineur/appliJFXDemineur.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appliStrutsDemineur/appliStrutsDemineur.iml" filepath="$PROJECT_DIR$/appliStrutsDemineur/appliStrutsDemineur.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modeleDemineur/modeleDemineur.iml" filepath="$PROJECT_DIR$/modeleDemineur/modeleDemineur.iml" />
+    </modules>
+  </component>
+</project>

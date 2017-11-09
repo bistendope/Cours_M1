@@ -43,7 +43,6 @@ public class Controleur {
     public void lancerUnePartie(){
         facade.associerNouvelleGrille(pseudo);
         this.jeuVue = JeuVue.creerEtAfficher(this);
-        this.jeuVue.afficherGrille();
     }
 
     public Plateau getPlateau(){

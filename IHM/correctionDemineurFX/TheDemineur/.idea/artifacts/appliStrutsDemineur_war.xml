@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="appliStrutsDemineur:war">
+    <output-path>$PROJECT_DIR$/appliStrutsDemineur/target</output-path>
+    <root id="archive" name="appliStrutsDemineur-4.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="appliStrutsDemineur:war exploded" />
+    </root>
+  </artifact>
+</component>
