@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modele.Plateau;
@@ -30,10 +31,10 @@ public class MenuDem {
     private Button submit;
 
     @FXML
-    private int percentBombes;
+    private Slider pBombes;
 
     @FXML
-    private int taille;
+    private Slider taille;
 
     public static MenuDem creerEtAfficher(Controleur c) {
         URL location = MenuDem.class.getResource("/views/menu.fxml");
@@ -55,7 +56,7 @@ public class MenuDem {
 
 
     public void lancerUnePartie(ActionEvent actionEvent) {
-        monControleur.lancerUnePartie();
+        monControleur.lancerUnePartie((int) taille.getValue(), (int) pBombes.getValue());
     }
 
 

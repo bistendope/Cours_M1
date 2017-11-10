@@ -20,7 +20,7 @@ import java.net.URL;
 public class JeuVue {
 
     @FXML
-    VBox root;
+    VBox racine;
 
     Button[][] tousMesBoutons;
 
@@ -37,7 +37,6 @@ public class JeuVue {
         Parent root = null;
         try {
             root = (Parent) fxmlLoader.load();
-            System.out.println(fxmlLoader.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,9 +69,9 @@ public class JeuVue {
             this.tousMesBoutons[i/LONGUEUR][i%LARGEUR] = monBouton;
             monPlateau.add(monBouton,i/LONGUEUR,i%LARGEUR);
         }
-        root.getChildren().addAll(monPlateau);
-        root.setAlignment(Pos.CENTER);
-        root.setPrefSize(500,500);
+        racine.getChildren().addAll(monPlateau);
+        racine.setAlignment(Pos.CENTER);
+        racine.setPrefSize(500,500);
     }
 
 

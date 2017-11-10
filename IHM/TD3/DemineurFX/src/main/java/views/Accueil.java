@@ -48,7 +48,7 @@ public class Accueil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Stage stage = c.getStage(); // ne marche pas
+        Stage stage = c.getStage();
         Accueil vue = fxmlLoader.getController();
         stage.setTitle("Login");
         stage.setScene(new Scene(root, 300, 275));

@@ -69,7 +69,6 @@ public class JeuVue implements ModelListener{
                 monBouton.setDisable(true);
             }
         }
-
     }
     public static JeuVue creerInstance(Controleur c) {
         URL location = JeuVue.class.getResource("/views/jeu.fxml");

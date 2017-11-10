@@ -40,8 +40,8 @@ public class Controleur {
         }
     }
 
-    public void lancerUnePartie(){
-        facade.associerNouvelleGrille(pseudo);
+    public void lancerUnePartie(int taille, int pBombes){
+        facade.associerNouvelleGrille(pseudo, taille, pBombes);
         this.jeuVue = JeuVue.creerEtAfficher(this);
     }
 
