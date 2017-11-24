@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/testbin/schedpong/pong.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/801.html'>testbin</a>/<a href='../files/839.html'>schedpong</a>/pong.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L59'>[^]</a><a href='#L185'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L59' title='Defined at 59.'>pong_prep</a></li>
+<li><a href='#L73' title='Defined at 73.'>pong_cleanup</a></li>
+<li><a href='#L92' title='Defined at 92.'>pong_cyclic</a></li>
+<li><a href='#L129' title='Defined at 129.'>pong_reciprocating</a></li>
+<li><a href='#L185' title='Defined at 185.'>pong</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2015</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *      Written by David A. Holland.</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> *</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * are met:</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> *</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L29' name='L29'></a>  29 <em class='comment'> */</em>
+<a id='L30' name='L30'></a>  30 
+<a id='L31' name='L31'></a>  31 <em class='comment'>/*</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> * Semaphore pong.</em>
+<a id='L33' name='L33'></a>  33 <em class='comment'> */</em>
+<a id='L34' name='L34'></a>  34 
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='479.html'>stdio.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='470.html'>err.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='469.html'>assert.h</a>&gt;
+<a id='L38' name='L38'></a>  38 
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> "<a href='703.html'>usem.h</a>"
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> "<a href='700.html'>tasks.h</a>"
+<a id='L41' name='L41'></a>  41 
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#define</em> <a href='../R/367.html' title='Multiple referred from 2 places.'>MAXCOUNT</a> 64
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#define</em> <a href='../R/470.html' title='Multiple referred from 4 places.'>PONGLOOPS</a> 1000
+<a id='L44' name='L44'></a>  44 <em class='comment'>//#define VERBOSE_PONG</em>
+<a id='L45' name='L45'></a>  45 
+<a id='L46' name='L46'></a>  46 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../D/2719.html' title='Multiple defined in 4 places.'>usem</a> sems[<a href='../S/697.html#L42' title='Defined at 42 in userland/testbin/schedpong/pong.c.'>MAXCOUNT</a>];
+<a id='L47' name='L47'></a>  47 <strong class='reserved'>static</strong> <strong class='reserved'>unsigned</strong> nsems;
+<a id='L48' name='L48'></a>  48 
+<a id='L49' name='L49'></a>  49 <em class='comment'>/*</em>
+<a id='L50' name='L50'></a>  50 <em class='comment'> * Set up the semaphores. This happens in the task director process,</em>
+<a id='L51' name='L51'></a>  51 <em class='comment'> * so if we have multiple pong groups each has its own sems[] array.</em>
+<a id='L52' name='L52'></a>  52 <em class='comment'> * (at least if the VM works)</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'> *</em>
+<a id='L54' name='L54'></a>  54 <em class='comment'> * Note that we don't open the semaphores in the director process;</em>
+<a id='L55' name='L55'></a>  55 <em class='comment'> * that way each task process has its own file handles and they don't</em>
+<a id='L56' name='L56'></a>  56 <em class='comment'> * interfere with each other if file handle locking isn't so great.</em>
+<a id='L57' name='L57'></a>  57 <em class='comment'> */</em>
+<a id='L58' name='L58'></a>  58 <strong class='reserved'>void</strong>
+<a id='L59' name='L59'></a>  59 <a href='../R/1745.html' title='Multiple referred from 2 places.'>pong_prep</a>(<strong class='reserved'>unsigned</strong> groupid, <strong class='reserved'>unsigned</strong> count)
+<a id='L60' name='L60'></a>  60 <em class='brace'>{</em>
+<a id='L61' name='L61'></a>  61         <strong class='reserved'>unsigned</strong> i;
+<a id='L62' name='L62'></a>  62 
+<a id='L63' name='L63'></a>  63         <strong class='reserved'>if</strong> (count &gt; <a href='../S/697.html#L42' title='Defined at 42 in userland/testbin/schedpong/pong.c.'>MAXCOUNT</a>) <em class='brace'>{</em>
+<a id='L64' name='L64'></a>  64                 <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "pong: too many pongers -- recompile pong.c");
+<a id='L65' name='L65'></a>  65         <em class='brace'>}</em>
+<a id='L66' name='L66'></a>  66         <strong class='reserved'>for</strong> (i=0; i&lt;count; i++) <em class='brace'>{</em>
+<a id='L67' name='L67'></a>  67                 <a href='../D/2722.html' title='Multiple defined in 2 places.'>usem_init</a>(&amp;sems[i], "sem:pong-%u-%u", groupid, i);
+<a id='L68' name='L68'></a>  68         <em class='brace'>}</em>
+<a id='L69' name='L69'></a>  69         nsems = count;
+<a id='L70' name='L70'></a>  70 <em class='brace'>}</em>
+<a id='L71' name='L71'></a>  71 
+<a id='L72' name='L72'></a>  72 <strong class='reserved'>void</strong>
+<a id='L73' name='L73'></a>  73 <a href='../R/1743.html' title='Multiple referred from 2 places.'>pong_cleanup</a>(<strong class='reserved'>unsigned</strong> groupid, <strong class='reserved'>unsigned</strong> count)
+<a id='L74' name='L74'></a>  74 <em class='brace'>{</em>
+<a id='L75' name='L75'></a>  75         <strong class='reserved'>unsigned</strong> i;
+<a id='L76' name='L76'></a>  76 
+<a id='L77' name='L77'></a>  77         <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(nsems == count);
+<a id='L78' name='L78'></a>  78         (<strong class='reserved'>void</strong>)groupid;
+<a id='L79' name='L79'></a>  79         
+<a id='L80' name='L80'></a>  80         <strong class='reserved'>for</strong> (i=0; i&lt;count; i++) <em class='brace'>{</em>
+<a id='L81' name='L81'></a>  81                 <a href='../D/2720.html' title='Multiple defined in 2 places.'>usem_cleanup</a>(&amp;sems[i]);
+<a id='L82' name='L82'></a>  82         <em class='brace'>}</em>
+<a id='L83' name='L83'></a>  83 <em class='brace'>}</em>
+<a id='L84' name='L84'></a>  84 
+<a id='L85' name='L85'></a>  85 <em class='comment'>/*</em>
+<a id='L86' name='L86'></a>  86 <em class='comment'> * Pong in order. Wait on our semaphore, then wake the next one.</em>
+<a id='L87' name='L87'></a>  87 <em class='comment'> * If we're id 0, don't wait the first go so things start, but do</em>
+<a id='L88' name='L88'></a>  88 <em class='comment'> * wait the last go.</em>
+<a id='L89' name='L89'></a>  89 <em class='comment'> */</em>
+<a id='L90' name='L90'></a>  90 <strong class='reserved'>static</strong>
+<a id='L91' name='L91'></a>  91 <strong class='reserved'>void</strong>
+<a id='L92' name='L92'></a>  92 <a href='../R/1744.html' title='Multiple referred from 2 places.'>pong_cyclic</a>(<strong class='reserved'>unsigned</strong> id)
+<a id='L93' name='L93'></a>  93 <em class='brace'>{</em>
+<a id='L94' name='L94'></a>  94         <strong class='reserved'>unsigned</strong> i;
+<a id='L95' name='L95'></a>  95         <strong class='reserved'>unsigned</strong> nextid;
+<a id='L96' name='L96'></a>  96 
+<a id='L97' name='L97'></a>  97         nextid = (id + 1) % nsems;
+<a id='L98' name='L98'></a>  98         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/697.html#L43' title='Defined at 43 in userland/testbin/schedpong/pong.c.'>PONGLOOPS</a>; i++) <em class='brace'>{</em>
+<a id='L99' name='L99'></a>  99                 <strong class='reserved'>if</strong> (i &gt; 0 || id &gt; 0) <em class='brace'>{</em>
+<a id='L100' name='L100'></a> 100                         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(&amp;sems[id]);
+<a id='L101' name='L101'></a> 101                 <em class='brace'>}</em>
+<a id='L102' name='L102'></a> 102 <em class='sharp'>#ifdef</em> VERBOSE_PONG
+<a id='L103' name='L103'></a> 103                 <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>(" %u", id);
+<a id='L104' name='L104'></a> 104 <em class='sharp'>#else</em>
+<a id='L105' name='L105'></a> 105                 <strong class='reserved'>if</strong> (nextid == 0 &amp;&amp; i % 16 == 0) <em class='brace'>{</em>
+<a id='L106' name='L106'></a> 106                         <a href='../S/509.html#L41' title='Defined at 41 in userland/lib/libc/stdio/putchar.c.'>putchar</a>('.');
+<a id='L107' name='L107'></a> 107                 <em class='brace'>}</em>
+<a id='L108' name='L108'></a> 108 <em class='sharp'>#endif</em>
+<a id='L109' name='L109'></a> 109                 <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(&amp;sems[nextid]);
+<a id='L110' name='L110'></a> 110         <em class='brace'>}</em>
+<a id='L111' name='L111'></a> 111         <strong class='reserved'>if</strong> (id == 0) <em class='brace'>{</em>
+<a id='L112' name='L112'></a> 112                 <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(&amp;sems[id]);
+<a id='L113' name='L113'></a> 113         <em class='brace'>}</em>
+<a id='L114' name='L114'></a> 114 <em class='sharp'>#ifdef</em> VERBOSE_PONG
+<a id='L115' name='L115'></a> 115         <a href='../S/509.html#L41' title='Defined at 41 in userland/lib/libc/stdio/putchar.c.'>putchar</a>('\n');
+<a id='L116' name='L116'></a> 116 <em class='sharp'>#else</em>
+<a id='L117' name='L117'></a> 117         <strong class='reserved'>if</strong> (nextid == 0) <em class='brace'>{</em>
+<a id='L118' name='L118'></a> 118                 <a href='../S/509.html#L41' title='Defined at 41 in userland/lib/libc/stdio/putchar.c.'>putchar</a>('\n');
+<a id='L119' name='L119'></a> 119         <em class='brace'>}</em>
+<a id='L120' name='L120'></a> 120 <em class='sharp'>#endif</em>
+<a id='L121' name='L121'></a> 121 <em class='brace'>}</em>
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123 <em class='comment'>/*</em>
+<a id='L124' name='L124'></a> 124 <em class='comment'> * Pong back and forth. This runs the tasks with middle numbers more</em>
+<a id='L125' name='L125'></a> 125 <em class='comment'> * often.</em>
+<a id='L126' name='L126'></a> 126 <em class='comment'> */</em>
+<a id='L127' name='L127'></a> 127 <strong class='reserved'>static</strong>
+<a id='L128' name='L128'></a> 128 <strong class='reserved'>void</strong>
+<a id='L129' name='L129'></a> 129 <a href='../S/697.html#L202' title='Referred from 202 in userland/testbin/schedpong/pong.c.'>pong_reciprocating</a>(<strong class='reserved'>unsigned</strong> id)
+<a id='L130' name='L130'></a> 130 <em class='brace'>{</em>
+<a id='L131' name='L131'></a> 131         <strong class='reserved'>unsigned</strong> i, n;
+<a id='L132' name='L132'></a> 132         <strong class='reserved'>unsigned</strong> nextfwd, nextback;
+<a id='L133' name='L133'></a> 133         <strong class='reserved'>unsigned</strong> gofwd = 1;
+<a id='L134' name='L134'></a> 134 
+<a id='L135' name='L135'></a> 135         <strong class='reserved'>if</strong> (id == 0) <em class='brace'>{</em>
+<a id='L136' name='L136'></a> 136                 nextfwd = nextback = 1;
+<a id='L137' name='L137'></a> 137                 n = <a href='../S/697.html#L43' title='Defined at 43 in userland/testbin/schedpong/pong.c.'>PONGLOOPS</a>;
+<a id='L138' name='L138'></a> 138         <em class='brace'>}</em>
+<a id='L139' name='L139'></a> 139         <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (id == nsems - 1) <em class='brace'>{</em>
+<a id='L140' name='L140'></a> 140                 nextfwd = nextback = nsems - 2;
+<a id='L141' name='L141'></a> 141                 n = <a href='../S/697.html#L43' title='Defined at 43 in userland/testbin/schedpong/pong.c.'>PONGLOOPS</a>;
+<a id='L142' name='L142'></a> 142         <em class='brace'>}</em>
+<a id='L143' name='L143'></a> 143         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L144' name='L144'></a> 144                 nextfwd = id + 1;
+<a id='L145' name='L145'></a> 145                 nextback = id - 1;
+<a id='L146' name='L146'></a> 146                 n = <a href='../S/697.html#L43' title='Defined at 43 in userland/testbin/schedpong/pong.c.'>PONGLOOPS</a> * 2;
+<a id='L147' name='L147'></a> 147         <em class='brace'>}</em>
+<a id='L148' name='L148'></a> 148 
+<a id='L149' name='L149'></a> 149         <strong class='reserved'>for</strong> (i=0; i&lt;n; i++) <em class='brace'>{</em>
+<a id='L150' name='L150'></a> 150                 <strong class='reserved'>if</strong> (i &gt; 0 || id &gt; 0) <em class='brace'>{</em>
+<a id='L151' name='L151'></a> 151                         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(&amp;sems[id]);
+<a id='L152' name='L152'></a> 152                 <em class='brace'>}</em>
+<a id='L153' name='L153'></a> 153 <em class='sharp'>#ifdef</em> VERBOSE_PONG
+<a id='L154' name='L154'></a> 154                 <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>(" %u", id);
+<a id='L155' name='L155'></a> 155 <em class='sharp'>#else</em>
+<a id='L156' name='L156'></a> 156                 <strong class='reserved'>if</strong> (id == 0 &amp;&amp; i % 16 == 0) <em class='brace'>{</em>
+<a id='L157' name='L157'></a> 157                         <a href='../S/509.html#L41' title='Defined at 41 in userland/lib/libc/stdio/putchar.c.'>putchar</a>('.');
+<a id='L158' name='L158'></a> 158                 <em class='brace'>}</em>
+<a id='L159' name='L159'></a> 159 <em class='sharp'>#endif</em>
+<a id='L160' name='L160'></a> 160                 <strong class='reserved'>if</strong> (gofwd) <em class='brace'>{</em>
+<a id='L161' name='L161'></a> 161                         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(&amp;sems[nextfwd]);
+<a id='L162' name='L162'></a> 162                         gofwd = 0;
+<a id='L163' name='L163'></a> 163                 <em class='brace'>}</em>
+<a id='L164' name='L164'></a> 164                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L165' name='L165'></a> 165                         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(&amp;sems[nextback]);
+<a id='L166' name='L166'></a> 166                         gofwd = 1;
+<a id='L167' name='L167'></a> 167                 <em class='brace'>}</em>
+<a id='L168' name='L168'></a> 168         <em class='brace'>}</em>
+<a id='L169' name='L169'></a> 169         <strong class='reserved'>if</strong> (id == 0) <em class='brace'>{</em>
+<a id='L170' name='L170'></a> 170                 <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(&amp;sems[id]);
+<a id='L171' name='L171'></a> 171         <em class='brace'>}</em>
+<a id='L172' name='L172'></a> 172 <em class='sharp'>#ifdef</em> VERBOSE_PONG
+<a id='L173' name='L173'></a> 173         <a href='../S/509.html#L41' title='Defined at 41 in userland/lib/libc/stdio/putchar.c.'>putchar</a>('\n');
+<a id='L174' name='L174'></a> 174 <em class='sharp'>#else</em>
+<a id='L175' name='L175'></a> 175         <strong class='reserved'>if</strong> (id == 0) <em class='brace'>{</em>
+<a id='L176' name='L176'></a> 176                 <a href='../S/509.html#L41' title='Defined at 41 in userland/lib/libc/stdio/putchar.c.'>putchar</a>('\n');
+<a id='L177' name='L177'></a> 177         <em class='brace'>}</em>
+<a id='L178' name='L178'></a> 178 <em class='sharp'>#endif</em>
+<a id='L179' name='L179'></a> 179 <em class='brace'>}</em>
+<a id='L180' name='L180'></a> 180 
+<a id='L181' name='L181'></a> 181 <em class='comment'>/*</em>
+<a id='L182' name='L182'></a> 182 <em class='comment'> * Do the pong thing.</em>
+<a id='L183' name='L183'></a> 183 <em class='comment'> */</em>
+<a id='L184' name='L184'></a> 184 <strong class='reserved'>void</strong>
+<a id='L185' name='L185'></a> 185 <a href='../R/1742.html' title='Multiple referred from 2 places.'>pong</a>(<strong class='reserved'>unsigned</strong> groupid, <strong class='reserved'>unsigned</strong> id)
+<a id='L186' name='L186'></a> 186 <em class='brace'>{</em>
+<a id='L187' name='L187'></a> 187         <strong class='reserved'>unsigned</strong> idfwd, idback;
+<a id='L188' name='L188'></a> 188 
+<a id='L189' name='L189'></a> 189         (<strong class='reserved'>void</strong>)groupid;
+<a id='L190' name='L190'></a> 190 
+<a id='L191' name='L191'></a> 191         idfwd = (id + 1) % nsems;
+<a id='L192' name='L192'></a> 192         idback = (id + nsems - 1) % nsems;
+<a id='L193' name='L193'></a> 193         <a href='../D/2723.html' title='Multiple defined in 2 places.'>usem_open</a>(&amp;sems[id]);
+<a id='L194' name='L194'></a> 194         <a href='../D/2723.html' title='Multiple defined in 2 places.'>usem_open</a>(&amp;sems[idfwd]);
+<a id='L195' name='L195'></a> 195         <a href='../D/2723.html' title='Multiple defined in 2 places.'>usem_open</a>(&amp;sems[idback]);
+<a id='L196' name='L196'></a> 196 
+<a id='L197' name='L197'></a> 197         <a href='../S/695.html#L211' title='Defined at 211 in userland/testbin/schedpong/main.c.'>waitstart</a>();
+<a id='L198' name='L198'></a> 198         <a href='../S/697.html#L92' title='Defined at 92 in userland/testbin/schedpong/pong.c.'>pong_cyclic</a>(id);
+<a id='L199' name='L199'></a> 199 <em class='sharp'>#ifdef</em> VERBOSE_PONG
+<a id='L200' name='L200'></a> 200         <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("--------------------------------\n");
+<a id='L201' name='L201'></a> 201 <em class='sharp'>#endif</em>
+<a id='L202' name='L202'></a> 202         <a href='../S/697.html#L129' title='Defined at 129 in userland/testbin/schedpong/pong.c.'>pong_reciprocating</a>(id);
+<a id='L203' name='L203'></a> 203 <em class='sharp'>#ifdef</em> VERBOSE_PONG
+<a id='L204' name='L204'></a> 204         <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("--------------------------------\n");
+<a id='L205' name='L205'></a> 205 <em class='sharp'>#endif</em>
+<a id='L206' name='L206'></a> 206         <a href='../S/697.html#L92' title='Defined at 92 in userland/testbin/schedpong/pong.c.'>pong_cyclic</a>(id);
+<a id='L207' name='L207'></a> 207 
+<a id='L208' name='L208'></a> 208         <a href='../D/2721.html' title='Multiple defined in 2 places.'>usem_close</a>(&amp;sems[id]);
+<a id='L209' name='L209'></a> 209         <a href='../D/2721.html' title='Multiple defined in 2 places.'>usem_close</a>(&amp;sems[idfwd]);
+<a id='L210' name='L210'></a> 210         <a href='../D/2721.html' title='Multiple defined in 2 places.'>usem_close</a>(&amp;sems[idback]);
+<a id='L211' name='L211'></a> 211 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L59'>[^]</a><a href='#L185'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

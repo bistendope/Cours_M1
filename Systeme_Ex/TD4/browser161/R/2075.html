@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>spinlock_release</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L103'>spinlock_release</a>  103 kern/arch/mips/vm/dumbvm.c 	spinlock_release(&amp;stealmem_lock);</span>
+<span class='curline'><a href='../S/96.html#L489'>spinlock_release</a>  489 kern/dev/lamebus/emu.c 		spinlock_release(&amp;ev-&gt;ev_v.vn_countlock);</span>
+<span class='curline'><a href='../S/96.html#L500'>spinlock_release</a>  500 kern/dev/lamebus/emu.c 	spinlock_release(&amp;ev-&gt;ev_v.vn_countlock);</span>
+<span class='curline'><a href='../S/99.html#L294'>spinlock_release</a>  294 kern/dev/lamebus/lamebus.c 		spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L300'>spinlock_release</a>  300 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L323'>spinlock_release</a>  323 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L343'>spinlock_release</a>  343 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L371'>spinlock_release</a>  371 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L396'>spinlock_release</a>  396 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L412'>spinlock_release</a>  412 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L425'>spinlock_release</a>  425 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L531'>spinlock_release</a>  531 kern/dev/lamebus/lamebus.c 		spinlock_release(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L575'>spinlock_release</a>  575 kern/dev/lamebus/lamebus.c 	spinlock_release(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/109.html#L97'>spinlock_release</a>   97 kern/dev/lamebus/lscreen.c 		spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/109.html#L103'>spinlock_release</a>  103 kern/dev/lamebus/lscreen.c 		spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/109.html#L179'>spinlock_release</a>  179 kern/dev/lamebus/lscreen.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/112.html#L77'>spinlock_release</a>   77 kern/dev/lamebus/lser.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/112.html#L112'>spinlock_release</a>  112 kern/dev/lamebus/lser.c 	spinlock_release(&amp;ls-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/112.html#L171'>spinlock_release</a>  171 kern/dev/lamebus/lser.c 	spinlock_release(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/126.html#L612'>spinlock_release</a>  612 kern/fs/semfs/semfs_vnops.c 		spinlock_release(&amp;vn-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/126.html#L617'>spinlock_release</a>  617 kern/fs/semfs/semfs_vnops.c 	spinlock_release(&amp;vn-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/131.html#L90'>spinlock_release</a>   90 kern/fs/sfs/sfs_inode.c 		spinlock_release(&amp;v-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/131.html#L94'>spinlock_release</a>   94 kern/fs/sfs/sfs_inode.c 	spinlock_release(&amp;v-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/180.html#L90'>spinlock_release</a>   90 kern/include/spinlock.h void spinlock_release(struct spinlock *lk);</span>
+<span class='curline'><a href='../S/201.html#L122'>spinlock_release</a>  122 kern/lib/kprintf.c 		spinlock_release(&amp;kprintf_spinlock);</span>
+<span class='curline'><a href='../S/208.html#L219'>spinlock_release</a>  219 kern/proc/proc.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L242'>spinlock_release</a>  242 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L272'>spinlock_release</a>  272 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L299'>spinlock_release</a>  299 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L318'>spinlock_release</a>  318 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/217.html#L102'>spinlock_release</a>  102 kern/test/semunit.c 	spinlock_release(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L116'>spinlock_release</a>  116 kern/test/semunit.c 	spinlock_release(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L303'>spinlock_release</a>  303 kern/test/semunit.c 	spinlock_release(&amp;lk);</span>
+<span class='curline'><a href='../S/217.html#L413'>spinlock_release</a>  413 kern/test/semunit.c 	spinlock_release(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L439'>spinlock_release</a>  439 kern/test/semunit.c 	spinlock_release(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L497'>spinlock_release</a>  497 kern/test/semunit.c 	spinlock_release(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L523'>spinlock_release</a>  523 kern/test/semunit.c 	spinlock_release(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L531'>spinlock_release</a>  531 kern/test/semunit.c 	spinlock_release(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L612'>spinlock_release</a>  612 kern/test/semunit.c 	spinlock_release(&amp;lk);</span>
+<span class='curline'><a href='../S/221.html#L99'>spinlock_release</a>   99 kern/test/tt3.c 			spinlock_release(lk);</span>
+<span class='curline'><a href='../S/221.html#L133'>spinlock_release</a>  133 kern/test/tt3.c 			spinlock_release(lk);</span>
+<span class='curline'><a href='../S/222.html#L85'>spinlock_release</a>   85 kern/thread/clock.c 	spinlock_release(&amp;lbolt_lock);</span>
+<span class='curline'><a href='../S/222.html#L120'>spinlock_release</a>  120 kern/thread/clock.c 	spinlock_release(&amp;lbolt_lock);</span>
+<span class='curline'><a href='../S/223.html#L79'>spinlock_release</a>   79 kern/thread/hangman.c 	spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L121'>spinlock_release</a>  121 kern/thread/hangman.c 		spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L128'>spinlock_release</a>  128 kern/thread/hangman.c 	spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L143'>spinlock_release</a>  143 kern/thread/hangman.c 		spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L148'>spinlock_release</a>  148 kern/thread/hangman.c 		spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L156'>spinlock_release</a>  156 kern/thread/hangman.c 	spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L171'>spinlock_release</a>  171 kern/thread/hangman.c 		spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L175'>spinlock_release</a>  175 kern/thread/hangman.c 		spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L181'>spinlock_release</a>  181 kern/thread/hangman.c 	spinlock_release(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/226.html#L120'>spinlock_release</a>  120 kern/thread/synch.c 	spinlock_release(&amp;sem-&gt;sem_lock);</span>
+<span class='curline'><a href='../S/226.html#L134'>spinlock_release</a>  134 kern/thread/synch.c 	spinlock_release(&amp;sem-&gt;sem_lock);</span>
+<span class='curline'><a href='../S/227.html#L480'>spinlock_release</a>  480 kern/thread/thread.c 		spinlock_release(&amp;targetcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L592'>spinlock_release</a>  592 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L615'>spinlock_release</a>  615 kern/thread/thread.c 		spinlock_release(lk);</span>
+<span class='curline'><a href='../S/227.html#L646'>spinlock_release</a>  646 kern/thread/thread.c 			spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L718'>spinlock_release</a>  718 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L751'>spinlock_release</a>  751 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L865'>spinlock_release</a>  865 kern/thread/thread.c 		spinlock_release(&amp;c-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L880'>spinlock_release</a>  880 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L932'>spinlock_release</a>  932 kern/thread/thread.c 		spinlock_release(&amp;c-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L945'>spinlock_release</a>  945 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L1109'>spinlock_release</a> 1109 kern/thread/thread.c 	spinlock_release(&amp;target-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1160'>spinlock_release</a> 1160 kern/thread/thread.c 	spinlock_release(&amp;target-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1177'>spinlock_release</a> 1177 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1182'>spinlock_release</a> 1182 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1188'>spinlock_release</a> 1188 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L1211'>spinlock_release</a> 1211 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/231.html#L61'>spinlock_release</a>   61 kern/vfs/vfscwd.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L90'>spinlock_release</a>   90 kern/vfs/vfscwd.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L110'>spinlock_release</a>  110 kern/vfs/vfscwd.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/236.html#L86'>spinlock_release</a>   86 kern/vfs/vnode.c 	spinlock_release(&amp;vn-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/236.html#L113'>spinlock_release</a>  113 kern/vfs/vnode.c 	spinlock_release(&amp;vn-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/236.html#L176'>spinlock_release</a>  176 kern/vfs/vnode.c 	spinlock_release(&amp;v-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/239.html#L231'>spinlock_release</a>  231 kern/vm/kmalloc.c 	spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L242'>spinlock_release</a>  242 kern/vm/kmalloc.c 		spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L706'>spinlock_release</a>  706 kern/vm/kmalloc.c 	spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L717'>spinlock_release</a>  717 kern/vm/kmalloc.c 	spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L734'>spinlock_release</a>  734 kern/vm/kmalloc.c 	spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L814'>spinlock_release</a>  814 kern/vm/kmalloc.c 	spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L952'>spinlock_release</a>  952 kern/vm/kmalloc.c 			spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L966'>spinlock_release</a>  966 kern/vm/kmalloc.c 	spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L983'>spinlock_release</a>  983 kern/vm/kmalloc.c 		spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L1088'>spinlock_release</a> 1088 kern/vm/kmalloc.c 		spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L1146'>spinlock_release</a> 1146 kern/vm/kmalloc.c 		spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L1150'>spinlock_release</a> 1150 kern/vm/kmalloc.c 		spinlock_release(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L1156'>spinlock_release</a> 1156 kern/vm/kmalloc.c 	spinlock_release(&amp;kmalloc_spinlock);</span>
+</pre>
+</body>
+</html>

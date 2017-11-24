@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/dev/generic/console.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/745.html'>dev</a>/<a href='../files/746.html'>generic</a>/console.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L88'>[^]</a><a href='#L344'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L88' title='Defined at 88.'>putch_delayed</a></li>
+<li><a href='#L101' title='Defined at 101.'>flush_delay_buf</a></li>
+<li><a href='#L118' title='Defined at 118.'>putch_polled</a></li>
+<li><a href='#L130' title='Defined at 130.'>putch_intr</a></li>
+<li><a href='#L141' title='Defined at 141.'>getch_intr</a></li>
+<li><a href='#L162' title='Defined at 162.'>con_input</a></li>
+<li><a href='#L183' title='Defined at 183.'>con_start</a></li>
+<li><a href='#L201' title='Defined at 201.'>putch</a></li>
+<li><a href='#L219' title='Defined at 219.'>getch</a></li>
+<li><a href='#L236' title='Defined at 236.'>con_eachopen</a></li>
+<li><a href='#L245' title='Defined at 245.'>con_io</a></li>
+<li><a href='#L296' title='Defined at 296.'>con_ioctl</a></li>
+<li><a href='#L313' title='Defined at 313.'>attach_console_to_vfs</a></li>
+<li><a href='#L344' title='Defined at 344.'>config_con</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * Machine (and hardware) independent console driver.</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> *</em>
+<a id='L33' name='L33'></a>  33 <em class='comment'> * We expose a simple interface to the rest of the kernel: "putch" to</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * print a character, "getch" to read one.</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> *</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> * As long as the device we're connected to does, we allow printing in</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * an interrupt handler or with interrupts off (by polling),</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> * transparently to the caller. Note that getch by polling is not</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * supported, although such support could be added without undue</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> * difficulty.</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> *</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> * Note that nothing happens until we have a device to write to. A</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> * buffer of size DELAYBUFSIZE is used to hold output that is</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> * generated before this point. This means that (1) using kprintf for</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> * debugging problems that occur early in initialization is awkward,</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> * and (2) if the system crashes before we find a console, no output</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> * at all may appear.</em>
+<a id='L48' name='L48'></a>  48 <em class='comment'> */</em>
+<a id='L49' name='L49'></a>  49 
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>kern/errno.h</a>&gt;
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L53' name='L53'></a>  53 <em class='sharp'>#include</em> &lt;<a href='191.html'>uio.h</a>&gt;
+<a id='L54' name='L54'></a>  54 <em class='sharp'>#include</em> &lt;<a href='144.html'>cpu.h</a>&gt;
+<a id='L55' name='L55'></a>  55 <em class='sharp'>#include</em> &lt;<a href='../I/46.html'>thread.h</a>&gt;
+<a id='L56' name='L56'></a>  56 <em class='sharp'>#include</em> &lt;<a href='../I/36.html'>current.h</a>&gt;
+<a id='L57' name='L57'></a>  57 <em class='sharp'>#include</em> &lt;<a href='184.html'>synch.h</a>&gt;
+<a id='L58' name='L58'></a>  58 <em class='sharp'>#include</em> &lt;<a href='87.html'>generic/console.h</a>&gt;
+<a id='L59' name='L59'></a>  59 <em class='sharp'>#include</em> &lt;<a href='193.html'>vfs.h</a>&gt;
+<a id='L60' name='L60'></a>  60 <em class='sharp'>#include</em> &lt;<a href='146.html'>device.h</a>&gt;
+<a id='L61' name='L61'></a>  61 <em class='sharp'>#include</em> "autoconf.h"
+<a id='L62' name='L62'></a>  62 
+<a id='L63' name='L63'></a>  63 <em class='comment'>/*</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'> * The console device.</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'> */</em>
+<a id='L66' name='L66'></a>  66 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *the_console = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L67' name='L67'></a>  67 
+<a id='L68' name='L68'></a>  68 <em class='comment'>/*</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> * Lock so user I/Os are atomic.</em>
+<a id='L70' name='L70'></a>  70 <em class='comment'> * We use two locks so readers waiting for input don't lock out writers.</em>
+<a id='L71' name='L71'></a>  71 <em class='comment'> */</em>
+<a id='L72' name='L72'></a>  72 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L75' title='Defined at 75 in kern/include/synch.h.'>lock</a> *con_userlock_read = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L73' name='L73'></a>  73 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L75' title='Defined at 75 in kern/include/synch.h.'>lock</a> *con_userlock_write = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L74' name='L74'></a>  74 
+<a id='L75' name='L75'></a>  75 <em class='comment'>//////////////////////////////////////////////////</em>
+<a id='L76' name='L76'></a>  76 
+<a id='L77' name='L77'></a>  77 <em class='comment'>/*</em>
+<a id='L78' name='L78'></a>  78 <em class='comment'> * This is for accumulating characters printed before the</em>
+<a id='L79' name='L79'></a>  79 <em class='comment'> * console is set up. Upon console setup they are dumped</em>
+<a id='L80' name='L80'></a>  80 <em class='comment'> * to the actual console; thenceforth this space is unused.</em>
+<a id='L81' name='L81'></a>  81 <em class='comment'> */</em>
+<a id='L82' name='L82'></a>  82 <em class='sharp'>#define</em> <a href='../S/86.html#L83' title='Referred from 83 in kern/dev/generic/console.c.'>DELAYBUFSIZE</a>  1024
+<a id='L83' name='L83'></a>  83 <strong class='reserved'>static</strong> <strong class='reserved'>char</strong> delayed_outbuf[<a href='../S/86.html#L82' title='Defined at 82 in kern/dev/generic/console.c.'>DELAYBUFSIZE</a>];
+<a id='L84' name='L84'></a>  84 <strong class='reserved'>static</strong> <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> delayed_outbuf_pos=0;
+<a id='L85' name='L85'></a>  85 
+<a id='L86' name='L86'></a>  86 <strong class='reserved'>static</strong>
+<a id='L87' name='L87'></a>  87 <strong class='reserved'>void</strong>
+<a id='L88' name='L88'></a>  88 <a href='../S/86.html#L206' title='Referred from 206 in kern/dev/generic/console.c.'>putch_delayed</a>(<strong class='reserved'>int</strong> ch)
+<a id='L89' name='L89'></a>  89 <em class='brace'>{</em>
+<a id='L90' name='L90'></a>  90         <em class='comment'>/*</em>
+<a id='L91' name='L91'></a>  91 <em class='comment'>         * No synchronization needed: called only during system startup</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'>         * by main thread.</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'>         */</em>
+<a id='L94' name='L94'></a>  94 
+<a id='L95' name='L95'></a>  95         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(delayed_outbuf_pos &lt; <strong class='reserved'>sizeof</strong>(delayed_outbuf));
+<a id='L96' name='L96'></a>  96         delayed_outbuf[delayed_outbuf_pos++] = ch;
+<a id='L97' name='L97'></a>  97 <em class='brace'>}</em>
+<a id='L98' name='L98'></a>  98 
+<a id='L99' name='L99'></a>  99 <strong class='reserved'>static</strong>
+<a id='L100' name='L100'></a> 100 <strong class='reserved'>void</strong>
+<a id='L101' name='L101'></a> 101 <a href='../S/86.html#L394' title='Referred from 394 in kern/dev/generic/console.c.'>flush_delay_buf</a>(<strong class='reserved'>void</strong>)
+<a id='L102' name='L102'></a> 102 <em class='brace'>{</em>
+<a id='L103' name='L103'></a> 103         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> i;
+<a id='L104' name='L104'></a> 104         <strong class='reserved'>for</strong> (i=0; i&lt;delayed_outbuf_pos; i++) <em class='brace'>{</em>
+<a id='L105' name='L105'></a> 105                 <a href='../S/86.html#L201' title='Defined at 201 in kern/dev/generic/console.c.'>putch</a>(delayed_outbuf[i]);
+<a id='L106' name='L106'></a> 106         <em class='brace'>}</em>
+<a id='L107' name='L107'></a> 107         delayed_outbuf_pos = 0;
+<a id='L108' name='L108'></a> 108 <em class='brace'>}</em>
+<a id='L109' name='L109'></a> 109 
+<a id='L110' name='L110'></a> 110 <em class='comment'>//////////////////////////////////////////////////</em>
+<a id='L111' name='L111'></a> 111 
+<a id='L112' name='L112'></a> 112 <em class='comment'>/*</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'> * Print a character, using polling instead of interrupts to wait for</em>
+<a id='L114' name='L114'></a> 114 <em class='comment'> * I/O completion.</em>
+<a id='L115' name='L115'></a> 115 <em class='comment'> */</em>
+<a id='L116' name='L116'></a> 116 <strong class='reserved'>static</strong>
+<a id='L117' name='L117'></a> 117 <strong class='reserved'>void</strong>
+<a id='L118' name='L118'></a> 118 <a href='../S/86.html#L211' title='Referred from 211 in kern/dev/generic/console.c.'>putch_polled</a>(<strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs, <strong class='reserved'>int</strong> ch)
+<a id='L119' name='L119'></a> 119 <em class='brace'>{</em>
+<a id='L120' name='L120'></a> 120         cs-&gt;cs_sendpolled(cs-&gt;cs_devdata, ch);
+<a id='L121' name='L121'></a> 121 <em class='brace'>}</em>
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123 <em class='comment'>//////////////////////////////////////////////////</em>
+<a id='L124' name='L124'></a> 124 
+<a id='L125' name='L125'></a> 125 <em class='comment'>/*</em>
+<a id='L126' name='L126'></a> 126 <em class='comment'> * Print a character, using interrupts to wait for I/O completion.</em>
+<a id='L127' name='L127'></a> 127 <em class='comment'> */</em>
+<a id='L128' name='L128'></a> 128 <strong class='reserved'>static</strong>
+<a id='L129' name='L129'></a> 129 <strong class='reserved'>void</strong>
+<a id='L130' name='L130'></a> 130 <a href='../S/86.html#L214' title='Referred from 214 in kern/dev/generic/console.c.'>putch_intr</a>(<strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs, <strong class='reserved'>int</strong> ch)
+<a id='L131' name='L131'></a> 131 <em class='brace'>{</em>
+<a id='L132' name='L132'></a> 132         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(cs-&gt;cs_wsem);
+<a id='L133' name='L133'></a> 133         cs-&gt;cs_send(cs-&gt;cs_devdata, ch);
+<a id='L134' name='L134'></a> 134 <em class='brace'>}</em>
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136 <em class='comment'>/*</em>
+<a id='L137' name='L137'></a> 137 <em class='comment'> * Read a character, using interrupts to wait for I/O completion.</em>
+<a id='L138' name='L138'></a> 138 <em class='comment'> */</em>
+<a id='L139' name='L139'></a> 139 <strong class='reserved'>static</strong>
+<a id='L140' name='L140'></a> 140 <strong class='reserved'>int</strong>
+<a id='L141' name='L141'></a> 141 <a href='../S/86.html#L225' title='Referred from 225 in kern/dev/generic/console.c.'>getch_intr</a>(<strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs)
+<a id='L142' name='L142'></a> 142 <em class='brace'>{</em>
+<a id='L143' name='L143'></a> 143         <strong class='reserved'>unsigned</strong> <strong class='reserved'>char</strong> ret;
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(cs-&gt;cs_rsem);
+<a id='L146' name='L146'></a> 146         ret = cs-&gt;cs_gotchars[cs-&gt;cs_gotchars_tail];
+<a id='L147' name='L147'></a> 147         cs-&gt;cs_gotchars_tail =
+<a id='L148' name='L148'></a> 148                 (cs-&gt;cs_gotchars_tail + 1) % <a href='../S/87.html#L40' title='Defined at 40 in kern/dev/generic/console.h.'>CONSOLE_INPUT_BUFFER_SIZE</a>;
+<a id='L149' name='L149'></a> 149         <strong class='reserved'>return</strong> ret;
+<a id='L150' name='L150'></a> 150 <em class='brace'>}</em>
+<a id='L151' name='L151'></a> 151 
+<a id='L152' name='L152'></a> 152 <em class='comment'>/*</em>
+<a id='L153' name='L153'></a> 153 <em class='comment'> * Called from underlying device when a read-ready interrupt occurs.</em>
+<a id='L154' name='L154'></a> 154 <em class='comment'> *</em>
+<a id='L155' name='L155'></a> 155 <em class='comment'> * Note: if gotchars_head == gotchars_tail, the buffer is empty. Thus</em>
+<a id='L156' name='L156'></a> 156 <em class='comment'> * if gotchars_head+1 == gotchars_tail, the buffer is full. A slightly</em>
+<a id='L157' name='L157'></a> 157 <em class='comment'> * tidier way to implement this check (that avoids wasting a slot,</em>
+<a id='L158' name='L158'></a> 158 <em class='comment'> * too) would be with a second semaphore used with a nonblocking P,</em>
+<a id='L159' name='L159'></a> 159 <em class='comment'> * but we don't have that in OS/161.</em>
+<a id='L160' name='L160'></a> 160 <em class='comment'> */</em>
+<a id='L161' name='L161'></a> 161 <strong class='reserved'>void</strong>
+<a id='L162' name='L162'></a> 162 <a href='../R/1134.html' title='Multiple referred from 3 places.'>con_input</a>(<strong class='reserved'>void</strong> *vcs, <strong class='reserved'>int</strong> ch)
+<a id='L163' name='L163'></a> 163 <em class='brace'>{</em>
+<a id='L164' name='L164'></a> 164         <strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs = vcs;
+<a id='L165' name='L165'></a> 165         <strong class='reserved'>unsigned</strong> nexthead;
+<a id='L166' name='L166'></a> 166 
+<a id='L167' name='L167'></a> 167         nexthead = (cs-&gt;cs_gotchars_head + 1) % <a href='../S/87.html#L40' title='Defined at 40 in kern/dev/generic/console.h.'>CONSOLE_INPUT_BUFFER_SIZE</a>;
+<a id='L168' name='L168'></a> 168         <strong class='reserved'>if</strong> (nexthead == cs-&gt;cs_gotchars_tail) <em class='brace'>{</em>
+<a id='L169' name='L169'></a> 169                 <em class='comment'>/* overflow; drop character */</em>
+<a id='L170' name='L170'></a> 170                 <strong class='reserved'>return</strong>;
+<a id='L171' name='L171'></a> 171         <em class='brace'>}</em>
+<a id='L172' name='L172'></a> 172 
+<a id='L173' name='L173'></a> 173         cs-&gt;cs_gotchars[cs-&gt;cs_gotchars_head] = ch;
+<a id='L174' name='L174'></a> 174         cs-&gt;cs_gotchars_head = nexthead;
+<a id='L175' name='L175'></a> 175 
+<a id='L176' name='L176'></a> 176         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(cs-&gt;cs_rsem);
+<a id='L177' name='L177'></a> 177 <em class='brace'>}</em>
+<a id='L178' name='L178'></a> 178 
+<a id='L179' name='L179'></a> 179 <em class='comment'>/*</em>
+<a id='L180' name='L180'></a> 180 <em class='comment'> * Called from underlying device when a write-done interrupt occurs.</em>
+<a id='L181' name='L181'></a> 181 <em class='comment'> */</em>
+<a id='L182' name='L182'></a> 182 <strong class='reserved'>void</strong>
+<a id='L183' name='L183'></a> 183 <a href='../R/1138.html' title='Multiple referred from 3 places.'>con_start</a>(<strong class='reserved'>void</strong> *vcs)
+<a id='L184' name='L184'></a> 184 <em class='brace'>{</em>
+<a id='L185' name='L185'></a> 185         <strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs = vcs;
+<a id='L186' name='L186'></a> 186 
+<a id='L187' name='L187'></a> 187         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(cs-&gt;cs_wsem);
+<a id='L188' name='L188'></a> 188 <em class='brace'>}</em>
+<a id='L189' name='L189'></a> 189 
+<a id='L190' name='L190'></a> 190 <em class='comment'>//////////////////////////////////////////////////</em>
+<a id='L191' name='L191'></a> 191 
+<a id='L192' name='L192'></a> 192 <em class='comment'>/*</em>
+<a id='L193' name='L193'></a> 193 <em class='comment'> * Exported interface.</em>
+<a id='L194' name='L194'></a> 194 <em class='comment'> *</em>
+<a id='L195' name='L195'></a> 195 <em class='comment'> * Warning: putch must work even in an interrupt handler or with</em>
+<a id='L196' name='L196'></a> 196 <em class='comment'> * interrupts disabled, and before the console is probed. getch need</em>
+<a id='L197' name='L197'></a> 197 <em class='comment'> * not, and does not.</em>
+<a id='L198' name='L198'></a> 198 <em class='comment'> */</em>
+<a id='L199' name='L199'></a> 199 
+<a id='L200' name='L200'></a> 200 <strong class='reserved'>void</strong>
+<a id='L201' name='L201'></a> 201 <a href='../R/1773.html' title='Multiple referred from 16 places.'>putch</a>(<strong class='reserved'>int</strong> ch)
+<a id='L202' name='L202'></a> 202 <em class='brace'>{</em>
+<a id='L203' name='L203'></a> 203         <strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs = the_console;
+<a id='L204' name='L204'></a> 204 
+<a id='L205' name='L205'></a> 205         <strong class='reserved'>if</strong> (cs==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L206' name='L206'></a> 206                 <a href='../S/86.html#L88' title='Defined at 88 in kern/dev/generic/console.c.'>putch_delayed</a>(ch);
+<a id='L207' name='L207'></a> 207         <em class='brace'>}</em>
+<a id='L208' name='L208'></a> 208         <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt ||
+<a id='L209' name='L209'></a> 209                  <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl &gt; 0 ||
+<a id='L210' name='L210'></a> 210                  <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_spinlocks &gt; 0) <em class='brace'>{</em>
+<a id='L211' name='L211'></a> 211                 <a href='../S/86.html#L118' title='Defined at 118 in kern/dev/generic/console.c.'>putch_polled</a>(cs, ch);
+<a id='L212' name='L212'></a> 212         <em class='brace'>}</em>
+<a id='L213' name='L213'></a> 213         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L214' name='L214'></a> 214                 <a href='../S/86.html#L130' title='Defined at 130 in kern/dev/generic/console.c.'>putch_intr</a>(cs, ch);
+<a id='L215' name='L215'></a> 215         <em class='brace'>}</em>
+<a id='L216' name='L216'></a> 216 <em class='brace'>}</em>
+<a id='L217' name='L217'></a> 217 
+<a id='L218' name='L218'></a> 218 <strong class='reserved'>int</strong>
+<a id='L219' name='L219'></a> 219 <a href='../R/1441.html' title='Multiple referred from 3 places.'>getch</a>(<strong class='reserved'>void</strong>)
+<a id='L220' name='L220'></a> 220 <em class='brace'>{</em>
+<a id='L221' name='L221'></a> 221         <strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs = the_console;
+<a id='L222' name='L222'></a> 222         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(cs != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L223' name='L223'></a> 223         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt &amp;&amp; <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_iplhigh_count == 0);
+<a id='L224' name='L224'></a> 224 
+<a id='L225' name='L225'></a> 225         <strong class='reserved'>return</strong> <a href='../S/86.html#L141' title='Defined at 141 in kern/dev/generic/console.c.'>getch_intr</a>(cs);
+<a id='L226' name='L226'></a> 226 <em class='brace'>}</em>
+<a id='L227' name='L227'></a> 227 
+<a id='L228' name='L228'></a> 228 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L229' name='L229'></a> 229 
+<a id='L230' name='L230'></a> 230 <em class='comment'>/*</em>
+<a id='L231' name='L231'></a> 231 <em class='comment'> * VFS interface functions</em>
+<a id='L232' name='L232'></a> 232 <em class='comment'> */</em>
+<a id='L233' name='L233'></a> 233 
+<a id='L234' name='L234'></a> 234 <strong class='reserved'>static</strong>
+<a id='L235' name='L235'></a> 235 <strong class='reserved'>int</strong>
+<a id='L236' name='L236'></a> 236 <a href='../S/86.html#L306' title='Referred from 306 in kern/dev/generic/console.c.'>con_eachopen</a>(<strong class='reserved'>struct</strong> <a href='../S/146.html#L43' title='Defined at 43 in kern/include/device.h.'>device</a> *dev, <strong class='reserved'>int</strong> openflags)
+<a id='L237' name='L237'></a> 237 <em class='brace'>{</em>
+<a id='L238' name='L238'></a> 238         (<strong class='reserved'>void</strong>)dev;
+<a id='L239' name='L239'></a> 239         (<strong class='reserved'>void</strong>)openflags;
+<a id='L240' name='L240'></a> 240         <strong class='reserved'>return</strong> 0;
+<a id='L241' name='L241'></a> 241 <em class='brace'>}</em>
+<a id='L242' name='L242'></a> 242 
+<a id='L243' name='L243'></a> 243 <strong class='reserved'>static</strong>
+<a id='L244' name='L244'></a> 244 <strong class='reserved'>int</strong>
+<a id='L245' name='L245'></a> 245 <a href='../S/86.html#L307' title='Referred from 307 in kern/dev/generic/console.c.'>con_io</a>(<strong class='reserved'>struct</strong> <a href='../S/146.html#L43' title='Defined at 43 in kern/include/device.h.'>device</a> *dev, <strong class='reserved'>struct</strong> <a href='../S/191.html#L73' title='Defined at 73 in kern/include/uio.h.'>uio</a> *<a href='../S/191.html#L73' title='Defined at 73 in kern/include/uio.h.'>uio</a>)
+<a id='L246' name='L246'></a> 246 <em class='brace'>{</em>
+<a id='L247' name='L247'></a> 247         <strong class='reserved'>int</strong> result;
+<a id='L248' name='L248'></a> 248         <strong class='reserved'>char</strong> ch;
+<a id='L249' name='L249'></a> 249         <strong class='reserved'>struct</strong> <a href='../S/184.html#L75' title='Defined at 75 in kern/include/synch.h.'>lock</a> *lk;
+<a id='L250' name='L250'></a> 250 
+<a id='L251' name='L251'></a> 251         (<strong class='reserved'>void</strong>)dev;  <em class='comment'>// unused</em>
+<a id='L252' name='L252'></a> 252 
+<a id='L253' name='L253'></a> 253         <strong class='reserved'>if</strong> (<a href='../S/191.html#L73' title='Defined at 73 in kern/include/uio.h.'>uio</a>-&gt;<a href='../S/191.html#L61' title='Defined at 61 in kern/include/uio.h.'>uio_rw</a>==<a href='../S/191.html#L62' title='Defined at 62 in kern/include/uio.h.'>UIO_READ</a>) <em class='brace'>{</em>
+<a id='L254' name='L254'></a> 254                 lk = con_userlock_read;
+<a id='L255' name='L255'></a> 255         <em class='brace'>}</em>
+<a id='L256' name='L256'></a> 256         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L257' name='L257'></a> 257                 lk = con_userlock_write;
+<a id='L258' name='L258'></a> 258         <em class='brace'>}</em>
+<a id='L259' name='L259'></a> 259 
+<a id='L260' name='L260'></a> 260         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(lk != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L261' name='L261'></a> 261         <a href='../S/226.html#L176' title='Defined at 176 in kern/thread/synch.c.'>lock_acquire</a>(lk);
+<a id='L262' name='L262'></a> 262 
+<a id='L263' name='L263'></a> 263         <strong class='reserved'>while</strong> (<a href='../S/191.html#L73' title='Defined at 73 in kern/include/uio.h.'>uio</a>-&gt;uio_resid &gt; 0) <em class='brace'>{</em>
+<a id='L264' name='L264'></a> 264                 <strong class='reserved'>if</strong> (<a href='../S/191.html#L73' title='Defined at 73 in kern/include/uio.h.'>uio</a>-&gt;<a href='../S/191.html#L61' title='Defined at 61 in kern/include/uio.h.'>uio_rw</a>==<a href='../S/191.html#L62' title='Defined at 62 in kern/include/uio.h.'>UIO_READ</a>) <em class='brace'>{</em>
+<a id='L265' name='L265'></a> 265                         ch = <a href='../S/86.html#L219' title='Defined at 219 in kern/dev/generic/console.c.'>getch</a>();
+<a id='L266' name='L266'></a> 266                         <strong class='reserved'>if</strong> (ch=='\r') <em class='brace'>{</em>
+<a id='L267' name='L267'></a> 267                                 ch = '\n';
+<a id='L268' name='L268'></a> 268                         <em class='brace'>}</em>
+<a id='L269' name='L269'></a> 269                         result = <a href='../S/204.html#L42' title='Defined at 42 in kern/lib/uio.c.'>uiomove</a>(&amp;ch, 1, <a href='../S/191.html#L73' title='Defined at 73 in kern/include/uio.h.'>uio</a>);
+<a id='L270' name='L270'></a> 270                         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L271' name='L271'></a> 271                                 <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(lk);
+<a id='L272' name='L272'></a> 272                                 <strong class='reserved'>return</strong> result;
+<a id='L273' name='L273'></a> 273                         <em class='brace'>}</em>
+<a id='L274' name='L274'></a> 274                         <strong class='reserved'>if</strong> (ch=='\n') <em class='brace'>{</em>
+<a id='L275' name='L275'></a> 275                                 <strong class='reserved'>break</strong>;
+<a id='L276' name='L276'></a> 276                         <em class='brace'>}</em>
+<a id='L277' name='L277'></a> 277                 <em class='brace'>}</em>
+<a id='L278' name='L278'></a> 278                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L279' name='L279'></a> 279                         result = <a href='../S/204.html#L42' title='Defined at 42 in kern/lib/uio.c.'>uiomove</a>(&amp;ch, 1, <a href='../S/191.html#L73' title='Defined at 73 in kern/include/uio.h.'>uio</a>);
+<a id='L280' name='L280'></a> 280                         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L281' name='L281'></a> 281                                 <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(lk);
+<a id='L282' name='L282'></a> 282                                 <strong class='reserved'>return</strong> result;
+<a id='L283' name='L283'></a> 283                         <em class='brace'>}</em>
+<a id='L284' name='L284'></a> 284                         <strong class='reserved'>if</strong> (ch=='\n') <em class='brace'>{</em>
+<a id='L285' name='L285'></a> 285                                 <a href='../S/86.html#L201' title='Defined at 201 in kern/dev/generic/console.c.'>putch</a>('\r');
+<a id='L286' name='L286'></a> 286                         <em class='brace'>}</em>
+<a id='L287' name='L287'></a> 287                         <a href='../S/86.html#L201' title='Defined at 201 in kern/dev/generic/console.c.'>putch</a>(ch);
+<a id='L288' name='L288'></a> 288                 <em class='brace'>}</em>
+<a id='L289' name='L289'></a> 289         <em class='brace'>}</em>
+<a id='L290' name='L290'></a> 290         <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(lk);
+<a id='L291' name='L291'></a> 291         <strong class='reserved'>return</strong> 0;
+<a id='L292' name='L292'></a> 292 <em class='brace'>}</em>
+<a id='L293' name='L293'></a> 293 
+<a id='L294' name='L294'></a> 294 <strong class='reserved'>static</strong>
+<a id='L295' name='L295'></a> 295 <strong class='reserved'>int</strong>
+<a id='L296' name='L296'></a> 296 <a href='../S/86.html#L308' title='Referred from 308 in kern/dev/generic/console.c.'>con_ioctl</a>(<strong class='reserved'>struct</strong> <a href='../S/146.html#L43' title='Defined at 43 in kern/include/device.h.'>device</a> *dev, <strong class='reserved'>int</strong> op, <a href='../S/190.html#L91' title='Defined at 91 in kern/include/types.h.'>userptr_t</a> data)
+<a id='L297' name='L297'></a> 297 <em class='brace'>{</em>
+<a id='L298' name='L298'></a> 298         <em class='comment'>/* No ioctls. */</em>
+<a id='L299' name='L299'></a> 299         (<strong class='reserved'>void</strong>)dev;
+<a id='L300' name='L300'></a> 300         (<strong class='reserved'>void</strong>)op;
+<a id='L301' name='L301'></a> 301         (<strong class='reserved'>void</strong>)data;
+<a id='L302' name='L302'></a> 302         <strong class='reserved'>return</strong> <a href='../S/154.html#L52' title='Defined at 52 in kern/include/kern/errno.h.'>EINVAL</a>;
+<a id='L303' name='L303'></a> 303 <em class='brace'>}</em>
+<a id='L304' name='L304'></a> 304 
+<a id='L305' name='L305'></a> 305 <strong class='reserved'>static</strong> <strong class='reserved'>const</strong> <strong class='reserved'>struct</strong> <a href='../S/146.html#L60' title='Defined at 60 in kern/include/device.h.'>device_ops</a> console_devops = <em class='brace'>{</em>
+<a id='L306' name='L306'></a> 306         .devop_eachopen = <a href='../S/86.html#L236' title='Defined at 236 in kern/dev/generic/console.c.'>con_eachopen</a>,
+<a id='L307' name='L307'></a> 307         .devop_io = <a href='../S/86.html#L245' title='Defined at 245 in kern/dev/generic/console.c.'>con_io</a>,
+<a id='L308' name='L308'></a> 308         .devop_ioctl = <a href='../S/86.html#L296' title='Defined at 296 in kern/dev/generic/console.c.'>con_ioctl</a>,
+<a id='L309' name='L309'></a> 309 <em class='brace'>}</em>;
+<a id='L310' name='L310'></a> 310 
+<a id='L311' name='L311'></a> 311 <strong class='reserved'>static</strong>
+<a id='L312' name='L312'></a> 312 <strong class='reserved'>int</strong>
+<a id='L313' name='L313'></a> 313 <a href='../S/86.html#L396' title='Referred from 396 in kern/dev/generic/console.c.'>attach_console_to_vfs</a>(<strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs)
+<a id='L314' name='L314'></a> 314 <em class='brace'>{</em>
+<a id='L315' name='L315'></a> 315         <strong class='reserved'>struct</strong> <a href='../S/146.html#L43' title='Defined at 43 in kern/include/device.h.'>device</a> *dev;
+<a id='L316' name='L316'></a> 316         <strong class='reserved'>int</strong> result;
+<a id='L317' name='L317'></a> 317 
+<a id='L318' name='L318'></a> 318         dev = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<strong class='reserved'>sizeof</strong>(*dev));
+<a id='L319' name='L319'></a> 319         <strong class='reserved'>if</strong> (dev==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L320' name='L320'></a> 320                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L321' name='L321'></a> 321         <em class='brace'>}</em>
+<a id='L322' name='L322'></a> 322 
+<a id='L323' name='L323'></a> 323         dev-&gt;d_ops = &amp;console_devops;
+<a id='L324' name='L324'></a> 324         dev-&gt;d_blocks = 0;
+<a id='L325' name='L325'></a> 325         dev-&gt;d_blocksize = 1;
+<a id='L326' name='L326'></a> 326         dev-&gt;d_data = cs;
+<a id='L327' name='L327'></a> 327 
+<a id='L328' name='L328'></a> 328         result = <a href='../S/233.html#L482' title='Defined at 482 in kern/vfs/vfslist.c.'>vfs_adddev</a>("con", dev, 0);
+<a id='L329' name='L329'></a> 329         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L330' name='L330'></a> 330                 <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(dev);
+<a id='L331' name='L331'></a> 331                 <strong class='reserved'>return</strong> result;
+<a id='L332' name='L332'></a> 332         <em class='brace'>}</em>
+<a id='L333' name='L333'></a> 333 
+<a id='L334' name='L334'></a> 334         <strong class='reserved'>return</strong> 0;
+<a id='L335' name='L335'></a> 335 <em class='brace'>}</em>
+<a id='L336' name='L336'></a> 336 
+<a id='L337' name='L337'></a> 337 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L338' name='L338'></a> 338 
+<a id='L339' name='L339'></a> 339 <em class='comment'>/*</em>
+<a id='L340' name='L340'></a> 340 <em class='comment'> * Config routine called by autoconf.c after we are attached to something.</em>
+<a id='L341' name='L341'></a> 341 <em class='comment'> */</em>
+<a id='L342' name='L342'></a> 342 
+<a id='L343' name='L343'></a> 343 <strong class='reserved'>int</strong>
+<a id='L344' name='L344'></a> 344 config_con(<strong class='reserved'>struct</strong> <a href='../S/87.html#L42' title='Defined at 42 in kern/dev/generic/console.h.'>con_softc</a> *cs, <strong class='reserved'>int</strong> unit)
+<a id='L345' name='L345'></a> 345 <em class='brace'>{</em>
+<a id='L346' name='L346'></a> 346         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *rsem, *wsem;
+<a id='L347' name='L347'></a> 347         <strong class='reserved'>struct</strong> <a href='../S/184.html#L75' title='Defined at 75 in kern/include/synch.h.'>lock</a> *rlk, *wlk;
+<a id='L348' name='L348'></a> 348 
+<a id='L349' name='L349'></a> 349         <em class='comment'>/*</em>
+<a id='L350' name='L350'></a> 350 <em class='comment'>         * Only allow one system console.</em>
+<a id='L351' name='L351'></a> 351 <em class='comment'>         * Further devices that could be the system console are ignored.</em>
+<a id='L352' name='L352'></a> 352 <em class='comment'>         *</em>
+<a id='L353' name='L353'></a> 353 <em class='comment'>         * Do not hardwire the console to be "con1" instead of "con0",</em>
+<a id='L354' name='L354'></a> 354 <em class='comment'>         * or these asserts will go off.</em>
+<a id='L355' name='L355'></a> 355 <em class='comment'>         */</em>
+<a id='L356' name='L356'></a> 356         <strong class='reserved'>if</strong> (unit&gt;0) <em class='brace'>{</em>
+<a id='L357' name='L357'></a> 357                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(the_console!=<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L358' name='L358'></a> 358                 <strong class='reserved'>return</strong> <a href='../S/154.html#L69' title='Defined at 69 in kern/include/kern/errno.h.'>ENODEV</a>;
+<a id='L359' name='L359'></a> 359         <em class='brace'>}</em>
+<a id='L360' name='L360'></a> 360         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(the_console==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L361' name='L361'></a> 361 
+<a id='L362' name='L362'></a> 362         rsem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>("console read", 0);
+<a id='L363' name='L363'></a> 363         <strong class='reserved'>if</strong> (rsem == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L364' name='L364'></a> 364                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L365' name='L365'></a> 365         <em class='brace'>}</em>
+<a id='L366' name='L366'></a> 366         wsem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>("console write", 1);
+<a id='L367' name='L367'></a> 367         <strong class='reserved'>if</strong> (wsem == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L368' name='L368'></a> 368                 <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(rsem);
+<a id='L369' name='L369'></a> 369                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L370' name='L370'></a> 370         <em class='brace'>}</em>
+<a id='L371' name='L371'></a> 371         rlk = <a href='../S/226.html#L142' title='Defined at 142 in kern/thread/synch.c.'>lock_create</a>("console-lock-read");
+<a id='L372' name='L372'></a> 372         <strong class='reserved'>if</strong> (rlk == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L373' name='L373'></a> 373                 <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(rsem);
+<a id='L374' name='L374'></a> 374                 <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(wsem);
+<a id='L375' name='L375'></a> 375                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L376' name='L376'></a> 376         <em class='brace'>}</em>
+<a id='L377' name='L377'></a> 377         wlk = <a href='../S/226.html#L142' title='Defined at 142 in kern/thread/synch.c.'>lock_create</a>("console-lock-write");
+<a id='L378' name='L378'></a> 378         <strong class='reserved'>if</strong> (wlk == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L379' name='L379'></a> 379                 <a href='../S/226.html#L165' title='Defined at 165 in kern/thread/synch.c.'>lock_destroy</a>(rlk);
+<a id='L380' name='L380'></a> 380                 <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(rsem);
+<a id='L381' name='L381'></a> 381                 <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(wsem);
+<a id='L382' name='L382'></a> 382                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L383' name='L383'></a> 383         <em class='brace'>}</em>
+<a id='L384' name='L384'></a> 384 
+<a id='L385' name='L385'></a> 385         cs-&gt;cs_rsem = rsem;
+<a id='L386' name='L386'></a> 386         cs-&gt;cs_wsem = wsem;
+<a id='L387' name='L387'></a> 387         cs-&gt;cs_gotchars_head = 0;
+<a id='L388' name='L388'></a> 388         cs-&gt;cs_gotchars_tail = 0;
+<a id='L389' name='L389'></a> 389 
+<a id='L390' name='L390'></a> 390         the_console = cs;
+<a id='L391' name='L391'></a> 391         con_userlock_read = rlk;
+<a id='L392' name='L392'></a> 392         con_userlock_write = wlk;
+<a id='L393' name='L393'></a> 393 
+<a id='L394' name='L394'></a> 394         <a href='../S/86.html#L101' title='Defined at 101 in kern/dev/generic/console.c.'>flush_delay_buf</a>();
+<a id='L395' name='L395'></a> 395 
+<a id='L396' name='L396'></a> 396         <strong class='reserved'>return</strong> <a href='../S/86.html#L313' title='Defined at 313 in kern/dev/generic/console.c.'>attach_console_to_vfs</a>(cs);
+<a id='L397' name='L397'></a> 397 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L88'>[^]</a><a href='#L344'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

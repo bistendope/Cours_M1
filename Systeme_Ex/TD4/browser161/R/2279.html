@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>vaddr_t</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/56.html#L104'>vaddr_t</a>           104 kern/arch/mips/include/trapframe.h extern vaddr_t cpustacks[];</span>
+<span class='curline'><a href='../S/56.html#L105'>vaddr_t</a>           105 kern/arch/mips/include/trapframe.h extern vaddr_t cputhreads[];</span>
+<span class='curline'><a href='../S/61.html#L74'>vaddr_t</a>            74 kern/arch/mips/locore/trap.c kill_curthread(vaddr_t epc, unsigned code, vaddr_t vaddr)</span>
+<span class='curline'><a href='../S/61.html#L147'>vaddr_t</a>           147 kern/arch/mips/locore/trap.c 		KASSERT((vaddr_t)tf &gt; (vaddr_t)curthread-&gt;t_stack);</span>
+<span class='curline'><a href='../S/61.html#L148'>vaddr_t</a>           148 kern/arch/mips/locore/trap.c 		KASSERT((vaddr_t)tf &lt; (vaddr_t)(curthread-&gt;t_stack</span>
+<span class='curline'><a href='../S/61.html#L302'>vaddr_t</a>           302 kern/arch/mips/locore/trap.c 		tf-&gt;tf_epc = (vaddr_t) curthread-&gt;t_machdep.tm_badfaultfunc;</span>
+<span class='curline'><a href='../S/61.html#L335'>vaddr_t</a>           335 kern/arch/mips/locore/trap.c 	cputhreads[curcpu-&gt;c_number] = (vaddr_t)curthread;</span>
+<span class='curline'><a href='../S/61.html#L336'>vaddr_t</a>           336 kern/arch/mips/locore/trap.c 	cpustacks[curcpu-&gt;c_number] = (vaddr_t)curthread-&gt;t_stack + STACK_SIZE;</span>
+<span class='curline'><a href='../S/61.html#L347'>vaddr_t</a>           347 kern/arch/mips/locore/trap.c 	KASSERT(SAME_STACK(cpustacks[curcpu-&gt;c_number]-1, (vaddr_t)tf));</span>
+<span class='curline'><a href='../S/61.html#L380'>vaddr_t</a>           380 kern/arch/mips/locore/trap.c 	cputhreads[curcpu-&gt;c_number] = (vaddr_t)curthread;</span>
+<span class='curline'><a href='../S/61.html#L381'>vaddr_t</a>           381 kern/arch/mips/locore/trap.c 	cpustacks[curcpu-&gt;c_number] = (vaddr_t)curthread-&gt;t_stack + STACK_SIZE;</span>
+<span class='curline'><a href='../S/61.html#L398'>vaddr_t</a>           398 kern/arch/mips/locore/trap.c 	KASSERT(SAME_STACK(cpustacks[curcpu-&gt;c_number]-1, (vaddr_t)tf));</span>
+<span class='curline'><a href='../S/61.html#L424'>vaddr_t</a>           424 kern/arch/mips/locore/trap.c 		  vaddr_t stack, vaddr_t entry)</span>
+<span class='curline'><a href='../S/61.html#L433'>vaddr_t</a>           433 kern/arch/mips/locore/trap.c 	tf.tf_a1 = (vaddr_t)argv;</span>
+<span class='curline'><a href='../S/61.html#L434'>vaddr_t</a>           434 kern/arch/mips/locore/trap.c 	tf.tf_a2 = (vaddr_t)env;</span>
+<span class='curline'><a href='../S/63.html#L67'>vaddr_t</a>            67 kern/arch/mips/thread/cpu.c vaddr_t cpustacks[MAXCPUS];</span>
+<span class='curline'><a href='../S/63.html#L68'>vaddr_t</a>            68 kern/arch/mips/thread/cpu.c vaddr_t cputhreads[MAXCPUS];</span>
+<span class='curline'><a href='../S/63.html#L78'>vaddr_t</a>            78 kern/arch/mips/thread/cpu.c 	vaddr_t stackpointer;</span>
+<span class='curline'><a href='../S/63.html#L92'>vaddr_t</a>            92 kern/arch/mips/thread/cpu.c 		stackpointer = (vaddr_t) c-&gt;c_curthread-&gt;t_stack;</span>
+<span class='curline'><a href='../S/63.html#L97'>vaddr_t</a>            97 kern/arch/mips/thread/cpu.c 		cputhreads[c-&gt;c_number] = (vaddr_t)c-&gt;c_curthread;</span>
+<span class='curline'><a href='../S/65.html#L59'>vaddr_t</a>            59 kern/arch/mips/thread/switchframe.c 	vaddr_t stacktop;</span>
+<span class='curline'><a href='../S/65.html#L67'>vaddr_t</a>            67 kern/arch/mips/thread/switchframe.c         stacktop = ((vaddr_t)thread-&gt;t_stack) + STACK_SIZE;</span>
+<span class='curline'><a href='../S/69.html#L108'>vaddr_t</a>           108 kern/arch/mips/vm/dumbvm.c vaddr_t</span>
+<span class='curline'><a href='../S/69.html#L122'>vaddr_t</a>           122 kern/arch/mips/vm/dumbvm.c free_kpages(vaddr_t addr)</span>
+<span class='curline'><a href='../S/69.html#L137'>vaddr_t</a>           137 kern/arch/mips/vm/dumbvm.c vm_fault(int faulttype, vaddr_t faultaddress)</span>
+<span class='curline'><a href='../S/69.html#L139'>vaddr_t</a>           139 kern/arch/mips/vm/dumbvm.c 	vaddr_t vbase1, vtop1, vbase2, vtop2, stackbase, stacktop;</span>
+<span class='curline'><a href='../S/69.html#L291'>vaddr_t</a>           291 kern/arch/mips/vm/dumbvm.c as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,</span>
+<span class='curline'><a href='../S/69.html#L299'>vaddr_t</a>           299 kern/arch/mips/vm/dumbvm.c 	sz += vaddr &amp; ~(vaddr_t)PAGE_FRAME;</span>
+<span class='curline'><a href='../S/69.html#L378'>vaddr_t</a>           378 kern/arch/mips/vm/dumbvm.c as_define_stack(struct addrspace *as, vaddr_t *stackptr)</span>
+<span class='curline'><a href='../S/70.html#L36'>vaddr_t</a>            36 kern/arch/mips/vm/ram.c vaddr_t firstfree;   /* first free virtual address; set by start.S */</span>
+<span class='curline'><a href='../S/138.html#L53'>vaddr_t</a>            53 kern/include/addrspace.h         vaddr_t as_vbase1;</span>
+<span class='curline'><a href='../S/138.html#L56'>vaddr_t</a>            56 kern/include/addrspace.h         vaddr_t as_vbase2;</span>
+<span class='curline'><a href='../S/138.html#L113'>vaddr_t</a>           113 kern/include/addrspace.h                                    vaddr_t vaddr, size_t sz,</span>
+<span class='curline'><a href='../S/138.html#L119'>vaddr_t</a>           119 kern/include/addrspace.h int               as_define_stack(struct addrspace *as, vaddr_t *initstackptr);</span>
+<span class='curline'><a href='../S/138.html#L129'>vaddr_t</a>           129 kern/include/addrspace.h int load_elf(struct vnode *v, vaddr_t *entrypoint);</span>
+<span class='curline'><a href='../S/185.html#L52'>vaddr_t</a>            52 kern/include/syscall.h 		       vaddr_t stackptr, vaddr_t entrypoint);</span>
+<span class='curline'><a href='../S/187.html#L53'>vaddr_t</a>            53 kern/include/thread.h #define STACK_MASK  (~(vaddr_t)(STACK_SIZE-1))</span>
+<span class='curline'><a href='../S/194.html#L52'>vaddr_t</a>            52 kern/include/vm.h int vm_fault(int faulttype, vaddr_t faultaddress);</span>
+<span class='curline'><a href='../S/194.html#L55'>vaddr_t</a>            55 kern/include/vm.h vaddr_t alloc_kpages(unsigned npages);</span>
+<span class='curline'><a href='../S/194.html#L56'>vaddr_t</a>            56 kern/include/vm.h void free_kpages(vaddr_t addr);</span>
+<span class='curline'><a href='../S/209.html#L80'>vaddr_t</a>            80 kern/syscall/loadelf.c 	     off_t offset, vaddr_t vaddr,</span>
+<span class='curline'><a href='../S/209.html#L154'>vaddr_t</a>           154 kern/syscall/loadelf.c load_elf(struct vnode *v, vaddr_t *entrypoint)</span>
+<span class='curline'><a href='../S/210.html#L59'>vaddr_t</a>            59 kern/syscall/runprogram.c 	vaddr_t entrypoint, stackptr;</span>
+<span class='curline'><a href='../S/237.html#L130'>vaddr_t</a>           130 kern/vm/addrspace.c as_define_region(struct addrspace *as, vaddr_t vaddr, size_t memsize,</span>
+<span class='curline'><a href='../S/237.html#L169'>vaddr_t</a>           169 kern/vm/addrspace.c as_define_stack(struct addrspace *as, vaddr_t *stackptr)</span>
+<span class='curline'><a href='../S/238.html#L120'>vaddr_t</a>           120 kern/vm/copyinout.c 	vaddr_t bot, top;</span>
+<span class='curline'><a href='../S/238.html#L124'>vaddr_t</a>           124 kern/vm/copyinout.c 	bot = (vaddr_t) userptr;</span>
+<span class='curline'><a href='../S/239.html#L149'>vaddr_t</a>           149 kern/vm/kmalloc.c 	vaddr_t pageaddr_and_blocktype;</span>
+<span class='curline'><a href='../S/239.html#L222'>vaddr_t</a>           222 kern/vm/kmalloc.c 	vaddr_t va;</span>
+<span class='curline'><a href='../S/239.html#L372'>vaddr_t</a>           372 kern/vm/kmalloc.c 	vaddr_t lowguard, lowsize, data, enddata, highguard, highsize, i;</span>
+<span class='curline'><a href='../S/239.html#L377'>vaddr_t</a>           377 kern/vm/kmalloc.c 	lowguard = (vaddr_t)block;</span>
+<span class='curline'><a href='../S/239.html#L403'>vaddr_t</a>           403 kern/vm/kmalloc.c checkguardband(vaddr_t blockaddr, size_t smallerblocksize, size_t blocksize)</span>
+<span class='curline'><a href='../S/239.html#L417'>vaddr_t</a>           417 kern/vm/kmalloc.c 	vaddr_t lowguard, lowsize, data, enddata, highguard, highsize, i;</span>
+<span class='curline'><a href='../S/239.html#L497'>vaddr_t</a>           497 kern/vm/kmalloc.c 	vaddr_t prpage, fla;</span>
+<span class='curline'><a href='../S/239.html#L541'>vaddr_t</a>           541 kern/vm/kmalloc.c 		fla = (vaddr_t)fl;</span>
+<span class='curline'><a href='../S/239.html#L616'>vaddr_t</a>           616 kern/vm/kmalloc.c 	vaddr_t label;</span>
+<span class='curline'><a href='../S/239.html#L627'>vaddr_t</a>           627 kern/vm/kmalloc.c establishlabel(void *block, vaddr_t label)</span>
+<span class='curline'><a href='../S/239.html#L646'>vaddr_t</a>           646 kern/vm/kmalloc.c 	vaddr_t prpage;</span>
+<span class='curline'><a href='../S/239.html#L648'>vaddr_t</a>           648 kern/vm/kmalloc.c 	vaddr_t blockaddr;</span>
+<span class='curline'><a href='../S/239.html#L659'>vaddr_t</a>           659 kern/vm/kmalloc.c 		i = ((vaddr_t)fl - prpage) / blocksize;</span>
+<span class='curline'><a href='../S/239.html#L749'>vaddr_t</a>           749 kern/vm/kmalloc.c 	vaddr_t prpage, fla;</span>
+<span class='curline'><a href='../S/239.html#L776'>vaddr_t</a>           776 kern/vm/kmalloc.c 			fla = (vaddr_t)fl;</span>
+<span class='curline'><a href='../S/239.html#L877'>vaddr_t</a>           877 kern/vm/kmalloc.c 		, vaddr_t label</span>
+<span class='curline'><a href='../S/239.html#L883'>vaddr_t</a>           883 kern/vm/kmalloc.c 	vaddr_t prpage;		// PR_PAGEADDR(pr)</span>
+<span class='curline'><a href='../S/239.html#L884'>vaddr_t</a>           884 kern/vm/kmalloc.c 	vaddr_t fla;		// free list entry address</span>
+<span class='curline'><a href='../S/239.html#L935'>vaddr_t</a>           935 kern/vm/kmalloc.c 				fla = (vaddr_t)fl;</span>
+<span class='curline'><a href='../S/239.html#L1006'>vaddr_t</a>          1006 kern/vm/kmalloc.c 	fla = (vaddr_t) fl;</span>
+<span class='curline'><a href='../S/239.html#L1029'>vaddr_t</a>          1029 kern/vm/kmalloc.c 	vaddr_t ptraddr;	// same as ptr</span>
+<span class='curline'><a href='../S/239.html#L1031'>vaddr_t</a>          1031 kern/vm/kmalloc.c 	vaddr_t prpage;		// PR_PAGEADDR(pr)</span>
+<span class='curline'><a href='../S/239.html#L1032'>vaddr_t</a>          1032 kern/vm/kmalloc.c 	vaddr_t fla;		// free list entry address</span>
+<span class='curline'><a href='../S/239.html#L1034'>vaddr_t</a>          1034 kern/vm/kmalloc.c 	vaddr_t offset;		// offset into page</span>
+<span class='curline'><a href='../S/239.html#L1039'>vaddr_t</a>          1039 kern/vm/kmalloc.c 	ptraddr = (vaddr_t)ptr;</span>
+<span class='curline'><a href='../S/239.html#L1174'>vaddr_t</a>          1174 kern/vm/kmalloc.c 	vaddr_t label;</span>
+<span class='curline'><a href='../S/239.html#L1179'>vaddr_t</a>          1179 kern/vm/kmalloc.c 	label = (vaddr_t)__builtin_return_address(0);</span>
+<span class='curline'><a href='../S/239.html#L1188'>vaddr_t</a>          1188 kern/vm/kmalloc.c 		vaddr_t address;</span>
+<span class='curline'><a href='../S/239.html#L1220'>vaddr_t</a>          1220 kern/vm/kmalloc.c 		KASSERT((vaddr_t)ptr%PAGE_SIZE==0);</span>
+<span class='curline'><a href='../S/239.html#L1221'>vaddr_t</a>          1221 kern/vm/kmalloc.c 		free_kpages((vaddr_t)ptr);</span>
+</pre>
+</body>
+</html>

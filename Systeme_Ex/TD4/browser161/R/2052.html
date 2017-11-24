@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>size_t</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/24.html#L91'>size_t</a>             91 common/libc/printf/__printf.c 	void (*sendfunc)(void *clientdata, const char *str, size_t len);</span>
+<span class='curline'><a href='../S/24.html#L146'>size_t</a>            146 common/libc/printf/__printf.c __pf_print(PF *pf, const char *txt, size_t len)</span>
+<span class='curline'><a href='../S/24.html#L307'>size_t</a>            307 common/libc/printf/__printf.c 			pf-&gt;num = va_arg(pf-&gt;ap, size_t);</span>
+<span class='curline'><a href='../S/24.html#L571'>size_t</a>            571 common/libc/printf/__printf.c __vprintf(void (*func)(void *clientdata, const char *str, size_t len),</span>
+<span class='curline'><a href='../S/25.html#L62'>size_t</a>             62 common/libc/printf/snprintf.c 	size_t buflen;</span>
+<span class='curline'><a href='../S/25.html#L63'>size_t</a>             63 common/libc/printf/snprintf.c 	size_t bufpos;</span>
+<span class='curline'><a href='../S/25.html#L75'>size_t</a>             75 common/libc/printf/snprintf.c __snprintf_send(void *mydata, const char *data, size_t len)</span>
+<span class='curline'><a href='../S/25.html#L99'>size_t</a>             99 common/libc/printf/snprintf.c vsnprintf(char *buf, size_t len, const char *fmt, va_list ap)</span>
+<span class='curline'><a href='../S/25.html#L148'>size_t</a>            148 common/libc/printf/snprintf.c snprintf(char *buf, size_t len, const char *fmt, ...)</span>
+<span class='curline'><a href='../S/27.html#L49'>size_t</a>             49 common/libc/string/bzero.c bzero(void *vblock, size_t len)</span>
+<span class='curline'><a href='../S/27.html#L52'>size_t</a>             52 common/libc/string/bzero.c 	size_t i;</span>
+<span class='curline'><a href='../S/28.html#L48'>size_t</a>             48 common/libc/string/memcpy.c memcpy(void *dst, const void *src, size_t len)</span>
+<span class='curline'><a href='../S/28.html#L50'>size_t</a>             50 common/libc/string/memcpy.c 	size_t i;</span>
+<span class='curline'><a href='../S/29.html#L49'>size_t</a>             49 common/libc/string/memmove.c memmove(void *dst, const void *src, size_t len)</span>
+<span class='curline'><a href='../S/29.html#L51'>size_t</a>             51 common/libc/string/memmove.c 	size_t i;</span>
+<span class='curline'><a href='../S/30.html#L42'>size_t</a>             42 common/libc/string/memset.c memset(void *ptr, int ch, size_t len)</span>
+<span class='curline'><a href='../S/30.html#L45'>size_t</a>             45 common/libc/string/memset.c 	size_t i;</span>
+<span class='curline'><a href='../S/31.html#L49'>size_t</a>             49 common/libc/string/strcat.c 	size_t offset;</span>
+<span class='curline'><a href='../S/33.html#L50'>size_t</a>             50 common/libc/string/strcmp.c 	size_t i;</span>
+<span class='curline'><a href='../S/34.html#L48'>size_t</a>             48 common/libc/string/strcpy.c 	size_t i;</span>
+<span class='curline'><a href='../S/35.html#L46'>size_t</a>             46 common/libc/string/strlen.c size_t</span>
+<span class='curline'><a href='../S/35.html#L49'>size_t</a>             49 common/libc/string/strlen.c 	size_t ret = 0;</span>
+<span class='curline'><a href='../S/36.html#L53'>size_t</a>             53 common/libc/string/strrchr.c 	size_t i = strlen(s)+1;</span>
+<span class='curline'><a href='../S/63.html#L152'>size_t</a>            152 kern/arch/mips/thread/cpu.c cpu_identify(char *buf, size_t max)</span>
+<span class='curline'><a href='../S/69.html#L291'>size_t</a>            291 kern/arch/mips/vm/dumbvm.c as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,</span>
+<span class='curline'><a href='../S/69.html#L294'>size_t</a>            294 kern/arch/mips/vm/dumbvm.c 	size_t npages;</span>
+<span class='curline'><a href='../S/70.html#L48'>size_t</a>             48 kern/arch/mips/vm/ram.c 	size_t ramsize;</span>
+<span class='curline'><a href='../S/70.html#L97'>size_t</a>             97 kern/arch/mips/vm/ram.c 	size_t size;</span>
+<span class='curline'><a href='../S/86.html#L84'>size_t</a>             84 kern/dev/generic/console.c static size_t delayed_outbuf_pos=0;</span>
+<span class='curline'><a href='../S/86.html#L103'>size_t</a>            103 kern/dev/generic/console.c 	size_t i;</span>
+<span class='curline'><a href='../S/96.html#L545'>size_t</a>            545 kern/dev/lamebus/emu.c 	size_t oldresid;</span>
+<span class='curline'><a href='../S/96.html#L601'>size_t</a>            601 kern/dev/lamebus/emu.c 	size_t oldresid;</span>
+<span class='curline'><a href='../S/96.html#L798'>size_t</a>            798 kern/dev/lamebus/emu.c 		 char *buf, size_t len)</span>
+<span class='curline'><a href='../S/96.html#L1050'>size_t</a>           1050 kern/dev/lamebus/emu.c 			char *buf, size_t len)</span>
+<span class='curline'><a href='../S/100.html#L158'>size_t</a>            158 kern/dev/lamebus/lamebus.h size_t lamebus_ramsize(void);</span>
+<span class='curline'><a href='../S/126.html#L193'>size_t</a>            193 kern/fs/semfs/semfs_vnops.c 	size_t consume;</span>
+<span class='curline'><a href='../S/126.html#L565'>size_t</a>            565 kern/fs/semfs/semfs_vnops.c 		 struct vnode **resultdirvn, char *namebuf, size_t bufmax)</span>
+<span class='curline'><a href='../S/132.html#L108'>size_t</a>            108 kern/fs/sfs/sfs_io.c sfs_readblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len)</span>
+<span class='curline'><a href='../S/132.html#L123'>size_t</a>            123 kern/fs/sfs/sfs_io.c sfs_writeblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len)</span>
+<span class='curline'><a href='../S/132.html#L406'>size_t</a>            406 kern/fs/sfs/sfs_io.c sfs_metaio(struct sfs_vnode *sv, off_t actualpos, void *data, size_t len,</span>
+<span class='curline'><a href='../S/133.html#L524'>size_t</a>            524 kern/fs/sfs/sfs_vnops.c 		  char *buf, size_t buflen)</span>
+<span class='curline'><a href='../S/134.html#L74'>size_t</a>             74 kern/fs/sfs/sfsprivate.h int sfs_readblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len);</span>
+<span class='curline'><a href='../S/134.html#L75'>size_t</a>             75 kern/fs/sfs/sfsprivate.h int sfs_writeblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len);</span>
+<span class='curline'><a href='../S/134.html#L77'>size_t</a>             77 kern/fs/sfs/sfsprivate.h int sfs_metaio(struct sfs_vnode *sv, off_t pos, void *data, size_t len,</span>
+<span class='curline'><a href='../S/138.html#L55'>size_t</a>             55 kern/include/addrspace.h         size_t as_npages1;</span>
+<span class='curline'><a href='../S/138.html#L58'>size_t</a>             58 kern/include/addrspace.h         size_t as_npages2;</span>
+<span class='curline'><a href='../S/138.html#L113'>size_t</a>            113 kern/include/addrspace.h                                    vaddr_t vaddr, size_t sz,</span>
+<span class='curline'><a href='../S/143.html#L67'>size_t</a>             67 kern/include/copyinout.h int copyin(const_userptr_t usersrc, void *dest, size_t len);</span>
+<span class='curline'><a href='../S/143.html#L68'>size_t</a>             68 kern/include/copyinout.h int copyout(const void *src, userptr_t userdest, size_t len);</span>
+<span class='curline'><a href='../S/143.html#L69'>size_t</a>             69 kern/include/copyinout.h int copyinstr(const_userptr_t usersrc, char *dest, size_t len, size_t *got);</span>
+<span class='curline'><a href='../S/143.html#L70'>size_t</a>             70 kern/include/copyinout.h int copyoutstr(const char *src, userptr_t userdest, size_t len, size_t *got);</span>
+<span class='curline'><a href='../S/144.html#L118'>size_t</a>            118 kern/include/cpu.h void cpu_identify(char *buf, size_t max);</span>
+<span class='curline'><a href='../S/157.html#L65'>size_t</a>             65 kern/include/kern/iovec.h         size_t iov_len;			/* Length of data */</span>
+<span class='curline'><a href='../S/163.html#L126'>size_t</a>            126 kern/include/kern/signal.h 	size_t ss_size;</span>
+<span class='curline'><a href='../S/172.html#L129'>size_t</a>            129 kern/include/lib.h void *kmalloc(size_t size);</span>
+<span class='curline'><a href='../S/172.html#L142'>size_t</a>            142 kern/include/lib.h size_t strlen(const char *str);</span>
+<span class='curline'><a href='../S/172.html#L151'>size_t</a>            151 kern/include/lib.h void *memcpy(void *dest, const void *src, size_t len);</span>
+<span class='curline'><a href='../S/172.html#L152'>size_t</a>            152 kern/include/lib.h void *memmove(void *dest, const void *src, size_t len);</span>
+<span class='curline'><a href='../S/172.html#L153'>size_t</a>            153 kern/include/lib.h void *memset(void *block, int ch, size_t len);</span>
+<span class='curline'><a href='../S/172.html#L154'>size_t</a>            154 kern/include/lib.h void bzero(void *ptr, size_t len);</span>
+<span class='curline'><a href='../S/172.html#L157'>size_t</a>            157 kern/include/lib.h int snprintf(char *buf, size_t maxlen, const char *fmt, ...) __PF(3,4);</span>
+<span class='curline'><a href='../S/172.html#L186'>size_t</a>            186 kern/include/lib.h void kgets(char *buf, size_t maxbuflen);</span>
+<span class='curline'><a href='../S/174.html#L53'>size_t</a>             53 kern/include/mainbus.h size_t mainbus_ramsize(void);</span>
+<span class='curline'><a href='../S/183.html#L66'>size_t</a>             66 kern/include/stdarg.h int vsnprintf(char *buf, size_t maxlen, const char *fmt, va_list ap) __PF(3,0);</span>
+<span class='curline'><a href='../S/183.html#L75'>size_t</a>             75 kern/include/stdarg.h int __vprintf(void (*func)(void *clientdata, const char *str, size_t len),</span>
+<span class='curline'><a href='../S/191.html#L77'>size_t</a>             77 kern/include/uio.h 	size_t            uio_resid;	/* Remaining amt of data to xfer */</span>
+<span class='curline'><a href='../S/191.html#L119'>size_t</a>            119 kern/include/uio.h int uiomove(void *kbuffer, size_t len, struct uio *uio);</span>
+<span class='curline'><a href='../S/191.html#L124'>size_t</a>            124 kern/include/uio.h int uiomovezeros(size_t len, struct uio *uio);</span>
+<span class='curline'><a href='../S/191.html#L139'>size_t</a>            139 kern/include/uio.h 	       void *kbuf, size_t len, off_t pos, enum uio_rw rw);</span>
+<span class='curline'><a href='../S/193.html#L82'>size_t</a>             82 kern/include/vfs.h 		   char *buf, size_t buflen);</span>
+<span class='curline'><a href='../S/195.html#L223'>size_t</a>            223 kern/include/vnode.h 			      char *buf, size_t len);</span>
+<span class='curline'><a href='../S/195.html#L313'>size_t</a>            313 kern/include/vnode.h 			      struct vnode **result, char *buf, size_t len);</span>
+<span class='curline'><a href='../S/200.html#L54'>size_t</a>             54 kern/lib/kgets.c kgets(char *buf, size_t maxlen)</span>
+<span class='curline'><a href='../S/200.html#L56'>size_t</a>             56 kern/lib/kgets.c 	size_t pos = 0;</span>
+<span class='curline'><a href='../S/201.html#L81'>size_t</a>             81 kern/lib/kprintf.c console_send(void *junk, const char *data, size_t len)</span>
+<span class='curline'><a href='../S/201.html#L83'>size_t</a>             83 kern/lib/kprintf.c 	size_t i;</span>
+<span class='curline'><a href='../S/204.html#L42'>size_t</a>             42 kern/lib/uio.c uiomove(void *ptr, size_t n, struct uio *uio)</span>
+<span class='curline'><a href='../S/204.html#L45'>size_t</a>             45 kern/lib/uio.c 	size_t size;</span>
+<span class='curline'><a href='../S/204.html#L122'>size_t</a>            122 kern/lib/uio.c uiomovezeros(size_t n, struct uio *uio)</span>
+<span class='curline'><a href='../S/204.html#L126'>size_t</a>            126 kern/lib/uio.c 	size_t amt;</span>
+<span class='curline'><a href='../S/204.html#L153'>size_t</a>            153 kern/lib/uio.c 	  void *kbuf, size_t len, off_t pos, enum uio_rw rw)</span>
+<span class='curline'><a href='../S/209.html#L81'>size_t</a>             81 kern/syscall/loadelf.c 	     size_t memsize, size_t filesize,</span>
+<span class='curline'><a href='../S/209.html#L133'>size_t</a>            133 kern/syscall/loadelf.c 		size_t fillamt;</span>
+<span class='curline'><a href='../S/214.html#L104'>size_t</a>            104 kern/test/fstest.c fstest_makename(char *buf, size_t buflen,</span>
+<span class='curline'><a href='../S/214.html#L141'>size_t</a>            141 kern/test/fstest.c 	size_t shouldbytes=0;</span>
+<span class='curline'><a href='../S/214.html#L142'>size_t</a>            142 kern/test/fstest.c 	size_t bytes=0;</span>
+<span class='curline'><a href='../S/214.html#L218'>size_t</a>            218 kern/test/fstest.c 	size_t bytes=0;</span>
+<span class='curline'><a href='../S/214.html#L547'>size_t</a>            547 kern/test/fstest.c 	size_t bytes;</span>
+<span class='curline'><a href='../S/215.html#L178'>size_t</a>            178 kern/test/kmalloctest.c 	size_t ptrspace;</span>
+<span class='curline'><a href='../S/215.html#L179'>size_t</a>            179 kern/test/kmalloctest.c 	size_t blocksize;</span>
+<span class='curline'><a href='../S/215.html#L183'>size_t</a>            183 kern/test/kmalloctest.c 	size_t totalsize;</span>
+<span class='curline'><a href='../S/232.html#L255'>size_t</a>            255 kern/vfs/vfsfail.c 			  char *buf, size_t len)</span>
+<span class='curline'><a href='../S/233.html#L589'>size_t</a>            589 kern/vfs/vfslist.c 	size_t len;</span>
+<span class='curline'><a href='../S/234.html#L244'>size_t</a>            244 kern/vfs/vfslookup.c 	       char *buf, size_t buflen)</span>
+<span class='curline'><a href='../S/237.html#L130'>size_t</a>            130 kern/vm/addrspace.c as_define_region(struct addrspace *as, vaddr_t vaddr, size_t memsize,</span>
+<span class='curline'><a href='../S/238.html#L118'>size_t</a>            118 kern/vm/copyinout.c copycheck(const_userptr_t userptr, size_t len, size_t *stoplen)</span>
+<span class='curline'><a href='../S/238.html#L153'>size_t</a>            153 kern/vm/copyinout.c copyin(const_userptr_t usersrc, void *dest, size_t len)</span>
+<span class='curline'><a href='../S/238.html#L156'>size_t</a>            156 kern/vm/copyinout.c 	size_t stoplen;</span>
+<span class='curline'><a href='../S/238.html#L189'>size_t</a>            189 kern/vm/copyinout.c copyout(const void *src, userptr_t userdest, size_t len)</span>
+<span class='curline'><a href='../S/238.html#L192'>size_t</a>            192 kern/vm/copyinout.c 	size_t stoplen;</span>
+<span class='curline'><a href='../S/238.html#L235'>size_t</a>            235 kern/vm/copyinout.c copystr(char *dest, const char *src, size_t maxlen, size_t stoplen,</span>
+<span class='curline'><a href='../S/238.html#L236'>size_t</a>            236 kern/vm/copyinout.c 	size_t *gotlen)</span>
+<span class='curline'><a href='../S/238.html#L238'>size_t</a>            238 kern/vm/copyinout.c 	size_t i;</span>
+<span class='curline'><a href='../S/238.html#L266'>size_t</a>            266 kern/vm/copyinout.c copyinstr(const_userptr_t usersrc, char *dest, size_t len, size_t *actual)</span>
+<span class='curline'><a href='../S/238.html#L269'>size_t</a>            269 kern/vm/copyinout.c 	size_t stoplen;</span>
+<span class='curline'><a href='../S/238.html#L299'>size_t</a>            299 kern/vm/copyinout.c copyoutstr(const char *src, userptr_t userdest, size_t len, size_t *actual)</span>
+<span class='curline'><a href='../S/238.html#L302'>size_t</a>            302 kern/vm/copyinout.c 	size_t stoplen;</span>
+<span class='curline'><a href='../S/239.html#L45'>size_t</a>             45 kern/vm/kmalloc.c fill_deadbeef(void *vptr, size_t len)</span>
+<span class='curline'><a href='../S/239.html#L48'>size_t</a>             48 kern/vm/kmalloc.c 	size_t i;</span>
+<span class='curline'><a href='../S/239.html#L129'>size_t</a>            129 kern/vm/kmalloc.c static const size_t sizes[NSIZES] = { 16, 32, 64, 128, 256, 512, 1024, 2048 };</span>
+<span class='curline'><a href='../S/239.html#L307'>size_t</a>            307 kern/vm/kmalloc.c 	size_t i, j;</span>
+<span class='curline'><a href='../S/239.html#L370'>size_t</a>            370 kern/vm/kmalloc.c establishguardband(void *block, size_t clientsize, size_t blocksize)</span>
+<span class='curline'><a href='../S/239.html#L403'>size_t</a>            403 kern/vm/kmalloc.c checkguardband(vaddr_t blockaddr, size_t smallerblocksize, size_t blocksize)</span>
+<span class='curline'><a href='../S/239.html#L462'>size_t</a>            462 kern/vm/kmalloc.c checkdeadbeef(void *block, size_t blocksize)</span>
+<span class='curline'><a href='../S/239.html#L465'>size_t</a>            465 kern/vm/kmalloc.c 	size_t i;</span>
+<span class='curline'><a href='../S/239.html#L501'>size_t</a>            501 kern/vm/kmalloc.c 	size_t blocksize;</span>
+<span class='curline'><a href='../S/239.html#L507'>size_t</a>            507 kern/vm/kmalloc.c 	size_t smallerblocksize;</span>
+<span class='curline'><a href='../S/239.html#L853'>size_t</a>            853 kern/vm/kmalloc.c int blocktype(size_t clientsz)</span>
+<span class='curline'><a href='../S/239.html#L875'>size_t</a>            875 kern/vm/kmalloc.c subpage_kmalloc(size_t sz</span>
+<span class='curline'><a href='../S/239.html#L891'>size_t</a>            891 kern/vm/kmalloc.c 	size_t clientsz;</span>
+<span class='curline'><a href='../S/239.html#L1036'>size_t</a>           1036 kern/vm/kmalloc.c 	size_t blocksize, smallerblocksize;</span>
+<span class='curline'><a href='../S/239.html#L1170'>size_t</a>           1170 kern/vm/kmalloc.c kmalloc(size_t sz)</span>
+<span class='curline'><a href='../S/239.html#L1172'>size_t</a>           1172 kern/vm/kmalloc.c 	size_t checksz;</span>
+<span class='curline'><a href='../S/462.html#L489'>size_t</a>            489 userland/bin/sh/sh.c getcmd(char *buf, size_t len)</span>
+<span class='curline'><a href='../S/462.html#L491'>size_t</a>            491 userland/bin/sh/sh.c 	size_t pos = 0;</span>
+<span class='curline'><a href='../S/466.html#L72'>size_t</a>             72 userland/bin/tac/tac.c memchr(const void *buf, int ch, size_t buflen)</span>
+<span class='curline'><a href='../S/466.html#L75'>size_t</a>             75 userland/bin/tac/tac.c 	size_t i;</span>
+<span class='curline'><a href='../S/466.html#L90'>size_t</a>             90 userland/bin/tac/tac.c size_t</span>
+<span class='curline'><a href='../S/466.html#L91'>size_t</a>             91 userland/bin/tac/tac.c doread(int fd, const char *name, void *buf, size_t len)</span>
+<span class='curline'><a href='../S/466.html#L99'>size_t</a>             99 userland/bin/tac/tac.c 	return (size_t)r;</span>
+<span class='curline'><a href='../S/466.html#L104'>size_t</a>            104 userland/bin/tac/tac.c dowrite(int fd, const char *name, const void *buf, size_t len)</span>
+<span class='curline'><a href='../S/466.html#L112'>size_t</a>            112 userland/bin/tac/tac.c 	else if ((size_t)r != len) {</span>
+<span class='curline'><a href='../S/466.html#L140'>size_t</a>            140 userland/bin/tac/tac.c 	size_t len, remaining, here;</span>
+<span class='curline'><a href='../S/466.html#L196'>size_t</a>            196 userland/bin/tac/tac.c 	size_t amount, len;</span>
+<span class='curline'><a href='../S/479.html#L48'>size_t</a>             48 userland/include/stdio.h int __vprintf(void (*sendfunc)(void *clientdata, const char *, size_t len),</span>
+<span class='curline'><a href='../S/479.html#L56'>size_t</a>             56 userland/include/stdio.h int snprintf(char *buf, size_t len, const char *fmt, ...);</span>
+<span class='curline'><a href='../S/479.html#L57'>size_t</a>             57 userland/include/stdio.h int vsnprintf(char *buf, size_t len, const char *fmt, __va_list ap);</span>
+<span class='curline'><a href='../S/480.html#L70'>size_t</a>             70 userland/include/stdlib.h char *initstate(unsigned long, char *, size_t);</span>
+<span class='curline'><a href='../S/480.html#L76'>size_t</a>             76 userland/include/stdlib.h void *malloc(size_t size);</span>
+<span class='curline'><a href='../S/480.html#L82'>size_t</a>             82 userland/include/stdlib.h void qsort(void *data, unsigned num, size_t size,</span>
+<span class='curline'><a href='../S/481.html#L45'>size_t</a>             45 userland/include/string.h size_t strlen(const char *);</span>
+<span class='curline'><a href='../S/481.html#L49'>size_t</a>             49 userland/include/string.h void *memset(void *, int c, size_t);</span>
+<span class='curline'><a href='../S/481.html#L50'>size_t</a>             50 userland/include/string.h void *memcpy(void *, const void *, size_t);</span>
+<span class='curline'><a href='../S/481.html#L51'>size_t</a>             51 userland/include/string.h void *memmove(void *, const void *, size_t);</span>
+<span class='curline'><a href='../S/481.html#L52'>size_t</a>             52 userland/include/string.h int memcmp(const void *, const void *, size_t);</span>
+<span class='curline'><a href='../S/481.html#L62'>size_t</a>             62 userland/include/string.h void bzero(void *, size_t);</span>
+<span class='curline'><a href='../S/494.html#L122'>size_t</a>            122 userland/include/unistd.h ssize_t read(int filehandle, void *buf, size_t size);</span>
+<span class='curline'><a href='../S/494.html#L123'>size_t</a>            123 userland/include/unistd.h ssize_t write(int filehandle, const void *buf, size_t size);</span>
+<span class='curline'><a href='../S/494.html#L144'>size_t</a>            144 userland/include/unistd.h ssize_t getdirentry(int filehandle, char *buf, size_t buflen);</span>
+<span class='curline'><a href='../S/494.html#L146'>size_t</a>            146 userland/include/unistd.h ssize_t readlink(const char *path, char *buf, size_t buflen);</span>
+<span class='curline'><a href='../S/494.html#L150'>size_t</a>            150 userland/include/unistd.h ssize_t __getcwd(char *buf, size_t buflen);</span>
+<span class='curline'><a href='../S/494.html#L159'>size_t</a>            159 userland/include/unistd.h char *getcwd(char *buf, size_t buflen);		/* calls __getcwd */</span>
+<span class='curline'><a href='../S/506.html#L44'>size_t</a>             44 userland/lib/libc/stdio/__puts.c 	size_t len;</span>
+<span class='curline'><a href='../S/508.html#L45'>size_t</a>             45 userland/lib/libc/stdio/printf.c __printf_send(void *mydata, const char *data, size_t len)</span>
+<span class='curline'><a href='../S/513.html#L58'>size_t</a>             58 userland/lib/libc/stdlib/getenv.c 	size_t varlen, thislen;</span>
+<span class='curline'><a href='../S/514.html#L125'>size_t</a>            125 userland/lib/libc/stdlib/malloc.c #define M_NEXTOFF(mh)	((size_t)(((size_t)((mh)-&gt;mh_nextblock))&lt;&lt;MBLOCKSHIFT))</span>
+<span class='curline'><a href='../S/514.html#L126'>size_t</a>            126 userland/lib/libc/stdlib/malloc.c #define M_PREVOFF(mh)	((size_t)(((size_t)((mh)-&gt;mh_prevblock))&lt;&lt;MBLOCKSHIFT))</span>
+<span class='curline'><a href='../S/514.html#L144'>size_t</a>            144 userland/lib/libc/stdlib/malloc.c static size_t __malloc_pagesize;</span>
+<span class='curline'><a href='../S/514.html#L207'>size_t</a>            207 userland/lib/libc/stdlib/malloc.c 		size_t adjust = MBLOCKSIZE - (__heapbase % MBLOCKSIZE);</span>
+<span class='curline'><a href='../S/514.html#L237'>size_t</a>            237 userland/lib/libc/stdlib/malloc.c 	size_t rightprevblock;</span>
+<span class='curline'><a href='../S/514.html#L282'>size_t</a>            282 userland/lib/libc/stdlib/malloc.c __malloc_sbrk(size_t size)</span>
+<span class='curline'><a href='../S/514.html#L311'>size_t</a>            311 userland/lib/libc/stdlib/malloc.c __malloc_split(struct mheader *mh, size_t size)</span>
+<span class='curline'><a href='../S/514.html#L314'>size_t</a>            314 userland/lib/libc/stdlib/malloc.c 	size_t oldsize;</span>
+<span class='curline'><a href='../S/514.html#L352'>size_t</a>            352 userland/lib/libc/stdlib/malloc.c malloc(size_t size)</span>
+<span class='curline'><a href='../S/514.html#L356'>size_t</a>            356 userland/lib/libc/stdlib/malloc.c 	size_t rightprevblock;</span>
+<span class='curline'><a href='../S/514.html#L357'>size_t</a>            357 userland/lib/libc/stdlib/malloc.c 	size_t morespace;</span>
+<span class='curline'><a href='../S/514.html#L376'>size_t</a>            376 userland/lib/libc/stdlib/malloc.c 	size = ((size + MBLOCKSIZE - 1) &amp; ~(size_t)(MBLOCKSIZE-1));</span>
+<span class='curline'><a href='../S/514.html#L490'>size_t</a>            490 userland/lib/libc/stdlib/malloc.c __malloc_deadbeef(void *ptr, size_t size)</span>
+<span class='curline'><a href='../S/514.html#L493'>size_t</a>            493 userland/lib/libc/stdlib/malloc.c 	size_t i, n = size/sizeof(uint32_t);</span>
+<span class='curline'><a href='../S/515.html#L38'>size_t</a>             38 userland/lib/libc/stdlib/qsort.c qsort(void *vdata, unsigned num, size_t size,</span>
+<span class='curline'><a href='../S/516.html#L285'>size_t</a>            285 userland/lib/libc/stdlib/random.c 	size_t n)			/* # bytes of state info */</span>
+<span class='curline'><a href='../S/518.html#L38'>size_t</a>             38 userland/lib/libc/string/memcmp.c memcmp(const void *av, const void *bv, size_t len)</span>
+<span class='curline'><a href='../S/518.html#L42'>size_t</a>             42 userland/lib/libc/string/memcmp.c 	size_t i;</span>
+<span class='curline'><a href='../S/524.html#L52'>size_t</a>             52 userland/lib/libc/unix/err.c __senderr(void *junk, const char *data, size_t len)</span>
+<span class='curline'><a href='../S/526.html#L46'>size_t</a>             46 userland/lib/libc/unix/execvp.c 	size_t len;</span>
+<span class='curline'><a href='../S/527.html#L40'>size_t</a>             40 userland/lib/libc/unix/getcwd.c getcwd(char *buf, size_t buflen)</span>
+<span class='curline'><a href='../S/532.html#L85'>size_t</a>             85 userland/sbin/dumpsfs/dumpsfs.c 	size_t dlen, vlen, used;</span>
+<span class='curline'><a href='../S/548.html#L58'>size_t</a>             58 userland/sbin/sfsck/freemap.c 	size_t i, mapbytes;</span>
+<span class='curline'><a href='../S/563.html#L43'>size_t</a>             43 userland/sbin/sfsck/utils.c domalloc(size_t len)</span>
+<span class='curline'><a href='../S/563.html#L58'>size_t</a>             58 userland/sbin/sfsck/utils.c dorealloc(void *op, size_t osz, size_t nsz)</span>
+<span class='curline'><a href='../S/563.html#L62'>size_t</a>             62 userland/sbin/sfsck/utils.c 	size_t copysz;</span>
+<span class='curline'><a href='../S/563.html#L96'>size_t</a>             96 userland/sbin/sfsck/utils.c checknullstring(char *buf, size_t maxlen)</span>
+<span class='curline'><a href='../S/563.html#L98'>size_t</a>             98 userland/sbin/sfsck/utils.c 	size_t i;</span>
+<span class='curline'><a href='../S/563.html#L115'>size_t</a>            115 userland/sbin/sfsck/utils.c 	size_t i;</span>
+<span class='curline'><a href='../S/563.html#L131'>size_t</a>            131 userland/sbin/sfsck/utils.c checkzeroed(void *vbuf, size_t len)</span>
+<span class='curline'><a href='../S/563.html#L134'>size_t</a>            134 userland/sbin/sfsck/utils.c 	size_t i;</span>
+<span class='curline'><a href='../S/564.html#L37'>size_t</a>             37 userland/sbin/sfsck/utils.h void *domalloc(size_t len);</span>
+<span class='curline'><a href='../S/564.html#L38'>size_t</a>             38 userland/sbin/sfsck/utils.h void *dorealloc(void *op, size_t osz, size_t nsz);</span>
+<span class='curline'><a href='../S/564.html#L44'>size_t</a>             44 userland/sbin/sfsck/utils.h int checknullstring(char *buf, size_t maxlen);</span>
+<span class='curline'><a href='../S/564.html#L50'>size_t</a>             50 userland/sbin/sfsck/utils.h int checkzeroed(void *buf, size_t len);</span>
+<span class='curline'><a href='../S/579.html#L73'>size_t</a>             73 userland/testbin/badcall/bad_lseek.c 	size_t len = strlen(slogan);</span>
+<span class='curline'><a href='../S/599.html#L49'>size_t</a>             49 userland/testbin/badcall/driver.c 	size_t len;</span>
+<span class='curline'><a href='../S/601.html#L47'>size_t</a>             47 userland/testbin/badcall/report.c static size_t horizpos;</span>
+<span class='curline'><a href='../S/601.html#L50'>size_t</a>             50 userland/testbin/badcall/report.c static size_t subpos;</span>
+<span class='curline'><a href='../S/601.html#L54'>size_t</a>             54 userland/testbin/badcall/report.c static size_t outbufpos;</span>
+<span class='curline'><a href='../S/601.html#L65'>size_t</a>             65 userland/testbin/badcall/report.c 	size_t begin, i;</span>
+<span class='curline'><a href='../S/601.html#L99'>size_t</a>             99 userland/testbin/badcall/report.c indent_to(size_t pos)</span>
+<span class='curline'><a href='../S/601.html#L176'>size_t</a>            176 userland/testbin/badcall/report.c 	size_t pos;</span>
+<span class='curline'><a href='../S/601.html#L194'>size_t</a>            194 userland/testbin/badcall/report.c 	size_t pos;</span>
+<span class='curline'><a href='../S/601.html#L233'>size_t</a>            233 userland/testbin/badcall/report.c 	size_t pos = horizpos;</span>
+<span class='curline'><a href='../S/603.html#L57'>size_t</a>             57 userland/testbin/bigexec/bigexec.c fill(char *buf, size_t buflen)</span>
+<span class='curline'><a href='../S/603.html#L67'>size_t</a>             67 userland/testbin/bigexec/bigexec.c 	size_t len;</span>
+<span class='curline'><a href='../S/605.html#L52'>size_t</a>             52 userland/testbin/bigfile/bigfile.c 	size_t i, size, chunksize, offset;</span>
+<span class='curline'><a href='../S/609.html#L74'>size_t</a>             74 userland/testbin/bigseek/bigseek.c 	size_t len;</span>
+<span class='curline'><a href='../S/609.html#L88'>size_t</a>             88 userland/testbin/bigseek/bigseek.c 	if ((size_t)r != len) {</span>
+<span class='curline'><a href='../S/609.html#L98'>size_t</a>             98 userland/testbin/bigseek/bigseek.c 	size_t len;</span>
+<span class='curline'><a href='../S/609.html#L112'>size_t</a>            112 userland/testbin/bigseek/bigseek.c 	if ((size_t)r != sizeof(buf) &amp;&amp; (size_t)r != len) {</span>
+<span class='curline'><a href='../S/609.html#L127'>size_t</a>            127 userland/testbin/bigseek/bigseek.c 	for (i=len; i&lt;(size_t)r; i++) {</span>
+<span class='curline'><a href='../S/615.html#L382'>size_t</a>            382 userland/testbin/crash/crash.c 			for (size_t j=0; argv[i][j]; j++) {</span>
+<span class='curline'><a href='../S/619.html#L65'>size_t</a>             65 userland/testbin/dirconc/dirconc.c choose_name(char *buf, size_t len)</span>
+<span class='curline'><a href='../S/630.html#L61'>size_t</a>             61 userland/testbin/factorial/factorial.c 	size_t first;		/* first valid digit */</span>
+<span class='curline'><a href='../S/630.html#L70'>size_t</a>             70 userland/testbin/factorial/factorial.c 	size_t len, i;</span>
+<span class='curline'><a href='../S/630.html#L100'>size_t</a>            100 userland/testbin/factorial/factorial.c 	size_t pos;</span>
+<span class='curline'><a href='../S/630.html#L115'>size_t</a>            115 userland/testbin/factorial/factorial.c finishcarry(struct number *r, const struct number *b, size_t pos,</span>
+<span class='curline'><a href='../S/630.html#L136'>size_t</a>            136 userland/testbin/factorial/factorial.c 	size_t pos;</span>
+<span class='curline'><a href='../S/630.html#L154'>size_t</a>            154 userland/testbin/factorial/factorial.c 	size_t pos;</span>
+<span class='curline'><a href='../S/630.html#L171'>size_t</a>            171 userland/testbin/factorial/factorial.c multc(struct number *r, const struct number *a, unsigned bn, size_t offset)</span>
+<span class='curline'><a href='../S/630.html#L173'>size_t</a>            173 userland/testbin/factorial/factorial.c 	size_t pos;</span>
+<span class='curline'><a href='../S/630.html#L200'>size_t</a>            200 userland/testbin/factorial/factorial.c 	size_t apos;</span>
+<span class='curline'><a href='../S/642.html#L1899'>size_t</a>           1899 userland/testbin/frack/check.c 	size_t subnamelen;</span>
+<span class='curline'><a href='../S/642.html#L2324'>size_t</a>           2324 userland/testbin/frack/check.c 	size_t len, i;</span>
+<span class='curline'><a href='../S/642.html#L2348'>size_t</a>           2348 userland/testbin/frack/check.c 		for (i=0; i&lt;(size_t)ret; i++) {</span>
+<span class='curline'><a href='../S/642.html#L2390'>size_t</a>           2390 userland/testbin/frack/check.c 	size_t bufpos, len;</span>
+<span class='curline'><a href='../S/642.html#L2416'>size_t</a>           2416 userland/testbin/frack/check.c 		assert(len &gt;= (size_t)ret);</span>
+<span class='curline'><a href='../S/644.html#L52'>size_t</a>             52 userland/testbin/frack/data.c 	size_t slen;</span>
+<span class='curline'><a href='../S/644.html#L74'>size_t</a>             74 userland/testbin/frack/data.c matches_at(size_t start, size_t len)</span>
+<span class='curline'><a href='../S/644.html#L84'>size_t</a>             84 userland/testbin/frack/data.c byte_at(size_t start, size_t len, unsigned char val)</span>
+<span class='curline'><a href='../S/644.html#L86'>size_t</a>             86 userland/testbin/frack/data.c 	size_t i;</span>
+<span class='curline'><a href='../S/644.html#L98'>size_t</a>             98 userland/testbin/frack/data.c zero_at(size_t start, size_t len)</span>
+<span class='curline'><a href='../S/644.html#L105'>size_t</a>            105 userland/testbin/frack/data.c poison_at(size_t start, size_t len)</span>
+<span class='curline'><a href='../S/644.html#L129'>size_t</a>            129 userland/testbin/frack/data.c 	size_t howmuch;</span>
+<span class='curline'><a href='../S/667.html#L107'>size_t</a>            107 userland/testbin/malloctest/malloctest.c markblock(volatile void *ptr, size_t size, unsigned bias, int doprint)</span>
+<span class='curline'><a href='../S/667.html#L109'>size_t</a>            109 userland/testbin/malloctest/malloctest.c 	size_t n, i;</span>
+<span class='curline'><a href='../S/667.html#L133'>size_t</a>            133 userland/testbin/malloctest/malloctest.c checkblock(volatile void *ptr, size_t size, unsigned bias, int doprint)</span>
+<span class='curline'><a href='../S/667.html#L135'>size_t</a>            135 userland/testbin/malloctest/malloctest.c 	size_t n, i;</span>
+<span class='curline'><a href='../S/667.html#L238'>size_t</a>            238 userland/testbin/malloctest/malloctest.c 	size_t size;</span>
+<span class='curline'><a href='../S/667.html#L303'>size_t</a>            303 userland/testbin/malloctest/malloctest.c 	size_t tot=0;</span>
+<span class='curline'><a href='../S/672.html#L130'>size_t</a>            130 userland/testbin/multiexec/multiexec.c semP(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/672.html#L142'>size_t</a>            142 userland/testbin/multiexec/multiexec.c semV(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/676.html#L284'>size_t</a>            284 userland/testbin/parallelvm/parallelvm.c semP(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/676.html#L296'>size_t</a>            296 userland/testbin/parallelvm/parallelvm.c semV(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/680.html#L202'>size_t</a>            202 userland/testbin/psort/psort.c vscomplain(char *buf, size_t len, const char *fmt, va_list ap, int err)</span>
+<span class='curline'><a href='../S/680.html#L204'>size_t</a>            204 userland/testbin/psort/psort.c 	size_t pos;</span>
+<span class='curline'><a href='../S/680.html#L372'>size_t</a>            372 userland/testbin/psort/psort.c size_t</span>
+<span class='curline'><a href='../S/680.html#L373'>size_t</a>            373 userland/testbin/psort/psort.c doread(const char *path, int fd, void *buf, size_t len)</span>
+<span class='curline'><a href='../S/680.html#L382'>size_t</a>            382 userland/testbin/psort/psort.c 	return (size_t) result;</span>
+<span class='curline'><a href='../S/680.html#L387'>size_t</a>            387 userland/testbin/psort/psort.c doexactread(const char *path, int fd, void *buf, size_t len)</span>
+<span class='curline'><a href='../S/680.html#L389'>size_t</a>            389 userland/testbin/psort/psort.c 	size_t result;</span>
+<span class='curline'><a href='../S/680.html#L400'>size_t</a>            400 userland/testbin/psort/psort.c dowrite(const char *path, int fd, const void *buf, size_t len)</span>
+<span class='curline'><a href='../S/680.html#L409'>size_t</a>            409 userland/testbin/psort/psort.c 	if ((size_t) result != len) {</span>
+<span class='curline'><a href='../S/680.html#L555'>size_t</a>            555 userland/testbin/psort/psort.c 	size_t count, i;</span>
+<span class='curline'><a href='../S/680.html#L792'>size_t</a>            792 userland/testbin/psort/psort.c 				if ((size_t) result != sizeof(int)) {</span>
+<span class='curline'><a href='../S/682.html#L35'>size_t</a>             35 userland/testbin/randcall/extern.h size_t randsize(void);</span>
+<span class='curline'><a href='../S/684.html#L71'>size_t</a>             71 userland/testbin/randcall/main.c fillrand(void *p, size_t len)</span>
+<span class='curline'><a href='../S/684.html#L73'>size_t</a>             73 userland/testbin/randcall/main.c 	size_t i;</span>
+<span class='curline'><a href='../S/684.html#L104'>size_t</a>            104 userland/testbin/randcall/main.c size_t</span>
+<span class='curline'><a href='../S/684.html#L107'>size_t</a>            107 userland/testbin/randcall/main.c 	size_t x;</span>
+<span class='curline'><a href='../S/687.html#L103'>size_t</a>            103 userland/testbin/redirect/redirect.c 	if ((size_t)r != strlen(slogan)) {</span>
+<span class='curline'><a href='../S/687.html#L128'>size_t</a>            128 userland/testbin/redirect/redirect.c 	if ((size_t)r != strlen(slogan)) {</span>
+<span class='curline'><a href='../S/693.html#L159'>size_t</a>            159 userland/testbin/sbrktest/sbrktest.c 	size_t n, i;</span>
+<span class='curline'><a href='../S/693.html#L164'>size_t</a>            164 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L183'>size_t</a>            183 userland/testbin/sbrktest/sbrktest.c 	size_t n, i;</span>
+<span class='curline'><a href='../S/693.html#L188'>size_t</a>            188 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L222'>size_t</a>            222 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L239'>size_t</a>            239 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L283'>size_t</a>            283 userland/testbin/sbrktest/sbrktest.c 	size_t amount;</span>
+<span class='curline'><a href='../S/693.html#L584'>size_t</a>            584 userland/testbin/sbrktest/sbrktest.c 	size_t size;</span>
+<span class='curline'><a href='../S/693.html#L665'>size_t</a>            665 userland/testbin/sbrktest/sbrktest.c 	printf("Got %u pages (%zu bytes).\n", n, (size_t)PAGE_SIZE * n);</span>
+<span class='curline'><a href='../S/693.html#L711'>size_t</a>            711 userland/testbin/sbrktest/sbrktest.c 	       (size_t)PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/695.html#L190'>size_t</a>            190 userland/testbin/schedpong/main.c 	   char *buf, size_t bufmax)</span>
+<span class='curline'><a href='../S/698.html#L128'>size_t</a>            128 userland/testbin/schedpong/results.c 	if ((size_t)r &lt; sizeof(secs)) {</span>
+<span class='curline'><a href='../S/698.html#L135'>size_t</a>            135 userland/testbin/schedpong/results.c 	if ((size_t)r &lt; sizeof(nsecs)) {</span>
+<span class='curline'><a href='../S/698.html#L159'>size_t</a>            159 userland/testbin/schedpong/results.c 	if ((size_t)r &lt; sizeof(*secs)) {</span>
+<span class='curline'><a href='../S/698.html#L166'>size_t</a>            166 userland/testbin/schedpong/results.c 	if ((size_t)r &lt; sizeof(*nsecs)) {</span>
+<span class='curline'><a href='../S/702.html#L94'>size_t</a>             94 userland/testbin/schedpong/usem.c 	if ((size_t)r &lt; count) {</span>
+<span class='curline'><a href='../S/702.html#L118'>size_t</a>            118 userland/testbin/schedpong/usem.c 	if ((size_t)r &lt; count) {</span>
+<span class='curline'><a href='../S/719.html#L62'>size_t</a>             62 userland/testbin/usemtest/usemtest.c 	size_t i;</span>
+</pre>
+</body>
+</html>

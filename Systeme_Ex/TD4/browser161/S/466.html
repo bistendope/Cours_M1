@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/bin/tac/tac.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/762.html'>bin</a>/<a href='../files/775.html'>tac</a>/tac.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L72'>[^]</a><a href='#L273'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L72' title='Defined at 72.'>memchr</a></li>
+<li><a href='#L91' title='Defined at 91.'>doread</a></li>
+<li><a href='#L104' title='Defined at 104.'>dowrite</a></li>
+<li><a href='#L120' title='Defined at 120.'>dolseek</a></li>
+<li><a href='#L136' title='Defined at 136.'>readfile</a></li>
+<li><a href='#L192' title='Defined at 192.'>dumpdata</a></li>
+<li><a href='#L232' title='Defined at 232.'>openscratch</a></li>
+<li><a href='#L250' title='Defined at 250.'>openfiles</a></li>
+<li><a href='#L265' title='Defined at 265.'>closefiles</a></li>
+<li><a href='#L273' title='Defined at 273.'>main</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2014</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * tac - print file backwards line by line (reverse cat)</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> * usage: tac [files]</em>
+<a id='L33' name='L33'></a>  33 <em class='comment'> *</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * This implementation copies the input to a scratch file, using a</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> * second scratch file to keep notes, and then prints the scratch file</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> * backwards. This is inefficient, but has the side effect of testing</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * the behavior of scratch files that have been unlinked.</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> *</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * Note that if the remove system call isn't implemented, unlinking</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> * the scratch files will fail and the scratch files will get left</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> * behind. To avoid unnecessary noise (e.g. on emufs) we won't</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> * complain about this.</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> *</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> * This program uses these system calls:</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> *    getpid open read write lseek close remove _exit</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> */</em>
+<a id='L47' name='L47'></a>  47 
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#include</em> &lt;<a href='479.html'>stdio.h</a>&gt;
+<a id='L49' name='L49'></a>  49 <em class='sharp'>#include</em> &lt;<a href='481.html'>string.h</a>&gt;
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>unistd.h</a>&gt;
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#include</em> &lt;<a href='../I/135.html'>fcntl.h</a>&gt;
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#include</em> &lt;<a href='469.html'>assert.h</a>&gt;
+<a id='L53' name='L53'></a>  53 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>errno.h</a>&gt;
+<a id='L54' name='L54'></a>  54 <em class='sharp'>#include</em> &lt;<a href='470.html'>err.h</a>&gt;
+<a id='L55' name='L55'></a>  55 
+<a id='L56' name='L56'></a>  56 <strong class='reserved'>struct</strong> <a href='../R/1484.html' title='Multiple referred from 2 places.'>indexentry</a> <em class='brace'>{</em>
+<a id='L57' name='L57'></a>  57         <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> pos;
+<a id='L58' name='L58'></a>  58         <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> len;
+<a id='L59' name='L59'></a>  59 <em class='brace'>}</em>;
+<a id='L60' name='L60'></a>  60 
+<a id='L61' name='L61'></a>  61 <strong class='reserved'>static</strong> <strong class='reserved'>int</strong> datafd = -1, indexfd = -1;
+<a id='L62' name='L62'></a>  62 <strong class='reserved'>static</strong> <strong class='reserved'>char</strong> dataname[64], indexname[64];
+<a id='L63' name='L63'></a>  63 
+<a id='L64' name='L64'></a>  64 <strong class='reserved'>static</strong> <strong class='reserved'>char</strong> buf[4096];
+<a id='L65' name='L65'></a>  65 
+<a id='L66' name='L66'></a>  66 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'>// string ops</em>
+<a id='L68' name='L68'></a>  68 
+<a id='L69' name='L69'></a>  69 <em class='comment'>/* this is standard and should go into libc */</em>
+<a id='L70' name='L70'></a>  70 <strong class='reserved'>static</strong>
+<a id='L71' name='L71'></a>  71 <strong class='reserved'>void</strong> *
+<a id='L72' name='L72'></a>  72 <a href='../S/466.html#L165' title='Referred from 165 in userland/bin/tac/tac.c.'>memchr</a>(<strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *buf, <strong class='reserved'>int</strong> ch, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> buflen)
+<a id='L73' name='L73'></a>  73 <em class='brace'>{</em>
+<a id='L74' name='L74'></a>  74         <strong class='reserved'>const</strong> <strong class='reserved'>unsigned</strong> <strong class='reserved'>char</strong> *ubuf = buf;
+<a id='L75' name='L75'></a>  75         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> i;
+<a id='L76' name='L76'></a>  76 
+<a id='L77' name='L77'></a>  77         <strong class='reserved'>for</strong> (i=0; i&lt;buflen; i++) <em class='brace'>{</em>
+<a id='L78' name='L78'></a>  78                 <strong class='reserved'>if</strong> (ubuf[i] == ch) <em class='brace'>{</em>
+<a id='L79' name='L79'></a>  79                         <em class='comment'>/* this must launder const */</em>
+<a id='L80' name='L80'></a>  80                         <strong class='reserved'>return</strong> (<strong class='reserved'>void</strong> *)(ubuf + i);
+<a id='L81' name='L81'></a>  81                 <em class='brace'>}</em>
+<a id='L82' name='L82'></a>  82         <em class='brace'>}</em>
+<a id='L83' name='L83'></a>  83         <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L84' name='L84'></a>  84 <em class='brace'>}</em>
+<a id='L85' name='L85'></a>  85 
+<a id='L86' name='L86'></a>  86 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L87' name='L87'></a>  87 <em class='comment'>// syscall wrappers</em>
+<a id='L88' name='L88'></a>  88 
+<a id='L89' name='L89'></a>  89 <strong class='reserved'>static</strong>
+<a id='L90' name='L90'></a>  90 <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>
+<a id='L91' name='L91'></a>  91 <a href='../R/1259.html' title='Multiple referred from 6 places.'>doread</a>(<strong class='reserved'>int</strong> fd, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name, <strong class='reserved'>void</strong> *buf, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> len)
+<a id='L92' name='L92'></a>  92 <em class='brace'>{</em>
+<a id='L93' name='L93'></a>  93         <a href='../D/2528.html' title='Multiple defined in 2 places.'>ssize_t</a> r;
+<a id='L94' name='L94'></a>  94 
+<a id='L95' name='L95'></a>  95         r = read(fd, buf, len);
+<a id='L96' name='L96'></a>  96         <strong class='reserved'>if</strong> (r == -1) <em class='brace'>{</em>
+<a id='L97' name='L97'></a>  97                 <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "%s: read", name);
+<a id='L98' name='L98'></a>  98         <em class='brace'>}</em>
+<a id='L99' name='L99'></a>  99         <strong class='reserved'>return</strong> (<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>)r;
+<a id='L100' name='L100'></a> 100 <em class='brace'>}</em>
+<a id='L101' name='L101'></a> 101 
+<a id='L102' name='L102'></a> 102 <strong class='reserved'>static</strong>
+<a id='L103' name='L103'></a> 103 <strong class='reserved'>void</strong>
+<a id='L104' name='L104'></a> 104 <a href='../R/1274.html' title='Multiple referred from 11 places.'>dowrite</a>(<strong class='reserved'>int</strong> fd, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *buf, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> len)
+<a id='L105' name='L105'></a> 105 <em class='brace'>{</em>
+<a id='L106' name='L106'></a> 106         <a href='../D/2528.html' title='Multiple defined in 2 places.'>ssize_t</a> r;
+<a id='L107' name='L107'></a> 107 
+<a id='L108' name='L108'></a> 108         r = write(fd, buf, len);
+<a id='L109' name='L109'></a> 109         <strong class='reserved'>if</strong> (r == -1) <em class='brace'>{</em>
+<a id='L110' name='L110'></a> 110                 <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "%s: write", name);
+<a id='L111' name='L111'></a> 111         <em class='brace'>}</em>
+<a id='L112' name='L112'></a> 112         <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> ((<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>)r != len) <em class='brace'>{</em>
+<a id='L113' name='L113'></a> 113                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "%s: write: Unexpected short count %zd of %zu",
+<a id='L114' name='L114'></a> 114                      r, len);
+<a id='L115' name='L115'></a> 115         <em class='brace'>}</em>
+<a id='L116' name='L116'></a> 116 <em class='brace'>}</em>
+<a id='L117' name='L117'></a> 117 
+<a id='L118' name='L118'></a> 118 <strong class='reserved'>static</strong>
+<a id='L119' name='L119'></a> 119 <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a>
+<a id='L120' name='L120'></a> 120 <a href='../R/1255.html' title='Multiple referred from 13 places.'>dolseek</a>(<strong class='reserved'>int</strong> fd, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name, <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> pos, <strong class='reserved'>int</strong> whence)
+<a id='L121' name='L121'></a> 121 <em class='brace'>{</em>
+<a id='L122' name='L122'></a> 122         <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> ret;
+<a id='L123' name='L123'></a> 123 
+<a id='L124' name='L124'></a> 124         ret = lseek(fd, pos, whence);
+<a id='L125' name='L125'></a> 125         <strong class='reserved'>if</strong> (ret == -1) <em class='brace'>{</em>
+<a id='L126' name='L126'></a> 126                 <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "%s: lseek", name);
+<a id='L127' name='L127'></a> 127         <em class='brace'>}</em>
+<a id='L128' name='L128'></a> 128         <strong class='reserved'>return</strong> ret;
+<a id='L129' name='L129'></a> 129 <em class='brace'>}</em>
+<a id='L130' name='L130'></a> 130 
+<a id='L131' name='L131'></a> 131 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L132' name='L132'></a> 132 <em class='comment'>// file I/O</em>
+<a id='L133' name='L133'></a> 133 
+<a id='L134' name='L134'></a> 134 <strong class='reserved'>static</strong>
+<a id='L135' name='L135'></a> 135 <strong class='reserved'>void</strong>
+<a id='L136' name='L136'></a> 136 <a href='../R/1813.html' title='Multiple referred from 2 places.'>readfile</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name)
+<a id='L137' name='L137'></a> 137 <em class='brace'>{</em>
+<a id='L138' name='L138'></a> 138         <strong class='reserved'>int</strong> fd, closefd;
+<a id='L139' name='L139'></a> 139         <strong class='reserved'>struct</strong> <a href='../S/466.html#L56' title='Defined at 56 in userland/bin/tac/tac.c.'>indexentry</a> x;
+<a id='L140' name='L140'></a> 140         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> len, remaining, here;
+<a id='L141' name='L141'></a> 141         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *s, *t;
+<a id='L142' name='L142'></a> 142         
+<a id='L143' name='L143'></a> 143         <strong class='reserved'>if</strong> (name == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a> || !<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, "-")) <em class='brace'>{</em>
+<a id='L144' name='L144'></a> 144                 fd = <a href='../S/170.html#L34' title='Defined at 34 in kern/include/kern/unistd.h.'>STDIN_FILENO</a>;
+<a id='L145' name='L145'></a> 145                 closefd = -1;
+<a id='L146' name='L146'></a> 146         <em class='brace'>}</em>
+<a id='L147' name='L147'></a> 147         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L148' name='L148'></a> 148                 fd = open(name, <a href='../S/155.html#L43' title='Defined at 43 in kern/include/kern/fcntl.h.'>O_RDONLY</a>);
+<a id='L149' name='L149'></a> 149                 <strong class='reserved'>if</strong> (fd &lt; 0) <em class='brace'>{</em>
+<a id='L150' name='L150'></a> 150                         <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "%s", name);
+<a id='L151' name='L151'></a> 151                 <em class='brace'>}</em>
+<a id='L152' name='L152'></a> 152                 closefd = fd;
+<a id='L153' name='L153'></a> 153         <em class='brace'>}</em>
+<a id='L154' name='L154'></a> 154 
+<a id='L155' name='L155'></a> 155         x.pos = 0;
+<a id='L156' name='L156'></a> 156         x.len = 0;
+<a id='L157' name='L157'></a> 157         <strong class='reserved'>while</strong> (1) <em class='brace'>{</em>
+<a id='L158' name='L158'></a> 158                 len = <a href='../D/1623.html' title='Multiple defined in 2 places.'>doread</a>(fd, name, buf, <strong class='reserved'>sizeof</strong>(buf));
+<a id='L159' name='L159'></a> 159                 <strong class='reserved'>if</strong> (len == 0) <em class='brace'>{</em>
+<a id='L160' name='L160'></a> 160                         <strong class='reserved'>break</strong>;
+<a id='L161' name='L161'></a> 161                 <em class='brace'>}</em>
+<a id='L162' name='L162'></a> 162 
+<a id='L163' name='L163'></a> 163                 remaining = len;
+<a id='L164' name='L164'></a> 164                 <strong class='reserved'>for</strong> (s = buf; s != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>; s = t) <em class='brace'>{</em>
+<a id='L165' name='L165'></a> 165                         t = <a href='../S/466.html#L72' title='Defined at 72 in userland/bin/tac/tac.c.'>memchr</a>(s, '\n', remaining);
+<a id='L166' name='L166'></a> 166                         <strong class='reserved'>if</strong> (t != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L167' name='L167'></a> 167                                 t++;
+<a id='L168' name='L168'></a> 168                                 here = (t - s);
+<a id='L169' name='L169'></a> 169                                 x.len += here;
+<a id='L170' name='L170'></a> 170                                 remaining -= here;
+<a id='L171' name='L171'></a> 171                                 <a href='../D/1639.html' title='Multiple defined in 2 places.'>dowrite</a>(indexfd, indexname, &amp;x, <strong class='reserved'>sizeof</strong>(x));
+<a id='L172' name='L172'></a> 172                                 x.pos += x.len;
+<a id='L173' name='L173'></a> 173                                 x.len = 0;
+<a id='L174' name='L174'></a> 174                         <em class='brace'>}</em>
+<a id='L175' name='L175'></a> 175                         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L176' name='L176'></a> 176                                 x.len += remaining;
+<a id='L177' name='L177'></a> 177                         <em class='brace'>}</em>
+<a id='L178' name='L178'></a> 178                 <em class='brace'>}</em>
+<a id='L179' name='L179'></a> 179                 <a href='../D/1639.html' title='Multiple defined in 2 places.'>dowrite</a>(datafd, dataname, buf, len);
+<a id='L180' name='L180'></a> 180         <em class='brace'>}</em>
+<a id='L181' name='L181'></a> 181         <strong class='reserved'>if</strong> (x.len &gt; 0) <em class='brace'>{</em>
+<a id='L182' name='L182'></a> 182                 <a href='../D/1639.html' title='Multiple defined in 2 places.'>dowrite</a>(indexfd, indexname, &amp;x, <strong class='reserved'>sizeof</strong>(x));
+<a id='L183' name='L183'></a> 183         <em class='brace'>}</em>
+<a id='L184' name='L184'></a> 184 
+<a id='L185' name='L185'></a> 185         <strong class='reserved'>if</strong> (closefd != -1) <em class='brace'>{</em>
+<a id='L186' name='L186'></a> 186                 close(closefd);
+<a id='L187' name='L187'></a> 187         <em class='brace'>}</em>
+<a id='L188' name='L188'></a> 188 <em class='brace'>}</em>
+<a id='L189' name='L189'></a> 189 
+<a id='L190' name='L190'></a> 190 <strong class='reserved'>static</strong>
+<a id='L191' name='L191'></a> 191 <strong class='reserved'>void</strong>
+<a id='L192' name='L192'></a> 192 <a href='../S/466.html#L288' title='Referred from 288 in userland/bin/tac/tac.c.'>dumpdata</a>(<strong class='reserved'>void</strong>)
+<a id='L193' name='L193'></a> 193 <em class='brace'>{</em>
+<a id='L194' name='L194'></a> 194         <strong class='reserved'>struct</strong> <a href='../S/466.html#L56' title='Defined at 56 in userland/bin/tac/tac.c.'>indexentry</a> x;
+<a id='L195' name='L195'></a> 195         <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> indexsize, pos, done;
+<a id='L196' name='L196'></a> 196         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> amount, len;
+<a id='L197' name='L197'></a> 197 
+<a id='L198' name='L198'></a> 198         indexsize = <a href='../D/1619.html' title='Multiple defined in 3 places.'>dolseek</a>(indexfd, indexname, 0, <a href='../S/161.html#L43' title='Defined at 43 in kern/include/kern/seek.h.'>SEEK_CUR</a>);
+<a id='L199' name='L199'></a> 199         pos = indexsize;
+<a id='L200' name='L200'></a> 200         <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(pos % <strong class='reserved'>sizeof</strong>(x) == 0);
+<a id='L201' name='L201'></a> 201         <strong class='reserved'>while</strong> (pos &gt; 0) <em class='brace'>{</em>
+<a id='L202' name='L202'></a> 202                 pos -= <strong class='reserved'>sizeof</strong>(x);
+<a id='L203' name='L203'></a> 203                 <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(pos &gt;= 0);
+<a id='L204' name='L204'></a> 204                 <a href='../D/1619.html' title='Multiple defined in 3 places.'>dolseek</a>(indexfd, indexname, pos, <a href='../S/161.html#L42' title='Defined at 42 in kern/include/kern/seek.h.'>SEEK_SET</a>);
+<a id='L205' name='L205'></a> 205 
+<a id='L206' name='L206'></a> 206                 len = <a href='../D/1623.html' title='Multiple defined in 2 places.'>doread</a>(indexfd, indexname, &amp;x, <strong class='reserved'>sizeof</strong>(x));
+<a id='L207' name='L207'></a> 207                 <strong class='reserved'>if</strong> (len != <strong class='reserved'>sizeof</strong>(x)) <em class='brace'>{</em>
+<a id='L208' name='L208'></a> 208                         <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "%s: read: Unexpected EOF", indexname);
+<a id='L209' name='L209'></a> 209                 <em class='brace'>}</em>
+<a id='L210' name='L210'></a> 210                 <a href='../D/1619.html' title='Multiple defined in 3 places.'>dolseek</a>(datafd, dataname, x.pos, <a href='../S/161.html#L42' title='Defined at 42 in kern/include/kern/seek.h.'>SEEK_SET</a>);
+<a id='L211' name='L211'></a> 211 
+<a id='L212' name='L212'></a> 212                 <strong class='reserved'>for</strong> (done = 0; done &lt; x.len; done += amount) <em class='brace'>{</em>
+<a id='L213' name='L213'></a> 213                         amount = <strong class='reserved'>sizeof</strong>(buf);
+<a id='L214' name='L214'></a> 214                         <strong class='reserved'>if</strong> ((<a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a>)amount &gt; x.len - done) <em class='brace'>{</em>
+<a id='L215' name='L215'></a> 215                                 amount = x.len - done;
+<a id='L216' name='L216'></a> 216                         <em class='brace'>}</em>
+<a id='L217' name='L217'></a> 217                         len = <a href='../D/1623.html' title='Multiple defined in 2 places.'>doread</a>(datafd, dataname, buf, amount);
+<a id='L218' name='L218'></a> 218                         <strong class='reserved'>if</strong> (len != amount) <em class='brace'>{</em>
+<a id='L219' name='L219'></a> 219                                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "%s: read: Unexpected short count"
+<a id='L220' name='L220'></a> 220                                      " %zu of %zu", dataname, len, amount);
+<a id='L221' name='L221'></a> 221                         <em class='brace'>}</em>
+<a id='L222' name='L222'></a> 222                         <a href='../D/1639.html' title='Multiple defined in 2 places.'>dowrite</a>(<a href='../S/170.html#L35' title='Defined at 35 in kern/include/kern/unistd.h.'>STDOUT_FILENO</a>, "stdout", buf, len);
+<a id='L223' name='L223'></a> 223                 <em class='brace'>}</em>
+<a id='L224' name='L224'></a> 224         <em class='brace'>}</em>
+<a id='L225' name='L225'></a> 225 <em class='brace'>}</em>
+<a id='L226' name='L226'></a> 226 
+<a id='L227' name='L227'></a> 227 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L228' name='L228'></a> 228 <em class='comment'>// main</em>
+<a id='L229' name='L229'></a> 229 
+<a id='L230' name='L230'></a> 230 <strong class='reserved'>static</strong>
+<a id='L231' name='L231'></a> 231 <strong class='reserved'>int</strong>
+<a id='L232' name='L232'></a> 232 <a href='../R/1720.html' title='Multiple referred from 2 places.'>openscratch</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name, <strong class='reserved'>int</strong> flags, <a href='../D/2074.html' title='Multiple defined in 2 places.'>mode_t</a> mode)
+<a id='L233' name='L233'></a> 233 <em class='brace'>{</em>
+<a id='L234' name='L234'></a> 234         <strong class='reserved'>int</strong> fd;
+<a id='L235' name='L235'></a> 235 
+<a id='L236' name='L236'></a> 236         fd = open(name, flags, mode);
+<a id='L237' name='L237'></a> 237         <strong class='reserved'>if</strong> (fd &lt; 0) <em class='brace'>{</em>
+<a id='L238' name='L238'></a> 238                 <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "%s", name);
+<a id='L239' name='L239'></a> 239         <em class='brace'>}</em>
+<a id='L240' name='L240'></a> 240         <strong class='reserved'>if</strong> (remove(name) &lt; 0) <em class='brace'>{</em>
+<a id='L241' name='L241'></a> 241                 <strong class='reserved'>if</strong> (errno != <a href='../S/154.html#L45' title='Defined at 45 in kern/include/kern/errno.h.'>ENOSYS</a>) <em class='brace'>{</em>
+<a id='L242' name='L242'></a> 242                         <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "%s: remove", name);
+<a id='L243' name='L243'></a> 243                 <em class='brace'>}</em>
+<a id='L244' name='L244'></a> 244         <em class='brace'>}</em>
+<a id='L245' name='L245'></a> 245         <strong class='reserved'>return</strong> fd;
+<a id='L246' name='L246'></a> 246 <em class='brace'>}</em>
+<a id='L247' name='L247'></a> 247 
+<a id='L248' name='L248'></a> 248 <strong class='reserved'>static</strong>
+<a id='L249' name='L249'></a> 249 <strong class='reserved'>void</strong>
+<a id='L250' name='L250'></a> 250 <a href='../R/1717.html' title='Multiple referred from 3 places.'>openfiles</a>(<strong class='reserved'>void</strong>)
+<a id='L251' name='L251'></a> 251 <em class='brace'>{</em>
+<a id='L252' name='L252'></a> 252         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid;
+<a id='L253' name='L253'></a> 253 
+<a id='L254' name='L254'></a> 254         pid = getpid();
+<a id='L255' name='L255'></a> 255 
+<a id='L256' name='L256'></a> 256         <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(dataname, <strong class='reserved'>sizeof</strong>(dataname), ".tmp.tacdata.%d", (<strong class='reserved'>int</strong>)pid);
+<a id='L257' name='L257'></a> 257         datafd = <a href='../S/466.html#L232' title='Defined at 232 in userland/bin/tac/tac.c.'>openscratch</a>(dataname, <a href='../S/155.html#L45' title='Defined at 45 in kern/include/kern/fcntl.h.'>O_RDWR</a>|<a href='../S/155.html#L47' title='Defined at 47 in kern/include/kern/fcntl.h.'>O_CREAT</a>|<a href='../S/155.html#L49' title='Defined at 49 in kern/include/kern/fcntl.h.'>O_TRUNC</a>, 0664);
+<a id='L258' name='L258'></a> 258 
+<a id='L259' name='L259'></a> 259         <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(indexname, <strong class='reserved'>sizeof</strong>(indexname), ".tmp.tacindex.%d", (<strong class='reserved'>int</strong>)pid);
+<a id='L260' name='L260'></a> 260         indexfd = <a href='../S/466.html#L232' title='Defined at 232 in userland/bin/tac/tac.c.'>openscratch</a>(indexname, <a href='../S/155.html#L45' title='Defined at 45 in kern/include/kern/fcntl.h.'>O_RDWR</a>|<a href='../S/155.html#L47' title='Defined at 47 in kern/include/kern/fcntl.h.'>O_CREAT</a>|<a href='../S/155.html#L49' title='Defined at 49 in kern/include/kern/fcntl.h.'>O_TRUNC</a>, 0664);
+<a id='L261' name='L261'></a> 261 <em class='brace'>}</em>
+<a id='L262' name='L262'></a> 262 
+<a id='L263' name='L263'></a> 263 <strong class='reserved'>static</strong>
+<a id='L264' name='L264'></a> 264 <strong class='reserved'>void</strong>
+<a id='L265' name='L265'></a> 265 <a href='../S/466.html#L290' title='Referred from 290 in userland/bin/tac/tac.c.'>closefiles</a>(<strong class='reserved'>void</strong>)
+<a id='L266' name='L266'></a> 266 <em class='brace'>{</em>
+<a id='L267' name='L267'></a> 267         close(datafd);
+<a id='L268' name='L268'></a> 268         close(indexfd);
+<a id='L269' name='L269'></a> 269         indexfd = datafd = -1;
+<a id='L270' name='L270'></a> 270 <em class='brace'>}</em>
+<a id='L271' name='L271'></a> 271 
+<a id='L272' name='L272'></a> 272 <strong class='reserved'>int</strong>
+<a id='L273' name='L273'></a> 273 main(<strong class='reserved'>int</strong> argc, <strong class='reserved'>char</strong> *argv[])
+<a id='L274' name='L274'></a> 274 <em class='brace'>{</em>
+<a id='L275' name='L275'></a> 275         <strong class='reserved'>int</strong> i;
+<a id='L276' name='L276'></a> 276 
+<a id='L277' name='L277'></a> 277         <a href='../D/2126.html' title='Multiple defined in 2 places.'>openfiles</a>();
+<a id='L278' name='L278'></a> 278 
+<a id='L279' name='L279'></a> 279         <strong class='reserved'>if</strong> (argc &gt; 1) <em class='brace'>{</em>
+<a id='L280' name='L280'></a> 280                 <strong class='reserved'>for</strong> (i=1; i&lt;argc; i++) <em class='brace'>{</em>
+<a id='L281' name='L281'></a> 281                         <a href='../S/466.html#L136' title='Defined at 136 in userland/bin/tac/tac.c.'>readfile</a>(argv[i]);
+<a id='L282' name='L282'></a> 282                 <em class='brace'>}</em>
+<a id='L283' name='L283'></a> 283         <em class='brace'>}</em>
+<a id='L284' name='L284'></a> 284         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L285' name='L285'></a> 285                 <a href='../S/466.html#L136' title='Defined at 136 in userland/bin/tac/tac.c.'>readfile</a>(<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L286' name='L286'></a> 286         <em class='brace'>}</em>
+<a id='L287' name='L287'></a> 287 
+<a id='L288' name='L288'></a> 288         <a href='../S/466.html#L192' title='Defined at 192 in userland/bin/tac/tac.c.'>dumpdata</a>();
+<a id='L289' name='L289'></a> 289 
+<a id='L290' name='L290'></a> 290         <a href='../S/466.html#L265' title='Defined at 265 in userland/bin/tac/tac.c.'>closefiles</a>();
+<a id='L291' name='L291'></a> 291         <strong class='reserved'>return</strong> 0;
+<a id='L292' name='L292'></a> 292 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L72'>[^]</a><a href='#L273'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

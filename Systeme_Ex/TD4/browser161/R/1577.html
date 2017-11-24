@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>lock</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/86.html#L72'>lock</a>               72 kern/dev/generic/console.c static struct lock *con_userlock_read = NULL;</span>
+<span class='curline'><a href='../S/86.html#L73'>lock</a>               73 kern/dev/generic/console.c static struct lock *con_userlock_write = NULL;</span>
+<span class='curline'><a href='../S/86.html#L249'>lock</a>              249 kern/dev/generic/console.c 	struct lock *lk;</span>
+<span class='curline'><a href='../S/86.html#L347'>lock</a>              347 kern/dev/generic/console.c 	struct lock *rlk, *wlk;</span>
+<span class='curline'><a href='../S/97.html#L50'>lock</a>               50 kern/dev/lamebus/emu.h 	struct lock *e_lock;</span>
+<span class='curline'><a href='../S/123.html#L55'>lock</a>               55 kern/fs/semfs/semfs.h 	struct lock *sems_lock;			/* Lock to protect count */</span>
+<span class='curline'><a href='../S/123.html#L92'>lock</a>               92 kern/fs/semfs/semfs.h 	struct lock *semfs_tablelock;		/* Lock for following */</span>
+<span class='curline'><a href='../S/123.html#L96'>lock</a>               96 kern/fs/semfs/semfs.h 	struct lock *semfs_dirlock;		/* Lock for following */</span>
+<span class='curline'><a href='../S/184.html#L82'>lock</a>               82 kern/include/synch.h struct lock *lock_create(const char *name);</span>
+<span class='curline'><a href='../S/184.html#L83'>lock</a>               83 kern/include/synch.h void lock_destroy(struct lock *);</span>
+<span class='curline'><a href='../S/184.html#L96'>lock</a>               96 kern/include/synch.h void lock_acquire(struct lock *);</span>
+<span class='curline'><a href='../S/184.html#L97'>lock</a>               97 kern/include/synch.h void lock_release(struct lock *);</span>
+<span class='curline'><a href='../S/184.html#L98'>lock</a>               98 kern/include/synch.h bool lock_do_i_hold(struct lock *);</span>
+<span class='curline'><a href='../S/184.html#L137'>lock</a>              137 kern/include/synch.h void cv_wait(struct cv *cv, struct lock *lock);</span>
+<span class='curline'><a href='../S/184.html#L138'>lock</a>              138 kern/include/synch.h void cv_signal(struct cv *cv, struct lock *lock);</span>
+<span class='curline'><a href='../S/184.html#L139'>lock</a>              139 kern/include/synch.h void cv_broadcast(struct cv *cv, struct lock *lock);</span>
+<span class='curline'><a href='../S/201.html#L48'>lock</a>               48 kern/lib/kprintf.c static struct lock *kprintf_lock;</span>
+<span class='curline'><a href='../S/206.html#L275'>lock</a>              275 kern/main/menu.c 	struct lock *lock1;</span>
+<span class='curline'><a href='../S/206.html#L276'>lock</a>              276 kern/main/menu.c 	struct lock *lock2;</span>
+<span class='curline'><a href='../S/218.html#L50'>lock</a>               50 kern/test/synchtest.c static struct lock *testlock;</span>
+<span class='curline'><a href='../S/218.html#L313'>lock</a>              313 kern/test/synchtest.c static struct lock *testlocks[NCVS];</span>
+<span class='curline'><a href='../S/226.html#L141'>lock</a>              141 kern/thread/synch.c struct lock *</span>
+<span class='curline'><a href='../S/226.html#L144'>lock</a>              144 kern/thread/synch.c         struct lock *lock;</span>
+<span class='curline'><a href='../S/226.html#L146'>lock</a>              146 kern/thread/synch.c         lock = kmalloc(sizeof(*lock));</span>
+<span class='curline'><a href='../S/226.html#L147'>lock</a>              147 kern/thread/synch.c         if (lock == NULL) {</span>
+<span class='curline'><a href='../S/226.html#L151'>lock</a>              151 kern/thread/synch.c         lock-&gt;lk_name = kstrdup(name);</span>
+<span class='curline'><a href='../S/226.html#L152'>lock</a>              152 kern/thread/synch.c         if (lock-&gt;lk_name == NULL) {</span>
+<span class='curline'><a href='../S/226.html#L153'>lock</a>              153 kern/thread/synch.c                 kfree(lock);</span>
+<span class='curline'><a href='../S/226.html#L157'>lock</a>              157 kern/thread/synch.c 	HANGMAN_LOCKABLEINIT(&amp;lock-&gt;lk_hangman, lock-&gt;lk_name);</span>
+<span class='curline'><a href='../S/226.html#L161'>lock</a>              161 kern/thread/synch.c         return lock;</span>
+<span class='curline'><a href='../S/226.html#L165'>lock</a>              165 kern/thread/synch.c lock_destroy(struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L167'>lock</a>              167 kern/thread/synch.c         KASSERT(lock != NULL);</span>
+<span class='curline'><a href='../S/226.html#L171'>lock</a>              171 kern/thread/synch.c         kfree(lock-&gt;lk_name);</span>
+<span class='curline'><a href='../S/226.html#L172'>lock</a>              172 kern/thread/synch.c         kfree(lock);</span>
+<span class='curline'><a href='../S/226.html#L176'>lock</a>              176 kern/thread/synch.c lock_acquire(struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L183'>lock</a>              183 kern/thread/synch.c         (void)lock;  // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/226.html#L190'>lock</a>              190 kern/thread/synch.c lock_release(struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L197'>lock</a>              197 kern/thread/synch.c         (void)lock;  // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/226.html#L201'>lock</a>              201 kern/thread/synch.c lock_do_i_hold(struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L205'>lock</a>              205 kern/thread/synch.c         (void)lock;  // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/226.html#L248'>lock</a>              248 kern/thread/synch.c cv_wait(struct cv *cv, struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L252'>lock</a>              252 kern/thread/synch.c         (void)lock;  // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/226.html#L256'>lock</a>              256 kern/thread/synch.c cv_signal(struct cv *cv, struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L260'>lock</a>              260 kern/thread/synch.c 	(void)lock;  // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/226.html#L264'>lock</a>              264 kern/thread/synch.c cv_broadcast(struct cv *cv, struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L268'>lock</a>              268 kern/thread/synch.c 	(void)lock;  // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/233.html#L94'>lock</a>               94 kern/vfs/vfslist.c static struct lock *vfs_biglock;</span>
+</pre>
+</body>
+</html>

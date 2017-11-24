@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>M_SIZE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/514.html#L261'>M_SIZE</a>            261 userland/lib/libc/stdlib/malloc.c 		      (unsigned long) M_SIZE(mh),</span>
+<span class='curline'><a href='../S/514.html#L321'>M_SIZE</a>            321 userland/lib/libc/stdlib/malloc.c 	if (M_SIZE(mh) - size &lt; 2*MBLOCKSIZE) {</span>
+<span class='curline'><a href='../S/514.html#L328'>M_SIZE</a>            328 userland/lib/libc/stdlib/malloc.c 	oldsize = M_SIZE(mh);</span>
+<span class='curline'><a href='../S/514.html#L407'>M_SIZE</a>            407 userland/lib/libc/stdlib/malloc.c 		if (M_SIZE(mh) &lt; size) {</span>
+<span class='curline'><a href='../S/514.html#L437'>M_SIZE</a>            437 userland/lib/libc/stdlib/malloc.c 		assert(size &gt; M_SIZE(mh));</span>
+<span class='curline'><a href='../S/514.html#L438'>M_SIZE</a>            438 userland/lib/libc/stdlib/malloc.c 		morespace = size - M_SIZE(mh);</span>
+<span class='curline'><a href='../S/514.html#L519'>M_SIZE</a>            519 userland/lib/libc/stdlib/malloc.c 	mh-&gt;mh_nextblock = M_MKFIELD(MBLOCKSIZE + M_SIZE(mh) +</span>
+<span class='curline'><a href='../S/514.html#L520'>M_SIZE</a>            520 userland/lib/libc/stdlib/malloc.c 				     MBLOCKSIZE + M_SIZE(mhnext));</span>
+<span class='curline'><a href='../S/514.html#L573'>M_SIZE</a>            573 userland/lib/libc/stdlib/malloc.c 	__malloc_deadbeef(M_DATA(mh), M_SIZE(mh));</span>
+</pre>
+</body>
+</html>

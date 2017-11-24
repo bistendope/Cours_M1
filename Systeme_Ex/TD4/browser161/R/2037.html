@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>sfs_vnode</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/128.html#L49'>sfs_vnode</a>          49 kern/fs/sfs/sfs_bmap.c sfs_bmap(struct sfs_vnode *sv, uint32_t fileblock, bool doalloc,</span>
+<span class='curline'><a href='../S/128.html#L204'>sfs_vnode</a>         204 kern/fs/sfs/sfs_bmap.c sfs_itrunc(struct sfs_vnode *sv, off_t len)</span>
+<span class='curline'><a href='../S/129.html#L48'>sfs_vnode</a>          48 kern/fs/sfs/sfs_dir.c sfs_readdir(struct sfs_vnode *sv, int slot, struct sfs_direntry *sd)</span>
+<span class='curline'><a href='../S/129.html#L64'>sfs_vnode</a>          64 kern/fs/sfs/sfs_dir.c sfs_writedir(struct sfs_vnode *sv, int slot, struct sfs_direntry *sd)</span>
+<span class='curline'><a href='../S/129.html#L82'>sfs_vnode</a>          82 kern/fs/sfs/sfs_dir.c sfs_dir_nentries(struct sfs_vnode *sv)</span>
+<span class='curline'><a href='../S/129.html#L104'>sfs_vnode</a>         104 kern/fs/sfs/sfs_dir.c sfs_dir_findname(struct sfs_vnode *sv, const char *name,</span>
+<span class='curline'><a href='../S/129.html#L154'>sfs_vnode</a>         154 kern/fs/sfs/sfs_dir.c sfs_dir_link(struct sfs_vnode *sv, const char *name, uint32_t ino, int *slot)</span>
+<span class='curline'><a href='../S/129.html#L196'>sfs_vnode</a>         196 kern/fs/sfs/sfs_dir.c sfs_dir_unlink(struct sfs_vnode *sv, int slot)</span>
+<span class='curline'><a href='../S/129.html#L213'>sfs_vnode</a>         213 kern/fs/sfs/sfs_dir.c sfs_lookonce(struct sfs_vnode *sv, const char *name,</span>
+<span class='curline'><a href='../S/129.html#L214'>sfs_vnode</a>         214 kern/fs/sfs/sfs_dir.c 		struct sfs_vnode **ret,</span>
+<span class='curline'><a href='../S/131.html#L47'>sfs_vnode</a>          47 kern/fs/sfs/sfs_inode.c sfs_sync_inode(struct sfs_vnode *sv)</span>
+<span class='curline'><a href='../S/131.html#L71'>sfs_vnode</a>          71 kern/fs/sfs/sfs_inode.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/131.html#L122'>sfs_vnode</a>         122 kern/fs/sfs/sfs_inode.c 		struct sfs_vnode *sv2 = v2-&gt;vn_data;</span>
+<span class='curline'><a href='../S/131.html#L151'>sfs_vnode</a>         151 kern/fs/sfs/sfs_inode.c 		 struct sfs_vnode **ret)</span>
+<span class='curline'><a href='../S/131.html#L154'>sfs_vnode</a>         154 kern/fs/sfs/sfs_inode.c 	struct sfs_vnode *sv;</span>
+<span class='curline'><a href='../S/131.html#L187'>sfs_vnode</a>         187 kern/fs/sfs/sfs_inode.c 	sv = kmalloc(sizeof(struct sfs_vnode));</span>
+<span class='curline'><a href='../S/131.html#L262'>sfs_vnode</a>         262 kern/fs/sfs/sfs_inode.c sfs_makeobj(struct sfs_fs *sfs, int type, struct sfs_vnode **ret)</span>
+<span class='curline'><a href='../S/131.html#L296'>sfs_vnode</a>         296 kern/fs/sfs/sfs_inode.c 	struct sfs_vnode *sv;</span>
+<span class='curline'><a href='../S/132.html#L150'>sfs_vnode</a>         150 kern/fs/sfs/sfs_io.c sfs_partialio(struct sfs_vnode *sv, struct uio *uio,</span>
+<span class='curline'><a href='../S/132.html#L228'>sfs_vnode</a>         228 kern/fs/sfs/sfs_io.c sfs_blockio(struct sfs_vnode *sv, struct uio *uio)</span>
+<span class='curline'><a href='../S/132.html#L292'>sfs_vnode</a>         292 kern/fs/sfs/sfs_io.c sfs_io(struct sfs_vnode *sv, struct uio *uio)</span>
+<span class='curline'><a href='../S/132.html#L406'>sfs_vnode</a>         406 kern/fs/sfs/sfs_io.c sfs_metaio(struct sfs_vnode *sv, off_t actualpos, void *data, size_t len,</span>
+<span class='curline'><a href='../S/133.html#L100'>sfs_vnode</a>         100 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L119'>sfs_vnode</a>         119 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L156'>sfs_vnode</a>         156 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L185'>sfs_vnode</a>         185 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L224'>sfs_vnode</a>         224 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L252'>sfs_vnode</a>         252 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L267'>sfs_vnode</a>         267 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = vv-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L287'>sfs_vnode</a>         287 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L288'>sfs_vnode</a>         288 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *newguy;</span>
+<span class='curline'><a href='../S/133.html#L358'>sfs_vnode</a>         358 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = dir-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L359'>sfs_vnode</a>         359 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *f = file-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L394'>sfs_vnode</a>         394 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = dir-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L395'>sfs_vnode</a>         395 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *victim;</span>
+<span class='curline'><a href='../S/133.html#L435'>sfs_vnode</a>         435 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = d1-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L437'>sfs_vnode</a>         437 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *g1;</span>
+<span class='curline'><a href='../S/133.html#L526'>sfs_vnode</a>         526 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L558'>sfs_vnode</a>         558 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L559'>sfs_vnode</a>         559 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *final;</span>
+<span class='curline'><a href='../S/134.html#L51'>sfs_vnode</a>          51 kern/fs/sfs/sfsprivate.h int sfs_bmap(struct sfs_vnode *sv, uint32_t fileblock, bool doalloc,</span>
+<span class='curline'><a href='../S/134.html#L53'>sfs_vnode</a>          53 kern/fs/sfs/sfsprivate.h int sfs_itrunc(struct sfs_vnode *sv, off_t len);</span>
+<span class='curline'><a href='../S/134.html#L56'>sfs_vnode</a>          56 kern/fs/sfs/sfsprivate.h int sfs_dir_findname(struct sfs_vnode *sv, const char *name,</span>
+<span class='curline'><a href='../S/134.html#L58'>sfs_vnode</a>          58 kern/fs/sfs/sfsprivate.h int sfs_dir_link(struct sfs_vnode *sv, const char *name, uint32_t ino,</span>
+<span class='curline'><a href='../S/134.html#L60'>sfs_vnode</a>          60 kern/fs/sfs/sfsprivate.h int sfs_dir_unlink(struct sfs_vnode *sv, int slot);</span>
+<span class='curline'><a href='../S/134.html#L61'>sfs_vnode</a>          61 kern/fs/sfs/sfsprivate.h int sfs_lookonce(struct sfs_vnode *sv, const char *name,</span>
+<span class='curline'><a href='../S/134.html#L62'>sfs_vnode</a>          62 kern/fs/sfs/sfsprivate.h 		struct sfs_vnode **ret,</span>
+<span class='curline'><a href='../S/134.html#L66'>sfs_vnode</a>          66 kern/fs/sfs/sfsprivate.h int sfs_sync_inode(struct sfs_vnode *sv);</span>
+<span class='curline'><a href='../S/134.html#L69'>sfs_vnode</a>          69 kern/fs/sfs/sfsprivate.h 		struct sfs_vnode **ret);</span>
+<span class='curline'><a href='../S/134.html#L70'>sfs_vnode</a>          70 kern/fs/sfs/sfsprivate.h int sfs_makeobj(struct sfs_fs *sfs, int type, struct sfs_vnode **ret);</span>
+<span class='curline'><a href='../S/134.html#L76'>sfs_vnode</a>          76 kern/fs/sfs/sfsprivate.h int sfs_io(struct sfs_vnode *sv, struct uio *uio);</span>
+<span class='curline'><a href='../S/134.html#L77'>sfs_vnode</a>          77 kern/fs/sfs/sfsprivate.h int sfs_metaio(struct sfs_vnode *sv, off_t pos, void *data, size_t len,</span>
+</pre>
+</body>
+</html>

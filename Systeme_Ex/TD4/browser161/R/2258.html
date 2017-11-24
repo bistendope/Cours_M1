@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>uio_rw</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/86.html#L253'>uio_rw</a>            253 kern/dev/generic/console.c 	if (uio-&gt;uio_rw==UIO_READ) {</span>
+<span class='curline'><a href='../S/86.html#L264'>uio_rw</a>            264 kern/dev/generic/console.c 		if (uio-&gt;uio_rw==UIO_READ) {</span>
+<span class='curline'><a href='../S/88.html#L78'>uio_rw</a>             78 kern/dev/generic/random.c 	if (uio-&gt;uio_rw != UIO_READ) {</span>
+<span class='curline'><a href='../S/96.html#L274'>uio_rw</a>            274 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L334'>uio_rw</a>            334 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw == UIO_WRITE);</span>
+<span class='curline'><a href='../S/96.html#L548'>uio_rw</a>            548 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L582'>uio_rw</a>            582 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L604'>uio_rw</a>            604 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/101.html#L211'>uio_rw</a>            211 kern/dev/lamebus/lhd.c 	if (uio-&gt;uio_rw==UIO_WRITE) {</span>
+<span class='curline'><a href='../S/101.html#L225'>uio_rw</a>            225 kern/dev/lamebus/lhd.c 		if (uio-&gt;uio_rw == UIO_WRITE) {</span>
+<span class='curline'><a href='../S/101.html#L250'>uio_rw</a>            250 kern/dev/lamebus/lhd.c 		if (result==0 &amp;&amp; uio-&gt;uio_rw==UIO_READ) {</span>
+<span class='curline'><a href='../S/130.html#L72'>uio_rw</a>             72 kern/fs/sfs/sfs_fsops.c sfs_freemapio(struct sfs_fs *sfs, enum uio_rw rw)</span>
+<span class='curline'><a href='../S/132.html#L68'>uio_rw</a>             68 kern/fs/sfs/sfs_io.c 	      uio-&gt;uio_rw == UIO_READ ? "read" : "write",</span>
+<span class='curline'><a href='../S/132.html#L168'>uio_rw</a>            168 kern/fs/sfs/sfs_io.c 	bool doalloc = (uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/132.html#L189'>uio_rw</a>            189 kern/fs/sfs/sfs_io.c 		KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/132.html#L213'>uio_rw</a>            213 kern/fs/sfs/sfs_io.c 	if (uio-&gt;uio_rw == UIO_WRITE) {</span>
+<span class='curline'><a href='../S/132.html#L234'>uio_rw</a>            234 kern/fs/sfs/sfs_io.c 	bool doalloc = (uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/132.html#L256'>uio_rw</a>            256 kern/fs/sfs/sfs_io.c 		KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/132.html#L306'>uio_rw</a>            306 kern/fs/sfs/sfs_io.c 	if (uio-&gt;uio_rw == UIO_READ) {</span>
+<span class='curline'><a href='../S/132.html#L378'>uio_rw</a>            378 kern/fs/sfs/sfs_io.c 	    uio-&gt;uio_rw == UIO_WRITE &amp;&amp;</span>
+<span class='curline'><a href='../S/132.html#L407'>uio_rw</a>            407 kern/fs/sfs/sfs_io.c 	   enum uio_rw rw)</span>
+<span class='curline'><a href='../S/133.html#L103'>uio_rw</a>            103 kern/fs/sfs/sfs_vnops.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/133.html#L122'>uio_rw</a>            122 kern/fs/sfs/sfs_vnops.c 	KASSERT(uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/134.html#L78'>uio_rw</a>             78 kern/fs/sfs/sfsprivate.h 	       enum uio_rw rw);</span>
+<span class='curline'><a href='../S/191.html#L79'>uio_rw</a>             79 kern/include/uio.h 	enum uio_rw       uio_rw;	/* Whether op is a read or write */</span>
+<span class='curline'><a href='../S/191.html#L139'>uio_rw</a>            139 kern/include/uio.h 	       void *kbuf, size_t len, off_t pos, enum uio_rw rw);</span>
+<span class='curline'><a href='../S/204.html#L48'>uio_rw</a>             48 kern/lib/uio.c 	if (uio-&gt;uio_rw != UIO_READ &amp;&amp; uio-&gt;uio_rw != UIO_WRITE) {</span>
+<span class='curline'><a href='../S/204.html#L49'>uio_rw</a>             49 kern/lib/uio.c 		panic("uiomove: Invalid uio_rw %d\n", (int) uio-&gt;uio_rw);</span>
+<span class='curline'><a href='../S/204.html#L85'>uio_rw</a>             85 kern/lib/uio.c 			    if (uio-&gt;uio_rw == UIO_READ) {</span>
+<span class='curline'><a href='../S/204.html#L95'>uio_rw</a>             95 kern/lib/uio.c 			    if (uio-&gt;uio_rw == UIO_READ) {</span>
+<span class='curline'><a href='../S/204.html#L130'>uio_rw</a>            130 kern/lib/uio.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/204.html#L153'>uio_rw</a>            153 kern/lib/uio.c 	  void *kbuf, size_t len, off_t pos, enum uio_rw rw)</span>
+<span class='curline'><a href='../S/204.html#L162'>uio_rw</a>            162 kern/lib/uio.c 	u-&gt;uio_rw = rw;</span>
+<span class='curline'><a href='../S/209.html#L103'>uio_rw</a>            103 kern/syscall/loadelf.c 	u.uio_rw = UIO_READ;</span>
+<span class='curline'><a href='../S/229.html#L119'>uio_rw</a>            119 kern/vfs/device.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/229.html#L138'>uio_rw</a>            138 kern/vfs/device.c 	KASSERT(uio-&gt;uio_rw == UIO_WRITE);</span>
+<span class='curline'><a href='../S/230.html#L68'>uio_rw</a>             68 kern/vfs/devnull.c 	if (uio-&gt;uio_rw == UIO_WRITE) {</span>
+<span class='curline'><a href='../S/231.html#L151'>uio_rw</a>            151 kern/vfs/vfscwd.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+</pre>
+</body>
+</html>

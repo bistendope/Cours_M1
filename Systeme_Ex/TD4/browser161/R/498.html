@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>RESULTSFILE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/698.html#L54'>RESULTSFILE</a>        54 userland/testbin/schedpong/results.c 	fd = open(RESULTSFILE, O_RDWR|O_CREAT|O_TRUNC, 0664);</span>
+<span class='curline'><a href='../S/698.html#L56'>RESULTSFILE</a>        56 userland/testbin/schedpong/results.c 		err(1, "%s", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L59'>RESULTSFILE</a>        59 userland/testbin/schedpong/results.c 		warn("%s: close", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L70'>RESULTSFILE</a>        70 userland/testbin/schedpong/results.c 	if (remove(RESULTSFILE) == -1) {</span>
+<span class='curline'><a href='../S/698.html#L72'>RESULTSFILE</a>        72 userland/testbin/schedpong/results.c 			warn("%s: remove", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L89'>RESULTSFILE</a>        89 userland/testbin/schedpong/results.c 	resultsfile = open(RESULTSFILE, openflags, 0);</span>
+<span class='curline'><a href='../S/698.html#L91'>RESULTSFILE</a>        91 userland/testbin/schedpong/results.c 		err(1, "%s", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L104'>RESULTSFILE</a>       104 userland/testbin/schedpong/results.c 		warn("%s: close", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L122'>RESULTSFILE</a>       122 userland/testbin/schedpong/results.c 		err(1, "%s: lseek", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L126'>RESULTSFILE</a>       126 userland/testbin/schedpong/results.c 		err(1, "%s: write (seconds)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L129'>RESULTSFILE</a>       129 userland/testbin/schedpong/results.c 		errx(1, "%s: write (seconds): Short write", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L133'>RESULTSFILE</a>       133 userland/testbin/schedpong/results.c 		err(1, "%s: write (nsecs)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L136'>RESULTSFILE</a>       136 userland/testbin/schedpong/results.c 		errx(1, "%s: write (nsecs): Short write", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L153'>RESULTSFILE</a>       153 userland/testbin/schedpong/results.c 		err(1, "%s: lseek", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L157'>RESULTSFILE</a>       157 userland/testbin/schedpong/results.c 		err(1, "%s: read (seconds)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L160'>RESULTSFILE</a>       160 userland/testbin/schedpong/results.c 		errx(1, "%s: read (seconds): Unexpected EOF", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L164'>RESULTSFILE</a>       164 userland/testbin/schedpong/results.c 		err(1, "%s: read (nsecs)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L167'>RESULTSFILE</a>       167 userland/testbin/schedpong/results.c 		errx(1, "%s: read (nsecs): Unexpected EOF", RESULTSFILE);</span>
+</pre>
+</body>
+</html>

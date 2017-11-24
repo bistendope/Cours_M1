@@ -1,0 +1,191 @@
+{
+  "categorie" : "Afrique",
+  "donnee" : [
+    {"Nom" : "Eléphant d Afrique mâle",
+    "Nom_scientifique" : "Loxodonta africana",
+    "Classification" : "Espèce menacée",
+    "Habitat_naturel" : "Prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Une longue trompe deux puissantes défenses et deux grandes oreilles voilà l apanage de cet humble mangeur de feuilles.",
+    "Description" : "Plus grands que tous les éléphants les éléphants d Afrique sont aussi les plus grands animaux terrestres du monde. Les pieds de l éléphant ont quatre doigts à l avant et cinq doigts à l arrière. Les éléphants d Afrique vivent en clans qui se scindent en groupes familiaux plus petits. La femelle la plus vieille et la plus grande est la matriarche et guide les autres éléphants dans leur quête perpétuelle de nourriture et d eau. Les éléphants passent seize heures par jour à chercher suffisamment d herbe de fruits de feuilles d arbres et de vignes. Les éléphants ont une peau grisâtre dure mais souple une longue trompe et deux défenses en ivoire. Ils utilisent leurs trompes incroyablement souples pour communiquer entre eux par le toucher et l odorat. Les bébés éléphants sont allaités jusqu à cinq ans. Les petites femelles restent avec leurs mères jusqu à ce qu elles soient prêtes à avoir des petits et fonder leurs propres familles. Les petits mâles restent avec leurs mères jusqu à douze ans puis les quittent pour aller vivre avec d autres mâles en groupes de célibataires.",
+    "Infos_supp" : "Les éléphants peuvent manger de 200 kg à 300 kg de nourriture par jour.",
+    "image" : "elephantafriquemale.png"
+    },
+
+    {"Nom" : "Suricate debout",
+    "Nom_scientifique" : "Suricata suricatta",
+    "Classification" : "Espèce commune",
+    "Habitat_naturel" : "Désert",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Petites mangoustes les suricates sont des mammifères au corps svelte et aux membres fins.",
+    "Description" : "Les suricates élisent domicile dans le désert où ils vivent en colonies avec leurs familles. Ces colonies comprennent une vingtaine de membres qui construisent ensemble des galeries souterraines. Pendant la journée les suricates creusent pour trouver de la nourriture ou jouent sous la vigilance d un suricate qui monte la garde. Les suricates utilisent leurs griffes pour déterrer les insectes les serpents les lézards les araignées les scorpions et les plantes. Parfois ces mammifères peuvent se battre ou faire la course ! Extrêmement sociables les suricates ont pour habitude de se toiletter entre eux et de partager leurs terriers avec d autres animaux. Le pelage multicolore de chaque suricate possède des rayures uniques.",
+    "Infos_supp" : "Deux suricates adultes pèsent moins lourd que 45 litres de lait.",
+    "image" : "suricatedebout.png"
+    },
+
+    {"Nom" : "Chimpanzé mâle",
+    "Nom_scientifique" : "Pan troglodytes",
+    "Classification" : "Espèce en voie de disparition",
+    "Habitat_naturel" : "Tropiques",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Arborant un épais pelage noir les chimpanzés sont tout sauf idiots.",
+    "Description" : "Créatures incroyablement sociables les chimpanzés vivent en communautés regroupant des groupes de trois à six individus de la même famille. Ces communautés peuvent compter entre cinquante et cent cinquante chimpanzés obéissant à l autorité d un mâle dominant appelé mâle alpha. Dans la nature les femelles chimpanzés ont des petits tous les cinq ou six ans et les bébés peuvent rester avec leur mère pendant dix ans. Les chimpanzés se déplacent généralement sur quatre pattes mais ils sont également capables de se tenir debout sur leurs deux pattes pour courir sur une courte distance. Ils passent autant de temps dans les arbres que sur la terre ferme où ils passent leurs journées à chercher des fruits des noix des graines et des insectes. Leurs pouces et doigts opposés leur permettent de ramasser des objets avec une grande facilité. On sait également qu ils se servent de bâtons et de pierres comme outils comme les humains. Les chimpanzés peuvent vivre jusqu à soixante ans !",
+    "Infos_supp" : "Ils se servent d outils (lances branches) pour attraper leurs proies.",
+    "image" : "chimpanzemale.png"
+    },
+
+    {"Nom" : "Autruche",
+    "Nom_scientifique" : "Struthio camelus",
+    "Classification" : "Espèce commune",
+    "Habitat_naturel" : "Prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Oiseaux coureurs qui ne volent pas les autruches ont de longues pattes puissantes qui leur permettent de courir très vite.",
+    "Description" : "L autruche est le plus grand et le plus gros des oiseaux actuels. Bien qu elle ne puisse voler sa vue et son ouïe sont toutes deux excellentes ce qui lui permet de repérer de loin des prédateurs comme les lions et de fuir très rapidement. L autruche est capable de courir à plus de 60 km/h. Si elle ne parvient pas à fuir à temps elle peut se défendre en donnant de puissant coups de pattes. L autruche est un animal nomade qui vit en groupe (pas plus de cinquante membres) et se déplace souvent avec d autres animaux tels que les zèbres ou les antilopes. Elle mange généralement les graines et noix qu elle fait tomber des arbres en arrachant les feuilles et les branches mais ne dédaigne pas de manger quelques locustes ou les restes d autres animaux. Dépourvue de dents elle avale de petits cailloux pour mieux digérer sa nourriture. Tant qu elle mange des plantes l autruche peut tenir longtemps sans eau. (Même si elle aime l eau et apprécie de se baigner pour se rafraîchir sous le soleil africain.) Certaines autruches peuvent vivre soixante-dix ans !",
+    "Infos_supp" : "Un œuf d autruche pèse autant que deux douzaines d œufs de poule.",
+    "image" : "autruche.png"
+    },
+
+    {"Nom" : "Léopard",
+    "Nom_scientifique" : "Panthera pardus",
+    "Classification" : "Espèce menacée",
+    "Habitat_naturel" : "Forêts et prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Les léopards sont des animaux vifs aux yeux brillants et au corps tacheté.",
+    "Description" : "Les léopards ont un pelage parsemé de rosettes (tâches noires) sur les flancs de petites taches sur la tête et le cou et ont un peu de blanc sur la queue. Les taches leur offrent un excellent camouflage la nuit et la zone blanche de la queue permet aux mères de communiquer avec leurs petits. Tandis que les femelles passent plus de la moitié de leur vie à s occuper de leurs petits les mâles sont principalement solitaires et partagent toute leur vie (environ 20 ans) le territoire des lions et des tigres. Capables de faire un bond équivalent à six fois la longueur de leur corps et de bondir sur leur proie les léopards sont de redoutables animaux. Chassant la nuit les léopards mangent quasiment tout ce qu ils peuvent trouver et peuvent tuer des animaux qui font trois fois leur taille même du bétail ! Ces félins adorent grimper aux arbres et y cachent souvent leur proie pour ne pas avoir à la partager.",
+    "Infos_supp" : "La queue d un léopard peut atteindre un mètre.",
+    "image" : "leopard.png"
+    },
+
+    {"Nom" : "Lion",
+    "Nom_scientifique" : "Panthera leo",
+    "Classification" : "Espèce vulnérable",
+    "Habitat_naturel" : "Désert",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Si les lions mâles ont une crinière plus sombre leur pelage a la même teinte brun orangé que celui des femelles.",
+    "Description" : "Les lions parcourent la savane africaine en groupes familiaux comprenant plusieurs lionnes leurs petits et un seul mâle dominant reproducteur. Lorsqu un mâle atteint l âge adulte il est chassé du groupe et doit se chercher son propre groupe. Les lionnes chassent à plusieurs. C est le meilleur moyen pour elles d abattre de grandes proies comme les zèbres les buffles les girafes les hippopotames et même les éléphanteaux ; elles ne répugnent pas non plus à se nourrir des restes d autres animaux. Les lions dorment vingt heures par jour ; les mâles et les femelles défendent tous deux leur groupe contre toute intrusion. Le rugissement d un lion est extrêmement sonore et peut être entendu à 8 km à la ronde ! Les lions rugissent pour communiquer entre eux et pour décourager les intrus. Les mâles et les femelles ont tous deux une fourrure fauve clair mais les mâles ont une crinière brune épaisse qui pousse et s assombrit avec l âge.",
+    "Infos_supp" : "Un lion peut avaler jusqu à 30 kg de viande en une seule fois.",
+    "image" : "lion.png"
+    },
+
+    {"Nom" : "Guépard femelle",
+    "Nom_scientifique" : "Acinonyx jubatus",
+    "Classification" : "Espèce vulnérable",
+    "Habitat_naturel" : "Prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Très rapides à la course les guépards sont des félins au pelage tacheté de noir.",
+    "Description" : "Actifs pendant la journée les guépards partagent leur territoire avec d autres chasseurs nocturnes (lions léopards etc.). Les femelles vivent avec leurs petits tandis que les mâles vivent en petits groupes. Le secret de l exceptionnelle rapidité du guépard réside dans sa colonne vertébrale ses narines sa queue et ses griffes. Longue et souple sa colonne s étire et se contracte comme un ressort lorsqu il court à toute vitesse dans la savane. Ses larges narines lui permettent d inspirer plus d oxygène. Sa queue lui sert de gouvernail et de balancier pour s équilibrer pendant sa course et ses griffes remplissent la même fonction que des crampons. Prédatrice des gazelles et des antilopes la maman guépard doit chasser chaque jour pour nourrir ses petits. Pour se fondre dans les herbes hautes le corps du guépard est brun roux avec des taches noires mais sa queue est rayée.",
+    "Infos_supp" : "Bénéficiant d une capacité d accélération supérieure à celle de la plupart des voitures de sport le guépard est capable de passer de 0 km/h à 110 km/h en trois secondes.",
+    "image" : "guepardfemelle.png"
+    },
+
+    {"Nom" : "Crocodile",
+    "Nom_scientifique" : "Osteolaemus tetraspis",
+    "Classification" : "Espèce vulnérable",
+    "Habitat_naturel" : "Marécages",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Reptiles au corps couvert d écailles les crocodiles sont connus pour leur sourire carnassier et leur puissance impressionnante.",
+    "Description" : "Guettant leur proie les crocodiles nagent sans bruit dans l eau boueuse puis bondissent pour l attraper. Les crocodiles mangent généralement du poisson des mammifères ou des oiseaux. Après avoir mangé les crocodiles peuvent avaler quelques cailloux pour digérer. Leur queue leur permet de se mouvoir rapidement dans l eau et sur la terre. Considérés comme les plus grands reptiles du monde certains peuvent en effet mesurer sept mètres de long ! D autres ne mesurent que près de deux mètres à l âge adulte. Ils peuvent vivre jusqu à cent ans. Même s ils représentent une menace pour l homme l inverse est également vrai. Les crocodiles sont chassés pour leur peau qui permet de fabriquer des portefeuilles des chaussures et des sacs à main. Dans certains pays la viande de crocodile est un mets très apprécié.",
+    "Infos_supp" : "Les crocodiles peuvent vivre jusqu à 100 ans parce que leurs dents repoussent lorsqu elles se cassent.",
+    "image" : "crocodile.png"
+    },
+
+    {"Nom" : "Rhinocéros noir",
+    "Nom_scientifique" : "Diceros bicornis",
+    "Classification" : "Espèce menacée d extinction",
+    "Habitat_naturel" : "Prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Les rhinocéros ont la peau toute plissée surtout au niveau des zones situées entre leurs membres courts et leurs gros corps massifs.",
+    "Description" : "Les rhinocéros sont des herbivores imposants et intimidants avec de grandes cornes et une peau épaisse. Ils utilisent leurs cornes pour se défendre et leur peau est leur armure. Les rhinocéros ont une capacité visuelle faible mais cet inconvénient est compensé par un odorat subtil et une excellente ouïe. Leurs oreilles peuvent pivoter pour détecter même les bruits les plus inaudibles. Les différents sons émis et les positions des oreilles ont des significations différentes pour les rhinocéros. Leur large nez détecte de loin l odeur de leurs prédateurs. Facilement effrayés ces mammifères chargent presque tout ce qui bouge. Il leur arriverait même de charger des termitières ! Avec un pois de plus d une tonne et une hauteur de plus d 150 mètre au garrot les rhinocéros sont les plus gros mammifères terrestres actuels après l éléphant. Malgré leur taille les rhinocéros peuvent courir à une vitesse de 50 km/h. Vivant principalement en solitaires les rhinocéros se distraient en prenant des bains de boue et en enduisant leur peau de boue pour la protéger du soleil et la refroidir pendant les chaudes journées d été.",
+    "Infos_supp" : "La corne située juste à côté de la gueule du rhinocéros peut être plus grande que la hauteur d une chaise de salon.",
+    "image" : "rhinocerocenoir.png"
+    },
+
+    {"Nom" : "Hippopotame mâle",
+    "Nom_scientifique" : "Hippopotamus amphibius",
+    "Classification" : "Espèce vulnérable",
+    "Habitat_naturel" : "Marécages",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Avec sa peau lisse toute plissée au niveau de la naissance des pattes et du cou l hippopotame peut être gris ou rose.",
+    "Description" : "Bien qu ils soient herbivores les hippopotames sont considérés comme les animaux les plus féroces d Afrique en raison de leur nature agressive. Courant à une vitesse de 50 km/h ils abîment le sol. Ils peuvent également changer le cours des marécages et des cours d eau en empruntant les mêmes passages jour après jour. Parfaitement adaptés à une vie semi-aquatique les hippopotames passent la journée dans l eau et en sortent le soir pour aller paître. En moins de cinq heures les hippopotames peuvent manger plus de 70 kg de nourriture pour leur repas du soir ! Dans l eau les mâles sont extrêmement territoriaux mais il ne s affrontent jamais sur la terre ferme. Même s ils ne savent pas nager les hippopotames adultes se battent dorment et se reproduisent dans l eau. Les hippopotames vivent en groupes d une trentaine d individus. Avec plus de 450 mètres de long et un poids de quelques tonnes les hippopotames font partie des plus gros mammifères terrestres. Ils peuvent vivre longtemps et atteindre allègrement leurs quarante ans.",
+    "Infos_supp" : "La peau de l hippopotame sécrète une sorte d écran solaire naturel de couleur rouge ou orange.",
+    "image" : "hippopotamemale.png"
+    },
+
+    {"Nom" : "Girafe femelle",
+    "Nom_scientifique" : "Giraffa camelopardalis",
+    "Classification" : "Espèce commune",
+    "Habitat_naturel" : "Prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Une longue langue un long cou et de longues pattes tachetées aucun doute il s agit d une girafe !",
+    "Description" : "Les girafes sont les plus grands mammifères terrestres ; les bébés girafes peuvent mesurer près de deux mètres à la naissance ! Chaque girafe a un dessin particulier sur son pelage qui la rend unique ; les sous-espèces de girafes se distinguent en effet par la forme et la couleur des tâches de leur robe ainsi que par leur provenance géographique. Certaines girafes se reconnaissent à la forme de leurs taches (anguleuses ou rondes) parfois irrégulières en étoile sur un fond brun-roux clair descendant jusqu aux sabots. En dépit de la longueur inhabituelle de leur cou les girafes n ont que sept vertèbres cervicales tout comme les humains. Les girafes paissent partout dans la brousse et la savane d Afrique du sud explorant la cime des arbres à la recherche de jeunes pousses. Comme les chameaux les girafes peuvent tenir deux ou trois jours sans eau. Elles ont plusieurs appendices osseux sur la tête que l on appelle ossicônes et qui sont couverts en permanence par de la peau et des poils. Les girafes ne dorment qu une heure par-ci par-là et peuvent survivre sans dormir toute une journée. La plupart du temps les girafes marchent d un pas tranquille mais lorsqu elles se mettent à courir elles sont rapides et peuvent dépasser les 50 km/h ! Certaines girafes vivent en troupeaux de quinze individus mais leur structure sociale change constamment.",
+    "Infos_supp" : "Le cœur d une girafe peut mesurer 60 centimètres de long et peser onze kilos.",
+    "image" : "girafefemelle.png"
+    },
+
+    {"Nom" : "Zèbre mâle",
+    "Nom_scientifique" : "Equus quagga",
+    "Classification" : "Espèce commune",
+    "Habitat_naturel" : "Prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Avec leurs bandes noires sur fond blanc les zèbres offrent un motif en zig-zag.",
+    "Description" : "Ces équidés élancés à rayures en zig-zag vivent dans les prairies de la savane à l est et à l ouest de l Afrique où ils passent le plus clair de leur temps à manger de l herbe des feuilles des écorces des racines et des tiges. Le dessin de la robe est très variable d un zèbre à l autre. Le zèbre des plaines ou zèbre commun porte de larges rayures sur son corps qui continuent jusque sous le ventre et des rayures plus claires appelées rayures d ombres à l arrière du corps. Sa vue et son ouïe sont excellentes et lui permettent d échapper à ses prédateurs. Les zèbres vivent généralement en troupeaux familiaux composés d un mâle et de plusieurs femelles mais se regroupent souvent en très grands troupeaux de plusieurs centaines de zèbres. Une fois par an des centaines de milliers de zèbres se regroupent pour partir à la recherche de nourriture et d eau. Ces troupeaux se mêlent parfois aux gnous autruches et antilopes. Les zèbres ont tendance à être particulièrement nerveux -- quoi de plus normal avec tous ces lions et hyènes autour ? -- et très bruyants. Leurs hennissements leur permettent de communiquer entre eux. Ils ne s éloignent jamais trop loin d une source d eau et peuvent vivre près de trente ans dans la nature.",
+    "Infos_supp" : "Les zèbres peuvent voir dans le noir et ainsi toujours garder un œil sur leurs prédateurs.",
+    "image" : "zebremale.png"
+    },
+
+    {"Nom" : "Phacochère mâle",
+    "Nom_scientifique" : "Phacochoerus africanus",
+    "Classification" : "Espèce commune",
+    "Habitat_naturel" : "Forêts et prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Les phacochères portent une longue crinière raide sur le haut de leur dos ridé et presque imberbe.",
+    "Description" : "Avec une taille d 150 mètre de long et un poids supérieur à 130 kg les phacochères ont élu domicile dans les prairies et forêts où ils peuvent trouver leur nourriture favorite. Omnivores les phacochères mangent de l herbe des baies des champignons des écorces des œufs des reptiles des oiseaux et même certains mammifères. Bien que leur vue soit mauvaise ces mammifères compensent cet handicap par un odorat très développé. Capables de creuser pour trouver de la nourriture ou des terriers les phacochères sont également habiles à la course et au saut. Capables de repousser les attaques de leurs prédateurs ces proches parents des cochons peuvent s en prendre aux hommes aux guépards aux lions aux crocodiles et aux hyènes.",
+    "Infos_supp" : "Leurs défenses sont incurvées vers le haut.",
+    "image" : "phacocheremale.png"
+    },
+
+    {"Nom" : "Dromadaire femelle",
+    "Nom_scientifique" : "Camelus dromedarius",
+    "Classification" : "Espèce domestiquée",
+    "Habitat_naturel" : "Désert",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Mammifères artiodactyles (à nombre pair de doigts) dotés d une seule grosse bosse les dromadaires ont le plus souvent un pelage brun.",
+    "Description" : "Le corps des chameaux est parfaitement adapté aux longues traversées dans le désert : leurs larges pieds leur facilitent la marche sur le sable leurs longs cils protègent leurs yeux du sable et leurs narines peuvent se fermer à volonté pour empêcher le sable de rentrer. Les bosses situées sur leur dos contiennent de la graisse qui leur fournit des réserves d énergie pour tenir jusqu à la prochaine oasis. Les chameaux peuvent survivre sans eau pendant plusieurs jours et peuvent perdre plus de 40 % de leur poids en eau. La plupart des animaux meurent s ils perdent plus de 20 % de leur poids en eau. Même quand l eau est difficile à trouver les chameaux produisent du lait qui constitue l aliment de base des tribus nomades dans le désert. Le lait de chameau est plus riche en protéines et en matières grasses que le lait de vache.",
+    "Infos_supp" : "Le chameau ne crache pas quand on le provoque mais préfère frapper le sol du pied.",
+    "image" : "dromadairefemelle.png"
+    },
+
+    {"Nom" : "Gnou",
+    "Nom_scientifique" : "Connochaetes taurinus",
+    "Classification" : "Espèce commune",
+    "Habitat_naturel" : "Prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Tel un zèbre avec ses quelques rayures sur le dos le gnou se remarque à ses cornes incurvées en avant.",
+    "Description" : "Contrairement à ce que leur nom pourrait laisser croire les gnous sont généralement gracieux et tranquilles. Vivant généralement près de l eau les gnous ont besoin de boire tous les deux jours. Friands de l herbe que les zèbres laissent derrière eux lorsqu ils paissent ils partagent souvent leur territoire avec eux. Ces mammifères se reconnaissent aisément à leur crinière leurs cornes leurs rayures et leurs couleurs. Les mâles et les femelles ont les mêmes attributs. Leur crinière est constituée de poils épais et raides tandis que leurs cornes sont incurvées et ressemblent légèrement à des parenthèses. Leurs rayures permettent de les camoufler dans un troupeau de zèbres et la couleur de leur pelage varie selon leur âge. Les gnous sont des animaux extrêmement coopératifs qui n hésitent pas à se sacrifier lorsqu ils migrent en troupeau. Même la nuit les gnous se relaient pour faire le guet et repérer d éventuels prédateurs.",
+    "Infos_supp" : "Sept minutes après leur naissance les petits gnous peuvent se tenir debout. Deux heures après leur naissance ils sont capables de courir avec le troupeau.",
+    "image" : "gnou.png"
+    },
+
+    {"Nom" : "Antilope koudou",
+    "Nom_scientifique" : "Tragelaphus strepsiceros",
+    "Classification" : "Préoccupation mineure (LC)",
+    "Habitat_naturel" : "Savane",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Le pelage des antilopes koudou porte un dessin très particulier et qui les rend difficilement reconnaissables pour un grand nombre de leurs ennemis en terre sauvage.",
+    "Description" : "Les antilopes koudou ont de longues et fines pattes et de grandes oreilles remarquables. Leur crinière s étend de leur occipital jusqu à la racine de leur queue. Leur fourrure gris-brune est marquée sur les flancs par six à dix rayures blanches qui débutent au milieu du dos et descendent vers le ventre. Les antilopes koudou restent à l ombre pendant la journée et profitent de la nuit pour chercher de la nourriture et de l eau. Dépendants des points d eau elles ont l habitude de sillonner le pays pendant les périodes de sécheresse. Leurs grandes oreilles les aident à percevoir des bruits suspects à distance.",
+    "Infos_supp" : "Sa capacité de saut est étonnante : cette race peut sauter jusqu à 2 m en hauteur et 10 m en longueur.",
+    "image" : "antilopekoudou.png"
+    },
+
+    {"Nom" : "Gazelle",
+    "Nom_scientifique" : "Gazella cuvieri",
+    "Classification" : "Espèce en voie de disparition",
+    "Habitat_naturel" : "Forêts et prairies",
+    "Origine_geographique" : "Afrique",
+    "Info" : "Les gazelles se reconnaissent facilement aux bandes noires qu elles portent sur les flancs.",
+    "Description" : "Quand elles ne jouent pas à qui court le plus vite les gazelles passent leurs matinées et soirées à paître en troupeaux le long des prairies africaines. Les troupeaux sont composés d une majorité de femelles et d un mâle chargé de défendre le groupe. Aux heures les plus chaudes les troupeaux se reposent sous les arbres. Les gazelles peuvent courir très vite -- jusqu à 80 km/h sur de courtes distances -- mais en général elles sprintent pendant un petit moment pour échapper à un prédateur puis s arrêtent pour regarder derrière elles. Les gazelles ont une robe fauve sur le dos et blanche sur le ventre ornée d une bande noire sur les flancs. Les mâles et les femelles ont des cornes arquées en forme de lyre et annelées. Les femelles qui attendent un petit quittent leur troupeau lorsqu elles sont prêtes à mettre bas et reviennent avec leur petit. Elles laissent leurs petits tout seuls mais cachés pendant la journée pendant qu elles paissent puis les retrouvent le soir. Au bout de cinq ou six semaines environ le petit rejoint le troupeau pour paître avec lui pendant la journée.",
+    "Infos_supp" : "Les gazelles donnent généralement naissance à deux petits.",
+    "image" : "gazelle.png"
+    }
+  ]
+}

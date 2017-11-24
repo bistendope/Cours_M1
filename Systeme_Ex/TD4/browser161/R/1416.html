@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>fs_ops</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/96.html#L1276'>fs_ops</a>           1276 kern/dev/lamebus/emu.c static const struct fs_ops emufs_fsops = {</span>
+<span class='curline'><a href='../S/96.html#L1303'>fs_ops</a>           1303 kern/dev/lamebus/emu.c 	ef-&gt;ef_fs.fs_ops = &amp;emufs_fsops;</span>
+<span class='curline'><a href='../S/124.html#L147'>fs_ops</a>            147 kern/fs/semfs/semfs_fsops.c static const struct fs_ops semfs_fsops = {</span>
+<span class='curline'><a href='../S/124.html#L191'>fs_ops</a>            191 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_absfs.fs_ops = &amp;semfs_fsops;</span>
+<span class='curline'><a href='../S/130.html#L307'>fs_ops</a>            307 kern/fs/sfs/sfs_fsops.c static const struct fs_ops sfs_fsops = {</span>
+<span class='curline'><a href='../S/130.html#L344'>fs_ops</a>            344 kern/fs/sfs/sfs_fsops.c 	sfs-&gt;sfs_absfs.fs_ops = &amp;sfs_fsops;</span>
+<span class='curline'><a href='../S/150.html#L44'>fs_ops</a>             44 kern/include/fs.h 	const struct fs_ops *fs_ops;</span>
+<span class='curline'><a href='../S/150.html#L82'>fs_ops</a>             82 kern/include/fs.h #define FSOP_SYNC(fs)        ((fs)-&gt;fs_ops-&gt;fsop_sync(fs))</span>
+<span class='curline'><a href='../S/150.html#L83'>fs_ops</a>             83 kern/include/fs.h #define FSOP_GETVOLNAME(fs)  ((fs)-&gt;fs_ops-&gt;fsop_getvolname(fs))</span>
+<span class='curline'><a href='../S/150.html#L84'>fs_ops</a>             84 kern/include/fs.h #define FSOP_GETROOT(fs, ret) ((fs)-&gt;fs_ops-&gt;fsop_getroot(fs, ret))</span>
+<span class='curline'><a href='../S/150.html#L85'>fs_ops</a>             85 kern/include/fs.h #define FSOP_UNMOUNT(fs)     ((fs)-&gt;fs_ops-&gt;fsop_unmount(fs))</span>
+</pre>
+</body>
+</html>

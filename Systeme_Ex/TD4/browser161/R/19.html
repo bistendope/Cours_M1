@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>BLOCKSIZE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/537.html#L71'>BLOCKSIZE</a>          71 userland/sbin/mksfs/disk.c 	nblocks = statbuf.st_size / BLOCKSIZE;</span>
+<span class='curline'><a href='../S/537.html#L104'>BLOCKSIZE</a>         104 userland/sbin/mksfs/disk.c 	return BLOCKSIZE;</span>
+<span class='curline'><a href='../S/537.html#L134'>BLOCKSIZE</a>         134 userland/sbin/mksfs/disk.c 	if (lseek(fd, block*BLOCKSIZE, SEEK_SET)&lt;0) {</span>
+<span class='curline'><a href='../S/537.html#L138'>BLOCKSIZE</a>         138 userland/sbin/mksfs/disk.c 	while (tot &lt; BLOCKSIZE) {</span>
+<span class='curline'><a href='../S/537.html#L139'>BLOCKSIZE</a>         139 userland/sbin/mksfs/disk.c 		len = write(fd, cdata + tot, BLOCKSIZE - tot);</span>
+<span class='curline'><a href='../S/537.html#L170'>BLOCKSIZE</a>         170 userland/sbin/mksfs/disk.c 	if (lseek(fd, block*BLOCKSIZE, SEEK_SET)&lt;0) {</span>
+<span class='curline'><a href='../S/537.html#L174'>BLOCKSIZE</a>         174 userland/sbin/mksfs/disk.c 	while (tot &lt; BLOCKSIZE) {</span>
+<span class='curline'><a href='../S/537.html#L175'>BLOCKSIZE</a>         175 userland/sbin/mksfs/disk.c 		len = read(fd, cdata + tot, BLOCKSIZE - tot);</span>
+<span class='curline'><a href='../S/644.html#L146'>BLOCKSIZE</a>         146 userland/testbin/frack/data.c 		howmuch = BLOCKSIZE;</span>
+<span class='curline'><a href='../S/644.html#L153'>BLOCKSIZE</a>         153 userland/testbin/frack/data.c 		slop = absend % BLOCKSIZE;</span>
+<span class='curline'><a href='../S/657.html#L207'>BLOCKSIZE</a>         207 userland/testbin/frack/workloads.c 	return BLOCKSIZE * sizeblocks(sz);</span>
+<span class='curline'><a href='../S/657.html#L233'>BLOCKSIZE</a>         233 userland/testbin/frack/workloads.c 		pos = (off_t)BLOCKSIZE * blocknum;</span>
+<span class='curline'><a href='../S/657.html#L234'>BLOCKSIZE</a>         234 userland/testbin/frack/workloads.c 		op_write(f, pos, BLOCKSIZE);</span>
+<span class='curline'><a href='../S/657.html#L276'>BLOCKSIZE</a>         276 userland/testbin/frack/workloads.c 	op_write(f, 0, BLOCKSIZE);</span>
+<span class='curline'><a href='../S/657.html#L277'>BLOCKSIZE</a>         277 userland/testbin/frack/workloads.c 	op_write(f, sizebytes(sz) - BLOCKSIZE, BLOCKSIZE);</span>
+<span class='curline'><a href='../S/657.html#L469'>BLOCKSIZE</a>         469 userland/testbin/frack/workloads.c 	op_write(f, sizebytes(sz), BLOCKSIZE * 4);</span>
+<span class='curline'><a href='../S/657.html#L510'>BLOCKSIZE</a>         510 userland/testbin/frack/workloads.c 	op_truncate(f, sizebytes(sz) - BLOCKSIZE);</span>
+<span class='curline'><a href='../S/657.html#L566'>BLOCKSIZE</a>         566 userland/testbin/frack/workloads.c 	op_write(f, sizebytes(sz), BLOCKSIZE * 4);</span>
+<span class='curline'><a href='../S/657.html#L587'>BLOCKSIZE</a>         587 userland/testbin/frack/workloads.c 	op_write(f, sizebytes(sz), BLOCKSIZE * 4);</span>
+<span class='curline'><a href='../S/657.html#L588'>BLOCKSIZE</a>         588 userland/testbin/frack/workloads.c 	op_truncate(f, sizebytes(sz) + BLOCKSIZE * 2);</span>
+<span class='curline'><a href='../S/657.html#L847'>BLOCKSIZE</a>         847 userland/testbin/frack/workloads.c 	op_write(f, sizebytes(sz), 6 * BLOCKSIZE);</span>
+<span class='curline'><a href='../S/657.html#L942'>BLOCKSIZE</a>         942 userland/testbin/frack/workloads.c 		op_write(files[i], sizebytes(sz), 6 * BLOCKSIZE);</span>
+<span class='curline'><a href='../S/657.html#L951'>BLOCKSIZE</a>         951 userland/testbin/frack/workloads.c 			op_write(files[i++], sizebytes(sz), 6 * BLOCKSIZE);</span>
+<span class='curline'><a href='../S/678.html#L53'>BLOCKSIZE</a>          53 userland/testbin/poisondisk/poisondisk.c 	char buf[BLOCKSIZE];</span>
+</pre>
+</body>
+</html>

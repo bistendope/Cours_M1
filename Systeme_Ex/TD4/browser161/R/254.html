@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>INLINE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/123.html#L38'>INLINE</a>             38 kern/fs/semfs/semfs.h #define SEMFS_INLINE INLINE</span>
+<span class='curline'><a href='../S/139.html#L45'>INLINE</a>             45 kern/include/array.h #define ARRAYINLINE INLINE</span>
+<span class='curline'><a href='../S/139.html#L168'>INLINE</a>            168 kern/include/array.h #define DECLARRAY_BYTYPE(ARRAY, T, INLINE) \</span>
+<span class='curline'><a href='../S/139.html#L173'>INLINE</a>            173 kern/include/array.h 	INLINE struct ARRAY *ARRAY##_create(void);		\</span>
+<span class='curline'><a href='../S/139.html#L174'>INLINE</a>            174 kern/include/array.h 	INLINE void ARRAY##_destroy(struct ARRAY *a);		\</span>
+<span class='curline'><a href='../S/139.html#L175'>INLINE</a>            175 kern/include/array.h 	INLINE void ARRAY##_init(struct ARRAY *a);		\</span>
+<span class='curline'><a href='../S/139.html#L176'>INLINE</a>            176 kern/include/array.h 	INLINE void ARRAY##_cleanup(struct ARRAY *a);		\</span>
+<span class='curline'><a href='../S/139.html#L177'>INLINE</a>            177 kern/include/array.h 	INLINE unsigned ARRAY##_num(const struct ARRAY *a);	\</span>
+<span class='curline'><a href='../S/139.html#L178'>INLINE</a>            178 kern/include/array.h 	INLINE T *ARRAY##_get(const struct ARRAY *a, unsigned index); \</span>
+<span class='curline'><a href='../S/139.html#L179'>INLINE</a>            179 kern/include/array.h 	INLINE void ARRAY##_set(struct ARRAY *a, unsigned index, T *val); \</span>
+<span class='curline'><a href='../S/139.html#L180'>INLINE</a>            180 kern/include/array.h 	INLINE int ARRAY##_preallocate(struct ARRAY *a, unsigned num);	\</span>
+<span class='curline'><a href='../S/139.html#L181'>INLINE</a>            181 kern/include/array.h 	INLINE int ARRAY##_setsize(struct ARRAY *a, unsigned num);	\</span>
+<span class='curline'><a href='../S/139.html#L182'>INLINE</a>            182 kern/include/array.h 	INLINE int ARRAY##_add(struct ARRAY *a, T *val, unsigned *index_ret); \</span>
+<span class='curline'><a href='../S/139.html#L183'>INLINE</a>            183 kern/include/array.h 	INLINE void ARRAY##_remove(struct ARRAY *a, unsigned index)</span>
+<span class='curline'><a href='../S/139.html#L185'>INLINE</a>            185 kern/include/array.h #define DEFARRAY_BYTYPE(ARRAY, T, INLINE) \</span>
+<span class='curline'><a href='../S/139.html#L186'>INLINE</a>            186 kern/include/array.h 	INLINE struct ARRAY *					\</span>
+<span class='curline'><a href='../S/139.html#L197'>INLINE</a>            197 kern/include/array.h 	INLINE void						\</span>
+<span class='curline'><a href='../S/139.html#L204'>INLINE</a>            204 kern/include/array.h 	INLINE void						\</span>
+<span class='curline'><a href='../S/139.html#L210'>INLINE</a>            210 kern/include/array.h 	INLINE void						\</span>
+<span class='curline'><a href='../S/139.html#L216'>INLINE</a>            216 kern/include/array.h 	INLINE unsigned						\</span>
+<span class='curline'><a href='../S/139.html#L222'>INLINE</a>            222 kern/include/array.h 	INLINE T *						\</span>
+<span class='curline'><a href='../S/139.html#L228'>INLINE</a>            228 kern/include/array.h 	INLINE void						\</span>
+<span class='curline'><a href='../S/139.html#L234'>INLINE</a>            234 kern/include/array.h 	INLINE int						\</span>
+<span class='curline'><a href='../S/139.html#L240'>INLINE</a>            240 kern/include/array.h 	INLINE int						\</span>
+<span class='curline'><a href='../S/139.html#L246'>INLINE</a>            246 kern/include/array.h 	INLINE int						\</span>
+<span class='curline'><a href='../S/139.html#L252'>INLINE</a>            252 kern/include/array.h 	INLINE void						\</span>
+<span class='curline'><a href='../S/139.html#L258'>INLINE</a>            258 kern/include/array.h #define DECLARRAY(T, INLINE) DECLARRAY_BYTYPE(T##array, struct T, INLINE)</span>
+<span class='curline'><a href='../S/139.html#L259'>INLINE</a>            259 kern/include/array.h #define DEFARRAY(T, INLINE) DEFARRAY_BYTYPE(T##array, struct T, INLINE)</span>
+<span class='curline'><a href='../S/175.html#L81'>INLINE</a>             81 kern/include/membar.h #define MEMBAR_INLINE INLINE</span>
+<span class='curline'><a href='../S/180.html#L43'>INLINE</a>             43 kern/include/spinlock.h #define SPINLOCK_INLINE INLINE</span>
+<span class='curline'><a href='../S/181.html#L37'>INLINE</a>             37 kern/include/spl.h #define SPL_INLINE INLINE</span>
+<span class='curline'><a href='../S/187.html#L116'>INLINE</a>            116 kern/include/thread.h #define THREADINLINE INLINE</span>
+<span class='curline'><a href='../S/193.html#L190'>INLINE</a>            190 kern/include/vfs.h #define VFSINLINE INLINE</span>
+</pre>
+</body>
+</html>

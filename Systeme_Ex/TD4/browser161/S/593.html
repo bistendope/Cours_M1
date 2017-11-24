@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/testbin/badcall/bad_waitpid.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/801.html'>testbin</a>/<a href='../files/804.html'>badcall</a>/bad_waitpid.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L46'>[^]</a><a href='#L405'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L46' title='Defined at 46.'>wait_badpid</a></li>
+<li><a href='#L67' title='Defined at 67.'>wait_nullstatus</a></li>
+<li><a href='#L92' title='Defined at 92.'>wait_badstatus</a></li>
+<li><a href='#L116' title='Defined at 116.'>wait_unaligned</a></li>
+<li><a href='#L150' title='Defined at 150.'>wait_badflags</a></li>
+<li><a href='#L174' title='Defined at 174.'>wait_self</a></li>
+<li><a href='#L187' title='Defined at 187.'>wait_parent</a></li>
+<li><a href='#L218' title='Defined at 218.'>wait_siblings_child</a></li>
+<li><a href='#L290' title='Defined at 290.'>wait_siblings</a></li>
+<li><a href='#L405' title='Defined at 405.'>test_waitpid</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * bad calls to waitpid()</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> */</em>
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>sys/types.h</a>&gt;
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='479.html'>stdio.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='480.html'>stdlib.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>unistd.h</a>&gt;
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>errno.h</a>&gt;
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='470.html'>err.h</a>&gt;
+<a id='L40' name='L40'></a>  40 
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> "<a href='598.html'>config.h</a>"
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#include</em> "<a href='../I/166.html'>test.h</a>"
+<a id='L43' name='L43'></a>  43 
+<a id='L44' name='L44'></a>  44 <strong class='reserved'>static</strong>
+<a id='L45' name='L45'></a>  45 <strong class='reserved'>void</strong>
+<a id='L46' name='L46'></a>  46 <a href='../R/2356.html' title='Multiple referred from 4 places.'>wait_badpid</a>(<a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *desc)
+<a id='L47' name='L47'></a>  47 <em class='brace'>{</em>
+<a id='L48' name='L48'></a>  48         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> rv;
+<a id='L49' name='L49'></a>  49         <strong class='reserved'>int</strong> x;
+<a id='L50' name='L50'></a>  50         <strong class='reserved'>int</strong> <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>;
+<a id='L51' name='L51'></a>  51 
+<a id='L52' name='L52'></a>  52         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>(desc);
+<a id='L53' name='L53'></a>  53         rv = waitpid(pid, &amp;x, 0);
+<a id='L54' name='L54'></a>  54         <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a> = errno;
+<a id='L55' name='L55'></a>  55         <em class='comment'>/* Allow ENOSYS for 0 or negative values of pid only */</em>
+<a id='L56' name='L56'></a>  56         <strong class='reserved'>if</strong> (pid &lt;= 0 &amp;&amp; rv == -1 &amp;&amp; <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a> == <a href='../S/154.html#L45' title='Defined at 45 in kern/include/kern/errno.h.'>ENOSYS</a>) <em class='brace'>{</em>
+<a id='L57' name='L57'></a>  57                 <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a> = <a href='../S/154.html#L59' title='Defined at 59 in kern/include/kern/errno.h.'>ESRCH</a>;
+<a id='L58' name='L58'></a>  58         <em class='brace'>}</em>
+<a id='L59' name='L59'></a>  59         <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (<a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a> == <a href='../S/154.html#L45' title='Defined at 45 in kern/include/kern/errno.h.'>ENOSYS</a>) <em class='brace'>{</em>
+<a id='L60' name='L60'></a>  60                 <a href='../S/601.html#L231' title='Defined at 231 in userland/testbin/badcall/report.c.'>report_saw_enosys</a>();
+<a id='L61' name='L61'></a>  61         <em class='brace'>}</em>
+<a id='L62' name='L62'></a>  62         <a href='../S/601.html#L332' title='Defined at 332 in userland/testbin/badcall/report.c.'>report_check2</a>(rv, <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>, <a href='../S/154.html#L59' title='Defined at 59 in kern/include/kern/errno.h.'>ESRCH</a>, <a href='../S/154.html#L60' title='Defined at 60 in kern/include/kern/errno.h.'>ECHILD</a>);
+<a id='L63' name='L63'></a>  63 <em class='brace'>}</em>
+<a id='L64' name='L64'></a>  64 
+<a id='L65' name='L65'></a>  65 <strong class='reserved'>static</strong>
+<a id='L66' name='L66'></a>  66 <strong class='reserved'>void</strong>
+<a id='L67' name='L67'></a>  67 <a href='../S/593.html#L412' title='Referred from 412 in userland/testbin/badcall/bad_waitpid.c.'>wait_nullstatus</a>(<strong class='reserved'>void</strong>)
+<a id='L68' name='L68'></a>  68 <em class='brace'>{</em>
+<a id='L69' name='L69'></a>  69         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid, rv;
+<a id='L70' name='L70'></a>  70         <strong class='reserved'>int</strong> x;
+<a id='L71' name='L71'></a>  71 
+<a id='L72' name='L72'></a>  72         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>("wait with NULL status");
+<a id='L73' name='L73'></a>  73 
+<a id='L74' name='L74'></a>  74         pid = fork();
+<a id='L75' name='L75'></a>  75         <strong class='reserved'>if</strong> (pid&lt;0) <em class='brace'>{</em>
+<a id='L76' name='L76'></a>  76                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("fork failed");
+<a id='L77' name='L77'></a>  77                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L78' name='L78'></a>  78                 <strong class='reserved'>return</strong>;
+<a id='L79' name='L79'></a>  79         <em class='brace'>}</em>
+<a id='L80' name='L80'></a>  80         <strong class='reserved'>if</strong> (pid==0) <em class='brace'>{</em>
+<a id='L81' name='L81'></a>  81                 <a href='../S/512.html#L38' title='Defined at 38 in userland/lib/libc/stdlib/exit.c.'>exit</a>(0);
+<a id='L82' name='L82'></a>  82         <em class='brace'>}</em>
+<a id='L83' name='L83'></a>  83 
+<a id='L84' name='L84'></a>  84         <em class='comment'>/* POSIX explicitly says passing NULL for status is allowed */</em>
+<a id='L85' name='L85'></a>  85         rv = waitpid(pid, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, 0);
+<a id='L86' name='L86'></a>  86         <a href='../S/601.html#L326' title='Defined at 326 in userland/testbin/badcall/report.c.'>report_check</a>(rv, errno, 0);
+<a id='L87' name='L87'></a>  87         waitpid(pid, &amp;x, 0);
+<a id='L88' name='L88'></a>  88 <em class='brace'>}</em>
+<a id='L89' name='L89'></a>  89 
+<a id='L90' name='L90'></a>  90 <strong class='reserved'>static</strong>
+<a id='L91' name='L91'></a>  91 <strong class='reserved'>void</strong>
+<a id='L92' name='L92'></a>  92 <a href='../R/2357.html' title='Multiple referred from 2 places.'>wait_badstatus</a>(<strong class='reserved'>void</strong> *ptr, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *desc)
+<a id='L93' name='L93'></a>  93 <em class='brace'>{</em>
+<a id='L94' name='L94'></a>  94         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid, rv;
+<a id='L95' name='L95'></a>  95         <strong class='reserved'>int</strong> x;
+<a id='L96' name='L96'></a>  96 
+<a id='L97' name='L97'></a>  97         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>(desc);
+<a id='L98' name='L98'></a>  98 
+<a id='L99' name='L99'></a>  99         pid = fork();
+<a id='L100' name='L100'></a> 100         <strong class='reserved'>if</strong> (pid&lt;0) <em class='brace'>{</em>
+<a id='L101' name='L101'></a> 101                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("fork failed");
+<a id='L102' name='L102'></a> 102                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L103' name='L103'></a> 103                 <strong class='reserved'>return</strong>;
+<a id='L104' name='L104'></a> 104         <em class='brace'>}</em>
+<a id='L105' name='L105'></a> 105         <strong class='reserved'>if</strong> (pid==0) <em class='brace'>{</em>
+<a id='L106' name='L106'></a> 106                 <a href='../S/512.html#L38' title='Defined at 38 in userland/lib/libc/stdlib/exit.c.'>exit</a>(0);
+<a id='L107' name='L107'></a> 107         <em class='brace'>}</em>
+<a id='L108' name='L108'></a> 108 
+<a id='L109' name='L109'></a> 109         rv = waitpid(pid, ptr, 0);
+<a id='L110' name='L110'></a> 110         <a href='../S/601.html#L326' title='Defined at 326 in userland/testbin/badcall/report.c.'>report_check</a>(rv, errno, <a href='../S/154.html#L50' title='Defined at 50 in kern/include/kern/errno.h.'>EFAULT</a>);
+<a id='L111' name='L111'></a> 111         waitpid(pid, &amp;x, 0);
+<a id='L112' name='L112'></a> 112 <em class='brace'>}</em>
+<a id='L113' name='L113'></a> 113 
+<a id='L114' name='L114'></a> 114 <strong class='reserved'>static</strong>
+<a id='L115' name='L115'></a> 115 <strong class='reserved'>void</strong>
+<a id='L116' name='L116'></a> 116 <a href='../S/593.html#L416' title='Referred from 416 in userland/testbin/badcall/bad_waitpid.c.'>wait_unaligned</a>(<strong class='reserved'>void</strong>)
+<a id='L117' name='L117'></a> 117 <em class='brace'>{</em>
+<a id='L118' name='L118'></a> 118         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid, rv;
+<a id='L119' name='L119'></a> 119         <strong class='reserved'>int</strong> x;
+<a id='L120' name='L120'></a> 120         <strong class='reserved'>int</strong> status[2];  <em class='comment'>/* will have integer alignment */</em>
+<a id='L121' name='L121'></a> 121         <strong class='reserved'>char</strong> *ptr;
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>("wait with unaligned status");
+<a id='L124' name='L124'></a> 124 
+<a id='L125' name='L125'></a> 125         pid = fork();
+<a id='L126' name='L126'></a> 126         <strong class='reserved'>if</strong> (pid&lt;0) <em class='brace'>{</em>
+<a id='L127' name='L127'></a> 127                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("fork failed");
+<a id='L128' name='L128'></a> 128                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L129' name='L129'></a> 129                 <strong class='reserved'>return</strong>;
+<a id='L130' name='L130'></a> 130         <em class='brace'>}</em>
+<a id='L131' name='L131'></a> 131         <strong class='reserved'>if</strong> (pid==0) <em class='brace'>{</em>
+<a id='L132' name='L132'></a> 132                 <a href='../S/512.html#L38' title='Defined at 38 in userland/lib/libc/stdlib/exit.c.'>exit</a>(0);
+<a id='L133' name='L133'></a> 133         <em class='brace'>}</em>
+<a id='L134' name='L134'></a> 134 
+<a id='L135' name='L135'></a> 135         <em class='comment'>/* start with proper integer alignment */</em>
+<a id='L136' name='L136'></a> 136         ptr = (<strong class='reserved'>char</strong> *)(&amp;status[0]);
+<a id='L137' name='L137'></a> 137 
+<a id='L138' name='L138'></a> 138         <em class='comment'>/* generate improper alignment on platforms with restrictions */</em>
+<a id='L139' name='L139'></a> 139         ptr++;
+<a id='L140' name='L140'></a> 140 
+<a id='L141' name='L141'></a> 141         rv = waitpid(pid, (<strong class='reserved'>int</strong> *)ptr, 0);
+<a id='L142' name='L142'></a> 142         <a href='../S/601.html#L286' title='Defined at 286 in userland/testbin/badcall/report.c.'>report_survival</a>(rv, errno);
+<a id='L143' name='L143'></a> 143         <strong class='reserved'>if</strong> (rv&lt;0) <em class='brace'>{</em>
+<a id='L144' name='L144'></a> 144                 waitpid(pid, &amp;x, 0);
+<a id='L145' name='L145'></a> 145         <em class='brace'>}</em>
+<a id='L146' name='L146'></a> 146 <em class='brace'>}</em>
+<a id='L147' name='L147'></a> 147 
+<a id='L148' name='L148'></a> 148 <strong class='reserved'>static</strong>
+<a id='L149' name='L149'></a> 149 <strong class='reserved'>void</strong>
+<a id='L150' name='L150'></a> 150 <a href='../S/593.html#L418' title='Referred from 418 in userland/testbin/badcall/bad_waitpid.c.'>wait_badflags</a>(<strong class='reserved'>void</strong>)
+<a id='L151' name='L151'></a> 151 <em class='brace'>{</em>
+<a id='L152' name='L152'></a> 152         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid, rv;
+<a id='L153' name='L153'></a> 153         <strong class='reserved'>int</strong> x;
+<a id='L154' name='L154'></a> 154 
+<a id='L155' name='L155'></a> 155         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>("wait with bad flags");
+<a id='L156' name='L156'></a> 156 
+<a id='L157' name='L157'></a> 157         pid = fork();
+<a id='L158' name='L158'></a> 158         <strong class='reserved'>if</strong> (pid&lt;0) <em class='brace'>{</em>
+<a id='L159' name='L159'></a> 159                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("fork failed");
+<a id='L160' name='L160'></a> 160                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L161' name='L161'></a> 161                 <strong class='reserved'>return</strong>;
+<a id='L162' name='L162'></a> 162         <em class='brace'>}</em>
+<a id='L163' name='L163'></a> 163         <strong class='reserved'>if</strong> (pid==0) <em class='brace'>{</em>
+<a id='L164' name='L164'></a> 164                 <a href='../S/512.html#L38' title='Defined at 38 in userland/lib/libc/stdlib/exit.c.'>exit</a>(0);
+<a id='L165' name='L165'></a> 165         <em class='brace'>}</em>
+<a id='L166' name='L166'></a> 166 
+<a id='L167' name='L167'></a> 167         rv = waitpid(pid, &amp;x, 309429);
+<a id='L168' name='L168'></a> 168         <a href='../S/601.html#L326' title='Defined at 326 in userland/testbin/badcall/report.c.'>report_check</a>(rv, errno, <a href='../S/154.html#L52' title='Defined at 52 in kern/include/kern/errno.h.'>EINVAL</a>);
+<a id='L169' name='L169'></a> 169         waitpid(pid, &amp;x, 0);
+<a id='L170' name='L170'></a> 170 <em class='brace'>}</em>
+<a id='L171' name='L171'></a> 171 
+<a id='L172' name='L172'></a> 172 <strong class='reserved'>static</strong>
+<a id='L173' name='L173'></a> 173 <strong class='reserved'>void</strong>
+<a id='L174' name='L174'></a> 174 <a href='../S/593.html#L420' title='Referred from 420 in userland/testbin/badcall/bad_waitpid.c.'>wait_self</a>(<strong class='reserved'>void</strong>)
+<a id='L175' name='L175'></a> 175 <em class='brace'>{</em>
+<a id='L176' name='L176'></a> 176         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> rv;
+<a id='L177' name='L177'></a> 177         <strong class='reserved'>int</strong> x;
+<a id='L178' name='L178'></a> 178 
+<a id='L179' name='L179'></a> 179         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>("wait for self");
+<a id='L180' name='L180'></a> 180 
+<a id='L181' name='L181'></a> 181         rv = waitpid(getpid(), &amp;x, 0);
+<a id='L182' name='L182'></a> 182         <a href='../S/601.html#L286' title='Defined at 286 in userland/testbin/badcall/report.c.'>report_survival</a>(rv, errno);
+<a id='L183' name='L183'></a> 183 <em class='brace'>}</em>
+<a id='L184' name='L184'></a> 184 
+<a id='L185' name='L185'></a> 185 <strong class='reserved'>static</strong>
+<a id='L186' name='L186'></a> 186 <strong class='reserved'>void</strong>
+<a id='L187' name='L187'></a> 187 <a href='../S/593.html#L421' title='Referred from 421 in userland/testbin/badcall/bad_waitpid.c.'>wait_parent</a>(<strong class='reserved'>void</strong>)
+<a id='L188' name='L188'></a> 188 <em class='brace'>{</em>
+<a id='L189' name='L189'></a> 189         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> mypid, childpid, rv;
+<a id='L190' name='L190'></a> 190         <strong class='reserved'>int</strong> x;
+<a id='L191' name='L191'></a> 191 
+<a id='L192' name='L192'></a> 192         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>("wait for parent");
+<a id='L193' name='L193'></a> 193         <a href='../S/601.html#L143' title='Defined at 143 in userland/testbin/badcall/report.c.'>report_hassubs</a>();
+<a id='L194' name='L194'></a> 194 
+<a id='L195' name='L195'></a> 195         mypid = getpid();
+<a id='L196' name='L196'></a> 196         childpid = fork();
+<a id='L197' name='L197'></a> 197         <strong class='reserved'>if</strong> (childpid&lt;0) <em class='brace'>{</em>
+<a id='L198' name='L198'></a> 198                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("can't fork");
+<a id='L199' name='L199'></a> 199                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L200' name='L200'></a> 200                 <strong class='reserved'>return</strong>;
+<a id='L201' name='L201'></a> 201         <em class='brace'>}</em>
+<a id='L202' name='L202'></a> 202         <strong class='reserved'>if</strong> (childpid==0) <em class='brace'>{</em>
+<a id='L203' name='L203'></a> 203                 <em class='comment'>/* Child. Wait for parent. */</em>
+<a id='L204' name='L204'></a> 204                 rv = waitpid(mypid, &amp;x, 0);
+<a id='L205' name='L205'></a> 205                 <a href='../S/601.html#L156' title='Defined at 156 in userland/testbin/badcall/report.c.'>report_beginsub</a>("from child:");
+<a id='L206' name='L206'></a> 206                 <a href='../S/601.html#L286' title='Defined at 286 in userland/testbin/badcall/report.c.'>report_survival</a>(rv, errno);
+<a id='L207' name='L207'></a> 207                 _exit(0);
+<a id='L208' name='L208'></a> 208         <em class='brace'>}</em>
+<a id='L209' name='L209'></a> 209         rv = waitpid(childpid, &amp;x, 0);
+<a id='L210' name='L210'></a> 210         <a href='../S/601.html#L156' title='Defined at 156 in userland/testbin/badcall/report.c.'>report_beginsub</a>("from parent:");
+<a id='L211' name='L211'></a> 211         <a href='../S/601.html#L286' title='Defined at 286 in userland/testbin/badcall/report.c.'>report_survival</a>(rv, errno);
+<a id='L212' name='L212'></a> 212 <em class='brace'>}</em>
+<a id='L213' name='L213'></a> 213 
+<a id='L214' name='L214'></a> 214 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L215' name='L215'></a> 215 
+<a id='L216' name='L216'></a> 216 <strong class='reserved'>static</strong>
+<a id='L217' name='L217'></a> 217 <strong class='reserved'>void</strong>
+<a id='L218' name='L218'></a> 218 <a href='../R/2362.html' title='Multiple referred from 2 places.'>wait_siblings_child</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *semname)
+<a id='L219' name='L219'></a> 219 <em class='brace'>{</em>
+<a id='L220' name='L220'></a> 220         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pids[2], mypid, otherpid;
+<a id='L221' name='L221'></a> 221         <strong class='reserved'>int</strong> rv, fd, semfd, x;
+<a id='L222' name='L222'></a> 222         <strong class='reserved'>char</strong> c;
+<a id='L223' name='L223'></a> 223 
+<a id='L224' name='L224'></a> 224         mypid = getpid();
+<a id='L225' name='L225'></a> 225 
+<a id='L226' name='L226'></a> 226         <em class='comment'>/*</em>
+<a id='L227' name='L227'></a> 227 <em class='comment'>         * Get our own handle for the semaphore, in case naive</em>
+<a id='L228' name='L228'></a> 228 <em class='comment'>         * file-level synchronization causes concurrent use to</em>
+<a id='L229' name='L229'></a> 229 <em class='comment'>         * deadlock.</em>
+<a id='L230' name='L230'></a> 230 <em class='comment'>         */</em>
+<a id='L231' name='L231'></a> 231         semfd = open(semname, <a href='../S/155.html#L43' title='Defined at 43 in kern/include/kern/fcntl.h.'>O_RDONLY</a>);
+<a id='L232' name='L232'></a> 232         <strong class='reserved'>if</strong> (semfd &lt; 0) <em class='brace'>{</em>
+<a id='L233' name='L233'></a> 233                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("child process (pid %d) can't open %s",
+<a id='L234' name='L234'></a> 234                          mypid, semname);
+<a id='L235' name='L235'></a> 235         <em class='brace'>}</em>
+<a id='L236' name='L236'></a> 236         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L237' name='L237'></a> 237                 <strong class='reserved'>if</strong> (read(semfd, &amp;c, 1) &lt; 0) <em class='brace'>{</em>
+<a id='L238' name='L238'></a> 238                         <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("in pid %d: %s: read", mypid, semname);
+<a id='L239' name='L239'></a> 239                 <em class='brace'>}</em>
+<a id='L240' name='L240'></a> 240                 close(semfd);
+<a id='L241' name='L241'></a> 241         <em class='brace'>}</em>
+<a id='L242' name='L242'></a> 242 
+<a id='L243' name='L243'></a> 243         fd = open(<a href='../D/938.html' title='Multiple defined in 2 places.'>TESTFILE</a>, <a href='../S/155.html#L43' title='Defined at 43 in kern/include/kern/fcntl.h.'>O_RDONLY</a>);
+<a id='L244' name='L244'></a> 244         <strong class='reserved'>if</strong> (fd&lt;0) <em class='brace'>{</em>
+<a id='L245' name='L245'></a> 245                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("child process (pid %d) can't open %s",
+<a id='L246' name='L246'></a> 246                             mypid, <a href='../D/938.html' title='Multiple defined in 2 places.'>TESTFILE</a>);
+<a id='L247' name='L247'></a> 247                 <strong class='reserved'>return</strong>;
+<a id='L248' name='L248'></a> 248         <em class='brace'>}</em>
+<a id='L249' name='L249'></a> 249 
+<a id='L250' name='L250'></a> 250         <em class='comment'>/*</em>
+<a id='L251' name='L251'></a> 251 <em class='comment'>         * In case the semaphore above didn't work, as a backup</em>
+<a id='L252' name='L252'></a> 252 <em class='comment'>         * busy-wait until the parent writes the pids into the</em>
+<a id='L253' name='L253'></a> 253 <em class='comment'>         * file. If the semaphore did work, this shouldn't loop.</em>
+<a id='L254' name='L254'></a> 254 <em class='comment'>         */</em>
+<a id='L255' name='L255'></a> 255         <strong class='reserved'>do</strong> <em class='brace'>{</em>
+<a id='L256' name='L256'></a> 256                 rv = lseek(fd, 0, <a href='../S/161.html#L42' title='Defined at 42 in kern/include/kern/seek.h.'>SEEK_SET</a>);
+<a id='L257' name='L257'></a> 257                 <strong class='reserved'>if</strong> (rv&lt;0) <em class='brace'>{</em>
+<a id='L258' name='L258'></a> 258                         <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("child process (pid %d) lseek error",
+<a id='L259' name='L259'></a> 259                                     mypid);
+<a id='L260' name='L260'></a> 260                         <strong class='reserved'>return</strong>;
+<a id='L261' name='L261'></a> 261                 <em class='brace'>}</em>
+<a id='L262' name='L262'></a> 262                 rv = read(fd, pids, <strong class='reserved'>sizeof</strong>(pids));
+<a id='L263' name='L263'></a> 263                 <strong class='reserved'>if</strong> (rv&lt;0) <em class='brace'>{</em>
+<a id='L264' name='L264'></a> 264                         <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("child process (pid %d) read error",
+<a id='L265' name='L265'></a> 265                                     mypid);
+<a id='L266' name='L266'></a> 266                         <strong class='reserved'>return</strong>;
+<a id='L267' name='L267'></a> 267                 <em class='brace'>}</em>
+<a id='L268' name='L268'></a> 268         <em class='brace'>}</em> <strong class='reserved'>while</strong> (rv &lt; (<strong class='reserved'>int</strong>)<strong class='reserved'>sizeof</strong>(pids));
+<a id='L269' name='L269'></a> 269 
+<a id='L270' name='L270'></a> 270         <strong class='reserved'>if</strong> (mypid==pids[0]) <em class='brace'>{</em>
+<a id='L271' name='L271'></a> 271                 otherpid = pids[1];
+<a id='L272' name='L272'></a> 272         <em class='brace'>}</em>
+<a id='L273' name='L273'></a> 273         <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (mypid==pids[1]) <em class='brace'>{</em>
+<a id='L274' name='L274'></a> 274                 otherpid = pids[0];
+<a id='L275' name='L275'></a> 275         <em class='brace'>}</em>
+<a id='L276' name='L276'></a> 276         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L277' name='L277'></a> 277                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("child process (pid %d) got garbage in comm file",
+<a id='L278' name='L278'></a> 278                             mypid);
+<a id='L279' name='L279'></a> 279                 <strong class='reserved'>return</strong>;
+<a id='L280' name='L280'></a> 280         <em class='brace'>}</em>
+<a id='L281' name='L281'></a> 281         close(fd);
+<a id='L282' name='L282'></a> 282 
+<a id='L283' name='L283'></a> 283         rv = waitpid(otherpid, &amp;x, 0);
+<a id='L284' name='L284'></a> 284         <a href='../S/601.html#L156' title='Defined at 156 in userland/testbin/badcall/report.c.'>report_beginsub</a>("sibling (pid %d)", mypid);
+<a id='L285' name='L285'></a> 285         <a href='../S/601.html#L286' title='Defined at 286 in userland/testbin/badcall/report.c.'>report_survival</a>(rv, errno);
+<a id='L286' name='L286'></a> 286 <em class='brace'>}</em>
+<a id='L287' name='L287'></a> 287 
+<a id='L288' name='L288'></a> 288 <strong class='reserved'>static</strong>
+<a id='L289' name='L289'></a> 289 <strong class='reserved'>void</strong>
+<a id='L290' name='L290'></a> 290 <a href='../S/593.html#L422' title='Referred from 422 in userland/testbin/badcall/bad_waitpid.c.'>wait_siblings</a>(<strong class='reserved'>void</strong>)
+<a id='L291' name='L291'></a> 291 <em class='brace'>{</em>
+<a id='L292' name='L292'></a> 292         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pids[2];
+<a id='L293' name='L293'></a> 293         <strong class='reserved'>int</strong> rv, fd, semfd, x;
+<a id='L294' name='L294'></a> 294         <strong class='reserved'>int</strong> bad = 0;
+<a id='L295' name='L295'></a> 295         <strong class='reserved'>char</strong> semname[32];
+<a id='L296' name='L296'></a> 296 
+<a id='L297' name='L297'></a> 297         <em class='comment'>/* This test may also blow up if FS synchronization is substandard */</em>
+<a id='L298' name='L298'></a> 298 
+<a id='L299' name='L299'></a> 299         <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>("siblings wait for each other");
+<a id='L300' name='L300'></a> 300         <a href='../S/601.html#L143' title='Defined at 143 in userland/testbin/badcall/report.c.'>report_hassubs</a>();
+<a id='L301' name='L301'></a> 301 
+<a id='L302' name='L302'></a> 302         <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(semname, <strong class='reserved'>sizeof</strong>(semname), "sem:badcall.%d", (<strong class='reserved'>int</strong>)getpid());
+<a id='L303' name='L303'></a> 303         semfd = open(semname, <a href='../S/155.html#L44' title='Defined at 44 in kern/include/kern/fcntl.h.'>O_WRONLY</a>|<a href='../S/155.html#L47' title='Defined at 47 in kern/include/kern/fcntl.h.'>O_CREAT</a>|<a href='../S/155.html#L49' title='Defined at 49 in kern/include/kern/fcntl.h.'>O_TRUNC</a>, 0664);
+<a id='L304' name='L304'></a> 304         <strong class='reserved'>if</strong> (semfd &lt; 0) <em class='brace'>{</em>
+<a id='L305' name='L305'></a> 305                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("can't make semaphore");
+<a id='L306' name='L306'></a> 306                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L307' name='L307'></a> 307                 <strong class='reserved'>return</strong>;
+<a id='L308' name='L308'></a> 308         <em class='brace'>}</em>
+<a id='L309' name='L309'></a> 309 
+<a id='L310' name='L310'></a> 310         fd = <a href='../S/599.html#L46' title='Defined at 46 in userland/testbin/badcall/driver.c.'>open_testfile</a>(<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L311' name='L311'></a> 311         <strong class='reserved'>if</strong> (fd&lt;0) <em class='brace'>{</em>
+<a id='L312' name='L312'></a> 312                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L313' name='L313'></a> 313                 close(semfd);
+<a id='L314' name='L314'></a> 314                 remove(semname);
+<a id='L315' name='L315'></a> 315                 <strong class='reserved'>return</strong>;
+<a id='L316' name='L316'></a> 316         <em class='brace'>}</em>
+<a id='L317' name='L317'></a> 317 
+<a id='L318' name='L318'></a> 318         pids[0] = fork();
+<a id='L319' name='L319'></a> 319         <strong class='reserved'>if</strong> (pids[0]&lt;0) <em class='brace'>{</em>
+<a id='L320' name='L320'></a> 320                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("can't fork");
+<a id='L321' name='L321'></a> 321                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L322' name='L322'></a> 322                 close(fd);
+<a id='L323' name='L323'></a> 323                 close(semfd);
+<a id='L324' name='L324'></a> 324                 remove(semname);
+<a id='L325' name='L325'></a> 325                 <strong class='reserved'>return</strong>;
+<a id='L326' name='L326'></a> 326         <em class='brace'>}</em>
+<a id='L327' name='L327'></a> 327         <strong class='reserved'>if</strong> (pids[0]==0) <em class='brace'>{</em>
+<a id='L328' name='L328'></a> 328                 close(fd);
+<a id='L329' name='L329'></a> 329                 close(semfd);
+<a id='L330' name='L330'></a> 330                 <a href='../S/593.html#L218' title='Defined at 218 in userland/testbin/badcall/bad_waitpid.c.'>wait_siblings_child</a>(semname);
+<a id='L331' name='L331'></a> 331                 _exit(0);
+<a id='L332' name='L332'></a> 332         <em class='brace'>}</em>
+<a id='L333' name='L333'></a> 333 
+<a id='L334' name='L334'></a> 334         pids[1] = fork();
+<a id='L335' name='L335'></a> 335         <strong class='reserved'>if</strong> (pids[1]&lt;0) <em class='brace'>{</em>
+<a id='L336' name='L336'></a> 336                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("can't fork");
+<a id='L337' name='L337'></a> 337                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L338' name='L338'></a> 338                 <em class='comment'>/* abandon the other child process :( */</em>
+<a id='L339' name='L339'></a> 339                 close(fd);
+<a id='L340' name='L340'></a> 340                 close(semfd);
+<a id='L341' name='L341'></a> 341                 remove(semname);
+<a id='L342' name='L342'></a> 342                 <strong class='reserved'>return</strong>;
+<a id='L343' name='L343'></a> 343         <em class='brace'>}</em>
+<a id='L344' name='L344'></a> 344         <strong class='reserved'>if</strong> (pids[1]==0) <em class='brace'>{</em>
+<a id='L345' name='L345'></a> 345                 close(fd);
+<a id='L346' name='L346'></a> 346                 close(semfd);
+<a id='L347' name='L347'></a> 347                 <a href='../S/593.html#L218' title='Defined at 218 in userland/testbin/badcall/bad_waitpid.c.'>wait_siblings_child</a>(semname);
+<a id='L348' name='L348'></a> 348                 _exit(0);
+<a id='L349' name='L349'></a> 349         <em class='brace'>}</em>
+<a id='L350' name='L350'></a> 350 
+<a id='L351' name='L351'></a> 351         rv = write(fd, pids, <strong class='reserved'>sizeof</strong>(pids));
+<a id='L352' name='L352'></a> 352         <strong class='reserved'>if</strong> (rv &lt; 0) <em class='brace'>{</em>
+<a id='L353' name='L353'></a> 353                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("write error on %s", <a href='../D/938.html' title='Multiple defined in 2 places.'>TESTFILE</a>);
+<a id='L354' name='L354'></a> 354                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L355' name='L355'></a> 355                 <em class='comment'>/* abandon child procs :( */</em>
+<a id='L356' name='L356'></a> 356                 close(fd);
+<a id='L357' name='L357'></a> 357                 close(semfd);
+<a id='L358' name='L358'></a> 358                 remove(semname);
+<a id='L359' name='L359'></a> 359                 <strong class='reserved'>return</strong>;
+<a id='L360' name='L360'></a> 360         <em class='brace'>}</em>
+<a id='L361' name='L361'></a> 361         <strong class='reserved'>if</strong> (rv != (<strong class='reserved'>int</strong>)<strong class='reserved'>sizeof</strong>(pids)) <em class='brace'>{</em>
+<a id='L362' name='L362'></a> 362                 <a href='../S/601.html#L192' title='Defined at 192 in userland/testbin/badcall/report.c.'>report_warnx</a>("write error on %s: short count", <a href='../D/938.html' title='Multiple defined in 2 places.'>TESTFILE</a>);
+<a id='L363' name='L363'></a> 363                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L364' name='L364'></a> 364                 <em class='comment'>/* abandon child procs :( */</em>
+<a id='L365' name='L365'></a> 365                 close(fd);
+<a id='L366' name='L366'></a> 366                 close(semfd);
+<a id='L367' name='L367'></a> 367                 remove(semname);
+<a id='L368' name='L368'></a> 368                 <strong class='reserved'>return</strong>;
+<a id='L369' name='L369'></a> 369         <em class='brace'>}</em>
+<a id='L370' name='L370'></a> 370 
+<a id='L371' name='L371'></a> 371         <em class='comment'>/* gate the child procs */</em>
+<a id='L372' name='L372'></a> 372         rv = write(semfd, "  ", 2);
+<a id='L373' name='L373'></a> 373         <strong class='reserved'>if</strong> (rv &lt; 0) <em class='brace'>{</em>
+<a id='L374' name='L374'></a> 374                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("%s: write", semname);
+<a id='L375' name='L375'></a> 375                 bad = 1;
+<a id='L376' name='L376'></a> 376         <em class='brace'>}</em>
+<a id='L377' name='L377'></a> 377 
+<a id='L378' name='L378'></a> 378         <a href='../S/601.html#L156' title='Defined at 156 in userland/testbin/badcall/report.c.'>report_beginsub</a>("overall");
+<a id='L379' name='L379'></a> 379         rv = waitpid(pids[0], &amp;x, 0);
+<a id='L380' name='L380'></a> 380         <strong class='reserved'>if</strong> (rv&lt;0) <em class='brace'>{</em>
+<a id='L381' name='L381'></a> 381                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("error waiting for child 0 (pid %d)", pids[0]);
+<a id='L382' name='L382'></a> 382                 bad = 1;
+<a id='L383' name='L383'></a> 383         <em class='brace'>}</em>
+<a id='L384' name='L384'></a> 384         rv = waitpid(pids[1], &amp;x, 0);
+<a id='L385' name='L385'></a> 385         <strong class='reserved'>if</strong> (rv&lt;0) <em class='brace'>{</em>
+<a id='L386' name='L386'></a> 386                 <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>("error waiting for child 1 (pid %d)", pids[1]);
+<a id='L387' name='L387'></a> 387                 bad = 1;
+<a id='L388' name='L388'></a> 388         <em class='brace'>}</em>
+<a id='L389' name='L389'></a> 389         <strong class='reserved'>if</strong> (bad) <em class='brace'>{</em>
+<a id='L390' name='L390'></a> 390                 <em class='comment'>/* XXX: aborted, or failure, or what? */</em>
+<a id='L391' name='L391'></a> 391                 <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>();
+<a id='L392' name='L392'></a> 392         <em class='brace'>}</em>
+<a id='L393' name='L393'></a> 393         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L394' name='L394'></a> 394                 <a href='../S/601.html#L254' title='Defined at 254 in userland/testbin/badcall/report.c.'>report_passed</a>();
+<a id='L395' name='L395'></a> 395         <em class='brace'>}</em>
+<a id='L396' name='L396'></a> 396         close(fd);
+<a id='L397' name='L397'></a> 397         close(semfd);
+<a id='L398' name='L398'></a> 398         remove(semname);
+<a id='L399' name='L399'></a> 399         remove(<a href='../D/938.html' title='Multiple defined in 2 places.'>TESTFILE</a>);
+<a id='L400' name='L400'></a> 400 <em class='brace'>}</em>
+<a id='L401' name='L401'></a> 401 
+<a id='L402' name='L402'></a> 402 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L403' name='L403'></a> 403 
+<a id='L404' name='L404'></a> 404 <strong class='reserved'>void</strong>
+<a id='L405' name='L405'></a> 405 <a href='../R/2171.html' title='Multiple referred from 2 places.'>test_waitpid</a>(<strong class='reserved'>void</strong>)
+<a id='L406' name='L406'></a> 406 <em class='brace'>{</em>
+<a id='L407' name='L407'></a> 407         <a href='../S/593.html#L46' title='Defined at 46 in userland/testbin/badcall/bad_waitpid.c.'>wait_badpid</a>(-8, "wait for pid -8");
+<a id='L408' name='L408'></a> 408         <a href='../S/593.html#L46' title='Defined at 46 in userland/testbin/badcall/bad_waitpid.c.'>wait_badpid</a>(-1, "wait for pid -1");
+<a id='L409' name='L409'></a> 409         <a href='../S/593.html#L46' title='Defined at 46 in userland/testbin/badcall/bad_waitpid.c.'>wait_badpid</a>(0, "pid zero");
+<a id='L410' name='L410'></a> 410         <a href='../S/593.html#L46' title='Defined at 46 in userland/testbin/badcall/bad_waitpid.c.'>wait_badpid</a>(<a href='../S/598.html#L54' title='Defined at 54 in userland/testbin/badcall/config.h.'>NONEXIST_PID</a>, "nonexistent pid");
+<a id='L411' name='L411'></a> 411 
+<a id='L412' name='L412'></a> 412         <a href='../S/593.html#L67' title='Defined at 67 in userland/testbin/badcall/bad_waitpid.c.'>wait_nullstatus</a>();
+<a id='L413' name='L413'></a> 413         <a href='../S/593.html#L92' title='Defined at 92 in userland/testbin/badcall/bad_waitpid.c.'>wait_badstatus</a>(<a href='../S/598.html#L39' title='Defined at 39 in userland/testbin/badcall/config.h.'>INVAL_PTR</a>, "wait with invalid pointer status");
+<a id='L414' name='L414'></a> 414         <a href='../S/593.html#L92' title='Defined at 92 in userland/testbin/badcall/bad_waitpid.c.'>wait_badstatus</a>(<a href='../S/598.html#L38' title='Defined at 38 in userland/testbin/badcall/config.h.'>KERN_PTR</a>, "wait with kernel pointer status");
+<a id='L415' name='L415'></a> 415 
+<a id='L416' name='L416'></a> 416         <a href='../S/593.html#L116' title='Defined at 116 in userland/testbin/badcall/bad_waitpid.c.'>wait_unaligned</a>();
+<a id='L417' name='L417'></a> 417 
+<a id='L418' name='L418'></a> 418         <a href='../S/593.html#L150' title='Defined at 150 in userland/testbin/badcall/bad_waitpid.c.'>wait_badflags</a>();
+<a id='L419' name='L419'></a> 419 
+<a id='L420' name='L420'></a> 420         <a href='../S/593.html#L174' title='Defined at 174 in userland/testbin/badcall/bad_waitpid.c.'>wait_self</a>();
+<a id='L421' name='L421'></a> 421         <a href='../S/593.html#L187' title='Defined at 187 in userland/testbin/badcall/bad_waitpid.c.'>wait_parent</a>();
+<a id='L422' name='L422'></a> 422         <a href='../S/593.html#L290' title='Defined at 290 in userland/testbin/badcall/bad_waitpid.c.'>wait_siblings</a>();
+<a id='L423' name='L423'></a> 423 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L46'>[^]</a><a href='#L405'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

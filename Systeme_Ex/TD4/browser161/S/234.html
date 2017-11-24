@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/vfs/vfslookup.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/759.html'>vfs</a>/vfslookup.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L50'>[^]</a><a href='#L276'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L50' title='Defined at 50.'>change_bootfs</a></li>
+<li><a href='#L71' title='Defined at 71.'>vfs_setbootfs</a></li>
+<li><a href='#L115' title='Defined at 115.'>vfs_clearbootfs</a></li>
+<li><a href='#L130' title='Defined at 130.'>getdevice</a></li>
+<li><a href='#L243' title='Defined at 243.'>vfs_lookparent</a></li>
+<li><a href='#L276' title='Defined at 276.'>vfs_lookup</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * VFS operations relating to pathname translation</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> */</em>
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>kern/errno.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='../I/138.html'>limits.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> &lt;<a href='184.html'>synch.h</a>&gt;
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='193.html'>vfs.h</a>&gt;
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> &lt;<a href='150.html'>fs.h</a>&gt;
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> &lt;<a href='195.html'>vnode.h</a>&gt;
+<a id='L42' name='L42'></a>  42 
+<a id='L43' name='L43'></a>  43 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *bootfs_vnode = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L44' name='L44'></a>  44 
+<a id='L45' name='L45'></a>  45 <em class='comment'>/*</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> * Helper function for actually changing bootfs_vnode.</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> */</em>
+<a id='L48' name='L48'></a>  48 <strong class='reserved'>static</strong>
+<a id='L49' name='L49'></a>  49 <strong class='reserved'>void</strong>
+<a id='L50' name='L50'></a>  50 <a href='../R/1036.html' title='Multiple referred from 2 places.'>change_bootfs</a>(<strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *newvn)
+<a id='L51' name='L51'></a>  51 <em class='brace'>{</em>
+<a id='L52' name='L52'></a>  52         <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *oldvn;
+<a id='L53' name='L53'></a>  53 
+<a id='L54' name='L54'></a>  54         oldvn = bootfs_vnode;
+<a id='L55' name='L55'></a>  55         bootfs_vnode = newvn;
+<a id='L56' name='L56'></a>  56 
+<a id='L57' name='L57'></a>  57         <strong class='reserved'>if</strong> (oldvn != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L58' name='L58'></a>  58                 <a href='../S/195.html#L267' title='Defined at 267 in kern/include/vnode.h.'>VOP_DECREF</a>(oldvn);
+<a id='L59' name='L59'></a>  59         <em class='brace'>}</em>
+<a id='L60' name='L60'></a>  60 <em class='brace'>}</em>
+<a id='L61' name='L61'></a>  61 
+<a id='L62' name='L62'></a>  62 <em class='comment'>/*</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'> * Set bootfs_vnode.</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'> *</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'> * Bootfs_vnode is the vnode used for beginning path translation of</em>
+<a id='L66' name='L66'></a>  66 <em class='comment'> * pathnames starting with /.</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'> *</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'> * It is also incidentally the system's first current directory.</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> */</em>
+<a id='L70' name='L70'></a>  70 <strong class='reserved'>int</strong>
+<a id='L71' name='L71'></a>  71 <a href='../R/2309.html' title='Multiple referred from 3 places.'>vfs_setbootfs</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *fsname)
+<a id='L72' name='L72'></a>  72 <em class='brace'>{</em>
+<a id='L73' name='L73'></a>  73         <strong class='reserved'>char</strong> tmp[<a href='../D/544.html' title='Multiple defined in 2 places.'>NAME_MAX</a>+1];
+<a id='L74' name='L74'></a>  74         <strong class='reserved'>char</strong> *s;
+<a id='L75' name='L75'></a>  75         <strong class='reserved'>int</strong> result;
+<a id='L76' name='L76'></a>  76         <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *newguy;
+<a id='L77' name='L77'></a>  77 
+<a id='L78' name='L78'></a>  78         <a href='../S/233.html#L127' title='Defined at 127 in kern/vfs/vfslist.c.'>vfs_biglock_acquire</a>();
+<a id='L79' name='L79'></a>  79 
+<a id='L80' name='L80'></a>  80         <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(tmp, <strong class='reserved'>sizeof</strong>(tmp)-1, "%s", fsname);
+<a id='L81' name='L81'></a>  81         s = <a href='../S/32.html#L47' title='Defined at 47 in common/libc/string/strchr.c.'>strchr</a>(tmp, ':');
+<a id='L82' name='L82'></a>  82         <strong class='reserved'>if</strong> (s) <em class='brace'>{</em>
+<a id='L83' name='L83'></a>  83                 <em class='comment'>/* If there's a colon, it must be at the end */</em>
+<a id='L84' name='L84'></a>  84                 <strong class='reserved'>if</strong> (<a href='../S/35.html#L47' title='Defined at 47 in common/libc/string/strlen.c.'>strlen</a>(s)&gt;0) <em class='brace'>{</em>
+<a id='L85' name='L85'></a>  85                         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L86' name='L86'></a>  86                         <strong class='reserved'>return</strong> <a href='../S/154.html#L52' title='Defined at 52 in kern/include/kern/errno.h.'>EINVAL</a>;
+<a id='L87' name='L87'></a>  87                 <em class='brace'>}</em>
+<a id='L88' name='L88'></a>  88         <em class='brace'>}</em>
+<a id='L89' name='L89'></a>  89         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L90' name='L90'></a>  90                 <a href='../S/31.html#L47' title='Defined at 47 in common/libc/string/strcat.c.'>strcat</a>(tmp, ":");
+<a id='L91' name='L91'></a>  91         <em class='brace'>}</em>
+<a id='L92' name='L92'></a>  92 
+<a id='L93' name='L93'></a>  93         result = <a href='../S/231.html#L124' title='Defined at 124 in kern/vfs/vfscwd.c.'>vfs_chdir</a>(tmp);
+<a id='L94' name='L94'></a>  94         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L95' name='L95'></a>  95                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L96' name='L96'></a>  96                 <strong class='reserved'>return</strong> result;
+<a id='L97' name='L97'></a>  97         <em class='brace'>}</em>
+<a id='L98' name='L98'></a>  98 
+<a id='L99' name='L99'></a>  99         result = <a href='../S/231.html#L49' title='Defined at 49 in kern/vfs/vfscwd.c.'>vfs_getcurdir</a>(&amp;newguy);
+<a id='L100' name='L100'></a> 100         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L101' name='L101'></a> 101                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L102' name='L102'></a> 102                 <strong class='reserved'>return</strong> result;
+<a id='L103' name='L103'></a> 103         <em class='brace'>}</em>
+<a id='L104' name='L104'></a> 104 
+<a id='L105' name='L105'></a> 105         <a href='../S/234.html#L50' title='Defined at 50 in kern/vfs/vfslookup.c.'>change_bootfs</a>(newguy);
+<a id='L106' name='L106'></a> 106 
+<a id='L107' name='L107'></a> 107         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L108' name='L108'></a> 108         <strong class='reserved'>return</strong> 0;
+<a id='L109' name='L109'></a> 109 <em class='brace'>}</em>
+<a id='L110' name='L110'></a> 110 
+<a id='L111' name='L111'></a> 111 <em class='comment'>/*</em>
+<a id='L112' name='L112'></a> 112 <em class='comment'> * Clear the bootfs vnode (preparatory to system shutdown).</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'> */</em>
+<a id='L114' name='L114'></a> 114 <strong class='reserved'>void</strong>
+<a id='L115' name='L115'></a> 115 <a href='../R/2291.html' title='Multiple referred from 2 places.'>vfs_clearbootfs</a>(<strong class='reserved'>void</strong>)
+<a id='L116' name='L116'></a> 116 <em class='brace'>{</em>
+<a id='L117' name='L117'></a> 117         <a href='../S/233.html#L127' title='Defined at 127 in kern/vfs/vfslist.c.'>vfs_biglock_acquire</a>();
+<a id='L118' name='L118'></a> 118         <a href='../S/234.html#L50' title='Defined at 50 in kern/vfs/vfslookup.c.'>change_bootfs</a>(<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L119' name='L119'></a> 119         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L120' name='L120'></a> 120 <em class='brace'>}</em>
+<a id='L121' name='L121'></a> 121 
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123 <em class='comment'>/*</em>
+<a id='L124' name='L124'></a> 124 <em class='comment'> * Common code to pull the device name, if any, off the front of a</em>
+<a id='L125' name='L125'></a> 125 <em class='comment'> * path and choose the vnode to begin the name lookup relative to.</em>
+<a id='L126' name='L126'></a> 126 <em class='comment'> */</em>
+<a id='L127' name='L127'></a> 127 
+<a id='L128' name='L128'></a> 128 <strong class='reserved'>static</strong>
+<a id='L129' name='L129'></a> 129 <strong class='reserved'>int</strong>
+<a id='L130' name='L130'></a> 130 <a href='../R/1447.html' title='Multiple referred from 2 places.'>getdevice</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>char</strong> **subpath, <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> **startvn)
+<a id='L131' name='L131'></a> 131 <em class='brace'>{</em>
+<a id='L132' name='L132'></a> 132         <strong class='reserved'>int</strong> slash=-1, colon=-1, i;
+<a id='L133' name='L133'></a> 133         <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *vn;
+<a id='L134' name='L134'></a> 134         <strong class='reserved'>int</strong> result;
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/233.html#L164' title='Defined at 164 in kern/vfs/vfslist.c.'>vfs_biglock_do_i_hold</a>());
+<a id='L137' name='L137'></a> 137 
+<a id='L138' name='L138'></a> 138         <em class='comment'>/*</em>
+<a id='L139' name='L139'></a> 139 <em class='comment'>         * Entirely empty filenames aren't legal.</em>
+<a id='L140' name='L140'></a> 140 <em class='comment'>         */</em>
+<a id='L141' name='L141'></a> 141         <strong class='reserved'>if</strong> (path[0] == 0) <em class='brace'>{</em>
+<a id='L142' name='L142'></a> 142                 <strong class='reserved'>return</strong> <a href='../S/154.html#L52' title='Defined at 52 in kern/include/kern/errno.h.'>EINVAL</a>;
+<a id='L143' name='L143'></a> 143         <em class='brace'>}</em>
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145         <em class='comment'>/*</em>
+<a id='L146' name='L146'></a> 146 <em class='comment'>         * Locate the first colon or slash.</em>
+<a id='L147' name='L147'></a> 147 <em class='comment'>         */</em>
+<a id='L148' name='L148'></a> 148 
+<a id='L149' name='L149'></a> 149         <strong class='reserved'>for</strong> (i=0; path[i]; i++) <em class='brace'>{</em>
+<a id='L150' name='L150'></a> 150                 <strong class='reserved'>if</strong> (path[i]==':') <em class='brace'>{</em>
+<a id='L151' name='L151'></a> 151                         colon = i;
+<a id='L152' name='L152'></a> 152                         <strong class='reserved'>break</strong>;
+<a id='L153' name='L153'></a> 153                 <em class='brace'>}</em>
+<a id='L154' name='L154'></a> 154                 <strong class='reserved'>if</strong> (path[i]=='/') <em class='brace'>{</em>
+<a id='L155' name='L155'></a> 155                         slash = i;
+<a id='L156' name='L156'></a> 156                         <strong class='reserved'>break</strong>;
+<a id='L157' name='L157'></a> 157                 <em class='brace'>}</em>
+<a id='L158' name='L158'></a> 158         <em class='brace'>}</em>
+<a id='L159' name='L159'></a> 159 
+<a id='L160' name='L160'></a> 160         <strong class='reserved'>if</strong> (colon &lt; 0 &amp;&amp; slash != 0) <em class='brace'>{</em>
+<a id='L161' name='L161'></a> 161                 <em class='comment'>/*</em>
+<a id='L162' name='L162'></a> 162 <em class='comment'>                 * No colon before a slash, so no device name</em>
+<a id='L163' name='L163'></a> 163 <em class='comment'>                 * specified, and the slash isn't leading or is also</em>
+<a id='L164' name='L164'></a> 164 <em class='comment'>                 * absent, so this is a relative path or just a bare</em>
+<a id='L165' name='L165'></a> 165 <em class='comment'>                 * filename. Start from the current directory, and</em>
+<a id='L166' name='L166'></a> 166 <em class='comment'>                 * use the whole thing as the subpath.</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'>                 */</em>
+<a id='L168' name='L168'></a> 168                 *subpath = path;
+<a id='L169' name='L169'></a> 169                 <strong class='reserved'>return</strong> <a href='../S/231.html#L49' title='Defined at 49 in kern/vfs/vfscwd.c.'>vfs_getcurdir</a>(startvn);
+<a id='L170' name='L170'></a> 170         <em class='brace'>}</em>
+<a id='L171' name='L171'></a> 171 
+<a id='L172' name='L172'></a> 172         <strong class='reserved'>if</strong> (colon&gt;0) <em class='brace'>{</em>
+<a id='L173' name='L173'></a> 173                 <em class='comment'>/* device:path - get root of device's filesystem */</em>
+<a id='L174' name='L174'></a> 174                 path[colon]=0;
+<a id='L175' name='L175'></a> 175                 <strong class='reserved'>while</strong> (path[colon+1]=='/') <em class='brace'>{</em>
+<a id='L176' name='L176'></a> 176                         <em class='comment'>/* device:/path - skip slash, treat as device:path */</em>
+<a id='L177' name='L177'></a> 177                         colon++;
+<a id='L178' name='L178'></a> 178                 <em class='brace'>}</em>
+<a id='L179' name='L179'></a> 179                 *subpath = &amp;path[colon+1];
+<a id='L180' name='L180'></a> 180 
+<a id='L181' name='L181'></a> 181                 result = <a href='../S/233.html#L198' title='Defined at 198 in kern/vfs/vfslist.c.'>vfs_getroot</a>(path, startvn);
+<a id='L182' name='L182'></a> 182                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L183' name='L183'></a> 183                         <strong class='reserved'>return</strong> result;
+<a id='L184' name='L184'></a> 184                 <em class='brace'>}</em>
+<a id='L185' name='L185'></a> 185 
+<a id='L186' name='L186'></a> 186                 <strong class='reserved'>return</strong> 0;
+<a id='L187' name='L187'></a> 187         <em class='brace'>}</em>
+<a id='L188' name='L188'></a> 188 
+<a id='L189' name='L189'></a> 189         <em class='comment'>/*</em>
+<a id='L190' name='L190'></a> 190 <em class='comment'>         * We have either /path or :path.</em>
+<a id='L191' name='L191'></a> 191 <em class='comment'>         *</em>
+<a id='L192' name='L192'></a> 192 <em class='comment'>         * /path is a path relative to the root of the "boot filesystem".</em>
+<a id='L193' name='L193'></a> 193 <em class='comment'>         * :path is a path relative to the root of the current filesystem.</em>
+<a id='L194' name='L194'></a> 194 <em class='comment'>         */</em>
+<a id='L195' name='L195'></a> 195         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(colon==0 || slash==0);
+<a id='L196' name='L196'></a> 196 
+<a id='L197' name='L197'></a> 197         <strong class='reserved'>if</strong> (path[0]=='/') <em class='brace'>{</em>
+<a id='L198' name='L198'></a> 198                 <strong class='reserved'>if</strong> (bootfs_vnode==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L199' name='L199'></a> 199                         <strong class='reserved'>return</strong> <a href='../S/154.html#L63' title='Defined at 63 in kern/include/kern/errno.h.'>ENOENT</a>;
+<a id='L200' name='L200'></a> 200                 <em class='brace'>}</em>
+<a id='L201' name='L201'></a> 201                 <a href='../S/195.html#L266' title='Defined at 266 in kern/include/vnode.h.'>VOP_INCREF</a>(bootfs_vnode);
+<a id='L202' name='L202'></a> 202                 *startvn = bootfs_vnode;
+<a id='L203' name='L203'></a> 203         <em class='brace'>}</em>
+<a id='L204' name='L204'></a> 204         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L205' name='L205'></a> 205                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(path[0]==':');
+<a id='L206' name='L206'></a> 206 
+<a id='L207' name='L207'></a> 207                 result = <a href='../S/231.html#L49' title='Defined at 49 in kern/vfs/vfscwd.c.'>vfs_getcurdir</a>(&amp;vn);
+<a id='L208' name='L208'></a> 208                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L209' name='L209'></a> 209                         <strong class='reserved'>return</strong> result;
+<a id='L210' name='L210'></a> 210                 <em class='brace'>}</em>
+<a id='L211' name='L211'></a> 211 
+<a id='L212' name='L212'></a> 212                 <em class='comment'>/*</em>
+<a id='L213' name='L213'></a> 213 <em class='comment'>                 * The current directory may not be a device, so it</em>
+<a id='L214' name='L214'></a> 214 <em class='comment'>                 * must have a fs.</em>
+<a id='L215' name='L215'></a> 215 <em class='comment'>                 */</em>
+<a id='L216' name='L216'></a> 216                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(vn-&gt;vn_fs!=<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L217' name='L217'></a> 217 
+<a id='L218' name='L218'></a> 218                 result = <a href='../S/150.html#L84' title='Defined at 84 in kern/include/fs.h.'>FSOP_GETROOT</a>(vn-&gt;vn_fs, startvn);
+<a id='L219' name='L219'></a> 219 
+<a id='L220' name='L220'></a> 220                 <a href='../S/195.html#L267' title='Defined at 267 in kern/include/vnode.h.'>VOP_DECREF</a>(vn);
+<a id='L221' name='L221'></a> 221 
+<a id='L222' name='L222'></a> 222                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L223' name='L223'></a> 223                         <strong class='reserved'>return</strong> result;
+<a id='L224' name='L224'></a> 224                 <em class='brace'>}</em>
+<a id='L225' name='L225'></a> 225         <em class='brace'>}</em>
+<a id='L226' name='L226'></a> 226 
+<a id='L227' name='L227'></a> 227         <strong class='reserved'>while</strong> (path[1]=='/') <em class='brace'>{</em>
+<a id='L228' name='L228'></a> 228                 <em class='comment'>/* ///... or :/... */</em>
+<a id='L229' name='L229'></a> 229                 path++;
+<a id='L230' name='L230'></a> 230         <em class='brace'>}</em>
+<a id='L231' name='L231'></a> 231 
+<a id='L232' name='L232'></a> 232         *subpath = path+1;
+<a id='L233' name='L233'></a> 233 
+<a id='L234' name='L234'></a> 234         <strong class='reserved'>return</strong> 0;
+<a id='L235' name='L235'></a> 235 <em class='brace'>}</em>
+<a id='L236' name='L236'></a> 236 
+<a id='L237' name='L237'></a> 237 <em class='comment'>/*</em>
+<a id='L238' name='L238'></a> 238 <em class='comment'> * Name-to-vnode translation.</em>
+<a id='L239' name='L239'></a> 239 <em class='comment'> * (In BSD, both of these are subsumed by namei().)</em>
+<a id='L240' name='L240'></a> 240 <em class='comment'> */</em>
+<a id='L241' name='L241'></a> 241 
+<a id='L242' name='L242'></a> 242 <strong class='reserved'>int</strong>
+<a id='L243' name='L243'></a> 243 <a href='../R/2300.html' title='Multiple referred from 9 places.'>vfs_lookparent</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> **retval,
+<a id='L244' name='L244'></a> 244                <strong class='reserved'>char</strong> *buf, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> buflen)
+<a id='L245' name='L245'></a> 245 <em class='brace'>{</em>
+<a id='L246' name='L246'></a> 246         <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *startvn;
+<a id='L247' name='L247'></a> 247         <strong class='reserved'>int</strong> result;
+<a id='L248' name='L248'></a> 248 
+<a id='L249' name='L249'></a> 249         <a href='../S/233.html#L127' title='Defined at 127 in kern/vfs/vfslist.c.'>vfs_biglock_acquire</a>();
+<a id='L250' name='L250'></a> 250 
+<a id='L251' name='L251'></a> 251         result = <a href='../S/234.html#L130' title='Defined at 130 in kern/vfs/vfslookup.c.'>getdevice</a>(path, &amp;path, &amp;startvn);
+<a id='L252' name='L252'></a> 252         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L253' name='L253'></a> 253                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L254' name='L254'></a> 254                 <strong class='reserved'>return</strong> result;
+<a id='L255' name='L255'></a> 255         <em class='brace'>}</em>
+<a id='L256' name='L256'></a> 256 
+<a id='L257' name='L257'></a> 257         <strong class='reserved'>if</strong> (<a href='../S/35.html#L47' title='Defined at 47 in common/libc/string/strlen.c.'>strlen</a>(path)==0) <em class='brace'>{</em>
+<a id='L258' name='L258'></a> 258                 <em class='comment'>/*</em>
+<a id='L259' name='L259'></a> 259 <em class='comment'>                 * It does not make sense to use just a device name in</em>
+<a id='L260' name='L260'></a> 260 <em class='comment'>                 * a context where "lookparent" is the desired</em>
+<a id='L261' name='L261'></a> 261 <em class='comment'>                 * operation.</em>
+<a id='L262' name='L262'></a> 262 <em class='comment'>                 */</em>
+<a id='L263' name='L263'></a> 263                 result = <a href='../S/154.html#L52' title='Defined at 52 in kern/include/kern/errno.h.'>EINVAL</a>;
+<a id='L264' name='L264'></a> 264         <em class='brace'>}</em>
+<a id='L265' name='L265'></a> 265         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L266' name='L266'></a> 266                 result = <a href='../S/195.html#L253' title='Defined at 253 in kern/include/vnode.h.'>VOP_LOOKPARENT</a>(startvn, path, retval, buf, buflen);
+<a id='L267' name='L267'></a> 267         <em class='brace'>}</em>
+<a id='L268' name='L268'></a> 268 
+<a id='L269' name='L269'></a> 269         <a href='../S/195.html#L267' title='Defined at 267 in kern/include/vnode.h.'>VOP_DECREF</a>(startvn);
+<a id='L270' name='L270'></a> 270 
+<a id='L271' name='L271'></a> 271         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L272' name='L272'></a> 272         <strong class='reserved'>return</strong> result;
+<a id='L273' name='L273'></a> 273 <em class='brace'>}</em>
+<a id='L274' name='L274'></a> 274 
+<a id='L275' name='L275'></a> 275 <strong class='reserved'>int</strong>
+<a id='L276' name='L276'></a> 276 <a href='../R/2301.html' title='Multiple referred from 5 places.'>vfs_lookup</a>(<strong class='reserved'>char</strong> *path, <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> **retval)
+<a id='L277' name='L277'></a> 277 <em class='brace'>{</em>
+<a id='L278' name='L278'></a> 278         <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *startvn;
+<a id='L279' name='L279'></a> 279         <strong class='reserved'>int</strong> result;
+<a id='L280' name='L280'></a> 280 
+<a id='L281' name='L281'></a> 281         <a href='../S/233.html#L127' title='Defined at 127 in kern/vfs/vfslist.c.'>vfs_biglock_acquire</a>();
+<a id='L282' name='L282'></a> 282 
+<a id='L283' name='L283'></a> 283         result = <a href='../S/234.html#L130' title='Defined at 130 in kern/vfs/vfslookup.c.'>getdevice</a>(path, &amp;path, &amp;startvn);
+<a id='L284' name='L284'></a> 284         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L285' name='L285'></a> 285                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L286' name='L286'></a> 286                 <strong class='reserved'>return</strong> result;
+<a id='L287' name='L287'></a> 287         <em class='brace'>}</em>
+<a id='L288' name='L288'></a> 288 
+<a id='L289' name='L289'></a> 289         <strong class='reserved'>if</strong> (<a href='../S/35.html#L47' title='Defined at 47 in common/libc/string/strlen.c.'>strlen</a>(path)==0) <em class='brace'>{</em>
+<a id='L290' name='L290'></a> 290                 *retval = startvn;
+<a id='L291' name='L291'></a> 291                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L292' name='L292'></a> 292                 <strong class='reserved'>return</strong> 0;
+<a id='L293' name='L293'></a> 293         <em class='brace'>}</em>
+<a id='L294' name='L294'></a> 294 
+<a id='L295' name='L295'></a> 295         result = <a href='../S/195.html#L252' title='Defined at 252 in kern/include/vnode.h.'>VOP_LOOKUP</a>(startvn, path, retval);
+<a id='L296' name='L296'></a> 296 
+<a id='L297' name='L297'></a> 297         <a href='../S/195.html#L267' title='Defined at 267 in kern/include/vnode.h.'>VOP_DECREF</a>(startvn);
+<a id='L298' name='L298'></a> 298         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L299' name='L299'></a> 299         <strong class='reserved'>return</strong> result;
+<a id='L300' name='L300'></a> 300 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L50'>[^]</a><a href='#L276'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

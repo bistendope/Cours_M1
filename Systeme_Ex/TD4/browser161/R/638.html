@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>TESTDIR</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/578.html#L46'>TESTDIR</a>            46 userland/testbin/badcall/bad_link.c 	rv = link(".", TESTDIR);</span>
+<span class='curline'><a href='../S/578.html#L50'>TESTDIR</a>            50 userland/testbin/badcall/bad_link.c 		remove(TESTDIR);</span>
+<span class='curline'><a href='../S/578.html#L61'>TESTDIR</a>            61 userland/testbin/badcall/bad_link.c 	rv = link("", TESTDIR);</span>
+<span class='curline'><a href='../S/578.html#L76'>TESTDIR</a>            76 userland/testbin/badcall/bad_link.c 	rv = link(TESTDIR, "");</span>
+<span class='curline'><a href='../S/578.html#L78'>TESTDIR</a>            78 userland/testbin/badcall/bad_link.c 	rmdir(TESTDIR);</span>
+<span class='curline'><a href='../S/586.html#L59'>TESTDIR</a>            59 userland/testbin/badcall/bad_remove.c 	rv = remove(TESTDIR);</span>
+<span class='curline'><a href='../S/586.html#L61'>TESTDIR</a>            61 userland/testbin/badcall/bad_remove.c 	rmdir(TESTDIR);</span>
+<span class='curline'><a href='../S/587.html#L47'>TESTDIR</a>            47 userland/testbin/badcall/bad_rename.c 	rv = rename(".", TESTDIR);</span>
+<span class='curline'><a href='../S/587.html#L51'>TESTDIR</a>            51 userland/testbin/badcall/bad_rename.c 		rename(TESTDIR, ".");</span>
+<span class='curline'><a href='../S/587.html#L62'>TESTDIR</a>            62 userland/testbin/badcall/bad_rename.c 	rv = rename("..", TESTDIR);</span>
+<span class='curline'><a href='../S/587.html#L66'>TESTDIR</a>            66 userland/testbin/badcall/bad_rename.c 		rename(TESTDIR, "..");</span>
+<span class='curline'><a href='../S/587.html#L77'>TESTDIR</a>            77 userland/testbin/badcall/bad_rename.c 	rv = rename("", TESTDIR);</span>
+<span class='curline'><a href='../S/587.html#L81'>TESTDIR</a>            81 userland/testbin/badcall/bad_rename.c 		rename(TESTDIR, TESTDIR "-foo");</span>
+<span class='curline'><a href='../S/587.html#L96'>TESTDIR</a>            96 userland/testbin/badcall/bad_rename.c 	rv = rename(TESTDIR, "");</span>
+<span class='curline'><a href='../S/587.html#L98'>TESTDIR</a>            98 userland/testbin/badcall/bad_rename.c 	rmdir(TESTDIR);</span>
+<span class='curline'><a href='../S/599.html#L124'>TESTDIR</a>           124 userland/testbin/badcall/driver.c 	rv = mkdir(TESTDIR, 0775);</span>
+<span class='curline'><a href='../S/599.html#L132'>TESTDIR</a>           132 userland/testbin/badcall/driver.c 			report_warn("mkdir %s failed", TESTDIR);</span>
+<span class='curline'><a href='../S/619.html#L283'>TESTDIR</a>           283 userland/testbin/dirconc/dirconc.c 	if (mkdir(TESTDIR, 0775)&lt;0) {</span>
+<span class='curline'><a href='../S/619.html#L284'>TESTDIR</a>           284 userland/testbin/dirconc/dirconc.c 		say("mkdir: %s: %s\n", TESTDIR, strerror(errno));</span>
+<span class='curline'><a href='../S/619.html#L287'>TESTDIR</a>           287 userland/testbin/dirconc/dirconc.c 	if (chdir(TESTDIR)&lt;0) {</span>
+<span class='curline'><a href='../S/619.html#L288'>TESTDIR</a>           288 userland/testbin/dirconc/dirconc.c 		say("chdir: %s: %s\n", TESTDIR, strerror(errno));</span>
+<span class='curline'><a href='../S/619.html#L322'>TESTDIR</a>           322 userland/testbin/dirconc/dirconc.c 	cleanup_rmdir(TESTDIR);</span>
+<span class='curline'><a href='../S/619.html#L354'>TESTDIR</a>           354 userland/testbin/dirconc/dirconc.c 	say("Starting in %s/%s\n", fs, TESTDIR);</span>
+<span class='curline'><a href='../S/621.html#L492'>TESTDIR</a>           492 userland/testbin/dirseek/dirseek.c 	printf("Making directory %s...\n", TESTDIR);</span>
+<span class='curline'><a href='../S/621.html#L495'>TESTDIR</a>           495 userland/testbin/dirseek/dirseek.c 	if (mkdir(TESTDIR, 0775)&lt;0) {</span>
+<span class='curline'><a href='../S/621.html#L496'>TESTDIR</a>           496 userland/testbin/dirseek/dirseek.c 		err(1, "%s: mkdir", TESTDIR);</span>
+<span class='curline'><a href='../S/621.html#L500'>TESTDIR</a>           500 userland/testbin/dirseek/dirseek.c 	if (chdir(TESTDIR)&lt;0) {</span>
+<span class='curline'><a href='../S/621.html#L501'>TESTDIR</a>           501 userland/testbin/dirseek/dirseek.c 		err(1, "%s: chdir", TESTDIR);</span>
+<span class='curline'><a href='../S/621.html#L538'>TESTDIR</a>           538 userland/testbin/dirseek/dirseek.c 	if (rmdir(TESTDIR)&lt;0) {</span>
+<span class='curline'><a href='../S/621.html#L539'>TESTDIR</a>           539 userland/testbin/dirseek/dirseek.c 		err(1, "%s: rmdir", TESTDIR);</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/testbin/frack/ops.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/801.html'>testbin</a>/<a href='../files/823.html'>frack</a>/ops.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L58'>[^]</a><a href='#L310'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L58' title='Defined at 58.'>setcheckmode</a></li>
+<li><a href='#L73' title='Defined at 73.'>op_opendir</a></li>
+<li><a href='#L89' title='Defined at 89.'>op_closedir</a></li>
+<li><a href='#L108' title='Defined at 108.'>op_open</a></li>
+<li><a href='#L157' title='Defined at 157.'>op_close</a></li>
+<li><a href='#L169' title='Defined at 169.'>op_write</a></li>
+<li><a href='#L194' title='Defined at 194.'>op_truncate</a></li>
+<li><a href='#L208' title='Defined at 208.'>op_mkdir</a></li>
+<li><a href='#L219' title='Defined at 219.'>op_rmdir</a></li>
+<li><a href='#L230' title='Defined at 230.'>op_unlink</a></li>
+<li><a href='#L241' title='Defined at 241.'>op_link</a></li>
+<li><a href='#L252' title='Defined at 252.'>op_rename</a></li>
+<li><a href='#L263' title='Defined at 263.'>op_renamexd</a></li>
+<li><a href='#L274' title='Defined at 274.'>op_chdir</a></li>
+<li><a href='#L285' title='Defined at 285.'>op_chdirup</a></li>
+<li><a href='#L299' title='Defined at 299.'>op_sync</a></li>
+<li><a href='#L310' title='Defined at 310.'>complete</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2013</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *      Written by David A. Holland.</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> *</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * are met:</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> *</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L29' name='L29'></a>  29 <em class='comment'> */</em>
+<a id='L30' name='L30'></a>  30 
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#include</em> &lt;<a href='478.html'>stdint.h</a>&gt;
+<a id='L32' name='L32'></a>  32 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>unistd.h</a>&gt;
+<a id='L33' name='L33'></a>  33 <em class='sharp'>#include</em> &lt;<a href='469.html'>assert.h</a>&gt;
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='470.html'>err.h</a>&gt;
+<a id='L35' name='L35'></a>  35 
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> "<a href='656.html'>pool.h</a>"
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> "<a href='645.html'>data.h</a>"
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> "<a href='647.html'>do.h</a>"
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> "<a href='643.html'>check.h</a>"
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> "<a href='654.html'>ops.h</a>"
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> "<a href='../I/305.html'>main.h</a>"
+<a id='L42' name='L42'></a>  42 
+<a id='L43' name='L43'></a>  43 <strong class='reserved'>struct</strong> <a href='../R/1385.html' title='Multiple referred from 145 places.'>file</a> <em class='brace'>{</em>
+<a id='L44' name='L44'></a>  44         <strong class='reserved'>unsigned</strong> name;
+<a id='L45' name='L45'></a>  45         <strong class='reserved'>unsigned</strong> testcode;
+<a id='L46' name='L46'></a>  46         <strong class='reserved'>unsigned</strong> seq;
+<a id='L47' name='L47'></a>  47         <strong class='reserved'>int</strong> handle;
+<a id='L48' name='L48'></a>  48 <em class='brace'>}</em>;
+<a id='L49' name='L49'></a>  49 
+<a id='L50' name='L50'></a>  50 <strong class='reserved'>struct</strong> <a href='../R/1215.html' title='Multiple referred from 102 places.'>dir</a> <em class='brace'>{</em>
+<a id='L51' name='L51'></a>  51         <strong class='reserved'>unsigned</strong> name;
+<a id='L52' name='L52'></a>  52         <strong class='reserved'>int</strong> handle;
+<a id='L53' name='L53'></a>  53 <em class='brace'>}</em>;
+<a id='L54' name='L54'></a>  54 
+<a id='L55' name='L55'></a>  55 <strong class='reserved'>static</strong> <strong class='reserved'>int</strong> checkmode;
+<a id='L56' name='L56'></a>  56 
+<a id='L57' name='L57'></a>  57 <strong class='reserved'>void</strong>
+<a id='L58' name='L58'></a>  58 <a href='../R/1972.html' title='Multiple referred from 2 places.'>setcheckmode</a>(<strong class='reserved'>int</strong> mode)
+<a id='L59' name='L59'></a>  59 <em class='brace'>{</em>
+<a id='L60' name='L60'></a>  60         checkmode = mode;
+<a id='L61' name='L61'></a>  61         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L62' name='L62'></a>  62                 <a href='../S/642.html#L1585' title='Defined at 1585 in userland/testbin/frack/check.c.'>check_setup</a>();
+<a id='L63' name='L63'></a>  63         <em class='brace'>}</em>
+<a id='L64' name='L64'></a>  64 <em class='brace'>}</em>
+<a id='L65' name='L65'></a>  65 
+<a id='L66' name='L66'></a>  66 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'>// open directories</em>
+<a id='L68' name='L68'></a>  68 
+<a id='L69' name='L69'></a>  69 <em class='sharp'>#define</em> <a href='../S/653.html#L70' title='Referred from 70 in userland/testbin/frack/ops.c.'>MAXDIRS</a> 32
+<a id='L70' name='L70'></a>  70 <a href='../S/656.html#L42' title='Defined at 42 in userland/testbin/frack/pool.h.'>DECLPOOL</a>(<a href='../S/653.html#L50' title='Defined at 50 in userland/testbin/frack/ops.c.'>dir</a>, <a href='../S/653.html#L69' title='Defined at 69 in userland/testbin/frack/ops.c.'>MAXDIRS</a>);
+<a id='L71' name='L71'></a>  71 
+<a id='L72' name='L72'></a>  72 <strong class='reserved'>struct</strong> <a href='../S/653.html#L50' title='Defined at 50 in userland/testbin/frack/ops.c.'>dir</a> *
+<a id='L73' name='L73'></a>  73 <a href='../R/1705.html' title='Multiple referred from 3 places.'>op_opendir</a>(<strong class='reserved'>unsigned</strong> name)
+<a id='L74' name='L74'></a>  74 <em class='brace'>{</em>
+<a id='L75' name='L75'></a>  75         <strong class='reserved'>struct</strong> <a href='../S/653.html#L50' title='Defined at 50 in userland/testbin/frack/ops.c.'>dir</a> *ret;
+<a id='L76' name='L76'></a>  76 
+<a id='L77' name='L77'></a>  77         ret = <a href='../S/656.html#L53' title='Defined at 53 in userland/testbin/frack/pool.h.'>POOLALLOC</a>(<a href='../S/653.html#L50' title='Defined at 50 in userland/testbin/frack/ops.c.'>dir</a>);
+<a id='L78' name='L78'></a>  78         ret-&gt;name = name;
+<a id='L79' name='L79'></a>  79         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L80' name='L80'></a>  80                 ret-&gt;handle = -1;
+<a id='L81' name='L81'></a>  81         <em class='brace'>}</em>
+<a id='L82' name='L82'></a>  82         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L83' name='L83'></a>  83                 ret-&gt;handle = <a href='../S/646.html#L43' title='Defined at 43 in userland/testbin/frack/do.c.'>do_opendir</a>(name);
+<a id='L84' name='L84'></a>  84         <em class='brace'>}</em>
+<a id='L85' name='L85'></a>  85         <strong class='reserved'>return</strong> ret;
+<a id='L86' name='L86'></a>  86 <em class='brace'>}</em>
+<a id='L87' name='L87'></a>  87 
+<a id='L88' name='L88'></a>  88 <strong class='reserved'>void</strong>
+<a id='L89' name='L89'></a>  89 <a href='../R/1701.html' title='Multiple referred from 3 places.'>op_closedir</a>(<strong class='reserved'>struct</strong> <a href='../S/653.html#L50' title='Defined at 50 in userland/testbin/frack/ops.c.'>dir</a> *d)
+<a id='L90' name='L90'></a>  90 <em class='brace'>{</em>
+<a id='L91' name='L91'></a>  91         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L92' name='L92'></a>  92                 <em class='comment'>/* nothing */</em>
+<a id='L93' name='L93'></a>  93                 (<strong class='reserved'>void</strong>)d;
+<a id='L94' name='L94'></a>  94         <em class='brace'>}</em>
+<a id='L95' name='L95'></a>  95         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L96' name='L96'></a>  96                 <a href='../S/646.html#L57' title='Defined at 57 in userland/testbin/frack/do.c.'>do_closedir</a>(d-&gt;handle, d-&gt;name);
+<a id='L97' name='L97'></a>  97         <em class='brace'>}</em>
+<a id='L98' name='L98'></a>  98         <a href='../S/656.html#L54' title='Defined at 54 in userland/testbin/frack/pool.h.'>POOLFREE</a>(<a href='../S/653.html#L50' title='Defined at 50 in userland/testbin/frack/ops.c.'>dir</a>, d);
+<a id='L99' name='L99'></a>  99 <em class='brace'>}</em>
+<a id='L100' name='L100'></a> 100 
+<a id='L101' name='L101'></a> 101 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L102' name='L102'></a> 102 <em class='comment'>// files</em>
+<a id='L103' name='L103'></a> 103 
+<a id='L104' name='L104'></a> 104 <em class='sharp'>#define</em> <a href='../S/653.html#L105' title='Referred from 105 in userland/testbin/frack/ops.c.'>MAXFILES</a> 32
+<a id='L105' name='L105'></a> 105 <a href='../S/656.html#L42' title='Defined at 42 in userland/testbin/frack/pool.h.'>DECLPOOL</a>(<a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a>, <a href='../S/653.html#L104' title='Defined at 104 in userland/testbin/frack/ops.c.'>MAXFILES</a>);
+<a id='L106' name='L106'></a> 106 
+<a id='L107' name='L107'></a> 107 <strong class='reserved'>struct</strong> <a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a> *
+<a id='L108' name='L108'></a> 108 <a href='../R/1704.html' title='Multiple referred from 24 places.'>op_open</a>(<strong class='reserved'>unsigned</strong> testcode, <strong class='reserved'>unsigned</strong> name, <strong class='reserved'>unsigned</strong> openflags)
+<a id='L109' name='L109'></a> 109 <em class='brace'>{</em>
+<a id='L110' name='L110'></a> 110         <strong class='reserved'>struct</strong> <a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a> *ret;
+<a id='L111' name='L111'></a> 111         <strong class='reserved'>int</strong> dotrunc;
+<a id='L112' name='L112'></a> 112 
+<a id='L113' name='L113'></a> 113         <strong class='reserved'>if</strong> (openflags == <a href='../S/155.html#L49' title='Defined at 49 in kern/include/kern/fcntl.h.'>O_TRUNC</a>) <em class='brace'>{</em>
+<a id='L114' name='L114'></a> 114                 openflags = 0;
+<a id='L115' name='L115'></a> 115                 dotrunc = 1;
+<a id='L116' name='L116'></a> 116         <em class='brace'>}</em>
+<a id='L117' name='L117'></a> 117         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L118' name='L118'></a> 118                 dotrunc = 0;
+<a id='L119' name='L119'></a> 119         <em class='brace'>}</em>
+<a id='L120' name='L120'></a> 120 
+<a id='L121' name='L121'></a> 121         <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(openflags == 0 || openflags == (<a href='../S/155.html#L47' title='Defined at 47 in kern/include/kern/fcntl.h.'>O_CREAT</a>|<a href='../S/155.html#L48' title='Defined at 48 in kern/include/kern/fcntl.h.'>O_EXCL</a>));
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123         ret = <a href='../S/656.html#L53' title='Defined at 53 in userland/testbin/frack/pool.h.'>POOLALLOC</a>(<a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a>);
+<a id='L124' name='L124'></a> 124         ret-&gt;name = name;
+<a id='L125' name='L125'></a> 125         ret-&gt;testcode = testcode;
+<a id='L126' name='L126'></a> 126         ret-&gt;seq = 0;
+<a id='L127' name='L127'></a> 127         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L128' name='L128'></a> 128                 <strong class='reserved'>if</strong> (openflags) <em class='brace'>{</em>
+<a id='L129' name='L129'></a> 129                         ret-&gt;handle = <a href='../S/642.html#L1610' title='Defined at 1610 in userland/testbin/frack/check.c.'>check_createfile</a>(name);
+<a id='L130' name='L130'></a> 130                 <em class='brace'>}</em>
+<a id='L131' name='L131'></a> 131                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L132' name='L132'></a> 132                         ret-&gt;handle = <a href='../S/642.html#L1626' title='Defined at 1626 in userland/testbin/frack/check.c.'>check_openfile</a>(name);
+<a id='L133' name='L133'></a> 133                 <em class='brace'>}</em>
+<a id='L134' name='L134'></a> 134         <em class='brace'>}</em>
+<a id='L135' name='L135'></a> 135         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L136' name='L136'></a> 136                 <strong class='reserved'>if</strong> (openflags) <em class='brace'>{</em>
+<a id='L137' name='L137'></a> 137                         <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(dotrunc == 0);
+<a id='L138' name='L138'></a> 138                         ret-&gt;handle = <a href='../S/646.html#L65' title='Defined at 65 in userland/testbin/frack/do.c.'>do_createfile</a>(name);
+<a id='L139' name='L139'></a> 139                 <em class='brace'>}</em>
+<a id='L140' name='L140'></a> 140                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L141' name='L141'></a> 141                         <em class='comment'>/*</em>
+<a id='L142' name='L142'></a> 142 <em class='comment'>                         * XXX: as of 2013 OS/161 doesn't provide a</em>
+<a id='L143' name='L143'></a> 143 <em class='comment'>                         * truncate call - neither truncate() nor</em>
+<a id='L144' name='L144'></a> 144 <em class='comment'>                         * ftruncate()! You can only O_TRUNC. Oops...</em>
+<a id='L145' name='L145'></a> 145 <em class='comment'>                         */</em>
+<a id='L146' name='L146'></a> 146                         ret-&gt;handle = <a href='../S/646.html#L80' title='Defined at 80 in userland/testbin/frack/do.c.'>do_openfile</a>(name, dotrunc);
+<a id='L147' name='L147'></a> 147                         dotrunc = 0;
+<a id='L148' name='L148'></a> 148                 <em class='brace'>}</em>
+<a id='L149' name='L149'></a> 149         <em class='brace'>}</em>
+<a id='L150' name='L150'></a> 150         <strong class='reserved'>if</strong> (dotrunc) <em class='brace'>{</em>
+<a id='L151' name='L151'></a> 151                 <a href='../S/653.html#L194' title='Defined at 194 in userland/testbin/frack/ops.c.'>op_truncate</a>(ret, 0);
+<a id='L152' name='L152'></a> 152         <em class='brace'>}</em>
+<a id='L153' name='L153'></a> 153         <strong class='reserved'>return</strong> ret;
+<a id='L154' name='L154'></a> 154 <em class='brace'>}</em>
+<a id='L155' name='L155'></a> 155 
+<a id='L156' name='L156'></a> 156 <strong class='reserved'>void</strong>
+<a id='L157' name='L157'></a> 157 <a href='../R/1700.html' title='Multiple referred from 22 places.'>op_close</a>(<strong class='reserved'>struct</strong> <a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a> *f)
+<a id='L158' name='L158'></a> 158 <em class='brace'>{</em>
+<a id='L159' name='L159'></a> 159         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L160' name='L160'></a> 160                 <a href='../S/642.html#L1635' title='Defined at 1635 in userland/testbin/frack/check.c.'>check_closefile</a>(f-&gt;handle, f-&gt;name);
+<a id='L161' name='L161'></a> 161         <em class='brace'>}</em>
+<a id='L162' name='L162'></a> 162         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L163' name='L163'></a> 163                 <a href='../S/646.html#L94' title='Defined at 94 in userland/testbin/frack/do.c.'>do_closefile</a>(f-&gt;handle, f-&gt;name);
+<a id='L164' name='L164'></a> 164         <em class='brace'>}</em>
+<a id='L165' name='L165'></a> 165         <a href='../S/656.html#L54' title='Defined at 54 in userland/testbin/frack/pool.h.'>POOLFREE</a>(<a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a>, f);
+<a id='L166' name='L166'></a> 166 <em class='brace'>}</em>
+<a id='L167' name='L167'></a> 167 
+<a id='L168' name='L168'></a> 168 <strong class='reserved'>void</strong>
+<a id='L169' name='L169'></a> 169 <a href='../R/1712.html' title='Multiple referred from 12 places.'>op_write</a>(<strong class='reserved'>struct</strong> <a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a> *f, <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> pos, <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> len)
+<a id='L170' name='L170'></a> 170 <em class='brace'>{</em>
+<a id='L171' name='L171'></a> 171         <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> amount;
+<a id='L172' name='L172'></a> 172 
+<a id='L173' name='L173'></a> 173         <strong class='reserved'>while</strong> (len &gt; 0) <em class='brace'>{</em>
+<a id='L174' name='L174'></a> 174                 amount = len;
+<a id='L175' name='L175'></a> 175                 <strong class='reserved'>if</strong> (amount &gt; <a href='../S/645.html#L40' title='Defined at 40 in userland/testbin/frack/data.h.'>DATA_MAXSIZE</a>) <em class='brace'>{</em>
+<a id='L176' name='L176'></a> 176                         amount = <a href='../S/645.html#L40' title='Defined at 40 in userland/testbin/frack/data.h.'>DATA_MAXSIZE</a>;
+<a id='L177' name='L177'></a> 177                 <em class='brace'>}</em>
+<a id='L178' name='L178'></a> 178 
+<a id='L179' name='L179'></a> 179                 <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L180' name='L180'></a> 180                         <a href='../S/642.html#L1648' title='Defined at 1648 in userland/testbin/frack/check.c.'>check_write</a>(f-&gt;handle, f-&gt;name, f-&gt;testcode, f-&gt;seq,
+<a id='L181' name='L181'></a> 181                                     pos, amount);
+<a id='L182' name='L182'></a> 182                 <em class='brace'>}</em>
+<a id='L183' name='L183'></a> 183                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L184' name='L184'></a> 184                         <a href='../S/646.html#L102' title='Defined at 102 in userland/testbin/frack/do.c.'>do_write</a>(f-&gt;handle, f-&gt;name, f-&gt;testcode, f-&gt;seq,
+<a id='L185' name='L185'></a> 185                                  pos, amount);
+<a id='L186' name='L186'></a> 186                 <em class='brace'>}</em>
+<a id='L187' name='L187'></a> 187                 f-&gt;seq++;
+<a id='L188' name='L188'></a> 188                 pos += amount;
+<a id='L189' name='L189'></a> 189                 len -= amount;
+<a id='L190' name='L190'></a> 190         <em class='brace'>}</em>
+<a id='L191' name='L191'></a> 191 <em class='brace'>}</em>
+<a id='L192' name='L192'></a> 192 
+<a id='L193' name='L193'></a> 193 <strong class='reserved'>void</strong>
+<a id='L194' name='L194'></a> 194 <a href='../R/1710.html' title='Multiple referred from 10 places.'>op_truncate</a>(<strong class='reserved'>struct</strong> <a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a> *f, <a href='../D/2103.html' title='Multiple defined in 2 places.'>off_t</a> len)
+<a id='L195' name='L195'></a> 195 <em class='brace'>{</em>
+<a id='L196' name='L196'></a> 196         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L197' name='L197'></a> 197                 <a href='../S/642.html#L1670' title='Defined at 1670 in userland/testbin/frack/check.c.'>check_truncate</a>(f-&gt;handle, f-&gt;name, len);
+<a id='L198' name='L198'></a> 198         <em class='brace'>}</em>
+<a id='L199' name='L199'></a> 199         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L200' name='L200'></a> 200                 <a href='../S/646.html#L129' title='Defined at 129 in userland/testbin/frack/do.c.'>do_truncate</a>(f-&gt;handle, f-&gt;name, len);
+<a id='L201' name='L201'></a> 201         <em class='brace'>}</em>
+<a id='L202' name='L202'></a> 202 <em class='brace'>}</em>
+<a id='L203' name='L203'></a> 203 
+<a id='L204' name='L204'></a> 204 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L205' name='L205'></a> 205 <em class='comment'>// dirops</em>
+<a id='L206' name='L206'></a> 206 
+<a id='L207' name='L207'></a> 207 <strong class='reserved'>void</strong>
+<a id='L208' name='L208'></a> 208 <a href='../R/1703.html' title='Multiple referred from 23 places.'>op_mkdir</a>(<strong class='reserved'>unsigned</strong> name)
+<a id='L209' name='L209'></a> 209 <em class='brace'>{</em>
+<a id='L210' name='L210'></a> 210         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L211' name='L211'></a> 211                 <a href='../S/642.html#L1687' title='Defined at 1687 in userland/testbin/frack/check.c.'>check_mkdir</a>(name);
+<a id='L212' name='L212'></a> 212         <em class='brace'>}</em>
+<a id='L213' name='L213'></a> 213         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L214' name='L214'></a> 214                 <a href='../S/646.html#L141' title='Defined at 141 in userland/testbin/frack/do.c.'>do_mkdir</a>(name);
+<a id='L215' name='L215'></a> 215         <em class='brace'>}</em>
+<a id='L216' name='L216'></a> 216 <em class='brace'>}</em>
+<a id='L217' name='L217'></a> 217 
+<a id='L218' name='L218'></a> 218 <strong class='reserved'>void</strong>
+<a id='L219' name='L219'></a> 219 <a href='../R/1708.html' title='Multiple referred from 8 places.'>op_rmdir</a>(<strong class='reserved'>unsigned</strong> name)
+<a id='L220' name='L220'></a> 220 <em class='brace'>{</em>
+<a id='L221' name='L221'></a> 221         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L222' name='L222'></a> 222                 <a href='../S/642.html#L1701' title='Defined at 1701 in userland/testbin/frack/check.c.'>check_rmdir</a>(name);
+<a id='L223' name='L223'></a> 223         <em class='brace'>}</em>
+<a id='L224' name='L224'></a> 224         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L225' name='L225'></a> 225                 <a href='../S/646.html#L153' title='Defined at 153 in userland/testbin/frack/do.c.'>do_rmdir</a>(name);
+<a id='L226' name='L226'></a> 226         <em class='brace'>}</em>
+<a id='L227' name='L227'></a> 227 <em class='brace'>}</em>
+<a id='L228' name='L228'></a> 228 
+<a id='L229' name='L229'></a> 229 <strong class='reserved'>void</strong>
+<a id='L230' name='L230'></a> 230 <a href='../R/1711.html' title='Multiple referred from 16 places.'>op_unlink</a>(<strong class='reserved'>unsigned</strong> name)
+<a id='L231' name='L231'></a> 231 <em class='brace'>{</em>
+<a id='L232' name='L232'></a> 232         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L233' name='L233'></a> 233                 <a href='../S/642.html#L1717' title='Defined at 1717 in userland/testbin/frack/check.c.'>check_unlink</a>(name);
+<a id='L234' name='L234'></a> 234         <em class='brace'>}</em>
+<a id='L235' name='L235'></a> 235         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L236' name='L236'></a> 236                 <a href='../S/646.html#L165' title='Defined at 165 in userland/testbin/frack/do.c.'>do_unlink</a>(name);
+<a id='L237' name='L237'></a> 237         <em class='brace'>}</em>
+<a id='L238' name='L238'></a> 238 <em class='brace'>}</em>
+<a id='L239' name='L239'></a> 239 
+<a id='L240' name='L240'></a> 240 <strong class='reserved'>void</strong>
+<a id='L241' name='L241'></a> 241 <a href='../R/1702.html' title='Multiple referred from 8 places.'>op_link</a>(<strong class='reserved'>unsigned</strong> from, <strong class='reserved'>unsigned</strong> to)
+<a id='L242' name='L242'></a> 242 <em class='brace'>{</em>
+<a id='L243' name='L243'></a> 243         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L244' name='L244'></a> 244                 <a href='../S/642.html#L1733' title='Defined at 1733 in userland/testbin/frack/check.c.'>check_link</a>(from, to);
+<a id='L245' name='L245'></a> 245         <em class='brace'>}</em>
+<a id='L246' name='L246'></a> 246         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L247' name='L247'></a> 247                 <a href='../S/646.html#L177' title='Defined at 177 in userland/testbin/frack/do.c.'>do_link</a>(from, to);
+<a id='L248' name='L248'></a> 248         <em class='brace'>}</em>
+<a id='L249' name='L249'></a> 249 <em class='brace'>}</em>
+<a id='L250' name='L250'></a> 250 
+<a id='L251' name='L251'></a> 251 <strong class='reserved'>void</strong>
+<a id='L252' name='L252'></a> 252 <a href='../R/1706.html' title='Multiple referred from 10 places.'>op_rename</a>(<strong class='reserved'>unsigned</strong> from, <strong class='reserved'>unsigned</strong> to)
+<a id='L253' name='L253'></a> 253 <em class='brace'>{</em>
+<a id='L254' name='L254'></a> 254         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L255' name='L255'></a> 255                 <a href='../S/642.html#L1809' title='Defined at 1809 in userland/testbin/frack/check.c.'>check_rename</a>(from, to);
+<a id='L256' name='L256'></a> 256         <em class='brace'>}</em>
+<a id='L257' name='L257'></a> 257         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L258' name='L258'></a> 258                 <a href='../S/646.html#L190' title='Defined at 190 in userland/testbin/frack/do.c.'>do_rename</a>(from, to);
+<a id='L259' name='L259'></a> 259         <em class='brace'>}</em>
+<a id='L260' name='L260'></a> 260 <em class='brace'>}</em>
+<a id='L261' name='L261'></a> 261 
+<a id='L262' name='L262'></a> 262 <strong class='reserved'>void</strong>
+<a id='L263' name='L263'></a> 263 <a href='../R/1707.html' title='Multiple referred from 4 places.'>op_renamexd</a>(<strong class='reserved'>unsigned</strong> fromdir, <strong class='reserved'>unsigned</strong> from, <strong class='reserved'>unsigned</strong> todir, <strong class='reserved'>unsigned</strong> to)
+<a id='L264' name='L264'></a> 264 <em class='brace'>{</em>
+<a id='L265' name='L265'></a> 265         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L266' name='L266'></a> 266                 <a href='../S/642.html#L1818' title='Defined at 1818 in userland/testbin/frack/check.c.'>check_renamexd</a>(fromdir, from, todir, to);
+<a id='L267' name='L267'></a> 267         <em class='brace'>}</em>
+<a id='L268' name='L268'></a> 268         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L269' name='L269'></a> 269                 <a href='../S/646.html#L203' title='Defined at 203 in userland/testbin/frack/do.c.'>do_renamexd</a>(fromdir, from, todir, to);
+<a id='L270' name='L270'></a> 270         <em class='brace'>}</em>
+<a id='L271' name='L271'></a> 271 <em class='brace'>}</em>
+<a id='L272' name='L272'></a> 272 
+<a id='L273' name='L273'></a> 273 <strong class='reserved'>void</strong>
+<a id='L274' name='L274'></a> 274 <a href='../R/1698.html' title='Multiple referred from 12 places.'>op_chdir</a>(<strong class='reserved'>unsigned</strong> name)
+<a id='L275' name='L275'></a> 275 <em class='brace'>{</em>
+<a id='L276' name='L276'></a> 276         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L277' name='L277'></a> 277                 <a href='../S/642.html#L1833' title='Defined at 1833 in userland/testbin/frack/check.c.'>check_chdir</a>(name);
+<a id='L278' name='L278'></a> 278         <em class='brace'>}</em>
+<a id='L279' name='L279'></a> 279         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L280' name='L280'></a> 280                 <a href='../S/646.html#L223' title='Defined at 223 in userland/testbin/frack/do.c.'>do_chdir</a>(name);
+<a id='L281' name='L281'></a> 281         <em class='brace'>}</em>
+<a id='L282' name='L282'></a> 282 <em class='brace'>}</em>
+<a id='L283' name='L283'></a> 283 
+<a id='L284' name='L284'></a> 284 <strong class='reserved'>void</strong>
+<a id='L285' name='L285'></a> 285 <a href='../R/1699.html' title='Multiple referred from 12 places.'>op_chdirup</a>(<strong class='reserved'>void</strong>)
+<a id='L286' name='L286'></a> 286 <em class='brace'>{</em>
+<a id='L287' name='L287'></a> 287         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L288' name='L288'></a> 288                 <a href='../S/642.html#L1842' title='Defined at 1842 in userland/testbin/frack/check.c.'>check_chdirup</a>();
+<a id='L289' name='L289'></a> 289         <em class='brace'>}</em>
+<a id='L290' name='L290'></a> 290         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L291' name='L291'></a> 291                 <a href='../S/646.html#L235' title='Defined at 235 in userland/testbin/frack/do.c.'>do_chdirup</a>();
+<a id='L292' name='L292'></a> 292         <em class='brace'>}</em>
+<a id='L293' name='L293'></a> 293 <em class='brace'>}</em>
+<a id='L294' name='L294'></a> 294 
+<a id='L295' name='L295'></a> 295 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L296' name='L296'></a> 296 <em class='comment'>// other</em>
+<a id='L297' name='L297'></a> 297 
+<a id='L298' name='L298'></a> 298 <strong class='reserved'>void</strong>
+<a id='L299' name='L299'></a> 299 <a href='../R/1709.html' title='Multiple referred from 47 places.'>op_sync</a>(<strong class='reserved'>void</strong>)
+<a id='L300' name='L300'></a> 300 <em class='brace'>{</em>
+<a id='L301' name='L301'></a> 301         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L302' name='L302'></a> 302                 <a href='../S/642.html#L1851' title='Defined at 1851 in userland/testbin/frack/check.c.'>check_sync</a>();
+<a id='L303' name='L303'></a> 303         <em class='brace'>}</em>
+<a id='L304' name='L304'></a> 304         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L305' name='L305'></a> 305                 <a href='../S/646.html#L244' title='Defined at 244 in userland/testbin/frack/do.c.'>do_sync</a>();
+<a id='L306' name='L306'></a> 306         <em class='brace'>}</em>
+<a id='L307' name='L307'></a> 307 <em class='brace'>}</em>
+<a id='L308' name='L308'></a> 308 
+<a id='L309' name='L309'></a> 309 <strong class='reserved'>void</strong>
+<a id='L310' name='L310'></a> 310 <a href='../R/1129.html' title='Multiple referred from 2 places.'>complete</a>(<strong class='reserved'>void</strong>)
+<a id='L311' name='L311'></a> 311 <em class='brace'>{</em>
+<a id='L312' name='L312'></a> 312         <strong class='reserved'>if</strong> (checkmode) <em class='brace'>{</em>
+<a id='L313' name='L313'></a> 313                 <a href='../S/642.html#L2808' title='Defined at 2808 in userland/testbin/frack/check.c.'>checkfs</a>();
+<a id='L314' name='L314'></a> 314         <em class='brace'>}</em>
+<a id='L315' name='L315'></a> 315 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L58'>[^]</a><a href='#L310'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

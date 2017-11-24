@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/testbin/bloat/bloat.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/801.html'>testbin</a>/<a href='../files/809.html'>bloat</a>/bloat.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L38'>[^]</a><a href='#L153'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L38' title='Defined at 38.'>moremem</a></li>
+<li><a href='#L60' title='Defined at 60.'>touchpage</a></li>
+<li><a href='#L70' title='Defined at 70.'>pickpage</a></li>
+<li><a href='#L105' title='Defined at 105.'>touchmem</a></li>
+<li><a href='#L122' title='Defined at 122.'>run</a></li>
+<li><a href='#L132' title='Defined at 132.'>printsettings</a></li>
+<li><a href='#L143' title='Defined at 143.'>usage</a></li>
+<li><a href='#L153' title='Defined at 153.'>main</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * bloat - waste memory.</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> * This test allocates memory a page at a time and keeps going until</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * it runs out. It gets the memory directly with sbrk to avoid malloc-</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * related overheads, which as long as OS/161 has a dumb userlevel</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * malloc is important for performance.</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> */</em>
+<a id='L9' name='L9'></a>   9 
+<a id='L10' name='L10'></a>  10 <em class='sharp'>#include</em> &lt;<a href='477.html'>stdbool.h</a>&gt;
+<a id='L11' name='L11'></a>  11 <em class='sharp'>#include</em> &lt;<a href='479.html'>stdio.h</a>&gt;
+<a id='L12' name='L12'></a>  12 <em class='sharp'>#include</em> &lt;<a href='478.html'>stdint.h</a>&gt;
+<a id='L13' name='L13'></a>  13 <em class='sharp'>#include</em> &lt;<a href='480.html'>stdlib.h</a>&gt;
+<a id='L14' name='L14'></a>  14 <em class='sharp'>#include</em> &lt;<a href='481.html'>string.h</a>&gt;
+<a id='L15' name='L15'></a>  15 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>unistd.h</a>&gt;
+<a id='L16' name='L16'></a>  16 <em class='sharp'>#include</em> &lt;<a href='469.html'>assert.h</a>&gt;
+<a id='L17' name='L17'></a>  17 <em class='sharp'>#include</em> &lt;<a href='470.html'>err.h</a>&gt;
+<a id='L18' name='L18'></a>  18 
+<a id='L19' name='L19'></a>  19 <em class='comment'>/* OS/161 doesn't currently have a way to get this from the kernel. */</em>
+<a id='L20' name='L20'></a>  20 <em class='sharp'>#define</em> <a href='../R/456.html' title='Multiple referred from 87 places.'>PAGE_SIZE</a> 4096
+<a id='L21' name='L21'></a>  21 
+<a id='L22' name='L22'></a>  22 <em class='comment'>/* the memory we've gotten */</em>
+<a id='L23' name='L23'></a>  23 <strong class='reserved'>static</strong> <strong class='reserved'>void</strong> *firstpage;
+<a id='L24' name='L24'></a>  24 <strong class='reserved'>static</strong> <strong class='reserved'>void</strong> *lastpage;
+<a id='L25' name='L25'></a>  25 
+<a id='L26' name='L26'></a>  26 <em class='comment'>/* number of page allocations per cycle */</em>
+<a id='L27' name='L27'></a>  27 <strong class='reserved'>static</strong> <strong class='reserved'>unsigned</strong> allocs;
+<a id='L28' name='L28'></a>  28 
+<a id='L29' name='L29'></a>  29 <em class='comment'>/* number of pages to touch every cycle */</em>
+<a id='L30' name='L30'></a>  30 <strong class='reserved'>static</strong> <strong class='reserved'>unsigned</strong> touchpages;
+<a id='L31' name='L31'></a>  31 
+<a id='L32' name='L32'></a>  32 <em class='comment'>/* when touching pages, the extent to which we favor the middle of the range */</em>
+<a id='L33' name='L33'></a>  33 <strong class='reserved'>static</strong> <strong class='reserved'>unsigned</strong> bias;
+<a id='L34' name='L34'></a>  34 
+<a id='L35' name='L35'></a>  35 
+<a id='L36' name='L36'></a>  36 <strong class='reserved'>static</strong>
+<a id='L37' name='L37'></a>  37 <strong class='reserved'>void</strong>
+<a id='L38' name='L38'></a>  38 <a href='../S/611.html#L125' title='Referred from 125 in userland/testbin/bloat/bloat.c.'>moremem</a>(<strong class='reserved'>void</strong>)
+<a id='L39' name='L39'></a>  39 <em class='brace'>{</em>
+<a id='L40' name='L40'></a>  40         <strong class='reserved'>static</strong> <strong class='reserved'>unsigned</strong> totalpages;
+<a id='L41' name='L41'></a>  41 
+<a id='L42' name='L42'></a>  42         <strong class='reserved'>void</strong> *ptr;
+<a id='L43' name='L43'></a>  43         <strong class='reserved'>unsigned</strong> i;
+<a id='L44' name='L44'></a>  44 
+<a id='L45' name='L45'></a>  45         <strong class='reserved'>for</strong> (i=0; i&lt;allocs; i++) <em class='brace'>{</em>
+<a id='L46' name='L46'></a>  46                 ptr = sbrk(<a href='../D/603.html' title='Multiple defined in 5 places.'>PAGE_SIZE</a>);
+<a id='L47' name='L47'></a>  47                 <strong class='reserved'>if</strong> (ptr == (<strong class='reserved'>void</strong> *)-1) <em class='brace'>{</em>
+<a id='L48' name='L48'></a>  48                         <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "After %u pages: sbrk", totalpages);
+<a id='L49' name='L49'></a>  49                 <em class='brace'>}</em>
+<a id='L50' name='L50'></a>  50                 totalpages++;
+<a id='L51' name='L51'></a>  51                 lastpage = ptr;
+<a id='L52' name='L52'></a>  52                 <strong class='reserved'>if</strong> (firstpage == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L53' name='L53'></a>  53                         firstpage = ptr;
+<a id='L54' name='L54'></a>  54                 <em class='brace'>}</em>
+<a id='L55' name='L55'></a>  55         <em class='brace'>}</em>
+<a id='L56' name='L56'></a>  56 <em class='brace'>}</em>
+<a id='L57' name='L57'></a>  57 
+<a id='L58' name='L58'></a>  58 <strong class='reserved'>static</strong>
+<a id='L59' name='L59'></a>  59 <strong class='reserved'>void</strong>
+<a id='L60' name='L60'></a>  60 <a href='../S/611.html#L116' title='Referred from 116 in userland/testbin/bloat/bloat.c.'>touchpage</a>(<strong class='reserved'>unsigned</strong> pagenum)
+<a id='L61' name='L61'></a>  61 <em class='brace'>{</em>
+<a id='L62' name='L62'></a>  62         <strong class='reserved'>int</strong> *ptr;
+<a id='L63' name='L63'></a>  63 
+<a id='L64' name='L64'></a>  64         ptr = (<strong class='reserved'>void</strong> *)((<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)firstpage + <a href='../D/603.html' title='Multiple defined in 5 places.'>PAGE_SIZE</a> * pagenum);
+<a id='L65' name='L65'></a>  65         *ptr = pagenum;
+<a id='L66' name='L66'></a>  66 <em class='brace'>}</em>
+<a id='L67' name='L67'></a>  67 
+<a id='L68' name='L68'></a>  68 <strong class='reserved'>static</strong>
+<a id='L69' name='L69'></a>  69 <strong class='reserved'>unsigned</strong>
+<a id='L70' name='L70'></a>  70 <a href='../S/611.html#L116' title='Referred from 116 in userland/testbin/bloat/bloat.c.'>pickpage</a>(<strong class='reserved'>unsigned</strong> numpages)
+<a id='L71' name='L71'></a>  71 <em class='brace'>{</em>
+<a id='L72' name='L72'></a>  72         <strong class='reserved'>unsigned</strong> mnum, moffset;
+<a id='L73' name='L73'></a>  73         <strong class='reserved'>unsigned</strong> span, val, i;
+<a id='L74' name='L74'></a>  74 
+<a id='L75' name='L75'></a>  75         <em class='comment'>/* take 1 in 1000 pages uniformly from the entire space */</em>
+<a id='L76' name='L76'></a>  76         <strong class='reserved'>if</strong> (<a href='../D/2207.html' title='Multiple defined in 2 places.'>random</a>() % 1000 == 0) <em class='brace'>{</em>
+<a id='L77' name='L77'></a>  77                 <strong class='reserved'>return</strong> <a href='../D/2207.html' title='Multiple defined in 2 places.'>random</a>() % numpages;
+<a id='L78' name='L78'></a>  78         <em class='brace'>}</em>
+<a id='L79' name='L79'></a>  79 
+<a id='L80' name='L80'></a>  80         <em class='comment'>/* the rest is taken from the middle 1% */</em>
+<a id='L81' name='L81'></a>  81 
+<a id='L82' name='L82'></a>  82         mnum = numpages / 100;
+<a id='L83' name='L83'></a>  83         <strong class='reserved'>if</strong> (mnum &lt; touchpages * 2) <em class='brace'>{</em>
+<a id='L84' name='L84'></a>  84                 mnum = touchpages * 2;
+<a id='L85' name='L85'></a>  85         <em class='brace'>}</em>
+<a id='L86' name='L86'></a>  86         <strong class='reserved'>if</strong> (mnum &gt;= numpages) <em class='brace'>{</em>
+<a id='L87' name='L87'></a>  87                 mnum = numpages;
+<a id='L88' name='L88'></a>  88         <em class='brace'>}</em>
+<a id='L89' name='L89'></a>  89         moffset = numpages / 2 - mnum / 2;
+<a id='L90' name='L90'></a>  90 
+<a id='L91' name='L91'></a>  91         <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(bias &gt;= 1);
+<a id='L92' name='L92'></a>  92         span = (mnum + bias - 1) / bias;
+<a id='L93' name='L93'></a>  93 
+<a id='L94' name='L94'></a>  94         <strong class='reserved'>do</strong> <em class='brace'>{</em>
+<a id='L95' name='L95'></a>  95                 val = 0;
+<a id='L96' name='L96'></a>  96                 <strong class='reserved'>for</strong> (i=0; i&lt;bias; i++) <em class='brace'>{</em>
+<a id='L97' name='L97'></a>  97                         val += <a href='../D/2207.html' title='Multiple defined in 2 places.'>random</a>() % span;
+<a id='L98' name='L98'></a>  98                 <em class='brace'>}</em>
+<a id='L99' name='L99'></a>  99         <em class='brace'>}</em> <strong class='reserved'>while</strong> (val &gt;= mnum);
+<a id='L100' name='L100'></a> 100         <strong class='reserved'>return</strong> moffset + val;
+<a id='L101' name='L101'></a> 101 <em class='brace'>}</em>
+<a id='L102' name='L102'></a> 102 
+<a id='L103' name='L103'></a> 103 <strong class='reserved'>static</strong>
+<a id='L104' name='L104'></a> 104 <strong class='reserved'>void</strong>
+<a id='L105' name='L105'></a> 105 <a href='../S/611.html#L126' title='Referred from 126 in userland/testbin/bloat/bloat.c.'>touchmem</a>(<strong class='reserved'>void</strong>)
+<a id='L106' name='L106'></a> 106 <em class='brace'>{</em>
+<a id='L107' name='L107'></a> 107         <strong class='reserved'>unsigned</strong> i, num;
+<a id='L108' name='L108'></a> 108 
+<a id='L109' name='L109'></a> 109         num = (((<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)lastpage - (<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)firstpage) / <a href='../D/603.html' title='Multiple defined in 5 places.'>PAGE_SIZE</a>) + 1;
+<a id='L110' name='L110'></a> 110 
+<a id='L111' name='L111'></a> 111         <strong class='reserved'>if</strong> (num % 256 == 0) <em class='brace'>{</em>
+<a id='L112' name='L112'></a> 112                 <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("%u pages", num);
+<a id='L113' name='L113'></a> 113         <em class='brace'>}</em>
+<a id='L114' name='L114'></a> 114 
+<a id='L115' name='L115'></a> 115         <strong class='reserved'>for</strong> (i=0; i&lt;touchpages; i++) <em class='brace'>{</em>
+<a id='L116' name='L116'></a> 116                 <a href='../S/611.html#L60' title='Defined at 60 in userland/testbin/bloat/bloat.c.'>touchpage</a>(<a href='../S/611.html#L70' title='Defined at 70 in userland/testbin/bloat/bloat.c.'>pickpage</a>(num));
+<a id='L117' name='L117'></a> 117         <em class='brace'>}</em>
+<a id='L118' name='L118'></a> 118 <em class='brace'>}</em>
+<a id='L119' name='L119'></a> 119 
+<a id='L120' name='L120'></a> 120 <strong class='reserved'>static</strong>
+<a id='L121' name='L121'></a> 121 <strong class='reserved'>void</strong>
+<a id='L122' name='L122'></a> 122 <a href='../R/1867.html' title='Multiple referred from 7 places.'>run</a>(<strong class='reserved'>void</strong>)
+<a id='L123' name='L123'></a> 123 <em class='brace'>{</em>
+<a id='L124' name='L124'></a> 124         <strong class='reserved'>while</strong> (1) <em class='brace'>{</em>
+<a id='L125' name='L125'></a> 125                 <a href='../S/611.html#L38' title='Defined at 38 in userland/testbin/bloat/bloat.c.'>moremem</a>();
+<a id='L126' name='L126'></a> 126                 <a href='../S/611.html#L105' title='Defined at 105 in userland/testbin/bloat/bloat.c.'>touchmem</a>();
+<a id='L127' name='L127'></a> 127         <em class='brace'>}</em>
+<a id='L128' name='L128'></a> 128 <em class='brace'>}</em>
+<a id='L129' name='L129'></a> 129 
+<a id='L130' name='L130'></a> 130 <strong class='reserved'>static</strong>
+<a id='L131' name='L131'></a> 131 <strong class='reserved'>void</strong>
+<a id='L132' name='L132'></a> 132 <a href='../S/611.html#L201' title='Referred from 201 in userland/testbin/bloat/bloat.c.'>printsettings</a>(<strong class='reserved'>void</strong>)
+<a id='L133' name='L133'></a> 133 <em class='brace'>{</em>
+<a id='L134' name='L134'></a> 134         <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("Page size: %u\n", <a href='../D/603.html' title='Multiple defined in 5 places.'>PAGE_SIZE</a>);
+<a id='L135' name='L135'></a> 135         <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("Allocating %u pages and touching %u pages on each cycle.\n",
+<a id='L136' name='L136'></a> 136                allocs, touchpages);
+<a id='L137' name='L137'></a> 137         <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("Page selection bias: %u\n", bias);
+<a id='L138' name='L138'></a> 138         <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("\n");
+<a id='L139' name='L139'></a> 139 <em class='brace'>}</em>
+<a id='L140' name='L140'></a> 140 
+<a id='L141' name='L141'></a> 141 <strong class='reserved'>static</strong>
+<a id='L142' name='L142'></a> 142 <strong class='reserved'>void</strong>
+<a id='L143' name='L143'></a> 143 <a href='../R/2264.html' title='Multiple referred from 11 places.'>usage</a>(<strong class='reserved'>void</strong>)
+<a id='L144' name='L144'></a> 144 <em class='brace'>{</em>
+<a id='L145' name='L145'></a> 145         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("bloat [-a allocs] [-b bias] [-p pages]");
+<a id='L146' name='L146'></a> 146         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("   allocs: number of pages allocated per cycle (default 4)");
+<a id='L147' name='L147'></a> 147         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("   bias: number of dice rolled to touch pages (default 8)");
+<a id='L148' name='L148'></a> 148         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("   pages: pages touched per cycle (default 8)");
+<a id='L149' name='L149'></a> 149         <a href='../S/512.html#L38' title='Defined at 38 in userland/lib/libc/stdlib/exit.c.'>exit</a>(1);
+<a id='L150' name='L150'></a> 150 <em class='brace'>}</em>
+<a id='L151' name='L151'></a> 151 
+<a id='L152' name='L152'></a> 152 <strong class='reserved'>int</strong>
+<a id='L153' name='L153'></a> 153 main(<strong class='reserved'>int</strong> argc, <strong class='reserved'>char</strong> *argv[])
+<a id='L154' name='L154'></a> 154 <em class='brace'>{</em>
+<a id='L155' name='L155'></a> 155         <strong class='reserved'>int</strong> i;
+<a id='L156' name='L156'></a> 156 
+<a id='L157' name='L157'></a> 157         <em class='comment'>/* default mode */</em>
+<a id='L158' name='L158'></a> 158         allocs = 4;
+<a id='L159' name='L159'></a> 159         touchpages = 8;
+<a id='L160' name='L160'></a> 160         bias = 8;
+<a id='L161' name='L161'></a> 161 
+<a id='L162' name='L162'></a> 162         <a href='../S/516.html#L250' title='Defined at 250 in userland/lib/libc/stdlib/random.c.'>srandom</a>(1234);
+<a id='L163' name='L163'></a> 163 
+<a id='L164' name='L164'></a> 164         <strong class='reserved'>for</strong> (i=1; i&lt;argc; i++) <em class='brace'>{</em>
+<a id='L165' name='L165'></a> 165                 <strong class='reserved'>if</strong> (!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(argv[i], "-a")) <em class='brace'>{</em>
+<a id='L166' name='L166'></a> 166                         i++;
+<a id='L167' name='L167'></a> 167                         <strong class='reserved'>if</strong> (i == argc) <em class='brace'>{</em>
+<a id='L168' name='L168'></a> 168                                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "-a: option requires argument");
+<a id='L169' name='L169'></a> 169                         <em class='brace'>}</em>
+<a id='L170' name='L170'></a> 170                         allocs = <a href='../S/26.html#L50' title='Defined at 50 in common/libc/stdlib/atoi.c.'>atoi</a>(argv[i]);
+<a id='L171' name='L171'></a> 171                         <strong class='reserved'>if</strong> (allocs == 0) <em class='brace'>{</em>
+<a id='L172' name='L172'></a> 172                                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "-a: must not be zero");
+<a id='L173' name='L173'></a> 173                         <em class='brace'>}</em>
+<a id='L174' name='L174'></a> 174                 <em class='brace'>}</em>
+<a id='L175' name='L175'></a> 175                 <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(argv[i], "-b")) <em class='brace'>{</em>
+<a id='L176' name='L176'></a> 176                         i++;
+<a id='L177' name='L177'></a> 177                         <strong class='reserved'>if</strong> (i == argc) <em class='brace'>{</em>
+<a id='L178' name='L178'></a> 178                                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "-b: option requires argument");
+<a id='L179' name='L179'></a> 179                         <em class='brace'>}</em>
+<a id='L180' name='L180'></a> 180                         bias = <a href='../S/26.html#L50' title='Defined at 50 in common/libc/stdlib/atoi.c.'>atoi</a>(argv[i]);
+<a id='L181' name='L181'></a> 181                         <strong class='reserved'>if</strong> (bias == 0) <em class='brace'>{</em>
+<a id='L182' name='L182'></a> 182                                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "-b: must not be zero");
+<a id='L183' name='L183'></a> 183                         <em class='brace'>}</em>
+<a id='L184' name='L184'></a> 184                 <em class='brace'>}</em>
+<a id='L185' name='L185'></a> 185                 <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(argv[i], "-h")) <em class='brace'>{</em>
+<a id='L186' name='L186'></a> 186                         <a href='../D/2718.html' title='Multiple defined in 5 places.'>usage</a>();
+<a id='L187' name='L187'></a> 187                 <em class='brace'>}</em>
+<a id='L188' name='L188'></a> 188                 <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(argv[i], "-p")) <em class='brace'>{</em>
+<a id='L189' name='L189'></a> 189                         i++;
+<a id='L190' name='L190'></a> 190                         <strong class='reserved'>if</strong> (i == argc) <em class='brace'>{</em>
+<a id='L191' name='L191'></a> 191                                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "-p: option requires argument");
+<a id='L192' name='L192'></a> 192                         <em class='brace'>}</em>
+<a id='L193' name='L193'></a> 193                         touchpages = <a href='../S/26.html#L50' title='Defined at 50 in common/libc/stdlib/atoi.c.'>atoi</a>(argv[i]);
+<a id='L194' name='L194'></a> 194                 <em class='brace'>}</em>
+<a id='L195' name='L195'></a> 195                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L196' name='L196'></a> 196                         <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "Argument %s not recognized", argv[i]);
+<a id='L197' name='L197'></a> 197                         <a href='../D/2718.html' title='Multiple defined in 5 places.'>usage</a>();
+<a id='L198' name='L198'></a> 198                 <em class='brace'>}</em>
+<a id='L199' name='L199'></a> 199         <em class='brace'>}</em>
+<a id='L200' name='L200'></a> 200 
+<a id='L201' name='L201'></a> 201         <a href='../S/611.html#L132' title='Defined at 132 in userland/testbin/bloat/bloat.c.'>printsettings</a>();
+<a id='L202' name='L202'></a> 202         <a href='../D/2293.html' title='Multiple defined in 2 places.'>run</a>();
+<a id='L203' name='L203'></a> 203         <strong class='reserved'>return</strong> 0;
+<a id='L204' name='L204'></a> 204 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L38'>[^]</a><a href='#L153'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

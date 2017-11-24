@@ -1,0 +1,437 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/test/synchtest.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/757.html'>test</a>/synchtest.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L56'>[^]</a><a href='#L360'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L56' title='Defined at 56.'>inititems</a></li>
+<li><a href='#L86' title='Defined at 86.'>semtestthread</a></li>
+<li><a href='#L104' title='Defined at 104.'>semtest</a></li>
+<li><a href='#L141' title='Defined at 141.'>fail</a></li>
+<li><a href='#L154' title='Defined at 154.'>locktestthread</a></li>
+<li><a href='#L196' title='Defined at 196.'>locktest</a></li>
+<li><a href='#L225' title='Defined at 225.'>cvtestthread</a></li>
+<li><a href='#L270' title='Defined at 270.'>cvtest</a></li>
+<li><a href='#L319' title='Defined at 319.'>sleepthread</a></li>
+<li><a href='#L340' title='Defined at 340.'>wakethread</a></li>
+<li><a href='#L360' title='Defined at 360.'>cvtest2</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * Synchronization test code.</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> */</em>
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='142.html'>clock.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='../I/46.html'>thread.h</a>&gt;
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> &lt;<a href='184.html'>synch.h</a>&gt;
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='../I/166.html'>test.h</a>&gt;
+<a id='L40' name='L40'></a>  40 
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#define</em> <a href='../S/218.html#L96' title='Referred from 96 in kern/test/synchtest.c.'>NSEMLOOPS</a>     63
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#define</em> <a href='../S/218.html#L159' title='Referred from 159 in kern/test/synchtest.c.'>NLOCKLOOPS</a>    120
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#define</em> <a href='../S/218.html#L233' title='Referred from 233 in kern/test/synchtest.c.'>NCVLOOPS</a>      5
+<a id='L44' name='L44'></a>  44 <em class='sharp'>#define</em> <a href='../R/422.html' title='Multiple referred from 25 places.'>NTHREADS</a>      32
+<a id='L45' name='L45'></a>  45 
+<a id='L46' name='L46'></a>  46 <strong class='reserved'>static</strong> <strong class='reserved'>volatile</strong> <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> testval1;
+<a id='L47' name='L47'></a>  47 <strong class='reserved'>static</strong> <strong class='reserved'>volatile</strong> <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> testval2;
+<a id='L48' name='L48'></a>  48 <strong class='reserved'>static</strong> <strong class='reserved'>volatile</strong> <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> testval3;
+<a id='L49' name='L49'></a>  49 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *testsem;
+<a id='L50' name='L50'></a>  50 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L75' title='Defined at 75 in kern/include/synch.h.'>lock</a> *testlock;
+<a id='L51' name='L51'></a>  51 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L115' title='Defined at 115 in kern/include/synch.h.'>cv</a> *testcv;
+<a id='L52' name='L52'></a>  52 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *donesem;
+<a id='L53' name='L53'></a>  53 
+<a id='L54' name='L54'></a>  54 <strong class='reserved'>static</strong>
+<a id='L55' name='L55'></a>  55 <strong class='reserved'>void</strong>
+<a id='L56' name='L56'></a>  56 <a href='../R/1491.html' title='Multiple referred from 3 places.'>inititems</a>(<strong class='reserved'>void</strong>)
+<a id='L57' name='L57'></a>  57 <em class='brace'>{</em>
+<a id='L58' name='L58'></a>  58         <strong class='reserved'>if</strong> (testsem==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L59' name='L59'></a>  59                 testsem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>("testsem", 2);
+<a id='L60' name='L60'></a>  60                 <strong class='reserved'>if</strong> (testsem == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L61' name='L61'></a>  61                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("synchtest: sem_create failed\n");
+<a id='L62' name='L62'></a>  62                 <em class='brace'>}</em>
+<a id='L63' name='L63'></a>  63         <em class='brace'>}</em>
+<a id='L64' name='L64'></a>  64         <strong class='reserved'>if</strong> (testlock==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L65' name='L65'></a>  65                 testlock = <a href='../S/226.html#L142' title='Defined at 142 in kern/thread/synch.c.'>lock_create</a>("testlock");
+<a id='L66' name='L66'></a>  66                 <strong class='reserved'>if</strong> (testlock == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L67' name='L67'></a>  67                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("synchtest: lock_create failed\n");
+<a id='L68' name='L68'></a>  68                 <em class='brace'>}</em>
+<a id='L69' name='L69'></a>  69         <em class='brace'>}</em>
+<a id='L70' name='L70'></a>  70         <strong class='reserved'>if</strong> (testcv==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L71' name='L71'></a>  71                 testcv = <a href='../S/226.html#L216' title='Defined at 216 in kern/thread/synch.c.'>cv_create</a>("testlock");
+<a id='L72' name='L72'></a>  72                 <strong class='reserved'>if</strong> (testcv == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L73' name='L73'></a>  73                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("synchtest: cv_create failed\n");
+<a id='L74' name='L74'></a>  74                 <em class='brace'>}</em>
+<a id='L75' name='L75'></a>  75         <em class='brace'>}</em>
+<a id='L76' name='L76'></a>  76         <strong class='reserved'>if</strong> (donesem==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L77' name='L77'></a>  77                 donesem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>("donesem", 0);
+<a id='L78' name='L78'></a>  78                 <strong class='reserved'>if</strong> (donesem == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L79' name='L79'></a>  79                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("synchtest: sem_create failed\n");
+<a id='L80' name='L80'></a>  80                 <em class='brace'>}</em>
+<a id='L81' name='L81'></a>  81         <em class='brace'>}</em>
+<a id='L82' name='L82'></a>  82 <em class='brace'>}</em>
+<a id='L83' name='L83'></a>  83 
+<a id='L84' name='L84'></a>  84 <strong class='reserved'>static</strong>
+<a id='L85' name='L85'></a>  85 <strong class='reserved'>void</strong>
+<a id='L86' name='L86'></a>  86 <a href='../S/218.html#L119' title='Referred from 119 in kern/test/synchtest.c.'>semtestthread</a>(<strong class='reserved'>void</strong> *junk, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> num)
+<a id='L87' name='L87'></a>  87 <em class='brace'>{</em>
+<a id='L88' name='L88'></a>  88         <strong class='reserved'>int</strong> i;
+<a id='L89' name='L89'></a>  89         (<strong class='reserved'>void</strong>)junk;
+<a id='L90' name='L90'></a>  90 
+<a id='L91' name='L91'></a>  91         <em class='comment'>/*</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'>         * Only one of these should print at a time.</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'>         */</em>
+<a id='L94' name='L94'></a>  94         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(testsem);
+<a id='L95' name='L95'></a>  95         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Thread %2lu: ", num);
+<a id='L96' name='L96'></a>  96         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/218.html#L41' title='Defined at 41 in kern/test/synchtest.c.'>NSEMLOOPS</a>; i++) <em class='brace'>{</em>
+<a id='L97' name='L97'></a>  97                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("%c", (<strong class='reserved'>int</strong>)num+64);
+<a id='L98' name='L98'></a>  98         <em class='brace'>}</em>
+<a id='L99' name='L99'></a>  99         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("\n");
+<a id='L100' name='L100'></a> 100         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(donesem);
+<a id='L101' name='L101'></a> 101 <em class='brace'>}</em>
+<a id='L102' name='L102'></a> 102 
+<a id='L103' name='L103'></a> 103 <strong class='reserved'>int</strong>
+<a id='L104' name='L104'></a> 104 <a href='../R/1944.html' title='Multiple referred from 2 places.'>semtest</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L105' name='L105'></a> 105 <em class='brace'>{</em>
+<a id='L106' name='L106'></a> 106         <strong class='reserved'>int</strong> i, result;
+<a id='L107' name='L107'></a> 107 
+<a id='L108' name='L108'></a> 108         (<strong class='reserved'>void</strong>)nargs;
+<a id='L109' name='L109'></a> 109         (<strong class='reserved'>void</strong>)args;
+<a id='L110' name='L110'></a> 110 
+<a id='L111' name='L111'></a> 111         <a href='../S/218.html#L56' title='Defined at 56 in kern/test/synchtest.c.'>inititems</a>();
+<a id='L112' name='L112'></a> 112         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Starting semaphore test...\n");
+<a id='L113' name='L113'></a> 113         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("If this hangs, it's broken: ");
+<a id='L114' name='L114'></a> 114         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(testsem);
+<a id='L115' name='L115'></a> 115         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(testsem);
+<a id='L116' name='L116'></a> 116         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("ok\n");
+<a id='L117' name='L117'></a> 117 
+<a id='L118' name='L118'></a> 118         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>; i++) <em class='brace'>{</em>
+<a id='L119' name='L119'></a> 119                 result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("semtest", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/218.html#L86' title='Defined at 86 in kern/test/synchtest.c.'>semtestthread</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, i);
+<a id='L120' name='L120'></a> 120                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L121' name='L121'></a> 121                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semtest: thread_fork failed: %s\n",
+<a id='L122' name='L122'></a> 122                               <a href='../D/2537.html' title='Multiple defined in 2 places.'>strerror</a>(result));
+<a id='L123' name='L123'></a> 123                 <em class='brace'>}</em>
+<a id='L124' name='L124'></a> 124         <em class='brace'>}</em>
+<a id='L125' name='L125'></a> 125 
+<a id='L126' name='L126'></a> 126         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>; i++) <em class='brace'>{</em>
+<a id='L127' name='L127'></a> 127                 <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(testsem);
+<a id='L128' name='L128'></a> 128                 <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(donesem);
+<a id='L129' name='L129'></a> 129         <em class='brace'>}</em>
+<a id='L130' name='L130'></a> 130 
+<a id='L131' name='L131'></a> 131         <em class='comment'>/* so we can run it again */</em>
+<a id='L132' name='L132'></a> 132         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(testsem);
+<a id='L133' name='L133'></a> 133         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(testsem);
+<a id='L134' name='L134'></a> 134 
+<a id='L135' name='L135'></a> 135         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Semaphore test done.\n");
+<a id='L136' name='L136'></a> 136         <strong class='reserved'>return</strong> 0;
+<a id='L137' name='L137'></a> 137 <em class='brace'>}</em>
+<a id='L138' name='L138'></a> 138 
+<a id='L139' name='L139'></a> 139 <strong class='reserved'>static</strong>
+<a id='L140' name='L140'></a> 140 <strong class='reserved'>void</strong>
+<a id='L141' name='L141'></a> 141 <a href='../R/1369.html' title='Multiple referred from 23 places.'>fail</a>(<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> num, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *msg)
+<a id='L142' name='L142'></a> 142 <em class='brace'>{</em>
+<a id='L143' name='L143'></a> 143         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("thread %lu: Mismatch on %s\n", num, msg);
+<a id='L144' name='L144'></a> 144         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Test failed\n");
+<a id='L145' name='L145'></a> 145 
+<a id='L146' name='L146'></a> 146         <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(testlock);
+<a id='L147' name='L147'></a> 147 
+<a id='L148' name='L148'></a> 148         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(donesem);
+<a id='L149' name='L149'></a> 149         <a href='../S/227.html#L779' title='Defined at 779 in kern/thread/thread.c.'>thread_exit</a>();
+<a id='L150' name='L150'></a> 150 <em class='brace'>}</em>
+<a id='L151' name='L151'></a> 151 
+<a id='L152' name='L152'></a> 152 <strong class='reserved'>static</strong>
+<a id='L153' name='L153'></a> 153 <strong class='reserved'>void</strong>
+<a id='L154' name='L154'></a> 154 <a href='../S/218.html#L207' title='Referred from 207 in kern/test/synchtest.c.'>locktestthread</a>(<strong class='reserved'>void</strong> *junk, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> num)
+<a id='L155' name='L155'></a> 155 <em class='brace'>{</em>
+<a id='L156' name='L156'></a> 156         <strong class='reserved'>int</strong> i;
+<a id='L157' name='L157'></a> 157         (<strong class='reserved'>void</strong>)junk;
+<a id='L158' name='L158'></a> 158 
+<a id='L159' name='L159'></a> 159         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/218.html#L42' title='Defined at 42 in kern/test/synchtest.c.'>NLOCKLOOPS</a>; i++) <em class='brace'>{</em>
+<a id='L160' name='L160'></a> 160                 <a href='../S/226.html#L176' title='Defined at 176 in kern/thread/synch.c.'>lock_acquire</a>(testlock);
+<a id='L161' name='L161'></a> 161                 testval1 = num;
+<a id='L162' name='L162'></a> 162                 testval2 = num*num;
+<a id='L163' name='L163'></a> 163                 testval3 = num%3;
+<a id='L164' name='L164'></a> 164 
+<a id='L165' name='L165'></a> 165                 <strong class='reserved'>if</strong> (testval2 != testval1*testval1) <em class='brace'>{</em>
+<a id='L166' name='L166'></a> 166                         <a href='../S/218.html#L141' title='Defined at 141 in kern/test/synchtest.c.'>fail</a>(num, "testval2/testval1");
+<a id='L167' name='L167'></a> 167                 <em class='brace'>}</em>
+<a id='L168' name='L168'></a> 168 
+<a id='L169' name='L169'></a> 169                 <strong class='reserved'>if</strong> (testval2%3 != (testval3*testval3)%3) <em class='brace'>{</em>
+<a id='L170' name='L170'></a> 170                         <a href='../S/218.html#L141' title='Defined at 141 in kern/test/synchtest.c.'>fail</a>(num, "testval2/testval3");
+<a id='L171' name='L171'></a> 171                 <em class='brace'>}</em>
+<a id='L172' name='L172'></a> 172 
+<a id='L173' name='L173'></a> 173                 <strong class='reserved'>if</strong> (testval3 != testval1%3) <em class='brace'>{</em>
+<a id='L174' name='L174'></a> 174                         <a href='../S/218.html#L141' title='Defined at 141 in kern/test/synchtest.c.'>fail</a>(num, "testval3/testval1");
+<a id='L175' name='L175'></a> 175                 <em class='brace'>}</em>
+<a id='L176' name='L176'></a> 176 
+<a id='L177' name='L177'></a> 177                 <strong class='reserved'>if</strong> (testval1 != num) <em class='brace'>{</em>
+<a id='L178' name='L178'></a> 178                         <a href='../S/218.html#L141' title='Defined at 141 in kern/test/synchtest.c.'>fail</a>(num, "testval1/num");
+<a id='L179' name='L179'></a> 179                 <em class='brace'>}</em>
+<a id='L180' name='L180'></a> 180 
+<a id='L181' name='L181'></a> 181                 <strong class='reserved'>if</strong> (testval2 != num*num) <em class='brace'>{</em>
+<a id='L182' name='L182'></a> 182                         <a href='../S/218.html#L141' title='Defined at 141 in kern/test/synchtest.c.'>fail</a>(num, "testval2/num");
+<a id='L183' name='L183'></a> 183                 <em class='brace'>}</em>
+<a id='L184' name='L184'></a> 184 
+<a id='L185' name='L185'></a> 185                 <strong class='reserved'>if</strong> (testval3 != num%3) <em class='brace'>{</em>
+<a id='L186' name='L186'></a> 186                         <a href='../S/218.html#L141' title='Defined at 141 in kern/test/synchtest.c.'>fail</a>(num, "testval3/num");
+<a id='L187' name='L187'></a> 187                 <em class='brace'>}</em>
+<a id='L188' name='L188'></a> 188 
+<a id='L189' name='L189'></a> 189                 <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(testlock);
+<a id='L190' name='L190'></a> 190         <em class='brace'>}</em>
+<a id='L191' name='L191'></a> 191         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(donesem);
+<a id='L192' name='L192'></a> 192 <em class='brace'>}</em>
+<a id='L193' name='L193'></a> 193 
+<a id='L194' name='L194'></a> 194 
+<a id='L195' name='L195'></a> 195 <strong class='reserved'>int</strong>
+<a id='L196' name='L196'></a> 196 <a href='../R/1583.html' title='Multiple referred from 2 places.'>locktest</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L197' name='L197'></a> 197 <em class='brace'>{</em>
+<a id='L198' name='L198'></a> 198         <strong class='reserved'>int</strong> i, result;
+<a id='L199' name='L199'></a> 199 
+<a id='L200' name='L200'></a> 200         (<strong class='reserved'>void</strong>)nargs;
+<a id='L201' name='L201'></a> 201         (<strong class='reserved'>void</strong>)args;
+<a id='L202' name='L202'></a> 202 
+<a id='L203' name='L203'></a> 203         <a href='../S/218.html#L56' title='Defined at 56 in kern/test/synchtest.c.'>inititems</a>();
+<a id='L204' name='L204'></a> 204         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Starting lock test...\n");
+<a id='L205' name='L205'></a> 205 
+<a id='L206' name='L206'></a> 206         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>; i++) <em class='brace'>{</em>
+<a id='L207' name='L207'></a> 207                 result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("synchtest", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/218.html#L154' title='Defined at 154 in kern/test/synchtest.c.'>locktestthread</a>,
+<a id='L208' name='L208'></a> 208                                      <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, i);
+<a id='L209' name='L209'></a> 209                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L210' name='L210'></a> 210                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("locktest: thread_fork failed: %s\n",
+<a id='L211' name='L211'></a> 211                               <a href='../D/2537.html' title='Multiple defined in 2 places.'>strerror</a>(result));
+<a id='L212' name='L212'></a> 212                 <em class='brace'>}</em>
+<a id='L213' name='L213'></a> 213         <em class='brace'>}</em>
+<a id='L214' name='L214'></a> 214         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>; i++) <em class='brace'>{</em>
+<a id='L215' name='L215'></a> 215                 <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(donesem);
+<a id='L216' name='L216'></a> 216         <em class='brace'>}</em>
+<a id='L217' name='L217'></a> 217 
+<a id='L218' name='L218'></a> 218         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Lock test done.\n");
+<a id='L219' name='L219'></a> 219 
+<a id='L220' name='L220'></a> 220         <strong class='reserved'>return</strong> 0;
+<a id='L221' name='L221'></a> 221 <em class='brace'>}</em>
+<a id='L222' name='L222'></a> 222 
+<a id='L223' name='L223'></a> 223 <strong class='reserved'>static</strong>
+<a id='L224' name='L224'></a> 224 <strong class='reserved'>void</strong>
+<a id='L225' name='L225'></a> 225 <a href='../S/218.html#L285' title='Referred from 285 in kern/test/synchtest.c.'>cvtestthread</a>(<strong class='reserved'>void</strong> *junk, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> num)
+<a id='L226' name='L226'></a> 226 <em class='brace'>{</em>
+<a id='L227' name='L227'></a> 227         <strong class='reserved'>int</strong> i;
+<a id='L228' name='L228'></a> 228         <strong class='reserved'>volatile</strong> <strong class='reserved'>int</strong> j;
+<a id='L229' name='L229'></a> 229         <strong class='reserved'>struct</strong> <a href='../S/168.html#L48' title='Defined at 48 in kern/include/kern/time.h.'>timespec</a> ts1, ts2;
+<a id='L230' name='L230'></a> 230 
+<a id='L231' name='L231'></a> 231         (<strong class='reserved'>void</strong>)junk;
+<a id='L232' name='L232'></a> 232 
+<a id='L233' name='L233'></a> 233         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/218.html#L43' title='Defined at 43 in kern/test/synchtest.c.'>NCVLOOPS</a>; i++) <em class='brace'>{</em>
+<a id='L234' name='L234'></a> 234                 <a href='../S/226.html#L176' title='Defined at 176 in kern/thread/synch.c.'>lock_acquire</a>(testlock);
+<a id='L235' name='L235'></a> 235                 <strong class='reserved'>while</strong> (testval1 != num) <em class='brace'>{</em>
+<a id='L236' name='L236'></a> 236                         <a href='../S/90.html#L66' title='Defined at 66 in kern/dev/generic/rtclock.c.'>gettime</a>(&amp;ts1);
+<a id='L237' name='L237'></a> 237                         <a href='../S/226.html#L248' title='Defined at 248 in kern/thread/synch.c.'>cv_wait</a>(testcv, testlock);
+<a id='L238' name='L238'></a> 238                         <a href='../S/90.html#L66' title='Defined at 66 in kern/dev/generic/rtclock.c.'>gettime</a>(&amp;ts2);
+<a id='L239' name='L239'></a> 239 
+<a id='L240' name='L240'></a> 240                         <em class='comment'>/* ts2 -= ts1 */</em>
+<a id='L241' name='L241'></a> 241                         <a href='../S/203.html#L53' title='Defined at 53 in kern/lib/time.c.'>timespec_sub</a>(&amp;ts2, &amp;ts1, &amp;ts2);
+<a id='L242' name='L242'></a> 242 
+<a id='L243' name='L243'></a> 243                         <em class='comment'>/* Require at least 2000 cpu cycles (we're 25mhz) */</em>
+<a id='L244' name='L244'></a> 244                         <strong class='reserved'>if</strong> (ts2.tv_sec == 0 &amp;&amp; ts2.tv_nsec &lt; 40*2000) <em class='brace'>{</em>
+<a id='L245' name='L245'></a> 245                                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("cv_wait took only %u ns\n",
+<a id='L246' name='L246'></a> 246                                         ts2.tv_nsec);
+<a id='L247' name='L247'></a> 247                                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("That's too fast... you must be "
+<a id='L248' name='L248'></a> 248                                         "busy-looping\n");
+<a id='L249' name='L249'></a> 249                                 <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(donesem);
+<a id='L250' name='L250'></a> 250                                 <a href='../S/227.html#L779' title='Defined at 779 in kern/thread/thread.c.'>thread_exit</a>();
+<a id='L251' name='L251'></a> 251                         <em class='brace'>}</em>
+<a id='L252' name='L252'></a> 252 
+<a id='L253' name='L253'></a> 253                 <em class='brace'>}</em>
+<a id='L254' name='L254'></a> 254                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Thread %lu\n", num);
+<a id='L255' name='L255'></a> 255                 testval1 = (testval1 + <a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a> - 1)%<a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>;
+<a id='L256' name='L256'></a> 256 
+<a id='L257' name='L257'></a> 257                 <em class='comment'>/*</em>
+<a id='L258' name='L258'></a> 258 <em class='comment'>                 * loop a little while to make sure we can measure the</em>
+<a id='L259' name='L259'></a> 259 <em class='comment'>                 * time waiting on the cv.</em>
+<a id='L260' name='L260'></a> 260 <em class='comment'>                 */</em>
+<a id='L261' name='L261'></a> 261                 <strong class='reserved'>for</strong> (j=0; j&lt;3000; j++);
+<a id='L262' name='L262'></a> 262 
+<a id='L263' name='L263'></a> 263                 <a href='../S/226.html#L264' title='Defined at 264 in kern/thread/synch.c.'>cv_broadcast</a>(testcv, testlock);
+<a id='L264' name='L264'></a> 264                 <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(testlock);
+<a id='L265' name='L265'></a> 265         <em class='brace'>}</em>
+<a id='L266' name='L266'></a> 266         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(donesem);
+<a id='L267' name='L267'></a> 267 <em class='brace'>}</em>
+<a id='L268' name='L268'></a> 268 
+<a id='L269' name='L269'></a> 269 <strong class='reserved'>int</strong>
+<a id='L270' name='L270'></a> 270 <a href='../R/1182.html' title='Multiple referred from 2 places.'>cvtest</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L271' name='L271'></a> 271 <em class='brace'>{</em>
+<a id='L272' name='L272'></a> 272 
+<a id='L273' name='L273'></a> 273         <strong class='reserved'>int</strong> i, result;
+<a id='L274' name='L274'></a> 274 
+<a id='L275' name='L275'></a> 275         (<strong class='reserved'>void</strong>)nargs;
+<a id='L276' name='L276'></a> 276         (<strong class='reserved'>void</strong>)args;
+<a id='L277' name='L277'></a> 277 
+<a id='L278' name='L278'></a> 278         <a href='../S/218.html#L56' title='Defined at 56 in kern/test/synchtest.c.'>inititems</a>();
+<a id='L279' name='L279'></a> 279         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Starting CV test...\n");
+<a id='L280' name='L280'></a> 280         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Threads should print out in reverse order.\n");
+<a id='L281' name='L281'></a> 281 
+<a id='L282' name='L282'></a> 282         testval1 = <a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>-1;
+<a id='L283' name='L283'></a> 283 
+<a id='L284' name='L284'></a> 284         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>; i++) <em class='brace'>{</em>
+<a id='L285' name='L285'></a> 285                 result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("synchtest", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/218.html#L225' title='Defined at 225 in kern/test/synchtest.c.'>cvtestthread</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, i);
+<a id='L286' name='L286'></a> 286                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L287' name='L287'></a> 287                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cvtest: thread_fork failed: %s\n",
+<a id='L288' name='L288'></a> 288                               <a href='../D/2537.html' title='Multiple defined in 2 places.'>strerror</a>(result));
+<a id='L289' name='L289'></a> 289                 <em class='brace'>}</em>
+<a id='L290' name='L290'></a> 290         <em class='brace'>}</em>
+<a id='L291' name='L291'></a> 291         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/567.html' title='Multiple defined in 5 places.'>NTHREADS</a>; i++) <em class='brace'>{</em>
+<a id='L292' name='L292'></a> 292                 <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(donesem);
+<a id='L293' name='L293'></a> 293         <em class='brace'>}</em>
+<a id='L294' name='L294'></a> 294 
+<a id='L295' name='L295'></a> 295         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("CV test done\n");
+<a id='L296' name='L296'></a> 296 
+<a id='L297' name='L297'></a> 297         <strong class='reserved'>return</strong> 0;
+<a id='L298' name='L298'></a> 298 <em class='brace'>}</em>
+<a id='L299' name='L299'></a> 299 
+<a id='L300' name='L300'></a> 300 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L301' name='L301'></a> 301 
+<a id='L302' name='L302'></a> 302 <em class='comment'>/*</em>
+<a id='L303' name='L303'></a> 303 <em class='comment'> * Try to find out if going to sleep is really atomic.</em>
+<a id='L304' name='L304'></a> 304 <em class='comment'> *</em>
+<a id='L305' name='L305'></a> 305 <em class='comment'> * What we'll do is rotate through NCVS lock/CV pairs, with one thread</em>
+<a id='L306' name='L306'></a> 306 <em class='comment'> * sleeping and the other waking it up. If we miss a wakeup, the sleep</em>
+<a id='L307' name='L307'></a> 307 <em class='comment'> * thread won't go around enough times.</em>
+<a id='L308' name='L308'></a> 308 <em class='comment'> */</em>
+<a id='L309' name='L309'></a> 309 
+<a id='L310' name='L310'></a> 310 <em class='sharp'>#define</em> <a href='../R/405.html' title='Multiple referred from 6 places.'>NCVS</a> 250
+<a id='L311' name='L311'></a> 311 <em class='sharp'>#define</em> <a href='../R/410.html' title='Multiple referred from 2 places.'>NLOOPS</a> 40
+<a id='L312' name='L312'></a> 312 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L115' title='Defined at 115 in kern/include/synch.h.'>cv</a> *testcvs[<a href='../S/218.html#L310' title='Defined at 310 in kern/test/synchtest.c.'>NCVS</a>];
+<a id='L313' name='L313'></a> 313 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L75' title='Defined at 75 in kern/include/synch.h.'>lock</a> *testlocks[<a href='../S/218.html#L310' title='Defined at 310 in kern/test/synchtest.c.'>NCVS</a>];
+<a id='L314' name='L314'></a> 314 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *gatesem;
+<a id='L315' name='L315'></a> 315 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *exitsem;
+<a id='L316' name='L316'></a> 316 
+<a id='L317' name='L317'></a> 317 <strong class='reserved'>static</strong>
+<a id='L318' name='L318'></a> 318 <strong class='reserved'>void</strong>
+<a id='L319' name='L319'></a> 319 <a href='../S/218.html#L377' title='Referred from 377 in kern/test/synchtest.c.'>sleepthread</a>(<strong class='reserved'>void</strong> *junk1, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> junk2)
+<a id='L320' name='L320'></a> 320 <em class='brace'>{</em>
+<a id='L321' name='L321'></a> 321         <strong class='reserved'>unsigned</strong> i, j;
+<a id='L322' name='L322'></a> 322 
+<a id='L323' name='L323'></a> 323         (<strong class='reserved'>void</strong>)junk1;
+<a id='L324' name='L324'></a> 324         (<strong class='reserved'>void</strong>)junk2;
+<a id='L325' name='L325'></a> 325 
+<a id='L326' name='L326'></a> 326         <strong class='reserved'>for</strong> (j=0; j&lt;<a href='../S/218.html#L311' title='Defined at 311 in kern/test/synchtest.c.'>NLOOPS</a>; j++) <em class='brace'>{</em>
+<a id='L327' name='L327'></a> 327                 <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/218.html#L310' title='Defined at 310 in kern/test/synchtest.c.'>NCVS</a>; i++) <em class='brace'>{</em>
+<a id='L328' name='L328'></a> 328                         <a href='../S/226.html#L176' title='Defined at 176 in kern/thread/synch.c.'>lock_acquire</a>(testlocks[i]);
+<a id='L329' name='L329'></a> 329                         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(gatesem);
+<a id='L330' name='L330'></a> 330                         <a href='../S/226.html#L248' title='Defined at 248 in kern/thread/synch.c.'>cv_wait</a>(testcvs[i], testlocks[i]);
+<a id='L331' name='L331'></a> 331                         <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(testlocks[i]);
+<a id='L332' name='L332'></a> 332                 <em class='brace'>}</em>
+<a id='L333' name='L333'></a> 333                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("sleepthread: %u\n", j);
+<a id='L334' name='L334'></a> 334         <em class='brace'>}</em>
+<a id='L335' name='L335'></a> 335         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(exitsem);
+<a id='L336' name='L336'></a> 336 <em class='brace'>}</em>
+<a id='L337' name='L337'></a> 337 
+<a id='L338' name='L338'></a> 338 <strong class='reserved'>static</strong>
+<a id='L339' name='L339'></a> 339 <strong class='reserved'>void</strong>
+<a id='L340' name='L340'></a> 340 <a href='../S/218.html#L381' title='Referred from 381 in kern/test/synchtest.c.'>wakethread</a>(<strong class='reserved'>void</strong> *junk1, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> junk2)
+<a id='L341' name='L341'></a> 341 <em class='brace'>{</em>
+<a id='L342' name='L342'></a> 342         <strong class='reserved'>unsigned</strong> i, j;
+<a id='L343' name='L343'></a> 343 
+<a id='L344' name='L344'></a> 344         (<strong class='reserved'>void</strong>)junk1;
+<a id='L345' name='L345'></a> 345         (<strong class='reserved'>void</strong>)junk2;
+<a id='L346' name='L346'></a> 346 
+<a id='L347' name='L347'></a> 347         <strong class='reserved'>for</strong> (j=0; j&lt;<a href='../S/218.html#L311' title='Defined at 311 in kern/test/synchtest.c.'>NLOOPS</a>; j++) <em class='brace'>{</em>
+<a id='L348' name='L348'></a> 348                 <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/218.html#L310' title='Defined at 310 in kern/test/synchtest.c.'>NCVS</a>; i++) <em class='brace'>{</em>
+<a id='L349' name='L349'></a> 349                         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(gatesem);
+<a id='L350' name='L350'></a> 350                         <a href='../S/226.html#L176' title='Defined at 176 in kern/thread/synch.c.'>lock_acquire</a>(testlocks[i]);
+<a id='L351' name='L351'></a> 351                         <a href='../S/226.html#L256' title='Defined at 256 in kern/thread/synch.c.'>cv_signal</a>(testcvs[i], testlocks[i]);
+<a id='L352' name='L352'></a> 352                         <a href='../S/226.html#L190' title='Defined at 190 in kern/thread/synch.c.'>lock_release</a>(testlocks[i]);
+<a id='L353' name='L353'></a> 353                 <em class='brace'>}</em>
+<a id='L354' name='L354'></a> 354                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("wakethread: %u\n", j);
+<a id='L355' name='L355'></a> 355         <em class='brace'>}</em>
+<a id='L356' name='L356'></a> 356         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(exitsem);
+<a id='L357' name='L357'></a> 357 <em class='brace'>}</em>
+<a id='L358' name='L358'></a> 358 
+<a id='L359' name='L359'></a> 359 <strong class='reserved'>int</strong>
+<a id='L360' name='L360'></a> 360 <a href='../R/1183.html' title='Multiple referred from 2 places.'>cvtest2</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L361' name='L361'></a> 361 <em class='brace'>{</em>
+<a id='L362' name='L362'></a> 362         <strong class='reserved'>unsigned</strong> i;
+<a id='L363' name='L363'></a> 363         <strong class='reserved'>int</strong> result;
+<a id='L364' name='L364'></a> 364 
+<a id='L365' name='L365'></a> 365         (<strong class='reserved'>void</strong>)nargs;
+<a id='L366' name='L366'></a> 366         (<strong class='reserved'>void</strong>)args;
+<a id='L367' name='L367'></a> 367 
+<a id='L368' name='L368'></a> 368         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/218.html#L310' title='Defined at 310 in kern/test/synchtest.c.'>NCVS</a>; i++) <em class='brace'>{</em>
+<a id='L369' name='L369'></a> 369                 testlocks[i] = <a href='../S/226.html#L142' title='Defined at 142 in kern/thread/synch.c.'>lock_create</a>("cvtest2 lock");
+<a id='L370' name='L370'></a> 370                 testcvs[i] = <a href='../S/226.html#L216' title='Defined at 216 in kern/thread/synch.c.'>cv_create</a>("cvtest2 cv");
+<a id='L371' name='L371'></a> 371         <em class='brace'>}</em>
+<a id='L372' name='L372'></a> 372         gatesem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>("gatesem", 0);
+<a id='L373' name='L373'></a> 373         exitsem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>("exitsem", 0);
+<a id='L374' name='L374'></a> 374 
+<a id='L375' name='L375'></a> 375         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("cvtest2...\n");
+<a id='L376' name='L376'></a> 376 
+<a id='L377' name='L377'></a> 377         result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("cvtest2", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/218.html#L319' title='Defined at 319 in kern/test/synchtest.c.'>sleepthread</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, 0);
+<a id='L378' name='L378'></a> 378         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L379' name='L379'></a> 379                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cvtest2: thread_fork failed\n");
+<a id='L380' name='L380'></a> 380         <em class='brace'>}</em>
+<a id='L381' name='L381'></a> 381         result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("cvtest2", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/218.html#L340' title='Defined at 340 in kern/test/synchtest.c.'>wakethread</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, 0);
+<a id='L382' name='L382'></a> 382         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L383' name='L383'></a> 383                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cvtest2: thread_fork failed\n");
+<a id='L384' name='L384'></a> 384         <em class='brace'>}</em>
+<a id='L385' name='L385'></a> 385 
+<a id='L386' name='L386'></a> 386         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(exitsem);
+<a id='L387' name='L387'></a> 387         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(exitsem);
+<a id='L388' name='L388'></a> 388 
+<a id='L389' name='L389'></a> 389         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(exitsem);
+<a id='L390' name='L390'></a> 390         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(gatesem);
+<a id='L391' name='L391'></a> 391         exitsem = gatesem = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L392' name='L392'></a> 392         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/218.html#L310' title='Defined at 310 in kern/test/synchtest.c.'>NCVS</a>; i++) <em class='brace'>{</em>
+<a id='L393' name='L393'></a> 393                 <a href='../S/226.html#L165' title='Defined at 165 in kern/thread/synch.c.'>lock_destroy</a>(testlocks[i]);
+<a id='L394' name='L394'></a> 394                 <a href='../S/226.html#L237' title='Defined at 237 in kern/thread/synch.c.'>cv_destroy</a>(testcvs[i]);
+<a id='L395' name='L395'></a> 395                 testlocks[i] = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L396' name='L396'></a> 396                 testcvs[i] = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L397' name='L397'></a> 397         <em class='brace'>}</em>
+<a id='L398' name='L398'></a> 398 
+<a id='L399' name='L399'></a> 399         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("cvtest2 done\n");
+<a id='L400' name='L400'></a> 400         <strong class='reserved'>return</strong> 0;
+<a id='L401' name='L401'></a> 401 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L56'>[^]</a><a href='#L360'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

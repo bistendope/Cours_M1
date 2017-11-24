@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/fs/sfs/sfs_inode.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/748.html'>fs</a>/<a href='../files/750.html'>sfs</a>/sfs_inode.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L47'>[^]</a><a href='#L293'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L47' title='Defined at 47.'>sfs_sync_inode</a></li>
+<li><a href='#L69' title='Defined at 69.'>sfs_reclaim</a></li>
+<li><a href='#L150' title='Defined at 150.'>sfs_loadvnode</a></li>
+<li><a href='#L262' title='Defined at 262.'>sfs_makeobj</a></li>
+<li><a href='#L293' title='Defined at 293.'>sfs_getroot</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009, 2014</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * SFS filesystem</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> *</em>
+<a id='L33' name='L33'></a>  33 <em class='comment'> * Inode-level operations and vnode/inode lifecycle logic.</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> */</em>
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>kern/errno.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> &lt;<a href='193.html'>vfs.h</a>&gt;
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='../I/142.html'>sfs.h</a>&gt;
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> "<a href='134.html'>sfsprivate.h</a>"
+<a id='L41' name='L41'></a>  41 
+<a id='L42' name='L42'></a>  42 
+<a id='L43' name='L43'></a>  43 <em class='comment'>/*</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> * Write an on-disk inode structure back out to disk.</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> */</em>
+<a id='L46' name='L46'></a>  46 <strong class='reserved'>int</strong>
+<a id='L47' name='L47'></a>  47 <a href='../R/2032.html' title='Multiple referred from 3 places.'>sfs_sync_inode</a>(<strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a> *sv)
+<a id='L48' name='L48'></a>  48 <em class='brace'>{</em>
+<a id='L49' name='L49'></a>  49         <strong class='reserved'>struct</strong> <a href='../S/178.html#L64' title='Defined at 64 in kern/include/sfs.h.'>sfs_fs</a> *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;
+<a id='L50' name='L50'></a>  50         <strong class='reserved'>int</strong> result;
+<a id='L51' name='L51'></a>  51 
+<a id='L52' name='L52'></a>  52         <strong class='reserved'>if</strong> (sv-&gt;sv_dirty) <em class='brace'>{</em>
+<a id='L53' name='L53'></a>  53                 result = <a href='../S/132.html#L123' title='Defined at 123 in kern/fs/sfs/sfs_io.c.'>sfs_writeblock</a>(sfs, sv-&gt;sv_ino, &amp;sv-&gt;sv_i,
+<a id='L54' name='L54'></a>  54                                         <strong class='reserved'>sizeof</strong>(sv-&gt;sv_i));
+<a id='L55' name='L55'></a>  55                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L56' name='L56'></a>  56                         <strong class='reserved'>return</strong> result;
+<a id='L57' name='L57'></a>  57                 <em class='brace'>}</em>
+<a id='L58' name='L58'></a>  58                 sv-&gt;sv_dirty = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L59' name='L59'></a>  59         <em class='brace'>}</em>
+<a id='L60' name='L60'></a>  60         <strong class='reserved'>return</strong> 0;
+<a id='L61' name='L61'></a>  61 <em class='brace'>}</em>
+<a id='L62' name='L62'></a>  62 
+<a id='L63' name='L63'></a>  63 <em class='comment'>/*</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'> * Called when the vnode refcount (in-memory usage count) hits zero.</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'> *</em>
+<a id='L66' name='L66'></a>  66 <em class='comment'> * This function should try to avoid returning errors other than EBUSY.</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'> */</em>
+<a id='L68' name='L68'></a>  68 <strong class='reserved'>int</strong>
+<a id='L69' name='L69'></a>  69 <a href='../R/2023.html' title='Multiple referred from 3 places.'>sfs_reclaim</a>(<strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *v)
+<a id='L70' name='L70'></a>  70 <em class='brace'>{</em>
+<a id='L71' name='L71'></a>  71         <strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a> *sv = v-&gt;vn_data;
+<a id='L72' name='L72'></a>  72         <strong class='reserved'>struct</strong> <a href='../S/178.html#L64' title='Defined at 64 in kern/include/sfs.h.'>sfs_fs</a> *sfs = v-&gt;vn_fs-&gt;fs_data;
+<a id='L73' name='L73'></a>  73         <strong class='reserved'>unsigned</strong> ix, i, num;
+<a id='L74' name='L74'></a>  74         <strong class='reserved'>int</strong> result;
+<a id='L75' name='L75'></a>  75 
+<a id='L76' name='L76'></a>  76         <a href='../S/233.html#L127' title='Defined at 127 in kern/vfs/vfslist.c.'>vfs_biglock_acquire</a>();
+<a id='L77' name='L77'></a>  77 
+<a id='L78' name='L78'></a>  78         <em class='comment'>/*</em>
+<a id='L79' name='L79'></a>  79 <em class='comment'>         * Make sure someone else hasn't picked up the vnode since the</em>
+<a id='L80' name='L80'></a>  80 <em class='comment'>         * decision was made to reclaim it. (You must also synchronize</em>
+<a id='L81' name='L81'></a>  81 <em class='comment'>         * this with sfs_loadvnode.)</em>
+<a id='L82' name='L82'></a>  82 <em class='comment'>         */</em>
+<a id='L83' name='L83'></a>  83         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;v-&gt;vn_countlock);
+<a id='L84' name='L84'></a>  84         <strong class='reserved'>if</strong> (v-&gt;vn_refcount != 1) <em class='brace'>{</em>
+<a id='L85' name='L85'></a>  85 
+<a id='L86' name='L86'></a>  86                 <em class='comment'>/* consume the reference VOP_DECREF gave us */</em>
+<a id='L87' name='L87'></a>  87                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(v-&gt;vn_refcount&gt;1);
+<a id='L88' name='L88'></a>  88                 v-&gt;vn_refcount--;
+<a id='L89' name='L89'></a>  89 
+<a id='L90' name='L90'></a>  90                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;v-&gt;vn_countlock);
+<a id='L91' name='L91'></a>  91                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L92' name='L92'></a>  92                 <strong class='reserved'>return</strong> <a href='../S/154.html#L71' title='Defined at 71 in kern/include/kern/errno.h.'>EBUSY</a>;
+<a id='L93' name='L93'></a>  93         <em class='brace'>}</em>
+<a id='L94' name='L94'></a>  94         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;v-&gt;vn_countlock);
+<a id='L95' name='L95'></a>  95 
+<a id='L96' name='L96'></a>  96         <em class='comment'>/* If there are no on-disk references to the file either, erase it. */</em>
+<a id='L97' name='L97'></a>  97         <strong class='reserved'>if</strong> (sv-&gt;sv_i.sfi_linkcount == 0) <em class='brace'>{</em>
+<a id='L98' name='L98'></a>  98                 result = <a href='../S/128.html#L204' title='Defined at 204 in kern/fs/sfs/sfs_bmap.c.'>sfs_itrunc</a>(sv, 0);
+<a id='L99' name='L99'></a>  99                 <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L100' name='L100'></a> 100                         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L101' name='L101'></a> 101                         <strong class='reserved'>return</strong> result;
+<a id='L102' name='L102'></a> 102                 <em class='brace'>}</em>
+<a id='L103' name='L103'></a> 103         <em class='brace'>}</em>
+<a id='L104' name='L104'></a> 104 
+<a id='L105' name='L105'></a> 105         <em class='comment'>/* Sync the inode to disk */</em>
+<a id='L106' name='L106'></a> 106         result = <a href='../S/131.html#L47' title='Defined at 47 in kern/fs/sfs/sfs_inode.c.'>sfs_sync_inode</a>(sv);
+<a id='L107' name='L107'></a> 107         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L108' name='L108'></a> 108                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L109' name='L109'></a> 109                 <strong class='reserved'>return</strong> result;
+<a id='L110' name='L110'></a> 110         <em class='brace'>}</em>
+<a id='L111' name='L111'></a> 111 
+<a id='L112' name='L112'></a> 112         <em class='comment'>/* If there are no on-disk references, discard the inode */</em>
+<a id='L113' name='L113'></a> 113         <strong class='reserved'>if</strong> (sv-&gt;sv_i.sfi_linkcount==0) <em class='brace'>{</em>
+<a id='L114' name='L114'></a> 114                 <a href='../S/127.html#L85' title='Defined at 85 in kern/fs/sfs/sfs_balloc.c.'>sfs_bfree</a>(sfs, sv-&gt;sv_ino);
+<a id='L115' name='L115'></a> 115         <em class='brace'>}</em>
+<a id='L116' name='L116'></a> 116 
+<a id='L117' name='L117'></a> 117         <em class='comment'>/* Remove the vnode structure from the table in the struct sfs_fs. */</em>
+<a id='L118' name='L118'></a> 118         num = vnodearray_num(sfs-&gt;sfs_vnodes);
+<a id='L119' name='L119'></a> 119         ix = num;
+<a id='L120' name='L120'></a> 120         <strong class='reserved'>for</strong> (i=0; i&lt;num; i++) <em class='brace'>{</em>
+<a id='L121' name='L121'></a> 121                 <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *v2 = vnodearray_get(sfs-&gt;sfs_vnodes, i);
+<a id='L122' name='L122'></a> 122                 <strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a> *sv2 = v2-&gt;vn_data;
+<a id='L123' name='L123'></a> 123                 <strong class='reserved'>if</strong> (sv2 == sv) <em class='brace'>{</em>
+<a id='L124' name='L124'></a> 124                         ix = i;
+<a id='L125' name='L125'></a> 125                         <strong class='reserved'>break</strong>;
+<a id='L126' name='L126'></a> 126                 <em class='brace'>}</em>
+<a id='L127' name='L127'></a> 127         <em class='brace'>}</em>
+<a id='L128' name='L128'></a> 128         <strong class='reserved'>if</strong> (ix == num) <em class='brace'>{</em>
+<a id='L129' name='L129'></a> 129                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("sfs: %s: reclaim vnode %u not in vnode pool\n",
+<a id='L130' name='L130'></a> 130                       sfs-&gt;sfs_sb.<a href='../S/559.html#L121' title='Defined at 121 in userland/sbin/sfsck/sb.c.'>sb_volname</a>, sv-&gt;sv_ino);
+<a id='L131' name='L131'></a> 131         <em class='brace'>}</em>
+<a id='L132' name='L132'></a> 132         vnodearray_remove(sfs-&gt;sfs_vnodes, ix);
+<a id='L133' name='L133'></a> 133 
+<a id='L134' name='L134'></a> 134         <a href='../S/236.html#L62' title='Defined at 62 in kern/vfs/vnode.c.'>vnode_cleanup</a>(&amp;sv-&gt;sv_absvn);
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L137' name='L137'></a> 137 
+<a id='L138' name='L138'></a> 138         <em class='comment'>/* Release the storage for the vnode structure itself. */</em>
+<a id='L139' name='L139'></a> 139         <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(sv);
+<a id='L140' name='L140'></a> 140 
+<a id='L141' name='L141'></a> 141         <em class='comment'>/* Done */</em>
+<a id='L142' name='L142'></a> 142         <strong class='reserved'>return</strong> 0;
+<a id='L143' name='L143'></a> 143 <em class='brace'>}</em>
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145 <em class='comment'>/*</em>
+<a id='L146' name='L146'></a> 146 <em class='comment'> * Function to load a inode into memory as a vnode, or dig up one</em>
+<a id='L147' name='L147'></a> 147 <em class='comment'> * that's already resident.</em>
+<a id='L148' name='L148'></a> 148 <em class='comment'> */</em>
+<a id='L149' name='L149'></a> 149 <strong class='reserved'>int</strong>
+<a id='L150' name='L150'></a> 150 <a href='../R/2005.html' title='Multiple referred from 5 places.'>sfs_loadvnode</a>(<strong class='reserved'>struct</strong> <a href='../S/178.html#L64' title='Defined at 64 in kern/include/sfs.h.'>sfs_fs</a> *sfs, <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> ino, <strong class='reserved'>int</strong> forcetype,
+<a id='L151' name='L151'></a> 151                  <strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a> **ret)
+<a id='L152' name='L152'></a> 152 <em class='brace'>{</em>
+<a id='L153' name='L153'></a> 153         <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> *v;
+<a id='L154' name='L154'></a> 154         <strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a> *sv;
+<a id='L155' name='L155'></a> 155         <strong class='reserved'>const</strong> <strong class='reserved'>struct</strong> <a href='../S/195.html#L180' title='Defined at 180 in kern/include/vnode.h.'>vnode_ops</a> *ops;
+<a id='L156' name='L156'></a> 156         <strong class='reserved'>unsigned</strong> i, num;
+<a id='L157' name='L157'></a> 157         <strong class='reserved'>int</strong> result;
+<a id='L158' name='L158'></a> 158 
+<a id='L159' name='L159'></a> 159         <em class='comment'>/* Look in the vnodes table */</em>
+<a id='L160' name='L160'></a> 160         num = vnodearray_num(sfs-&gt;sfs_vnodes);
+<a id='L161' name='L161'></a> 161 
+<a id='L162' name='L162'></a> 162         <em class='comment'>/* Linear search. Is this too slow? You decide. */</em>
+<a id='L163' name='L163'></a> 163         <strong class='reserved'>for</strong> (i=0; i&lt;num; i++) <em class='brace'>{</em>
+<a id='L164' name='L164'></a> 164                 v = vnodearray_get(sfs-&gt;sfs_vnodes, i);
+<a id='L165' name='L165'></a> 165                 sv = v-&gt;vn_data;
+<a id='L166' name='L166'></a> 166 
+<a id='L167' name='L167'></a> 167                 <em class='comment'>/* Every inode in memory must be in an allocated block */</em>
+<a id='L168' name='L168'></a> 168                 <strong class='reserved'>if</strong> (!<a href='../S/127.html#L95' title='Defined at 95 in kern/fs/sfs/sfs_balloc.c.'>sfs_bused</a>(sfs, sv-&gt;sv_ino)) <em class='brace'>{</em>
+<a id='L169' name='L169'></a> 169                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("sfs: %s: Found inode %u in unallocated block\n",
+<a id='L170' name='L170'></a> 170                               sfs-&gt;sfs_sb.<a href='../S/559.html#L121' title='Defined at 121 in userland/sbin/sfsck/sb.c.'>sb_volname</a>, sv-&gt;sv_ino);
+<a id='L171' name='L171'></a> 171                 <em class='brace'>}</em>
+<a id='L172' name='L172'></a> 172 
+<a id='L173' name='L173'></a> 173                 <strong class='reserved'>if</strong> (sv-&gt;sv_ino==ino) <em class='brace'>{</em>
+<a id='L174' name='L174'></a> 174                         <em class='comment'>/* Found */</em>
+<a id='L175' name='L175'></a> 175 
+<a id='L176' name='L176'></a> 176                         <em class='comment'>/* forcetype is only allowed when creating objects */</em>
+<a id='L177' name='L177'></a> 177                         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(forcetype==<a href='../S/162.html#L66' title='Defined at 66 in kern/include/kern/sfs.h.'>SFS_TYPE_INVAL</a>);
+<a id='L178' name='L178'></a> 178 
+<a id='L179' name='L179'></a> 179                         <a href='../S/195.html#L266' title='Defined at 266 in kern/include/vnode.h.'>VOP_INCREF</a>(&amp;sv-&gt;sv_absvn);
+<a id='L180' name='L180'></a> 180                         *ret = sv;
+<a id='L181' name='L181'></a> 181                         <strong class='reserved'>return</strong> 0;
+<a id='L182' name='L182'></a> 182                 <em class='brace'>}</em>
+<a id='L183' name='L183'></a> 183         <em class='brace'>}</em>
+<a id='L184' name='L184'></a> 184 
+<a id='L185' name='L185'></a> 185         <em class='comment'>/* Didn't have it loaded; load it */</em>
+<a id='L186' name='L186'></a> 186 
+<a id='L187' name='L187'></a> 187         sv = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<strong class='reserved'>sizeof</strong>(<strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a>));
+<a id='L188' name='L188'></a> 188         <strong class='reserved'>if</strong> (sv==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L189' name='L189'></a> 189                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L190' name='L190'></a> 190         <em class='brace'>}</em>
+<a id='L191' name='L191'></a> 191 
+<a id='L192' name='L192'></a> 192         <em class='comment'>/* Must be in an allocated block */</em>
+<a id='L193' name='L193'></a> 193         <strong class='reserved'>if</strong> (!<a href='../S/127.html#L95' title='Defined at 95 in kern/fs/sfs/sfs_balloc.c.'>sfs_bused</a>(sfs, ino)) <em class='brace'>{</em>
+<a id='L194' name='L194'></a> 194                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("sfs: %s: Tried to load inode %u from "
+<a id='L195' name='L195'></a> 195                       "unallocated block\n", sfs-&gt;sfs_sb.<a href='../S/559.html#L121' title='Defined at 121 in userland/sbin/sfsck/sb.c.'>sb_volname</a>, ino);
+<a id='L196' name='L196'></a> 196         <em class='brace'>}</em>
+<a id='L197' name='L197'></a> 197 
+<a id='L198' name='L198'></a> 198         <em class='comment'>/* Read the block the inode is in */</em>
+<a id='L199' name='L199'></a> 199         result = <a href='../S/132.html#L108' title='Defined at 108 in kern/fs/sfs/sfs_io.c.'>sfs_readblock</a>(sfs, ino, &amp;sv-&gt;sv_i, <strong class='reserved'>sizeof</strong>(sv-&gt;sv_i));
+<a id='L200' name='L200'></a> 200         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L201' name='L201'></a> 201                 <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(sv);
+<a id='L202' name='L202'></a> 202                 <strong class='reserved'>return</strong> result;
+<a id='L203' name='L203'></a> 203         <em class='brace'>}</em>
+<a id='L204' name='L204'></a> 204 
+<a id='L205' name='L205'></a> 205         <em class='comment'>/* Not dirty yet */</em>
+<a id='L206' name='L206'></a> 206         sv-&gt;sv_dirty = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L207' name='L207'></a> 207 
+<a id='L208' name='L208'></a> 208         <em class='comment'>/*</em>
+<a id='L209' name='L209'></a> 209 <em class='comment'>         * FORCETYPE is set if we're creating a new file, because the</em>
+<a id='L210' name='L210'></a> 210 <em class='comment'>         * block on disk will have been zeroed out by sfs_balloc and</em>
+<a id='L211' name='L211'></a> 211 <em class='comment'>         * thus the type recorded there will be SFS_TYPE_INVAL.</em>
+<a id='L212' name='L212'></a> 212 <em class='comment'>         */</em>
+<a id='L213' name='L213'></a> 213         <strong class='reserved'>if</strong> (forcetype != <a href='../S/162.html#L66' title='Defined at 66 in kern/include/kern/sfs.h.'>SFS_TYPE_INVAL</a>) <em class='brace'>{</em>
+<a id='L214' name='L214'></a> 214                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sv-&gt;sv_i.sfi_type == <a href='../S/162.html#L66' title='Defined at 66 in kern/include/kern/sfs.h.'>SFS_TYPE_INVAL</a>);
+<a id='L215' name='L215'></a> 215                 sv-&gt;sv_i.sfi_type = forcetype;
+<a id='L216' name='L216'></a> 216                 sv-&gt;sv_dirty = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L217' name='L217'></a> 217         <em class='brace'>}</em>
+<a id='L218' name='L218'></a> 218 
+<a id='L219' name='L219'></a> 219         <em class='comment'>/*</em>
+<a id='L220' name='L220'></a> 220 <em class='comment'>         * Choose the function table based on the object type.</em>
+<a id='L221' name='L221'></a> 221 <em class='comment'>         */</em>
+<a id='L222' name='L222'></a> 222         <strong class='reserved'>switch</strong> (sv-&gt;sv_i.sfi_type) <em class='brace'>{</em>
+<a id='L223' name='L223'></a> 223             <strong class='reserved'>case</strong> <a href='../S/162.html#L67' title='Defined at 67 in kern/include/kern/sfs.h.'>SFS_TYPE_FILE</a>:
+<a id='L224' name='L224'></a> 224                 ops = &amp;sfs_fileops;
+<a id='L225' name='L225'></a> 225                 <strong class='reserved'>break</strong>;
+<a id='L226' name='L226'></a> 226             <strong class='reserved'>case</strong> <a href='../S/162.html#L68' title='Defined at 68 in kern/include/kern/sfs.h.'>SFS_TYPE_DIR</a>:
+<a id='L227' name='L227'></a> 227                 ops = &amp;sfs_dirops;
+<a id='L228' name='L228'></a> 228                 <strong class='reserved'>break</strong>;
+<a id='L229' name='L229'></a> 229             <strong class='reserved'>default</strong>:
+<a id='L230' name='L230'></a> 230                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("sfs: %s: loadvnode: Invalid inode type "
+<a id='L231' name='L231'></a> 231                       "(inode %u, type %u)\n", sfs-&gt;sfs_sb.<a href='../S/559.html#L121' title='Defined at 121 in userland/sbin/sfsck/sb.c.'>sb_volname</a>,
+<a id='L232' name='L232'></a> 232                       ino, sv-&gt;sv_i.sfi_type);
+<a id='L233' name='L233'></a> 233         <em class='brace'>}</em>
+<a id='L234' name='L234'></a> 234 
+<a id='L235' name='L235'></a> 235         <em class='comment'>/* Call the common vnode initializer */</em>
+<a id='L236' name='L236'></a> 236         result = <a href='../S/236.html#L44' title='Defined at 44 in kern/vfs/vnode.c.'>vnode_init</a>(&amp;sv-&gt;sv_absvn, ops, &amp;sfs-&gt;sfs_absfs, sv);
+<a id='L237' name='L237'></a> 237         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L238' name='L238'></a> 238                 <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(sv);
+<a id='L239' name='L239'></a> 239                 <strong class='reserved'>return</strong> result;
+<a id='L240' name='L240'></a> 240         <em class='brace'>}</em>
+<a id='L241' name='L241'></a> 241 
+<a id='L242' name='L242'></a> 242         <em class='comment'>/* Set the other fields in our vnode structure */</em>
+<a id='L243' name='L243'></a> 243         sv-&gt;sv_ino = ino;
+<a id='L244' name='L244'></a> 244 
+<a id='L245' name='L245'></a> 245         <em class='comment'>/* Add it to our table */</em>
+<a id='L246' name='L246'></a> 246         result = vnodearray_add(sfs-&gt;sfs_vnodes, &amp;sv-&gt;sv_absvn, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L247' name='L247'></a> 247         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L248' name='L248'></a> 248                 <a href='../S/236.html#L62' title='Defined at 62 in kern/vfs/vnode.c.'>vnode_cleanup</a>(&amp;sv-&gt;sv_absvn);
+<a id='L249' name='L249'></a> 249                 <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(sv);
+<a id='L250' name='L250'></a> 250                 <strong class='reserved'>return</strong> result;
+<a id='L251' name='L251'></a> 251         <em class='brace'>}</em>
+<a id='L252' name='L252'></a> 252 
+<a id='L253' name='L253'></a> 253         <em class='comment'>/* Hand it back */</em>
+<a id='L254' name='L254'></a> 254         *ret = sv;
+<a id='L255' name='L255'></a> 255         <strong class='reserved'>return</strong> 0;
+<a id='L256' name='L256'></a> 256 <em class='brace'>}</em>
+<a id='L257' name='L257'></a> 257 
+<a id='L258' name='L258'></a> 258 <em class='comment'>/*</em>
+<a id='L259' name='L259'></a> 259 <em class='comment'> * Create a new filesystem object and hand back its vnode.</em>
+<a id='L260' name='L260'></a> 260 <em class='comment'> */</em>
+<a id='L261' name='L261'></a> 261 <strong class='reserved'>int</strong>
+<a id='L262' name='L262'></a> 262 <a href='../R/2009.html' title='Multiple referred from 2 places.'>sfs_makeobj</a>(<strong class='reserved'>struct</strong> <a href='../S/178.html#L64' title='Defined at 64 in kern/include/sfs.h.'>sfs_fs</a> *sfs, <strong class='reserved'>int</strong> type, <strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a> **ret)
+<a id='L263' name='L263'></a> 263 <em class='brace'>{</em>
+<a id='L264' name='L264'></a> 264         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> ino;
+<a id='L265' name='L265'></a> 265         <strong class='reserved'>int</strong> result;
+<a id='L266' name='L266'></a> 266 
+<a id='L267' name='L267'></a> 267         <em class='comment'>/*</em>
+<a id='L268' name='L268'></a> 268 <em class='comment'>         * First, get an inode. (Each inode is a block, and the inode</em>
+<a id='L269' name='L269'></a> 269 <em class='comment'>         * number is the block number, so just get a block.)</em>
+<a id='L270' name='L270'></a> 270 <em class='comment'>         */</em>
+<a id='L271' name='L271'></a> 271 
+<a id='L272' name='L272'></a> 272         result = <a href='../S/127.html#L58' title='Defined at 58 in kern/fs/sfs/sfs_balloc.c.'>sfs_balloc</a>(sfs, &amp;ino);
+<a id='L273' name='L273'></a> 273         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L274' name='L274'></a> 274                 <strong class='reserved'>return</strong> result;
+<a id='L275' name='L275'></a> 275         <em class='brace'>}</em>
+<a id='L276' name='L276'></a> 276 
+<a id='L277' name='L277'></a> 277         <em class='comment'>/*</em>
+<a id='L278' name='L278'></a> 278 <em class='comment'>         * Now load a vnode for it.</em>
+<a id='L279' name='L279'></a> 279 <em class='comment'>         */</em>
+<a id='L280' name='L280'></a> 280 
+<a id='L281' name='L281'></a> 281         result = <a href='../S/131.html#L150' title='Defined at 150 in kern/fs/sfs/sfs_inode.c.'>sfs_loadvnode</a>(sfs, ino, type, ret);
+<a id='L282' name='L282'></a> 282         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L283' name='L283'></a> 283                 <a href='../S/127.html#L85' title='Defined at 85 in kern/fs/sfs/sfs_balloc.c.'>sfs_bfree</a>(sfs, ino);
+<a id='L284' name='L284'></a> 284         <em class='brace'>}</em>
+<a id='L285' name='L285'></a> 285         <strong class='reserved'>return</strong> result;
+<a id='L286' name='L286'></a> 286 <em class='brace'>}</em>
+<a id='L287' name='L287'></a> 287 
+<a id='L288' name='L288'></a> 288 <em class='comment'>/*</em>
+<a id='L289' name='L289'></a> 289 <em class='comment'> * Get vnode for the root of the filesystem.</em>
+<a id='L290' name='L290'></a> 290 <em class='comment'> * The root vnode is always found in block 1 (SFS_ROOTDIR_INO).</em>
+<a id='L291' name='L291'></a> 291 <em class='comment'> */</em>
+<a id='L292' name='L292'></a> 292 <strong class='reserved'>int</strong>
+<a id='L293' name='L293'></a> 293 <a href='../R/1997.html' title='Multiple referred from 2 places.'>sfs_getroot</a>(<strong class='reserved'>struct</strong> <a href='../S/150.html#L42' title='Defined at 42 in kern/include/fs.h.'>fs</a> *<a href='../S/150.html#L42' title='Defined at 42 in kern/include/fs.h.'>fs</a>, <strong class='reserved'>struct</strong> <a href='../S/195.html#L51' title='Defined at 51 in kern/include/vnode.h.'>vnode</a> **ret)
+<a id='L294' name='L294'></a> 294 <em class='brace'>{</em>
+<a id='L295' name='L295'></a> 295         <strong class='reserved'>struct</strong> <a href='../S/178.html#L64' title='Defined at 64 in kern/include/sfs.h.'>sfs_fs</a> *sfs = <a href='../S/150.html#L42' title='Defined at 42 in kern/include/fs.h.'>fs</a>-&gt;fs_data;
+<a id='L296' name='L296'></a> 296         <strong class='reserved'>struct</strong> <a href='../S/178.html#L54' title='Defined at 54 in kern/include/sfs.h.'>sfs_vnode</a> *sv;
+<a id='L297' name='L297'></a> 297         <strong class='reserved'>int</strong> result;
+<a id='L298' name='L298'></a> 298 
+<a id='L299' name='L299'></a> 299         <a href='../S/233.html#L127' title='Defined at 127 in kern/vfs/vfslist.c.'>vfs_biglock_acquire</a>();
+<a id='L300' name='L300'></a> 300 
+<a id='L301' name='L301'></a> 301         result = <a href='../S/131.html#L150' title='Defined at 150 in kern/fs/sfs/sfs_inode.c.'>sfs_loadvnode</a>(sfs, <a href='../S/162.html#L51' title='Defined at 51 in kern/include/kern/sfs.h.'>SFS_ROOTDIR_INO</a>, <a href='../S/162.html#L66' title='Defined at 66 in kern/include/kern/sfs.h.'>SFS_TYPE_INVAL</a>, &amp;sv);
+<a id='L302' name='L302'></a> 302         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L303' name='L303'></a> 303                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("sfs: %s: getroot: Cannot load root vnode\n",
+<a id='L304' name='L304'></a> 304                         sfs-&gt;sfs_sb.<a href='../S/559.html#L121' title='Defined at 121 in userland/sbin/sfsck/sb.c.'>sb_volname</a>);
+<a id='L305' name='L305'></a> 305                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L306' name='L306'></a> 306                 <strong class='reserved'>return</strong> result;
+<a id='L307' name='L307'></a> 307         <em class='brace'>}</em>
+<a id='L308' name='L308'></a> 308 
+<a id='L309' name='L309'></a> 309         <strong class='reserved'>if</strong> (sv-&gt;sv_i.sfi_type != <a href='../S/162.html#L68' title='Defined at 68 in kern/include/kern/sfs.h.'>SFS_TYPE_DIR</a>) <em class='brace'>{</em>
+<a id='L310' name='L310'></a> 310                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("sfs: %s: getroot: not directory (type %u)\n",
+<a id='L311' name='L311'></a> 311                         sfs-&gt;sfs_sb.<a href='../S/559.html#L121' title='Defined at 121 in userland/sbin/sfsck/sb.c.'>sb_volname</a>, sv-&gt;sv_i.sfi_type);
+<a id='L312' name='L312'></a> 312                 <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L313' name='L313'></a> 313                 <strong class='reserved'>return</strong> <a href='../S/154.html#L52' title='Defined at 52 in kern/include/kern/errno.h.'>EINVAL</a>;
+<a id='L314' name='L314'></a> 314         <em class='brace'>}</em>
+<a id='L315' name='L315'></a> 315 
+<a id='L316' name='L316'></a> 316         <a href='../S/233.html#L153' title='Defined at 153 in kern/vfs/vfslist.c.'>vfs_biglock_release</a>();
+<a id='L317' name='L317'></a> 317 
+<a id='L318' name='L318'></a> 318         *ret = &amp;sv-&gt;sv_absvn;
+<a id='L319' name='L319'></a> 319         <strong class='reserved'>return</strong> 0;
+<a id='L320' name='L320'></a> 320 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L47'>[^]</a><a href='#L293'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

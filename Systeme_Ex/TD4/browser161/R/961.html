@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>array</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/139.html#L75'>array</a>              75 kern/include/array.h struct array *array_create(void);</span>
+<span class='curline'><a href='../S/139.html#L76'>array</a>              76 kern/include/array.h void array_destroy(struct array *);</span>
+<span class='curline'><a href='../S/139.html#L77'>array</a>              77 kern/include/array.h void array_init(struct array *);</span>
+<span class='curline'><a href='../S/139.html#L78'>array</a>              78 kern/include/array.h void array_cleanup(struct array *);</span>
+<span class='curline'><a href='../S/139.html#L79'>array</a>              79 kern/include/array.h ARRAYINLINE unsigned array_num(const struct array *);</span>
+<span class='curline'><a href='../S/139.html#L80'>array</a>              80 kern/include/array.h ARRAYINLINE void *array_get(const struct array *, unsigned index);</span>
+<span class='curline'><a href='../S/139.html#L81'>array</a>              81 kern/include/array.h ARRAYINLINE void array_set(const struct array *, unsigned index, void *val);</span>
+<span class='curline'><a href='../S/139.html#L82'>array</a>              82 kern/include/array.h int array_preallocate(struct array *, unsigned num);</span>
+<span class='curline'><a href='../S/139.html#L83'>array</a>              83 kern/include/array.h int array_setsize(struct array *, unsigned num);</span>
+<span class='curline'><a href='../S/139.html#L84'>array</a>              84 kern/include/array.h ARRAYINLINE int array_add(struct array *, void *val, unsigned *index_ret);</span>
+<span class='curline'><a href='../S/139.html#L85'>array</a>              85 kern/include/array.h void array_remove(struct array *, unsigned index);</span>
+<span class='curline'><a href='../S/139.html#L92'>array</a>              92 kern/include/array.h array_num(const struct array *a)</span>
+<span class='curline'><a href='../S/139.html#L98'>array</a>              98 kern/include/array.h array_get(const struct array *a, unsigned index)</span>
+<span class='curline'><a href='../S/139.html#L105'>array</a>             105 kern/include/array.h array_set(const struct array *a, unsigned index, void *val)</span>
+<span class='curline'><a href='../S/139.html#L112'>array</a>             112 kern/include/array.h array_add(struct array *a, void *val, unsigned *index_ret)</span>
+<span class='curline'><a href='../S/139.html#L170'>array</a>             170 kern/include/array.h 		struct array arr;				\</span>
+<span class='curline'><a href='../S/139.html#L258'>array</a>             258 kern/include/array.h #define DECLARRAY(T, INLINE) DECLARRAY_BYTYPE(T##array, struct T, INLINE)</span>
+<span class='curline'><a href='../S/139.html#L259'>array</a>             259 kern/include/array.h #define DEFARRAY(T, INLINE) DEFARRAY_BYTYPE(T##array, struct T, INLINE)</span>
+<span class='curline'><a href='../S/197.html#L37'>array</a>              37 kern/lib/array.c struct array *</span>
+<span class='curline'><a href='../S/197.html#L40'>array</a>              40 kern/lib/array.c 	struct array *a;</span>
+<span class='curline'><a href='../S/197.html#L50'>array</a>              50 kern/lib/array.c array_destroy(struct array *a)</span>
+<span class='curline'><a href='../S/197.html#L57'>array</a>              57 kern/lib/array.c array_init(struct array *a)</span>
+<span class='curline'><a href='../S/197.html#L64'>array</a>              64 kern/lib/array.c array_cleanup(struct array *a)</span>
+<span class='curline'><a href='../S/197.html#L79'>array</a>              79 kern/lib/array.c array_preallocate(struct array *a, unsigned num)</span>
+<span class='curline'><a href='../S/197.html#L111'>array</a>             111 kern/lib/array.c array_setsize(struct array *a, unsigned num)</span>
+<span class='curline'><a href='../S/197.html#L125'>array</a>             125 kern/lib/array.c array_remove(struct array *a, unsigned index)</span>
+<span class='curline'><a href='../S/212.html#L41'>array</a>              41 kern/test/arraytest.c testa(struct array *a)</span>
+<span class='curline'><a href='../S/212.html#L126'>array</a>             126 kern/test/arraytest.c 	struct array *a;</span>
+<span class='curline'><a href='../S/212.html#L151'>array</a>             151 kern/test/arraytest.c 	struct array *a;</span>
+<span class='curline'><a href='../S/617.html#L54'>array</a>              54 userland/testbin/ctest/ctest.c struct entry array[SIZE];</span>
+<span class='curline'><a href='../S/617.html#L82'>array</a>              82 userland/testbin/ctest/ctest.c 		array[i].e = &amp;array[(i+stride) % SIZE];</span>
+<span class='curline'><a href='../S/617.html#L91'>array</a>              91 userland/testbin/ctest/ctest.c 	e = &amp;array[0];</span>
+</pre>
+</body>
+</html>

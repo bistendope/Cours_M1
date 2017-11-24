@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>proc</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/176.html#L77'>proc</a>               77 kern/include/proc.h extern struct proc *kproc;</span>
+<span class='curline'><a href='../S/176.html#L83'>proc</a>               83 kern/include/proc.h struct proc *proc_create_runprogram(const char *name);</span>
+<span class='curline'><a href='../S/176.html#L86'>proc</a>               86 kern/include/proc.h void proc_destroy(struct proc *proc);</span>
+<span class='curline'><a href='../S/176.html#L89'>proc</a>               89 kern/include/proc.h int proc_addthread(struct proc *proc, struct thread *t);</span>
+<span class='curline'><a href='../S/187.html#L85'>proc</a>               85 kern/include/thread.h 	struct proc *t_proc;		/* Process thread belongs to */</span>
+<span class='curline'><a href='../S/187.html#L144'>proc</a>              144 kern/include/thread.h int thread_fork(const char *name, struct proc *proc,</span>
+<span class='curline'><a href='../S/206.html#L117'>proc</a>              117 kern/main/menu.c 	struct proc *proc;</span>
+<span class='curline'><a href='../S/206.html#L121'>proc</a>              121 kern/main/menu.c 	proc = proc_create_runprogram(args[0] /* name */);</span>
+<span class='curline'><a href='../S/206.html#L122'>proc</a>              122 kern/main/menu.c 	if (proc == NULL) {</span>
+<span class='curline'><a href='../S/206.html#L127'>proc</a>              127 kern/main/menu.c 			proc /* new process */,</span>
+<span class='curline'><a href='../S/206.html#L132'>proc</a>              132 kern/main/menu.c 		proc_destroy(proc);</span>
+<span class='curline'><a href='../S/208.html#L55'>proc</a>               55 kern/proc/proc.c struct proc *kproc;</span>
+<span class='curline'><a href='../S/208.html#L61'>proc</a>               61 kern/proc/proc.c struct proc *</span>
+<span class='curline'><a href='../S/208.html#L64'>proc</a>               64 kern/proc/proc.c 	struct proc *proc;</span>
+<span class='curline'><a href='../S/208.html#L66'>proc</a>               66 kern/proc/proc.c 	proc = kmalloc(sizeof(*proc));</span>
+<span class='curline'><a href='../S/208.html#L67'>proc</a>               67 kern/proc/proc.c 	if (proc == NULL) {</span>
+<span class='curline'><a href='../S/208.html#L70'>proc</a>               70 kern/proc/proc.c 	proc-&gt;p_name = kstrdup(name);</span>
+<span class='curline'><a href='../S/208.html#L71'>proc</a>               71 kern/proc/proc.c 	if (proc-&gt;p_name == NULL) {</span>
+<span class='curline'><a href='../S/208.html#L72'>proc</a>               72 kern/proc/proc.c 		kfree(proc);</span>
+<span class='curline'><a href='../S/208.html#L76'>proc</a>               76 kern/proc/proc.c 	proc-&gt;p_numthreads = 0;</span>
+<span class='curline'><a href='../S/208.html#L77'>proc</a>               77 kern/proc/proc.c 	spinlock_init(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L80'>proc</a>               80 kern/proc/proc.c 	proc-&gt;p_addrspace = NULL;</span>
+<span class='curline'><a href='../S/208.html#L83'>proc</a>               83 kern/proc/proc.c 	proc-&gt;p_cwd = NULL;</span>
+<span class='curline'><a href='../S/208.html#L85'>proc</a>               85 kern/proc/proc.c 	return proc;</span>
+<span class='curline'><a href='../S/208.html#L95'>proc</a>               95 kern/proc/proc.c proc_destroy(struct proc *proc)</span>
+<span class='curline'><a href='../S/208.html#L105'>proc</a>              105 kern/proc/proc.c 	KASSERT(proc != NULL);</span>
+<span class='curline'><a href='../S/208.html#L106'>proc</a>              106 kern/proc/proc.c 	KASSERT(proc != kproc);</span>
+<span class='curline'><a href='../S/208.html#L115'>proc</a>              115 kern/proc/proc.c 	if (proc-&gt;p_cwd) {</span>
+<span class='curline'><a href='../S/208.html#L116'>proc</a>              116 kern/proc/proc.c 		VOP_DECREF(proc-&gt;p_cwd);</span>
+<span class='curline'><a href='../S/208.html#L117'>proc</a>              117 kern/proc/proc.c 		proc-&gt;p_cwd = NULL;</span>
+<span class='curline'><a href='../S/208.html#L121'>proc</a>              121 kern/proc/proc.c 	if (proc-&gt;p_addrspace) {</span>
+<span class='curline'><a href='../S/208.html#L157'>proc</a>              157 kern/proc/proc.c 		if (proc == curproc) {</span>
+<span class='curline'><a href='../S/208.html#L162'>proc</a>              162 kern/proc/proc.c 			as = proc-&gt;p_addrspace;</span>
+<span class='curline'><a href='../S/208.html#L163'>proc</a>              163 kern/proc/proc.c 			proc-&gt;p_addrspace = NULL;</span>
+<span class='curline'><a href='../S/208.html#L168'>proc</a>              168 kern/proc/proc.c 	KASSERT(proc-&gt;p_numthreads == 0);</span>
+<span class='curline'><a href='../S/208.html#L169'>proc</a>              169 kern/proc/proc.c 	spinlock_cleanup(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L171'>proc</a>              171 kern/proc/proc.c 	kfree(proc-&gt;p_name);</span>
+<span class='curline'><a href='../S/208.html#L172'>proc</a>              172 kern/proc/proc.c 	kfree(proc);</span>
+<span class='curline'><a href='../S/208.html#L193'>proc</a>              193 kern/proc/proc.c struct proc *</span>
+<span class='curline'><a href='../S/208.html#L196'>proc</a>              196 kern/proc/proc.c 	struct proc *newproc;</span>
+<span class='curline'><a href='../S/208.html#L234'>proc</a>              234 kern/proc/proc.c proc_addthread(struct proc *proc, struct thread *t)</span>
+<span class='curline'><a href='../S/208.html#L240'>proc</a>              240 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L241'>proc</a>              241 kern/proc/proc.c 	proc-&gt;p_numthreads++;</span>
+<span class='curline'><a href='../S/208.html#L242'>proc</a>              242 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L245'>proc</a>              245 kern/proc/proc.c 	t-&gt;t_proc = proc;</span>
+<span class='curline'><a href='../S/208.html#L263'>proc</a>              263 kern/proc/proc.c 	struct proc *proc;</span>
+<span class='curline'><a href='../S/208.html#L266'>proc</a>              266 kern/proc/proc.c 	proc = t-&gt;t_proc;</span>
+<span class='curline'><a href='../S/208.html#L267'>proc</a>              267 kern/proc/proc.c 	KASSERT(proc != NULL);</span>
+<span class='curline'><a href='../S/208.html#L269'>proc</a>              269 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L270'>proc</a>              270 kern/proc/proc.c 	KASSERT(proc-&gt;p_numthreads &gt; 0);</span>
+<span class='curline'><a href='../S/208.html#L271'>proc</a>              271 kern/proc/proc.c 	proc-&gt;p_numthreads--;</span>
+<span class='curline'><a href='../S/208.html#L272'>proc</a>              272 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L291'>proc</a>              291 kern/proc/proc.c 	struct proc *proc = curproc;</span>
+<span class='curline'><a href='../S/208.html#L293'>proc</a>              293 kern/proc/proc.c 	if (proc == NULL) {</span>
+<span class='curline'><a href='../S/208.html#L297'>proc</a>              297 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L298'>proc</a>              298 kern/proc/proc.c 	as = proc-&gt;p_addrspace;</span>
+<span class='curline'><a href='../S/208.html#L299'>proc</a>              299 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L311'>proc</a>              311 kern/proc/proc.c 	struct proc *proc = curproc;</span>
+<span class='curline'><a href='../S/208.html#L313'>proc</a>              313 kern/proc/proc.c 	KASSERT(proc != NULL);</span>
+<span class='curline'><a href='../S/208.html#L315'>proc</a>              315 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L316'>proc</a>              316 kern/proc/proc.c 	oldas = proc-&gt;p_addrspace;</span>
+<span class='curline'><a href='../S/208.html#L317'>proc</a>              317 kern/proc/proc.c 	proc-&gt;p_addrspace = newas;</span>
+<span class='curline'><a href='../S/208.html#L318'>proc</a>              318 kern/proc/proc.c 	spinlock_release(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/227.html#L496'>proc</a>              496 kern/thread/thread.c 	    struct proc *proc,</span>
+<span class='curline'><a href='../S/227.html#L524'>proc</a>              524 kern/thread/thread.c 	if (proc == NULL) {</span>
+<span class='curline'><a href='../S/227.html#L525'>proc</a>              525 kern/thread/thread.c 		proc = curthread-&gt;t_proc;</span>
+<span class='curline'><a href='../S/227.html#L527'>proc</a>              527 kern/thread/thread.c 	result = proc_addthread(proc, newthread);</span>
+</pre>
+</body>
+</html>

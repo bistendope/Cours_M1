@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>sfs_fs</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/127.html#L46'>sfs_fs</a>             46 kern/fs/sfs/sfs_balloc.c sfs_clearblock(struct sfs_fs *sfs, daddr_t block)</span>
+<span class='curline'><a href='../S/127.html#L58'>sfs_fs</a>             58 kern/fs/sfs/sfs_balloc.c sfs_balloc(struct sfs_fs *sfs, daddr_t *diskblock)</span>
+<span class='curline'><a href='../S/127.html#L85'>sfs_fs</a>             85 kern/fs/sfs/sfs_balloc.c sfs_bfree(struct sfs_fs *sfs, daddr_t diskblock)</span>
+<span class='curline'><a href='../S/127.html#L95'>sfs_fs</a>             95 kern/fs/sfs/sfs_balloc.c sfs_bused(struct sfs_fs *sfs, daddr_t diskblock)</span>
+<span class='curline'><a href='../S/128.html#L61'>sfs_fs</a>             61 kern/fs/sfs/sfs_bmap.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/128.html#L215'>sfs_fs</a>            215 kern/fs/sfs/sfs_bmap.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/129.html#L84'>sfs_fs</a>             84 kern/fs/sfs/sfs_dir.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/129.html#L217'>sfs_fs</a>            217 kern/fs/sfs/sfs_dir.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/130.html#L72'>sfs_fs</a>             72 kern/fs/sfs/sfs_fsops.c sfs_freemapio(struct sfs_fs *sfs, enum uio_rw rw)</span>
+<span class='curline'><a href='../S/130.html#L113'>sfs_fs</a>            113 kern/fs/sfs/sfs_fsops.c sfs_sync_vnodes(struct sfs_fs *sfs)</span>
+<span class='curline'><a href='../S/130.html#L131'>sfs_fs</a>            131 kern/fs/sfs/sfs_fsops.c sfs_sync_freemap(struct sfs_fs *sfs)</span>
+<span class='curline'><a href='../S/130.html#L151'>sfs_fs</a>            151 kern/fs/sfs/sfs_fsops.c sfs_sync_superblock(struct sfs_fs *sfs)</span>
+<span class='curline'><a href='../S/130.html#L174'>sfs_fs</a>            174 kern/fs/sfs/sfs_fsops.c 	struct sfs_fs *sfs;</span>
+<span class='curline'><a href='../S/130.html#L245'>sfs_fs</a>            245 kern/fs/sfs/sfs_fsops.c 	struct sfs_fs *sfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/130.html#L260'>sfs_fs</a>            260 kern/fs/sfs/sfs_fsops.c sfs_fs_destroy(struct sfs_fs *sfs)</span>
+<span class='curline'><a href='../S/130.html#L279'>sfs_fs</a>            279 kern/fs/sfs/sfs_fsops.c 	struct sfs_fs *sfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/130.html#L320'>sfs_fs</a>            320 kern/fs/sfs/sfs_fsops.c struct sfs_fs *</span>
+<span class='curline'><a href='../S/130.html#L323'>sfs_fs</a>            323 kern/fs/sfs/sfs_fsops.c 	struct sfs_fs *sfs;</span>
+<span class='curline'><a href='../S/130.html#L333'>sfs_fs</a>            333 kern/fs/sfs/sfs_fsops.c 	sfs = kmalloc(sizeof(struct sfs_fs));</span>
+<span class='curline'><a href='../S/130.html#L389'>sfs_fs</a>            389 kern/fs/sfs/sfs_fsops.c 	struct sfs_fs *sfs;</span>
+<span class='curline'><a href='../S/131.html#L49'>sfs_fs</a>             49 kern/fs/sfs/sfs_inode.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/131.html#L72'>sfs_fs</a>             72 kern/fs/sfs/sfs_inode.c 	struct sfs_fs *sfs = v-&gt;vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/131.html#L150'>sfs_fs</a>            150 kern/fs/sfs/sfs_inode.c sfs_loadvnode(struct sfs_fs *sfs, uint32_t ino, int forcetype,</span>
+<span class='curline'><a href='../S/131.html#L262'>sfs_fs</a>            262 kern/fs/sfs/sfs_inode.c sfs_makeobj(struct sfs_fs *sfs, int type, struct sfs_vnode **ret)</span>
+<span class='curline'><a href='../S/131.html#L295'>sfs_fs</a>            295 kern/fs/sfs/sfs_inode.c 	struct sfs_fs *sfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/132.html#L60'>sfs_fs</a>             60 kern/fs/sfs/sfs_io.c sfs_rwblock(struct sfs_fs *sfs, struct uio *uio)</span>
+<span class='curline'><a href='../S/132.html#L108'>sfs_fs</a>            108 kern/fs/sfs/sfs_io.c sfs_readblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len)</span>
+<span class='curline'><a href='../S/132.html#L123'>sfs_fs</a>            123 kern/fs/sfs/sfs_io.c sfs_writeblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len)</span>
+<span class='curline'><a href='../S/132.html#L162'>sfs_fs</a>            162 kern/fs/sfs/sfs_io.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/132.html#L230'>sfs_fs</a>            230 kern/fs/sfs/sfs_io.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/132.html#L409'>sfs_fs</a>            409 kern/fs/sfs/sfs_io.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/133.html#L186'>sfs_fs</a>            186 kern/fs/sfs/sfs_vnops.c 	struct sfs_fs *sfs = v-&gt;vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/133.html#L286'>sfs_fs</a>            286 kern/fs/sfs/sfs_vnops.c 	struct sfs_fs *sfs = v-&gt;vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/133.html#L436'>sfs_fs</a>            436 kern/fs/sfs/sfs_vnops.c 	struct sfs_fs *sfs = sv-&gt;sv_absvn.vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/134.html#L46'>sfs_fs</a>             46 kern/fs/sfs/sfsprivate.h int sfs_balloc(struct sfs_fs *sfs, daddr_t *diskblock);</span>
+<span class='curline'><a href='../S/134.html#L47'>sfs_fs</a>             47 kern/fs/sfs/sfsprivate.h void sfs_bfree(struct sfs_fs *sfs, daddr_t diskblock);</span>
+<span class='curline'><a href='../S/134.html#L48'>sfs_fs</a>             48 kern/fs/sfs/sfsprivate.h int sfs_bused(struct sfs_fs *sfs, daddr_t diskblock);</span>
+<span class='curline'><a href='../S/134.html#L68'>sfs_fs</a>             68 kern/fs/sfs/sfsprivate.h int sfs_loadvnode(struct sfs_fs *sfs, uint32_t ino, int forcetype,</span>
+<span class='curline'><a href='../S/134.html#L70'>sfs_fs</a>             70 kern/fs/sfs/sfsprivate.h int sfs_makeobj(struct sfs_fs *sfs, int type, struct sfs_vnode **ret);</span>
+<span class='curline'><a href='../S/134.html#L74'>sfs_fs</a>             74 kern/fs/sfs/sfsprivate.h int sfs_readblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len);</span>
+<span class='curline'><a href='../S/134.html#L75'>sfs_fs</a>             75 kern/fs/sfs/sfsprivate.h int sfs_writeblock(struct sfs_fs *sfs, daddr_t block, void *data, size_t len);</span>
+</pre>
+</body>
+</html>

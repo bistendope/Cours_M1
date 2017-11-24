@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>LHD_SECTSIZE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/101.html#L191'>LHD_SECTSIZE</a>      191 kern/dev/lamebus/lhd.c 	uint32_t sector = uio-&gt;uio_offset / LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L192'>LHD_SECTSIZE</a>      192 kern/dev/lamebus/lhd.c 	uint32_t sectoff = uio-&gt;uio_offset % LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L193'>LHD_SECTSIZE</a>      193 kern/dev/lamebus/lhd.c 	uint32_t len = uio-&gt;uio_resid / LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L194'>LHD_SECTSIZE</a>      194 kern/dev/lamebus/lhd.c 	uint32_t lenoff = uio-&gt;uio_resid % LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L226'>LHD_SECTSIZE</a>      226 kern/dev/lamebus/lhd.c 			result = uiomove(lh-&gt;lh_buf, LHD_SECTSIZE, uio);</span>
+<span class='curline'><a href='../S/101.html#L252'>LHD_SECTSIZE</a>      252 kern/dev/lamebus/lhd.c 			result = uiomove(lh-&gt;lh_buf, LHD_SECTSIZE, uio);</span>
+<span class='curline'><a href='../S/101.html#L303'>LHD_SECTSIZE</a>      303 kern/dev/lamebus/lhd.c 	lh-&gt;lh_dev.d_blocksize = LHD_SECTSIZE;</span>
+</pre>
+</body>
+</html>

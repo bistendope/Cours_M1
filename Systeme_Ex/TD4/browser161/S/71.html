@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/arch/mips/vm/tlb-mips161.S</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/733.html'>arch</a>/<a href='../files/734.html'>mips</a>/<a href='../files/740.html'>vm</a>/tlb-mips161.S</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#include</em> &lt;<a href='47.html'>kern/mips/regdefs.h</a>&gt;
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#include</em> &lt;<a href='52.html'>mips/specialreg.h</a>&gt;
+<a id='L32' name='L32'></a>  32 
+<a id='L33' name='L33'></a>  33 <em class='comment'>/*</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * TLB handling for the MIPS-161.</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> *</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> * The MIPS-161 uses the simpler MIPS-1 (r2000/r3000) TLB rather</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * than the paired-page TLB of later MIPS models.</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> *</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * However, we handle MIPS32 pipeline hazards. If you want to run on</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> * a real MIPS-1, change the ssnops to plain nops and check where and</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> * how many you need in the matching processor docs.</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> *</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> * (ssnop means "superscalar nop"; it exists because the pipeline</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> * hazards require a fixed number of cycles, and a superscalar CPU can</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> * potentially issue arbitrarily many nops in one cycle.)</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> */</em>
+<a id='L47' name='L47'></a>  47 
+<a id='L48' name='L48'></a>  48    .text
+<a id='L49' name='L49'></a>  49    .set noreorder
+<a id='L50' name='L50'></a>  50    .set mips32 <em class='comment'>/* so we can use ssnop */</em>
+<a id='L51' name='L51'></a>  51 
+<a id='L52' name='L52'></a>  52    <em class='comment'>/*</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'>    * tlb_random: use the "tlbwr" instruction to write a TLB entry</em>
+<a id='L54' name='L54'></a>  54 <em class='comment'>    * into a (very pseudo-) random slot in the TLB.</em>
+<a id='L55' name='L55'></a>  55 <em class='comment'>    *</em>
+<a id='L56' name='L56'></a>  56 <em class='comment'>    * Pipeline hazard: must wait between setting entryhi/lo and</em>
+<a id='L57' name='L57'></a>  57 <em class='comment'>    * doing the tlbwr. Use two cycles; some processors may vary.</em>
+<a id='L58' name='L58'></a>  58 <em class='comment'>    */</em>
+<a id='L59' name='L59'></a>  59    .globl tlb_random
+<a id='L60' name='L60'></a>  60    .type tlb_random,@function
+<a id='L61' name='L61'></a>  61    .ent tlb_random
+<a id='L62' name='L62'></a>  62 tlb_random:
+<a id='L63' name='L63'></a>  63    mtc0 a0, c0_entryhi  <em class='comment'>/* store the passed entry into the */</em>
+<a id='L64' name='L64'></a>  64    mtc0 a1, c0_entrylo  <em class='comment'>/*   tlb entry registers */</em>
+<a id='L65' name='L65'></a>  65    ssnop                <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L66' name='L66'></a>  66    ssnop
+<a id='L67' name='L67'></a>  67    tlbwr                <em class='comment'>/* do it */</em>
+<a id='L68' name='L68'></a>  68    j ra
+<a id='L69' name='L69'></a>  69    nop
+<a id='L70' name='L70'></a>  70    .end tlb_random
+<a id='L71' name='L71'></a>  71 
+<a id='L72' name='L72'></a>  72    <em class='comment'>/*</em>
+<a id='L73' name='L73'></a>  73 <em class='comment'>    * tlb_write: use the "tlbwi" instruction to write a TLB entry</em>
+<a id='L74' name='L74'></a>  74 <em class='comment'>    * into a selected slot in the TLB.</em>
+<a id='L75' name='L75'></a>  75 <em class='comment'>    *</em>
+<a id='L76' name='L76'></a>  76 <em class='comment'>    * Pipeline hazard: must wait between setting entryhi/lo and</em>
+<a id='L77' name='L77'></a>  77 <em class='comment'>    * doing the tlbwi. Use two cycles; some processors may vary.</em>
+<a id='L78' name='L78'></a>  78 <em class='comment'>    */</em>
+<a id='L79' name='L79'></a>  79    .text
+<a id='L80' name='L80'></a>  80    .globl tlb_write
+<a id='L81' name='L81'></a>  81    .type tlb_write,@function
+<a id='L82' name='L82'></a>  82    .ent tlb_write
+<a id='L83' name='L83'></a>  83 tlb_write:
+<a id='L84' name='L84'></a>  84    mtc0 a0, c0_entryhi  <em class='comment'>/* store the passed entry into the */</em>
+<a id='L85' name='L85'></a>  85    mtc0 a1, c0_entrylo  <em class='comment'>/*   tlb entry registers */</em>
+<a id='L86' name='L86'></a>  86    sll  t0, a2, CIN_INDEXSHIFT  <em class='comment'>/* shift the passed index into place */</em>
+<a id='L87' name='L87'></a>  87    mtc0 t0, c0_index    <em class='comment'>/* store the shifted index into the index register */</em>
+<a id='L88' name='L88'></a>  88    ssnop                <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L89' name='L89'></a>  89    ssnop
+<a id='L90' name='L90'></a>  90    tlbwi                <em class='comment'>/* do it */</em>
+<a id='L91' name='L91'></a>  91    j ra
+<a id='L92' name='L92'></a>  92    nop
+<a id='L93' name='L93'></a>  93    .end tlb_write
+<a id='L94' name='L94'></a>  94 
+<a id='L95' name='L95'></a>  95    <em class='comment'>/*</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'>    * tlb_read: use the "tlbr" instruction to read a TLB entry</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'>    * from a selected slot in the TLB.</em>
+<a id='L98' name='L98'></a>  98 <em class='comment'>    *</em>
+<a id='L99' name='L99'></a>  99 <em class='comment'>    * Pipeline hazard: must wait between setting c0_index and</em>
+<a id='L100' name='L100'></a> 100 <em class='comment'>    * doing the tlbr. Use two cycles; some processors may vary.</em>
+<a id='L101' name='L101'></a> 101 <em class='comment'>    * Similarly, three more cycles before reading c0_entryhi/lo.</em>
+<a id='L102' name='L102'></a> 102 <em class='comment'>    */</em>
+<a id='L103' name='L103'></a> 103    .text
+<a id='L104' name='L104'></a> 104    .globl tlb_read
+<a id='L105' name='L105'></a> 105    .type tlb_read,@function
+<a id='L106' name='L106'></a> 106    .ent tlb_read
+<a id='L107' name='L107'></a> 107 tlb_read:
+<a id='L108' name='L108'></a> 108    sll  t0, a2, CIN_INDEXSHIFT  <em class='comment'>/* shift the passed index into place */</em>
+<a id='L109' name='L109'></a> 109    mtc0 t0, c0_index    <em class='comment'>/* store the shifted index into the index register */</em>
+<a id='L110' name='L110'></a> 110    ssnop                <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L111' name='L111'></a> 111    ssnop
+<a id='L112' name='L112'></a> 112    tlbr                 <em class='comment'>/* do it */</em>
+<a id='L113' name='L113'></a> 113    ssnop                <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L114' name='L114'></a> 114    ssnop
+<a id='L115' name='L115'></a> 115    ssnop
+<a id='L116' name='L116'></a> 116    mfc0 t0, c0_entryhi  <em class='comment'>/* get the tlb entry out of the */</em>
+<a id='L117' name='L117'></a> 117    mfc0 t1, c0_entrylo  <em class='comment'>/*   tlb entry registers */</em>
+<a id='L118' name='L118'></a> 118    sw t0, 0(a0)         <em class='comment'>/* store through the passed pointer */</em>
+<a id='L119' name='L119'></a> 119    j ra
+<a id='L120' name='L120'></a> 120    sw t1, 0(a1)         <em class='comment'>/* store (in delay slot) */</em>
+<a id='L121' name='L121'></a> 121    .end tlb_read
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123    <em class='comment'>/*</em>
+<a id='L124' name='L124'></a> 124 <em class='comment'>    * tlb_probe: use the "tlbp" instruction to find the index in the</em>
+<a id='L125' name='L125'></a> 125 <em class='comment'>    * TLB of a TLB entry matching the relevant parts of the one supplied.</em>
+<a id='L126' name='L126'></a> 126 <em class='comment'>    *</em>
+<a id='L127' name='L127'></a> 127 <em class='comment'>    * Pipeline hazard: must wait between setting c0_entryhi/lo and</em>
+<a id='L128' name='L128'></a> 128 <em class='comment'>    * doing the tlbp. Use two cycles; some processors may vary.</em>
+<a id='L129' name='L129'></a> 129 <em class='comment'>    * Similarly, two more cycles before reading c0_index.</em>
+<a id='L130' name='L130'></a> 130 <em class='comment'>    */</em>
+<a id='L131' name='L131'></a> 131    .text
+<a id='L132' name='L132'></a> 132    .globl tlb_probe
+<a id='L133' name='L133'></a> 133    .type tlb_probe,@function
+<a id='L134' name='L134'></a> 134    .ent tlb_probe
+<a id='L135' name='L135'></a> 135 tlb_probe:
+<a id='L136' name='L136'></a> 136    mtc0 a0, c0_entryhi  <em class='comment'>/* store the passed entry into the */</em>
+<a id='L137' name='L137'></a> 137    mtc0 a1, c0_entrylo  <em class='comment'>/*   tlb entry registers */</em>
+<a id='L138' name='L138'></a> 138    ssnop                <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L139' name='L139'></a> 139    ssnop
+<a id='L140' name='L140'></a> 140    tlbp                 <em class='comment'>/* do it */</em>
+<a id='L141' name='L141'></a> 141    ssnop                <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L142' name='L142'></a> 142    ssnop
+<a id='L143' name='L143'></a> 143    mfc0 t0, c0_index    <em class='comment'>/* fetch the index back in t0 */</em>
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145    <em class='comment'>/*</em>
+<a id='L146' name='L146'></a> 146 <em class='comment'>    * If the high bit (CIN_P) of c0_index is set, the probe failed.</em>
+<a id='L147' name='L147'></a> 147 <em class='comment'>    * The high bit is not set &lt;--&gt; c0_index (now in t0) &gt;= 0.</em>
+<a id='L148' name='L148'></a> 148 <em class='comment'>    */</em>
+<a id='L149' name='L149'></a> 149 
+<a id='L150' name='L150'></a> 150    bgez t0, 1f          <em class='comment'>/* did probe succeed? if so, skip forward */</em>
+<a id='L151' name='L151'></a> 151    nop                  <em class='comment'>/* delay slot */</em>
+<a id='L152' name='L152'></a> 152    addi v0, z0, -1      <em class='comment'>/* set return value to -1 to indicate failure */</em>
+<a id='L153' name='L153'></a> 153    j ra                 <em class='comment'>/* done */</em>
+<a id='L154' name='L154'></a> 154    nop                  <em class='comment'>/* delay slot */</em>
+<a id='L155' name='L155'></a> 155 
+<a id='L156' name='L156'></a> 156 1:
+<a id='L157' name='L157'></a> 157    <em class='comment'>/* succeeded - get the index field from the index register value */</em>
+<a id='L158' name='L158'></a> 158    andi t1, t0, CIN_INDEX       <em class='comment'>/* mask off the field */</em>
+<a id='L159' name='L159'></a> 159    j ra                         <em class='comment'>/* done */</em>
+<a id='L160' name='L160'></a> 160    sra  v0, t1, CIN_INDEXSHIFT  <em class='comment'>/* shift it (in delay slot) */</em>
+<a id='L161' name='L161'></a> 161    .end tlb_probe
+<a id='L162' name='L162'></a> 162 
+<a id='L163' name='L163'></a> 163 
+<a id='L164' name='L164'></a> 164    <em class='comment'>/*</em>
+<a id='L165' name='L165'></a> 165 <em class='comment'>    * tlb_reset</em>
+<a id='L166' name='L166'></a> 166 <em class='comment'>    *</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'>    * Initialize the TLB. At processor startup, the TLB state is completely</em>
+<a id='L168' name='L168'></a> 168 <em class='comment'>    * undefined. So be sure to avoid creating any duplicates. Also make sure</em>
+<a id='L169' name='L169'></a> 169 <em class='comment'>    * that the initialization entries don't duplicate the INVALID entries</em>
+<a id='L170' name='L170'></a> 170 <em class='comment'>    * defined in tlb.h. (This way you can write the invalid entries in</em>
+<a id='L171' name='L171'></a> 171 <em class='comment'>    * without having to use tlbp to find out if they're going to cause dups.)</em>
+<a id='L172' name='L172'></a> 172 <em class='comment'>    *</em>
+<a id='L173' name='L173'></a> 173 <em class='comment'>    * This function is not defined in tlb.h because it's only called from</em>
+<a id='L174' name='L174'></a> 174 <em class='comment'>    * start.S.</em>
+<a id='L175' name='L175'></a> 175 <em class='comment'>    *</em>
+<a id='L176' name='L176'></a> 176 <em class='comment'>    * Pipeline hazards are as above.</em>
+<a id='L177' name='L177'></a> 177 <em class='comment'>    */</em>
+<a id='L178' name='L178'></a> 178    .text
+<a id='L179' name='L179'></a> 179    .globl tlb_reset
+<a id='L180' name='L180'></a> 180    .type tlb_reset,@function
+<a id='L181' name='L181'></a> 181    .ent tlb_reset
+<a id='L182' name='L182'></a> 182 tlb_reset:
+<a id='L183' name='L183'></a> 183    li t0, 0                     <em class='comment'>/* t0 &lt;- tlb index number (shifted) */</em>
+<a id='L184' name='L184'></a> 184    li t1, 0x81000000            <em class='comment'>/* t1 &lt;- tlb reset vaddr */</em>
+<a id='L185' name='L185'></a> 185 1:
+<a id='L186' name='L186'></a> 186    mtc0 $0, c0_entrylo          <em class='comment'>/* set up proposed tlb entry for reset */</em>
+<a id='L187' name='L187'></a> 187    mtc0 t1, c0_entryhi
+<a id='L188' name='L188'></a> 188    ssnop                        <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L189' name='L189'></a> 189    ssnop
+<a id='L190' name='L190'></a> 190    tlbp                         <em class='comment'>/* check if it already exists */</em>
+<a id='L191' name='L191'></a> 191    ssnop                        <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L192' name='L192'></a> 192    ssnop
+<a id='L193' name='L193'></a> 193    mfc0 t2, c0_index
+<a id='L194' name='L194'></a> 194    bgez t2, 1b                  <em class='comment'>/* if it does, loop back */</em>
+<a id='L195' name='L195'></a> 195    addiu t1, t1, 0x1000         <em class='comment'>/* next vaddr (in delay slot) */</em>
+<a id='L196' name='L196'></a> 196    mtc0 t0, c0_index            <em class='comment'>/* doesn't exist, set index to write to */</em>
+<a id='L197' name='L197'></a> 197    ssnop                        <em class='comment'>/* wait for pipeline hazard */</em>
+<a id='L198' name='L198'></a> 198    ssnop
+<a id='L199' name='L199'></a> 199    addiu t0, t0, 0x100          <em class='comment'>/* next tlb index (shifted) */</em>
+<a id='L200' name='L200'></a> 200    bne t0, 0x4000, 1b           <em class='comment'>/* if it's not the last tlb index, loop */</em>
+<a id='L201' name='L201'></a> 201    tlbwi                        <em class='comment'>/* write tlb entry (in delay slot) */</em>
+<a id='L202' name='L202'></a> 202    j ra                         <em class='comment'>/* done */</em>
+<a id='L203' name='L203'></a> 203    nop                          <em class='comment'>/* delay slot */</em>
+<a id='L204' name='L204'></a> 204    .end tlb_reset
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/lib/libc/stdlib/random.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/781.html'>lib</a>/<a href='../files/785.html'>libc</a>/<a href='../files/789.html'>stdlib</a>/random.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L232'>[^]</a><a href='#L445'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L232' title='Defined at 232.'>srandom_unlocked</a></li>
+<li><a href='#L250' title='Defined at 250.'>srandom</a></li>
+<li><a href='#L282' title='Defined at 282.'>initstate</a></li>
+<li><a href='#L354' title='Defined at 354.'>setstate</a></li>
+<li><a href='#L415' title='Defined at 415.'>random_unlocked</a></li>
+<li><a href='#L445' title='Defined at 445.'>random</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 1983, 1993</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The Regents of the University of California.  All rights reserved.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. All advertising materials mentioning features or use of this software</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    must display the following acknowledgement:</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *      This product includes software developed by the University of</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *      California, Berkeley and its contributors.</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * 4. Neither the name of the University nor the names of its contributors</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> *</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L29' name='L29'></a>  29 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L30' name='L30'></a>  30 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> */</em>
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='comment'>/*</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> * From:</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> *    NetBSD: random.c,v 1.19 2000/01/22 22:19:20 mycroft Exp</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> *</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> * Hacked gruesomely for OS/161.</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> */</em>
+<a id='L40' name='L40'></a>  40 
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> &lt;<a href='469.html'>assert.h</a>&gt;
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>errno.h</a>&gt;
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#include</em> &lt;<a href='480.html'>stdlib.h</a>&gt;
+<a id='L44' name='L44'></a>  44 
+<a id='L45' name='L45'></a>  45 <em class='comment'>/*</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> * For a thread-safe libc, declare a lock for this file and change</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> * these to be nonempty.</em>
+<a id='L48' name='L48'></a>  48 <em class='comment'> */</em>
+<a id='L49' name='L49'></a>  49 <em class='sharp'>#define</em> <a href='../R/321.html' title='Multiple referred from 4 places.'>LOCKME</a>()
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#define</em> <a href='../R/670.html' title='Multiple referred from 6 places.'>UNLOCKME</a>()
+<a id='L51' name='L51'></a>  51 
+<a id='L52' name='L52'></a>  52 <strong class='reserved'>static</strong> <strong class='reserved'>void</strong> <a href='../S/516.html#L232' title='Defined at 232 in userland/lib/libc/stdlib/random.c.'>srandom_unlocked</a>(<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>);
+<a id='L53' name='L53'></a>  53 <strong class='reserved'>static</strong> <strong class='reserved'>long</strong> <a href='../S/516.html#L415' title='Defined at 415 in userland/lib/libc/stdlib/random.c.'>random_unlocked</a>(<strong class='reserved'>void</strong>);
+<a id='L54' name='L54'></a>  54 
+<a id='L55' name='L55'></a>  55 
+<a id='L56' name='L56'></a>  56 <em class='comment'>/*</em>
+<a id='L57' name='L57'></a>  57 <em class='comment'> * random.c:</em>
+<a id='L58' name='L58'></a>  58 <em class='comment'> *</em>
+<a id='L59' name='L59'></a>  59 <em class='comment'> * An improved random number generation package.  In addition to the standard</em>
+<a id='L60' name='L60'></a>  60 <em class='comment'> * rand()/srand() like interface, this package also has a special state info</em>
+<a id='L61' name='L61'></a>  61 <em class='comment'> * interface.  The initstate() routine is called with a seed, an array of</em>
+<a id='L62' name='L62'></a>  62 <em class='comment'> * bytes, and a count of how many bytes are being passed in; this array is</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'> * then initialized to contain information for random number generation with</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'> * that much state information.  Good sizes for the amount of state</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'> * information are 32, 64, 128, and 256 bytes.  The state can be switched by</em>
+<a id='L66' name='L66'></a>  66 <em class='comment'> * calling the setstate() routine with the same array as was initiallized</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'> * with initstate().  By default, the package runs with 128 bytes of state</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'> * information and generates far better random numbers than a linear</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> * congruential generator.  If the amount of state information is less than</em>
+<a id='L70' name='L70'></a>  70 <em class='comment'> * 32 bytes, a simple linear congruential R.N.G. is used.</em>
+<a id='L71' name='L71'></a>  71 <em class='comment'> *</em>
+<a id='L72' name='L72'></a>  72 <em class='comment'> * Internally, the state information is treated as an array of longs; the</em>
+<a id='L73' name='L73'></a>  73 <em class='comment'> * zeroeth element of the array is the type of R.N.G. being used (small</em>
+<a id='L74' name='L74'></a>  74 <em class='comment'> * integer); the remainder of the array is the state information for the</em>
+<a id='L75' name='L75'></a>  75 <em class='comment'> * R.N.G.  Thus, 32 bytes of state information will give 7 longs worth of</em>
+<a id='L76' name='L76'></a>  76 <em class='comment'> * state information, which will allow a degree seven polynomial.  (Note:</em>
+<a id='L77' name='L77'></a>  77 <em class='comment'> * the zeroeth word of state information also has some other information</em>
+<a id='L78' name='L78'></a>  78 <em class='comment'> * stored in it -- see setstate() for details).</em>
+<a id='L79' name='L79'></a>  79 <em class='comment'> *</em>
+<a id='L80' name='L80'></a>  80 <em class='comment'> * The random number generation technique is a linear feedback shift register</em>
+<a id='L81' name='L81'></a>  81 <em class='comment'> * approach, employing trinomials (since there are fewer terms to sum up that</em>
+<a id='L82' name='L82'></a>  82 <em class='comment'> * way).  In this approach, the least significant bit of all the numbers in</em>
+<a id='L83' name='L83'></a>  83 <em class='comment'> * the state table will act as a linear feedback shift register, and will</em>
+<a id='L84' name='L84'></a>  84 <em class='comment'> * have period 2^deg - 1 (where deg is the degree of the polynomial being</em>
+<a id='L85' name='L85'></a>  85 <em class='comment'> * used, assuming that the polynomial is irreducible and primitive).  The</em>
+<a id='L86' name='L86'></a>  86 <em class='comment'> * higher order bits will have longer periods, since their values are also</em>
+<a id='L87' name='L87'></a>  87 <em class='comment'> * influenced by pseudo-random carries out of the lower bits.  The total</em>
+<a id='L88' name='L88'></a>  88 <em class='comment'> * period of the generator is approximately deg*(2**deg - 1); thus doubling</em>
+<a id='L89' name='L89'></a>  89 <em class='comment'> * the amount of state information has a vast influence on the period of the</em>
+<a id='L90' name='L90'></a>  90 <em class='comment'> * generator.  Note: the deg*(2**deg - 1) is an approximation only good for</em>
+<a id='L91' name='L91'></a>  91 <em class='comment'> * large deg, when the period of the shift register is the dominant factor.</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'> * With deg equal to seven, the period is actually much longer than the</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'> * 7*(2**7 - 1) predicted by this formula.</em>
+<a id='L94' name='L94'></a>  94 <em class='comment'> *</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'> * Modified 28 December 1994 by Jacob S. Rosenberg.</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'> * The following changes have been made:</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'> * All references to the type u_int have been changed to unsigned long.</em>
+<a id='L98' name='L98'></a>  98 <em class='comment'> * All references to type int have been changed to type long.  Other</em>
+<a id='L99' name='L99'></a>  99 <em class='comment'> * cleanups have been made as well.  A warning for both initstate and</em>
+<a id='L100' name='L100'></a> 100 <em class='comment'> * setstate has been inserted to the effect that on Sparc platforms</em>
+<a id='L101' name='L101'></a> 101 <em class='comment'> * the 'arg_state' variable must be forced to begin on word boundaries.</em>
+<a id='L102' name='L102'></a> 102 <em class='comment'> * This can be easily done by casting a long integer array to char *.</em>
+<a id='L103' name='L103'></a> 103 <em class='comment'> * The overall logic has been left STRICTLY alone.  This software was</em>
+<a id='L104' name='L104'></a> 104 <em class='comment'> * tested on both a VAX and Sun SpacsStation with exactly the same</em>
+<a id='L105' name='L105'></a> 105 <em class='comment'> * results.  The new version and the original give IDENTICAL results.</em>
+<a id='L106' name='L106'></a> 106 <em class='comment'> * The new version is somewhat faster than the original.  As the</em>
+<a id='L107' name='L107'></a> 107 <em class='comment'> * documentation says:  "By default, the package runs with 128 bytes of</em>
+<a id='L108' name='L108'></a> 108 <em class='comment'> * state information and generates far better random numbers than a linear</em>
+<a id='L109' name='L109'></a> 109 <em class='comment'> * congruential generator.  If the amount of state information is less than</em>
+<a id='L110' name='L110'></a> 110 <em class='comment'> * 32 bytes, a simple linear congruential R.N.G. is used."  For a buffer of</em>
+<a id='L111' name='L111'></a> 111 <em class='comment'> * 128 bytes, this new version runs about 19 percent faster and for a 16</em>
+<a id='L112' name='L112'></a> 112 <em class='comment'> * byte buffer it is about 5 percent faster.</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'> */</em>
+<a id='L114' name='L114'></a> 114 
+<a id='L115' name='L115'></a> 115 <em class='comment'>/*</em>
+<a id='L116' name='L116'></a> 116 <em class='comment'> * For each of the currently supported random number generators, we have a</em>
+<a id='L117' name='L117'></a> 117 <em class='comment'> * break value on the amount of state information (you need at least this</em>
+<a id='L118' name='L118'></a> 118 <em class='comment'> * many bytes of state info to support this random number generator), a degree</em>
+<a id='L119' name='L119'></a> 119 <em class='comment'> * for the polynomial (actually a trinomial) that the R.N.G. is based on, and</em>
+<a id='L120' name='L120'></a> 120 <em class='comment'> * the separation between the two lower order coefficients of the trinomial.</em>
+<a id='L121' name='L121'></a> 121 <em class='comment'> */</em>
+<a id='L122' name='L122'></a> 122 <em class='sharp'>#define</em> <a href='../R/658.html' title='Multiple referred from 8 places.'>TYPE_0</a>          0               <em class='comment'>/* linear congruential */</em>
+<a id='L123' name='L123'></a> 123 <em class='sharp'>#define</em> <a href='../S/516.html#L299' title='Referred from 299 in userland/lib/libc/stdlib/random.c.'>BREAK_0</a>         8
+<a id='L124' name='L124'></a> 124 <em class='sharp'>#define</em> <a href='../R/84.html' title='Multiple referred from 2 places.'>DEG_0</a>           0
+<a id='L125' name='L125'></a> 125 <em class='sharp'>#define</em> <a href='../R/520.html' title='Multiple referred from 2 places.'>SEP_0</a>           0
+<a id='L126' name='L126'></a> 126 
+<a id='L127' name='L127'></a> 127 <em class='sharp'>#define</em> <a href='../R/659.html' title='Multiple referred from 2 places.'>TYPE_1</a>          1               <em class='comment'>/* x**7 + x**3 + 1 */</em>
+<a id='L128' name='L128'></a> 128 <em class='sharp'>#define</em> <a href='../S/516.html#L302' title='Referred from 302 in userland/lib/libc/stdlib/random.c.'>BREAK_1</a>         32
+<a id='L129' name='L129'></a> 129 <em class='sharp'>#define</em> <a href='../R/85.html' title='Multiple referred from 2 places.'>DEG_1</a>           7
+<a id='L130' name='L130'></a> 130 <em class='sharp'>#define</em> <a href='../R/521.html' title='Multiple referred from 2 places.'>SEP_1</a>           3
+<a id='L131' name='L131'></a> 131 
+<a id='L132' name='L132'></a> 132 <em class='sharp'>#define</em> <a href='../R/660.html' title='Multiple referred from 2 places.'>TYPE_2</a>          2               <em class='comment'>/* x**15 + x + 1 */</em>
+<a id='L133' name='L133'></a> 133 <em class='sharp'>#define</em> <a href='../S/516.html#L306' title='Referred from 306 in userland/lib/libc/stdlib/random.c.'>BREAK_2</a>         64
+<a id='L134' name='L134'></a> 134 <em class='sharp'>#define</em> <a href='../R/86.html' title='Multiple referred from 2 places.'>DEG_2</a>           15
+<a id='L135' name='L135'></a> 135 <em class='sharp'>#define</em> <a href='../R/522.html' title='Multiple referred from 2 places.'>SEP_2</a>           1
+<a id='L136' name='L136'></a> 136 
+<a id='L137' name='L137'></a> 137 <em class='sharp'>#define</em> <a href='../R/661.html' title='Multiple referred from 4 places.'>TYPE_3</a>          3               <em class='comment'>/* x**31 + x**3 + 1 */</em>
+<a id='L138' name='L138'></a> 138 <em class='sharp'>#define</em> <a href='../S/516.html#L310' title='Referred from 310 in userland/lib/libc/stdlib/random.c.'>BREAK_3</a>         128
+<a id='L139' name='L139'></a> 139 <em class='sharp'>#define</em> <a href='../R/87.html' title='Multiple referred from 5 places.'>DEG_3</a>           31
+<a id='L140' name='L140'></a> 140 <em class='sharp'>#define</em> <a href='../R/523.html' title='Multiple referred from 4 places.'>SEP_3</a>           3
+<a id='L141' name='L141'></a> 141 
+<a id='L142' name='L142'></a> 142 <em class='sharp'>#define</em> <a href='../R/662.html' title='Multiple referred from 2 places.'>TYPE_4</a>          4               <em class='comment'>/* x**63 + x + 1 */</em>
+<a id='L143' name='L143'></a> 143 <em class='sharp'>#define</em> <a href='../S/516.html#L314' title='Referred from 314 in userland/lib/libc/stdlib/random.c.'>BREAK_4</a>         256
+<a id='L144' name='L144'></a> 144 <em class='sharp'>#define</em> <a href='../R/88.html' title='Multiple referred from 2 places.'>DEG_4</a>           63
+<a id='L145' name='L145'></a> 145 <em class='sharp'>#define</em> <a href='../R/524.html' title='Multiple referred from 2 places.'>SEP_4</a>           1
+<a id='L146' name='L146'></a> 146 
+<a id='L147' name='L147'></a> 147 <em class='comment'>/*</em>
+<a id='L148' name='L148'></a> 148 <em class='comment'> * Array versions of the above information to make code run faster --</em>
+<a id='L149' name='L149'></a> 149 <em class='comment'> * relies on fact that TYPE_i == i.</em>
+<a id='L150' name='L150'></a> 150 <em class='comment'> */</em>
+<a id='L151' name='L151'></a> 151 <em class='sharp'>#define</em> <a href='../R/379.html' title='Multiple referred from 7 places.'>MAX_TYPES</a>       5               <em class='comment'>/* max number of types above */</em>
+<a id='L152' name='L152'></a> 152 
+<a id='L153' name='L153'></a> 153 <strong class='reserved'>static</strong> <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> degrees[<a href='../S/516.html#L151' title='Defined at 151 in userland/lib/libc/stdlib/random.c.'>MAX_TYPES</a>] =   <em class='brace'>{</em> <a href='../S/516.html#L124' title='Defined at 124 in userland/lib/libc/stdlib/random.c.'>DEG_0</a>, <a href='../S/516.html#L129' title='Defined at 129 in userland/lib/libc/stdlib/random.c.'>DEG_1</a>, <a href='../S/516.html#L134' title='Defined at 134 in userland/lib/libc/stdlib/random.c.'>DEG_2</a>, <a href='../S/516.html#L139' title='Defined at 139 in userland/lib/libc/stdlib/random.c.'>DEG_3</a>, <a href='../S/516.html#L144' title='Defined at 144 in userland/lib/libc/stdlib/random.c.'>DEG_4</a> <em class='brace'>}</em>;
+<a id='L154' name='L154'></a> 154 <strong class='reserved'>static</strong> <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> seps[<a href='../S/516.html#L151' title='Defined at 151 in userland/lib/libc/stdlib/random.c.'>MAX_TYPES</a>] =      <em class='brace'>{</em> <a href='../S/516.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/random.c.'>SEP_0</a>, <a href='../S/516.html#L130' title='Defined at 130 in userland/lib/libc/stdlib/random.c.'>SEP_1</a>, <a href='../S/516.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/random.c.'>SEP_2</a>, <a href='../S/516.html#L140' title='Defined at 140 in userland/lib/libc/stdlib/random.c.'>SEP_3</a>, <a href='../S/516.html#L145' title='Defined at 145 in userland/lib/libc/stdlib/random.c.'>SEP_4</a> <em class='brace'>}</em>;
+<a id='L155' name='L155'></a> 155 
+<a id='L156' name='L156'></a> 156 <em class='comment'>/*</em>
+<a id='L157' name='L157'></a> 157 <em class='comment'> * Initially, everything is set up as if from:</em>
+<a id='L158' name='L158'></a> 158 <em class='comment'> *</em>
+<a id='L159' name='L159'></a> 159 <em class='comment'> *      initstate(1, &amp;randtbl, 128);</em>
+<a id='L160' name='L160'></a> 160 <em class='comment'> *</em>
+<a id='L161' name='L161'></a> 161 <em class='comment'> * Note that this initialization takes advantage of the fact that srandom()</em>
+<a id='L162' name='L162'></a> 162 <em class='comment'> * advances the front and rear pointers 10*rand_deg times, and hence the</em>
+<a id='L163' name='L163'></a> 163 <em class='comment'> * rear pointer which starts at 0 will also end up at zero; thus the zeroeth</em>
+<a id='L164' name='L164'></a> 164 <em class='comment'> * element of the state information, which contains info about the current</em>
+<a id='L165' name='L165'></a> 165 <em class='comment'> * position of the rear pointer is just</em>
+<a id='L166' name='L166'></a> 166 <em class='comment'> *</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'> *      MAX_TYPES * (rptr - state) + TYPE_3 == TYPE_3.</em>
+<a id='L168' name='L168'></a> 168 <em class='comment'> */</em>
+<a id='L169' name='L169'></a> 169 
+<a id='L170' name='L170'></a> 170 <strong class='reserved'>static</strong> <strong class='reserved'>long</strong> randtbl[<a href='../S/516.html#L139' title='Defined at 139 in userland/lib/libc/stdlib/random.c.'>DEG_3</a> + 1] = <em class='brace'>{</em>
+<a id='L171' name='L171'></a> 171         <a href='../S/516.html#L137' title='Defined at 137 in userland/lib/libc/stdlib/random.c.'>TYPE_3</a>,
+<a id='L172' name='L172'></a> 172         (<strong class='reserved'>long</strong>)0x9a319039L, (<strong class='reserved'>long</strong>)0x32d9c024L, (<strong class='reserved'>long</strong>)0x9b663182L,
+<a id='L173' name='L173'></a> 173         (<strong class='reserved'>long</strong>)0x5da1f342L, (<strong class='reserved'>long</strong>)0xde3b81e0L, (<strong class='reserved'>long</strong>)0xdf0a6fb5L,
+<a id='L174' name='L174'></a> 174         (<strong class='reserved'>long</strong>)0xf103bc02L, (<strong class='reserved'>long</strong>)0x48f340fbL, (<strong class='reserved'>long</strong>)0x7449e56bL,
+<a id='L175' name='L175'></a> 175         (<strong class='reserved'>long</strong>)0xbeb1dbb0L, (<strong class='reserved'>long</strong>)0xab5c5918L, (<strong class='reserved'>long</strong>)0x946554fdL,
+<a id='L176' name='L176'></a> 176         (<strong class='reserved'>long</strong>)0x8c2e680fL, (<strong class='reserved'>long</strong>)0xeb3d799fL, (<strong class='reserved'>long</strong>)0xb11ee0b7L,
+<a id='L177' name='L177'></a> 177         (<strong class='reserved'>long</strong>)0x2d436b86L, (<strong class='reserved'>long</strong>)0xda672e2aL, (<strong class='reserved'>long</strong>)0x1588ca88L,
+<a id='L178' name='L178'></a> 178         (<strong class='reserved'>long</strong>)0xe369735dL, (<strong class='reserved'>long</strong>)0x904f35f7L, (<strong class='reserved'>long</strong>)0xd7158fd6L,
+<a id='L179' name='L179'></a> 179         (<strong class='reserved'>long</strong>)0x6fa6f051L, (<strong class='reserved'>long</strong>)0x616e6b96L, (<strong class='reserved'>long</strong>)0xac94efdcL,
+<a id='L180' name='L180'></a> 180         (<strong class='reserved'>long</strong>)0x36413f93L, (<strong class='reserved'>long</strong>)0xc622c298L, (<strong class='reserved'>long</strong>)0xf5a42ab8L,
+<a id='L181' name='L181'></a> 181         (<strong class='reserved'>long</strong>)0x8a88d77bL, (<strong class='reserved'>long</strong>)0xf5ad9d0eL, (<strong class='reserved'>long</strong>)0x8999220bL,
+<a id='L182' name='L182'></a> 182         (<strong class='reserved'>long</strong>)0x27fb47b9L,
+<a id='L183' name='L183'></a> 183 <em class='brace'>}</em>;
+<a id='L184' name='L184'></a> 184 
+<a id='L185' name='L185'></a> 185 <em class='comment'>/*</em>
+<a id='L186' name='L186'></a> 186 <em class='comment'> * fptr and rptr are two pointers into the state info, a front and a rear</em>
+<a id='L187' name='L187'></a> 187 <em class='comment'> * pointer.  These two pointers are always rand_sep places aparts, as they</em>
+<a id='L188' name='L188'></a> 188 <em class='comment'> * cycle cyclically through the state information.  (Yes, this does mean we</em>
+<a id='L189' name='L189'></a> 189 <em class='comment'> * could get away with just one pointer, but the code for random() is more</em>
+<a id='L190' name='L190'></a> 190 <em class='comment'> * efficient this way).  The pointers are left positioned as they would be</em>
+<a id='L191' name='L191'></a> 191 <em class='comment'> * from the call</em>
+<a id='L192' name='L192'></a> 192 <em class='comment'> *</em>
+<a id='L193' name='L193'></a> 193 <em class='comment'> *      initstate(1, randtbl, 128);</em>
+<a id='L194' name='L194'></a> 194 <em class='comment'> *</em>
+<a id='L195' name='L195'></a> 195 <em class='comment'> * (The position of the rear pointer, rptr, is really 0 (as explained above</em>
+<a id='L196' name='L196'></a> 196 <em class='comment'> * in the initialization of randtbl) because the state table pointer is set</em>
+<a id='L197' name='L197'></a> 197 <em class='comment'> * to point to randtbl[1] (as explained below).</em>
+<a id='L198' name='L198'></a> 198 <em class='comment'> */</em>
+<a id='L199' name='L199'></a> 199 <strong class='reserved'>static</strong> <strong class='reserved'>long</strong> *fptr = &amp;randtbl[<a href='../S/516.html#L140' title='Defined at 140 in userland/lib/libc/stdlib/random.c.'>SEP_3</a> + 1];
+<a id='L200' name='L200'></a> 200 <strong class='reserved'>static</strong> <strong class='reserved'>long</strong> *rptr = &amp;randtbl[1];
+<a id='L201' name='L201'></a> 201 
+<a id='L202' name='L202'></a> 202 <em class='comment'>/*</em>
+<a id='L203' name='L203'></a> 203 <em class='comment'> * The following things are the pointer to the state information table, the</em>
+<a id='L204' name='L204'></a> 204 <em class='comment'> * type of the current generator, the degree of the current polynomial being</em>
+<a id='L205' name='L205'></a> 205 <em class='comment'> * used, and the separation between the two pointers.  Note that for efficiency</em>
+<a id='L206' name='L206'></a> 206 <em class='comment'> * of random(), we remember the first location of the state information, not</em>
+<a id='L207' name='L207'></a> 207 <em class='comment'> * the zeroeth.  Hence it is valid to access state[-1], which is used to</em>
+<a id='L208' name='L208'></a> 208 <em class='comment'> * store the type of the R.N.G.  Also, we remember the last location, since</em>
+<a id='L209' name='L209'></a> 209 <em class='comment'> * this is more efficient than indexing every time to find the address of</em>
+<a id='L210' name='L210'></a> 210 <em class='comment'> * the last element to see if the front and rear pointers have wrapped.</em>
+<a id='L211' name='L211'></a> 211 <em class='comment'> */</em>
+<a id='L212' name='L212'></a> 212 <strong class='reserved'>static</strong> <strong class='reserved'>long</strong> *state = &amp;randtbl[1];
+<a id='L213' name='L213'></a> 213 <strong class='reserved'>static</strong> <strong class='reserved'>long</strong> rand_type = <a href='../S/516.html#L137' title='Defined at 137 in userland/lib/libc/stdlib/random.c.'>TYPE_3</a>;
+<a id='L214' name='L214'></a> 214 <strong class='reserved'>static</strong> <strong class='reserved'>int</strong> rand_deg = <a href='../S/516.html#L139' title='Defined at 139 in userland/lib/libc/stdlib/random.c.'>DEG_3</a>;
+<a id='L215' name='L215'></a> 215 <strong class='reserved'>static</strong> <strong class='reserved'>int</strong> rand_sep = <a href='../S/516.html#L140' title='Defined at 140 in userland/lib/libc/stdlib/random.c.'>SEP_3</a>;
+<a id='L216' name='L216'></a> 216 <strong class='reserved'>static</strong> <strong class='reserved'>long</strong> *end_ptr = &amp;randtbl[<a href='../S/516.html#L139' title='Defined at 139 in userland/lib/libc/stdlib/random.c.'>DEG_3</a> + 1];
+<a id='L217' name='L217'></a> 217 
+<a id='L218' name='L218'></a> 218 <em class='comment'>/*</em>
+<a id='L219' name='L219'></a> 219 <em class='comment'> * srandom:</em>
+<a id='L220' name='L220'></a> 220 <em class='comment'> *</em>
+<a id='L221' name='L221'></a> 221 <em class='comment'> * Initialize the random number generator based on the given seed.  If the</em>
+<a id='L222' name='L222'></a> 222 <em class='comment'> * type is the trivial no-state-information type, just remember the seed.</em>
+<a id='L223' name='L223'></a> 223 <em class='comment'> * Otherwise, initializes state[] based on the given "seed" via a linear</em>
+<a id='L224' name='L224'></a> 224 <em class='comment'> * congruential generator.  Then, the pointers are set to known locations</em>
+<a id='L225' name='L225'></a> 225 <em class='comment'> * that are exactly rand_sep places apart.  Lastly, it cycles the state</em>
+<a id='L226' name='L226'></a> 226 <em class='comment'> * information a given number of times to get rid of any initial dependencies</em>
+<a id='L227' name='L227'></a> 227 <em class='comment'> * introduced by the L.C.R.N.G.  Note that the initialization of randtbl[]</em>
+<a id='L228' name='L228'></a> 228 <em class='comment'> * for default usage relies on values produced by this routine.</em>
+<a id='L229' name='L229'></a> 229 <em class='comment'> */</em>
+<a id='L230' name='L230'></a> 230 <strong class='reserved'>static</strong>
+<a id='L231' name='L231'></a> 231 <strong class='reserved'>void</strong>
+<a id='L232' name='L232'></a> 232 <a href='../R/2084.html' title='Multiple referred from 3 places.'>srandom_unlocked</a>(<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> x)
+<a id='L233' name='L233'></a> 233 <em class='brace'>{</em>
+<a id='L234' name='L234'></a> 234         <strong class='reserved'>int</strong> i;
+<a id='L235' name='L235'></a> 235 
+<a id='L236' name='L236'></a> 236         <strong class='reserved'>if</strong> (rand_type == <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>)
+<a id='L237' name='L237'></a> 237                 state[0] = x;
+<a id='L238' name='L238'></a> 238         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L239' name='L239'></a> 239                 state[0] = x;
+<a id='L240' name='L240'></a> 240                 <strong class='reserved'>for</strong> (i = 1; i &lt; rand_deg; i++)
+<a id='L241' name='L241'></a> 241                         state[i] = 1103515245L * state[i - 1] + 12345L;
+<a id='L242' name='L242'></a> 242                 fptr = &amp;state[rand_sep];
+<a id='L243' name='L243'></a> 243                 rptr = &amp;state[0];
+<a id='L244' name='L244'></a> 244                 <strong class='reserved'>for</strong> (i = 0; i &lt; 10 * rand_deg; i++)
+<a id='L245' name='L245'></a> 245                         (<strong class='reserved'>void</strong>)<a href='../S/516.html#L415' title='Defined at 415 in userland/lib/libc/stdlib/random.c.'>random_unlocked</a>();
+<a id='L246' name='L246'></a> 246         <em class='brace'>}</em>
+<a id='L247' name='L247'></a> 247 <em class='brace'>}</em>
+<a id='L248' name='L248'></a> 248 
+<a id='L249' name='L249'></a> 249 <strong class='reserved'>void</strong>
+<a id='L250' name='L250'></a> 250 <a href='../R/2083.html' title='Multiple referred from 26 places.'>srandom</a>(<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> x)
+<a id='L251' name='L251'></a> 251 <em class='brace'>{</em>
+<a id='L252' name='L252'></a> 252 
+<a id='L253' name='L253'></a> 253         <a href='../S/516.html#L49' title='Defined at 49 in userland/lib/libc/stdlib/random.c.'>LOCKME</a>();
+<a id='L254' name='L254'></a> 254         <a href='../S/516.html#L232' title='Defined at 232 in userland/lib/libc/stdlib/random.c.'>srandom_unlocked</a>(x);
+<a id='L255' name='L255'></a> 255         <a href='../S/516.html#L50' title='Defined at 50 in userland/lib/libc/stdlib/random.c.'>UNLOCKME</a>();
+<a id='L256' name='L256'></a> 256 <em class='brace'>}</em>
+<a id='L257' name='L257'></a> 257 
+<a id='L258' name='L258'></a> 258 <em class='comment'>/*</em>
+<a id='L259' name='L259'></a> 259 <em class='comment'> * initstate:</em>
+<a id='L260' name='L260'></a> 260 <em class='comment'> *</em>
+<a id='L261' name='L261'></a> 261 <em class='comment'> * Initialize the state information in the given array of n bytes for future</em>
+<a id='L262' name='L262'></a> 262 <em class='comment'> * random number generation.  Based on the number of bytes we are given, and</em>
+<a id='L263' name='L263'></a> 263 <em class='comment'> * the break values for the different R.N.G.'s, we choose the best (largest)</em>
+<a id='L264' name='L264'></a> 264 <em class='comment'> * one we can and set things up for it.  srandom() is then called to</em>
+<a id='L265' name='L265'></a> 265 <em class='comment'> * initialize the state information.</em>
+<a id='L266' name='L266'></a> 266 <em class='comment'> *</em>
+<a id='L267' name='L267'></a> 267 <em class='comment'> * Note that on return from srandom(), we set state[-1] to be the type</em>
+<a id='L268' name='L268'></a> 268 <em class='comment'> * multiplexed with the current value of the rear pointer; this is so</em>
+<a id='L269' name='L269'></a> 269 <em class='comment'> * successive calls to initstate() won't lose this information and will be</em>
+<a id='L270' name='L270'></a> 270 <em class='comment'> * able to restart with setstate().</em>
+<a id='L271' name='L271'></a> 271 <em class='comment'> *</em>
+<a id='L272' name='L272'></a> 272 <em class='comment'> * Note: the first thing we do is save the current state, if any, just like</em>
+<a id='L273' name='L273'></a> 273 <em class='comment'> * setstate() so that it doesn't matter when initstate is called.</em>
+<a id='L274' name='L274'></a> 274 <em class='comment'> *</em>
+<a id='L275' name='L275'></a> 275 <em class='comment'> * Returns a pointer to the old state.</em>
+<a id='L276' name='L276'></a> 276 <em class='comment'> *</em>
+<a id='L277' name='L277'></a> 277 <em class='comment'> * Note: The Sparc platform requires that arg_state begin on a long</em>
+<a id='L278' name='L278'></a> 278 <em class='comment'> * word boundary; otherwise a bus error will occur. Even so, lint will</em>
+<a id='L279' name='L279'></a> 279 <em class='comment'> * complain about mis-alignment, but you should disregard these messages.</em>
+<a id='L280' name='L280'></a> 280 <em class='comment'> */</em>
+<a id='L281' name='L281'></a> 281 <strong class='reserved'>char</strong> *
+<a id='L282' name='L282'></a> 282 <a href='../S/480.html#L70' title='Referred from 70 in userland/include/stdlib.h.'>initstate</a>(
+<a id='L283' name='L283'></a> 283         <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> seed,             <em class='comment'>/* seed for R.N.G. */</em>
+<a id='L284' name='L284'></a> 284         <strong class='reserved'>char</strong> *arg_state,                <em class='comment'>/* pointer to state array */</em>
+<a id='L285' name='L285'></a> 285         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> n)                       <em class='comment'>/* # bytes of state info */</em>
+<a id='L286' name='L286'></a> 286 <em class='brace'>{</em>
+<a id='L287' name='L287'></a> 287         <strong class='reserved'>void</strong> *ostate = (<strong class='reserved'>void</strong> *)(&amp;state[-1]);
+<a id='L288' name='L288'></a> 288         <strong class='reserved'>long</strong> *long_arg_state;
+<a id='L289' name='L289'></a> 289 
+<a id='L290' name='L290'></a> 290         <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(arg_state != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L291' name='L291'></a> 291 
+<a id='L292' name='L292'></a> 292         long_arg_state = (<strong class='reserved'>long</strong> *)(<strong class='reserved'>void</strong> *)arg_state;
+<a id='L293' name='L293'></a> 293 
+<a id='L294' name='L294'></a> 294         <a href='../S/516.html#L49' title='Defined at 49 in userland/lib/libc/stdlib/random.c.'>LOCKME</a>();
+<a id='L295' name='L295'></a> 295         <strong class='reserved'>if</strong> (rand_type == <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>)
+<a id='L296' name='L296'></a> 296                 state[-1] = rand_type;
+<a id='L297' name='L297'></a> 297         <strong class='reserved'>else</strong>
+<a id='L298' name='L298'></a> 298                 state[-1] = <a href='../S/516.html#L151' title='Defined at 151 in userland/lib/libc/stdlib/random.c.'>MAX_TYPES</a> * (rptr - state) + rand_type;
+<a id='L299' name='L299'></a> 299         <strong class='reserved'>if</strong> (n &lt; <a href='../S/516.html#L123' title='Defined at 123 in userland/lib/libc/stdlib/random.c.'>BREAK_0</a>) <em class='brace'>{</em>
+<a id='L300' name='L300'></a> 300                 <a href='../S/516.html#L50' title='Defined at 50 in userland/lib/libc/stdlib/random.c.'>UNLOCKME</a>();
+<a id='L301' name='L301'></a> 301                 <strong class='reserved'>return</strong> (<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L302' name='L302'></a> 302         <em class='brace'>}</em> <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (n &lt; <a href='../S/516.html#L128' title='Defined at 128 in userland/lib/libc/stdlib/random.c.'>BREAK_1</a>) <em class='brace'>{</em>
+<a id='L303' name='L303'></a> 303                 rand_type = <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>;
+<a id='L304' name='L304'></a> 304                 rand_deg = <a href='../S/516.html#L124' title='Defined at 124 in userland/lib/libc/stdlib/random.c.'>DEG_0</a>;
+<a id='L305' name='L305'></a> 305                 rand_sep = <a href='../S/516.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/random.c.'>SEP_0</a>;
+<a id='L306' name='L306'></a> 306         <em class='brace'>}</em> <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (n &lt; <a href='../S/516.html#L133' title='Defined at 133 in userland/lib/libc/stdlib/random.c.'>BREAK_2</a>) <em class='brace'>{</em>
+<a id='L307' name='L307'></a> 307                 rand_type = <a href='../S/516.html#L127' title='Defined at 127 in userland/lib/libc/stdlib/random.c.'>TYPE_1</a>;
+<a id='L308' name='L308'></a> 308                 rand_deg = <a href='../S/516.html#L129' title='Defined at 129 in userland/lib/libc/stdlib/random.c.'>DEG_1</a>;
+<a id='L309' name='L309'></a> 309                 rand_sep = <a href='../S/516.html#L130' title='Defined at 130 in userland/lib/libc/stdlib/random.c.'>SEP_1</a>;
+<a id='L310' name='L310'></a> 310         <em class='brace'>}</em> <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (n &lt; <a href='../S/516.html#L138' title='Defined at 138 in userland/lib/libc/stdlib/random.c.'>BREAK_3</a>) <em class='brace'>{</em>
+<a id='L311' name='L311'></a> 311                 rand_type = <a href='../S/516.html#L132' title='Defined at 132 in userland/lib/libc/stdlib/random.c.'>TYPE_2</a>;
+<a id='L312' name='L312'></a> 312                 rand_deg = <a href='../S/516.html#L134' title='Defined at 134 in userland/lib/libc/stdlib/random.c.'>DEG_2</a>;
+<a id='L313' name='L313'></a> 313                 rand_sep = <a href='../S/516.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/random.c.'>SEP_2</a>;
+<a id='L314' name='L314'></a> 314         <em class='brace'>}</em> <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (n &lt; <a href='../S/516.html#L143' title='Defined at 143 in userland/lib/libc/stdlib/random.c.'>BREAK_4</a>) <em class='brace'>{</em>
+<a id='L315' name='L315'></a> 315                 rand_type = <a href='../S/516.html#L137' title='Defined at 137 in userland/lib/libc/stdlib/random.c.'>TYPE_3</a>;
+<a id='L316' name='L316'></a> 316                 rand_deg = <a href='../S/516.html#L139' title='Defined at 139 in userland/lib/libc/stdlib/random.c.'>DEG_3</a>;
+<a id='L317' name='L317'></a> 317                 rand_sep = <a href='../S/516.html#L140' title='Defined at 140 in userland/lib/libc/stdlib/random.c.'>SEP_3</a>;
+<a id='L318' name='L318'></a> 318         <em class='brace'>}</em> <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L319' name='L319'></a> 319                 rand_type = <a href='../S/516.html#L142' title='Defined at 142 in userland/lib/libc/stdlib/random.c.'>TYPE_4</a>;
+<a id='L320' name='L320'></a> 320                 rand_deg = <a href='../S/516.html#L144' title='Defined at 144 in userland/lib/libc/stdlib/random.c.'>DEG_4</a>;
+<a id='L321' name='L321'></a> 321                 rand_sep = <a href='../S/516.html#L145' title='Defined at 145 in userland/lib/libc/stdlib/random.c.'>SEP_4</a>;
+<a id='L322' name='L322'></a> 322         <em class='brace'>}</em>
+<a id='L323' name='L323'></a> 323         state = (<strong class='reserved'>long</strong> *) (long_arg_state + 1); <em class='comment'>/* first location */</em>
+<a id='L324' name='L324'></a> 324         end_ptr = &amp;state[rand_deg];     <em class='comment'>/* must set end_ptr before srandom */</em>
+<a id='L325' name='L325'></a> 325         <a href='../S/516.html#L232' title='Defined at 232 in userland/lib/libc/stdlib/random.c.'>srandom_unlocked</a>(seed);
+<a id='L326' name='L326'></a> 326         <strong class='reserved'>if</strong> (rand_type == <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>)
+<a id='L327' name='L327'></a> 327                 long_arg_state[0] = rand_type;
+<a id='L328' name='L328'></a> 328         <strong class='reserved'>else</strong>
+<a id='L329' name='L329'></a> 329                 long_arg_state[0] = <a href='../S/516.html#L151' title='Defined at 151 in userland/lib/libc/stdlib/random.c.'>MAX_TYPES</a> * (rptr - state) + rand_type;
+<a id='L330' name='L330'></a> 330         <a href='../S/516.html#L50' title='Defined at 50 in userland/lib/libc/stdlib/random.c.'>UNLOCKME</a>();
+<a id='L331' name='L331'></a> 331         <strong class='reserved'>return</strong>((<strong class='reserved'>char</strong> *)ostate);
+<a id='L332' name='L332'></a> 332 <em class='brace'>}</em>
+<a id='L333' name='L333'></a> 333 
+<a id='L334' name='L334'></a> 334 <em class='comment'>/*</em>
+<a id='L335' name='L335'></a> 335 <em class='comment'> * setstate:</em>
+<a id='L336' name='L336'></a> 336 <em class='comment'> *</em>
+<a id='L337' name='L337'></a> 337 <em class='comment'> * Restore the state from the given state array.</em>
+<a id='L338' name='L338'></a> 338 <em class='comment'> *</em>
+<a id='L339' name='L339'></a> 339 <em class='comment'> * Note: it is important that we also remember the locations of the pointers</em>
+<a id='L340' name='L340'></a> 340 <em class='comment'> * in the current state information, and restore the locations of the pointers</em>
+<a id='L341' name='L341'></a> 341 <em class='comment'> * from the old state information.  This is done by multiplexing the pointer</em>
+<a id='L342' name='L342'></a> 342 <em class='comment'> * location into the zeroeth word of the state information.</em>
+<a id='L343' name='L343'></a> 343 <em class='comment'> *</em>
+<a id='L344' name='L344'></a> 344 <em class='comment'> * Note that due to the order in which things are done, it is OK to call</em>
+<a id='L345' name='L345'></a> 345 <em class='comment'> * setstate() with the same state as the current state.</em>
+<a id='L346' name='L346'></a> 346 <em class='comment'> *</em>
+<a id='L347' name='L347'></a> 347 <em class='comment'> * Returns a pointer to the old state information.</em>
+<a id='L348' name='L348'></a> 348 <em class='comment'> *</em>
+<a id='L349' name='L349'></a> 349 <em class='comment'> * Note: The Sparc platform requires that arg_state begin on a long</em>
+<a id='L350' name='L350'></a> 350 <em class='comment'> * word boundary; otherwise a bus error will occur. Even so, lint will</em>
+<a id='L351' name='L351'></a> 351 <em class='comment'> * complain about mis-alignment, but you should disregard these messages.</em>
+<a id='L352' name='L352'></a> 352 <em class='comment'> */</em>
+<a id='L353' name='L353'></a> 353 <strong class='reserved'>char</strong> *
+<a id='L354' name='L354'></a> 354 <a href='../S/480.html#L71' title='Referred from 71 in userland/include/stdlib.h.'>setstate</a>(<strong class='reserved'>char</strong> *arg_state)               <em class='comment'>/* pointer to state array */</em>
+<a id='L355' name='L355'></a> 355 <em class='brace'>{</em>
+<a id='L356' name='L356'></a> 356         <strong class='reserved'>long</strong> *new_state;
+<a id='L357' name='L357'></a> 357         <strong class='reserved'>int</strong> type;
+<a id='L358' name='L358'></a> 358         <strong class='reserved'>int</strong> rear;
+<a id='L359' name='L359'></a> 359         <strong class='reserved'>void</strong> *ostate = (<strong class='reserved'>void</strong> *)(&amp;state[-1]);
+<a id='L360' name='L360'></a> 360 
+<a id='L361' name='L361'></a> 361         <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(arg_state != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L362' name='L362'></a> 362 
+<a id='L363' name='L363'></a> 363         new_state = (<strong class='reserved'>long</strong> *)(<strong class='reserved'>void</strong> *)arg_state;
+<a id='L364' name='L364'></a> 364         type = (<strong class='reserved'>int</strong>)(new_state[0] % <a href='../S/516.html#L151' title='Defined at 151 in userland/lib/libc/stdlib/random.c.'>MAX_TYPES</a>);
+<a id='L365' name='L365'></a> 365         rear = (<strong class='reserved'>int</strong>)(new_state[0] / <a href='../S/516.html#L151' title='Defined at 151 in userland/lib/libc/stdlib/random.c.'>MAX_TYPES</a>);
+<a id='L366' name='L366'></a> 366 
+<a id='L367' name='L367'></a> 367         <a href='../S/516.html#L49' title='Defined at 49 in userland/lib/libc/stdlib/random.c.'>LOCKME</a>();
+<a id='L368' name='L368'></a> 368         <strong class='reserved'>if</strong> (rand_type == <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>)
+<a id='L369' name='L369'></a> 369                 state[-1] = rand_type;
+<a id='L370' name='L370'></a> 370         <strong class='reserved'>else</strong>
+<a id='L371' name='L371'></a> 371                 state[-1] = <a href='../S/516.html#L151' title='Defined at 151 in userland/lib/libc/stdlib/random.c.'>MAX_TYPES</a> * (rptr - state) + rand_type;
+<a id='L372' name='L372'></a> 372         <strong class='reserved'>switch</strong>(type) <em class='brace'>{</em>
+<a id='L373' name='L373'></a> 373         <strong class='reserved'>case</strong> <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>:
+<a id='L374' name='L374'></a> 374         <strong class='reserved'>case</strong> <a href='../S/516.html#L127' title='Defined at 127 in userland/lib/libc/stdlib/random.c.'>TYPE_1</a>:
+<a id='L375' name='L375'></a> 375         <strong class='reserved'>case</strong> <a href='../S/516.html#L132' title='Defined at 132 in userland/lib/libc/stdlib/random.c.'>TYPE_2</a>:
+<a id='L376' name='L376'></a> 376         <strong class='reserved'>case</strong> <a href='../S/516.html#L137' title='Defined at 137 in userland/lib/libc/stdlib/random.c.'>TYPE_3</a>:
+<a id='L377' name='L377'></a> 377         <strong class='reserved'>case</strong> <a href='../S/516.html#L142' title='Defined at 142 in userland/lib/libc/stdlib/random.c.'>TYPE_4</a>:
+<a id='L378' name='L378'></a> 378                 rand_type = type;
+<a id='L379' name='L379'></a> 379                 rand_deg = degrees[type];
+<a id='L380' name='L380'></a> 380                 rand_sep = seps[type];
+<a id='L381' name='L381'></a> 381                 <strong class='reserved'>break</strong>;
+<a id='L382' name='L382'></a> 382         <strong class='reserved'>default</strong>:
+<a id='L383' name='L383'></a> 383                 <a href='../S/516.html#L50' title='Defined at 50 in userland/lib/libc/stdlib/random.c.'>UNLOCKME</a>();
+<a id='L384' name='L384'></a> 384                 <strong class='reserved'>return</strong> (<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L385' name='L385'></a> 385         <em class='brace'>}</em>
+<a id='L386' name='L386'></a> 386         state = (<strong class='reserved'>long</strong> *) (new_state + 1);
+<a id='L387' name='L387'></a> 387         <strong class='reserved'>if</strong> (rand_type != <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>) <em class='brace'>{</em>
+<a id='L388' name='L388'></a> 388                 rptr = &amp;state[rear];
+<a id='L389' name='L389'></a> 389                 fptr = &amp;state[(rear + rand_sep) % rand_deg];
+<a id='L390' name='L390'></a> 390         <em class='brace'>}</em>
+<a id='L391' name='L391'></a> 391         end_ptr = &amp;state[rand_deg];             <em class='comment'>/* set end_ptr too */</em>
+<a id='L392' name='L392'></a> 392         <a href='../S/516.html#L50' title='Defined at 50 in userland/lib/libc/stdlib/random.c.'>UNLOCKME</a>();
+<a id='L393' name='L393'></a> 393         <strong class='reserved'>return</strong>((<strong class='reserved'>char</strong> *)ostate);
+<a id='L394' name='L394'></a> 394 <em class='brace'>}</em>
+<a id='L395' name='L395'></a> 395 
+<a id='L396' name='L396'></a> 396 <em class='comment'>/*</em>
+<a id='L397' name='L397'></a> 397 <em class='comment'> * random:</em>
+<a id='L398' name='L398'></a> 398 <em class='comment'> *</em>
+<a id='L399' name='L399'></a> 399 <em class='comment'> * If we are using the trivial TYPE_0 R.N.G., just do the old linear</em>
+<a id='L400' name='L400'></a> 400 <em class='comment'> * congruential bit.  Otherwise, we do our fancy trinomial stuff, which is</em>
+<a id='L401' name='L401'></a> 401 <em class='comment'> * the same in all the other cases due to all the global variables that have</em>
+<a id='L402' name='L402'></a> 402 <em class='comment'> * been set up.  The basic operation is to add the number at the rear pointer</em>
+<a id='L403' name='L403'></a> 403 <em class='comment'> * into the one at the front pointer.  Then both pointers are advanced to</em>
+<a id='L404' name='L404'></a> 404 <em class='comment'> * the next location cyclically in the table.  The value returned is the sum</em>
+<a id='L405' name='L405'></a> 405 <em class='comment'> * generated, reduced to 31 bits by throwing away the "least random" low bit.</em>
+<a id='L406' name='L406'></a> 406 <em class='comment'> *</em>
+<a id='L407' name='L407'></a> 407 <em class='comment'> * Note: the code takes advantage of the fact that both the front and</em>
+<a id='L408' name='L408'></a> 408 <em class='comment'> * rear pointers can't wrap on the same call by not testing the rear</em>
+<a id='L409' name='L409'></a> 409 <em class='comment'> * pointer if the front one has wrapped.</em>
+<a id='L410' name='L410'></a> 410 <em class='comment'> *</em>
+<a id='L411' name='L411'></a> 411 <em class='comment'> * Returns a 31-bit random number.</em>
+<a id='L412' name='L412'></a> 412 <em class='comment'> */</em>
+<a id='L413' name='L413'></a> 413 <strong class='reserved'>static</strong>
+<a id='L414' name='L414'></a> 414 <strong class='reserved'>long</strong>
+<a id='L415' name='L415'></a> 415 <a href='../R/1797.html' title='Multiple referred from 3 places.'>random_unlocked</a>(<strong class='reserved'>void</strong>)
+<a id='L416' name='L416'></a> 416 <em class='brace'>{</em>
+<a id='L417' name='L417'></a> 417         <strong class='reserved'>long</strong> i;
+<a id='L418' name='L418'></a> 418         <strong class='reserved'>long</strong> *f, *r;
+<a id='L419' name='L419'></a> 419 
+<a id='L420' name='L420'></a> 420         <strong class='reserved'>if</strong> (rand_type == <a href='../S/516.html#L122' title='Defined at 122 in userland/lib/libc/stdlib/random.c.'>TYPE_0</a>) <em class='brace'>{</em>
+<a id='L421' name='L421'></a> 421                 i = state[0];
+<a id='L422' name='L422'></a> 422                 state[0] = i = (i * 1103515245L + 12345L) &amp; 0x7fffffff;
+<a id='L423' name='L423'></a> 423         <em class='brace'>}</em> <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L424' name='L424'></a> 424                 <em class='comment'>/*</em>
+<a id='L425' name='L425'></a> 425 <em class='comment'>                 * Use local variables rather than static variables for speed.</em>
+<a id='L426' name='L426'></a> 426 <em class='comment'>                 */</em>
+<a id='L427' name='L427'></a> 427                 f = fptr; r = rptr;
+<a id='L428' name='L428'></a> 428                 *f += *r;
+<a id='L429' name='L429'></a> 429                 <em class='comment'>/* chucking least random bit */</em>
+<a id='L430' name='L430'></a> 430                 i = ((<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>)*f &gt;&gt; 1) &amp; 0x7fffffff;
+<a id='L431' name='L431'></a> 431                 <strong class='reserved'>if</strong> (++f &gt;= end_ptr) <em class='brace'>{</em>
+<a id='L432' name='L432'></a> 432                         f = state;
+<a id='L433' name='L433'></a> 433                         ++r;
+<a id='L434' name='L434'></a> 434                 <em class='brace'>}</em>
+<a id='L435' name='L435'></a> 435                 <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (++r &gt;= end_ptr) <em class='brace'>{</em>
+<a id='L436' name='L436'></a> 436                         r = state;
+<a id='L437' name='L437'></a> 437                 <em class='brace'>}</em>
+<a id='L438' name='L438'></a> 438 
+<a id='L439' name='L439'></a> 439                 fptr = f; rptr = r;
+<a id='L440' name='L440'></a> 440         <em class='brace'>}</em>
+<a id='L441' name='L441'></a> 441         <strong class='reserved'>return</strong>(i);
+<a id='L442' name='L442'></a> 442 <em class='brace'>}</em>
+<a id='L443' name='L443'></a> 443 
+<a id='L444' name='L444'></a> 444 <strong class='reserved'>long</strong>
+<a id='L445' name='L445'></a> 445 <a href='../R/1795.html' title='Multiple referred from 64 places.'>random</a>(<strong class='reserved'>void</strong>)
+<a id='L446' name='L446'></a> 446 <em class='brace'>{</em>
+<a id='L447' name='L447'></a> 447         <strong class='reserved'>long</strong> r;
+<a id='L448' name='L448'></a> 448 
+<a id='L449' name='L449'></a> 449         <a href='../S/516.html#L49' title='Defined at 49 in userland/lib/libc/stdlib/random.c.'>LOCKME</a>();
+<a id='L450' name='L450'></a> 450         r = <a href='../S/516.html#L415' title='Defined at 415 in userland/lib/libc/stdlib/random.c.'>random_unlocked</a>();
+<a id='L451' name='L451'></a> 451         <a href='../S/516.html#L50' title='Defined at 50 in userland/lib/libc/stdlib/random.c.'>UNLOCKME</a>();
+<a id='L452' name='L452'></a> 452         <strong class='reserved'>return</strong> (r);
+<a id='L453' name='L453'></a> 453 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L232'>[^]</a><a href='#L445'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

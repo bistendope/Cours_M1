@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>lock_create</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/86.html#L371'>lock_create</a>       371 kern/dev/generic/console.c 	rlk = lock_create("console-lock-read");</span>
+<span class='curline'><a href='../S/86.html#L377'>lock_create</a>       377 kern/dev/generic/console.c 	wlk = lock_create("console-lock-write");</span>
+<span class='curline'><a href='../S/96.html#L1342'>lock_create</a>      1342 kern/dev/lamebus/emu.c 	sc-&gt;e_lock = lock_create("emufs-lock");</span>
+<span class='curline'><a href='../S/124.html#L168'>lock_create</a>       168 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_tablelock = lock_create("semfs_table");</span>
+<span class='curline'><a href='../S/124.html#L181'>lock_create</a>       181 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_dirlock = lock_create("semfs_dir");</span>
+<span class='curline'><a href='../S/125.html#L57'>lock_create</a>        57 kern/fs/semfs/semfs_obj.c 	sem-&gt;sems_lock = lock_create(lockname);</span>
+<span class='curline'><a href='../S/184.html#L82'>lock_create</a>        82 kern/include/synch.h struct lock *lock_create(const char *name);</span>
+<span class='curline'><a href='../S/201.html#L69'>lock_create</a>        69 kern/lib/kprintf.c 	kprintf_lock = lock_create("kprintf_lock");</span>
+<span class='curline'><a href='../S/206.html#L310'>lock_create</a>       310 kern/main/menu.c 	dl.lock1 = lock_create("deadlock1");</span>
+<span class='curline'><a href='../S/206.html#L315'>lock_create</a>       315 kern/main/menu.c 	dl.lock2 = lock_create("deadlock2");</span>
+<span class='curline'><a href='../S/218.html#L65'>lock_create</a>        65 kern/test/synchtest.c 		testlock = lock_create("testlock");</span>
+<span class='curline'><a href='../S/218.html#L369'>lock_create</a>       369 kern/test/synchtest.c 		testlocks[i] = lock_create("cvtest2 lock");</span>
+<span class='curline'><a href='../S/233.html#L109'>lock_create</a>       109 kern/vfs/vfslist.c 	vfs_biglock = lock_create("vfs_biglock");</span>
+</pre>
+</body>
+</html>

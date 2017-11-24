@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>MBLOCKSIZE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/514.html#L131'>MBLOCKSIZE</a>        131 userland/lib/libc/stdlib/malloc.c #define M_SIZE(mh)	(M_NEXTOFF(mh)-MBLOCKSIZE)</span>
+<span class='curline'><a href='../S/514.html#L169'>MBLOCKSIZE</a>        169 userland/lib/libc/stdlib/malloc.c 	if (sizeof(struct mheader) != MBLOCKSIZE) {</span>
+<span class='curline'><a href='../S/514.html#L172'>MBLOCKSIZE</a>        172 userland/lib/libc/stdlib/malloc.c 	if ((MBLOCKSIZE &amp; (MBLOCKSIZE-1))!=0) {</span>
+<span class='curline'><a href='../S/514.html#L175'>MBLOCKSIZE</a>        175 userland/lib/libc/stdlib/malloc.c 	if (1&lt;&lt;MBLOCKSHIFT != MBLOCKSIZE) {</span>
+<span class='curline'><a href='../S/514.html#L206'>MBLOCKSIZE</a>        206 userland/lib/libc/stdlib/malloc.c 	if (__heapbase % MBLOCKSIZE != 0) {</span>
+<span class='curline'><a href='../S/514.html#L207'>MBLOCKSIZE</a>        207 userland/lib/libc/stdlib/malloc.c 		size_t adjust = MBLOCKSIZE - (__heapbase % MBLOCKSIZE);</span>
+<span class='curline'><a href='../S/514.html#L260'>MBLOCKSIZE</a>        260 userland/lib/libc/stdlib/malloc.c 		      (unsigned long) i + MBLOCKSIZE,</span>
+<span class='curline'><a href='../S/514.html#L316'>MBLOCKSIZE</a>        316 userland/lib/libc/stdlib/malloc.c 	if (size % MBLOCKSIZE != 0) {</span>
+<span class='curline'><a href='../S/514.html#L321'>MBLOCKSIZE</a>        321 userland/lib/libc/stdlib/malloc.c 	if (M_SIZE(mh) - size &lt; 2*MBLOCKSIZE) {</span>
+<span class='curline'><a href='../S/514.html#L329'>MBLOCKSIZE</a>        329 userland/lib/libc/stdlib/malloc.c 	mh-&gt;mh_nextblock = M_MKFIELD(size + MBLOCKSIZE);</span>
+<span class='curline'><a href='../S/514.html#L336'>MBLOCKSIZE</a>        336 userland/lib/libc/stdlib/malloc.c 	mhnew-&gt;mh_prevblock = M_MKFIELD(size + MBLOCKSIZE);</span>
+<span class='curline'><a href='../S/514.html#L376'>MBLOCKSIZE</a>        376 userland/lib/libc/stdlib/malloc.c 	size = ((size + MBLOCKSIZE - 1) &amp; ~(size_t)(MBLOCKSIZE-1));</span>
+<span class='curline'><a href='../S/514.html#L441'>MBLOCKSIZE</a>        441 userland/lib/libc/stdlib/malloc.c 		morespace = MBLOCKSIZE + size;</span>
+<span class='curline'><a href='../S/514.html#L519'>MBLOCKSIZE</a>        519 userland/lib/libc/stdlib/malloc.c 	mh-&gt;mh_nextblock = M_MKFIELD(MBLOCKSIZE + M_SIZE(mh) +</span>
+<span class='curline'><a href='../S/514.html#L520'>MBLOCKSIZE</a>        520 userland/lib/libc/stdlib/malloc.c 				     MBLOCKSIZE + M_SIZE(mhnext));</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>uint64_t</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/149.html#L41'>uint64_t</a>           41 kern/include/endian.h uint64_t bswap64(uint64_t);</span>
+<span class='curline'><a href='../S/149.html#L47'>uint64_t</a>           47 kern/include/endian.h uint64_t ntohll(uint64_t);</span>
+<span class='curline'><a href='../S/149.html#L48'>uint64_t</a>           48 kern/include/endian.h uint64_t htonll(uint64_t);</span>
+<span class='curline'><a href='../S/149.html#L51'>uint64_t</a>           51 kern/include/endian.h void join32to64(uint32_t x1, uint32_t x2, uint64_t *y2);</span>
+<span class='curline'><a href='../S/149.html#L52'>uint64_t</a>           52 kern/include/endian.h void split64to32(uint64_t x, uint32_t *y1, uint32_t *y2);</span>
+<span class='curline'><a href='../S/199.html#L62'>uint64_t</a>           62 kern/lib/bswap.c uint64_t</span>
+<span class='curline'><a href='../S/199.html#L63'>uint64_t</a>           63 kern/lib/bswap.c bswap64(uint64_t val)</span>
+<span class='curline'><a href='../S/199.html#L121'>uint64_t</a>          121 kern/lib/bswap.c TO(ll, 64, uint64_t)</span>
+<span class='curline'><a href='../S/199.html#L138'>uint64_t</a>          138 kern/lib/bswap.c join32to64(uint32_t x1, uint32_t x2, uint64_t *y2)</span>
+<span class='curline'><a href='../S/199.html#L141'>uint64_t</a>          141 kern/lib/bswap.c 	*y2 = ((uint64_t)x1 &lt;&lt; 32) | (uint64_t)x2;</span>
+<span class='curline'><a href='../S/199.html#L143'>uint64_t</a>          143 kern/lib/bswap.c 	*y2 = (uint64_t)x1 | ((uint64_t)x2 &lt;&lt; 32);</span>
+<span class='curline'><a href='../S/199.html#L150'>uint64_t</a>          150 kern/lib/bswap.c split64to32(uint64_t x, uint32_t *y1, uint32_t *y2)</span>
+<span class='curline'><a href='../S/500.html#L39'>uint64_t</a>           39 userland/lib/hostcompat/hostcompat.h uint64_t ntohll(uint64_t);</span>
+<span class='curline'><a href='../S/502.html#L37'>uint64_t</a>           37 userland/lib/hostcompat/ntohll.c uint64_t</span>
+<span class='curline'><a href='../S/502.html#L38'>uint64_t</a>           38 userland/lib/hostcompat/ntohll.c ntohll(uint64_t x)</span>
+<span class='curline'><a href='../S/502.html#L50'>uint64_t</a>           50 userland/lib/hostcompat/ntohll.c 	return ((uint64_t)y0 &lt;&lt; 32) | y1;</span>
+</pre>
+</body>
+</html>

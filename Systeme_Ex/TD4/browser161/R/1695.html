@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>off_t</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/96.html#L276'>off_t</a>             276 kern/dev/lamebus/emu.c 	if (uio-&gt;uio_offset &gt; (off_t)0xffffffff) {</span>
+<span class='curline'><a href='../S/96.html#L336'>off_t</a>             336 kern/dev/lamebus/emu.c 	if (uio-&gt;uio_offset &gt; (off_t)0xffffffff) {</span>
+<span class='curline'><a href='../S/96.html#L365'>off_t</a>             365 kern/dev/lamebus/emu.c emu_getsize(struct emu_softc *sc, uint32_t handle, off_t *retval)</span>
+<span class='curline'><a href='../S/96.html#L387'>off_t</a>             387 kern/dev/lamebus/emu.c emu_trunc(struct emu_softc *sc, uint32_t handle, off_t len)</span>
+<span class='curline'><a href='../S/96.html#L725'>off_t</a>             725 kern/dev/lamebus/emu.c emufs_truncate(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/96.html#L1063'>off_t</a>            1063 kern/dev/lamebus/emu.c emufs_truncate_isdir(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/126.html#L267'>off_t</a>             267 kern/fs/semfs/semfs_vnops.c semfs_truncate(struct vnode *vn, off_t len)</span>
+<span class='curline'><a href='../S/126.html#L279'>off_t</a>             279 kern/fs/semfs/semfs_vnops.c 	if (len &gt; (off_t)max) {</span>
+<span class='curline'><a href='../S/128.html#L204'>off_t</a>             204 kern/fs/sfs/sfs_bmap.c sfs_itrunc(struct sfs_vnode *sv, off_t len)</span>
+<span class='curline'><a href='../S/129.html#L50'>off_t</a>              50 kern/fs/sfs/sfs_dir.c 	off_t actualpos;</span>
+<span class='curline'><a href='../S/129.html#L66'>off_t</a>              66 kern/fs/sfs/sfs_dir.c 	off_t actualpos;</span>
+<span class='curline'><a href='../S/129.html#L85'>off_t</a>              85 kern/fs/sfs/sfs_dir.c 	off_t size;</span>
+<span class='curline'><a href='../S/132.html#L235'>off_t</a>             235 kern/fs/sfs/sfs_io.c 	off_t saveoff;</span>
+<span class='curline'><a href='../S/132.html#L236'>off_t</a>             236 kern/fs/sfs/sfs_io.c 	off_t diskoff;</span>
+<span class='curline'><a href='../S/132.html#L237'>off_t</a>             237 kern/fs/sfs/sfs_io.c 	off_t saveres;</span>
+<span class='curline'><a href='../S/132.html#L238'>off_t</a>             238 kern/fs/sfs/sfs_io.c 	off_t diskres;</span>
+<span class='curline'><a href='../S/132.html#L307'>off_t</a>             307 kern/fs/sfs/sfs_io.c 		off_t size = sv-&gt;sv_i.sfi_size;</span>
+<span class='curline'><a href='../S/132.html#L308'>off_t</a>             308 kern/fs/sfs/sfs_io.c 		off_t endpos = uio-&gt;uio_offset + uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/132.html#L379'>off_t</a>             379 kern/fs/sfs/sfs_io.c 	    uio-&gt;uio_offset &gt; (off_t)sv-&gt;sv_i.sfi_size) {</span>
+<span class='curline'><a href='../S/132.html#L406'>off_t</a>             406 kern/fs/sfs/sfs_io.c sfs_metaio(struct sfs_vnode *sv, off_t actualpos, void *data, size_t len,</span>
+<span class='curline'><a href='../S/132.html#L410'>off_t</a>             410 kern/fs/sfs/sfs_io.c 	off_t endpos;</span>
+<span class='curline'><a href='../S/132.html#L472'>off_t</a>             472 kern/fs/sfs/sfs_io.c 		if (endpos &gt; (off_t)sv-&gt;sv_i.sfi_size) {</span>
+<span class='curline'><a href='../S/133.html#L250'>off_t</a>             250 kern/fs/sfs/sfs_vnops.c sfs_truncate(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/134.html#L42'>off_t</a>              42 kern/fs/sfs/sfsprivate.h     uio_kinit(iov, uio, ptr, SFS_BLOCKSIZE, ((off_t)(block))*SFS_BLOCKSIZE, rw)</span>
+<span class='curline'><a href='../S/134.html#L53'>off_t</a>              53 kern/fs/sfs/sfsprivate.h int sfs_itrunc(struct sfs_vnode *sv, off_t len);</span>
+<span class='curline'><a href='../S/134.html#L77'>off_t</a>              77 kern/fs/sfs/sfsprivate.h int sfs_metaio(struct sfs_vnode *sv, off_t pos, void *data, size_t len,</span>
+<span class='curline'><a href='../S/155.html#L92'>off_t</a>              92 kern/include/kern/fcntl.h 	off_t l_start;          /* place in file */</span>
+<span class='curline'><a href='../S/155.html#L95'>off_t</a>              95 kern/include/kern/fcntl.h 	off_t l_len;            /* length of locked region */</span>
+<span class='curline'><a href='../S/165.html#L44'>off_t</a>              44 kern/include/kern/stat.h 	off_t st_size;		/* file size in bytes */</span>
+<span class='curline'><a href='../S/191.html#L76'>off_t</a>              76 kern/include/uio.h 	off_t             uio_offset;	/* Desired offset into object */</span>
+<span class='curline'><a href='../S/191.html#L139'>off_t</a>             139 kern/include/uio.h 	       void *kbuf, size_t len, off_t pos, enum uio_rw rw);</span>
+<span class='curline'><a href='../S/195.html#L197'>off_t</a>             197 kern/include/vnode.h 	int (*vop_truncate)(struct vnode *file, off_t len);</span>
+<span class='curline'><a href='../S/195.html#L292'>off_t</a>             292 kern/include/vnode.h int vopfail_truncate_isdir(struct vnode *vn, off_t pos);</span>
+<span class='curline'><a href='../S/204.html#L153'>off_t</a>             153 kern/lib/uio.c 	  void *kbuf, size_t len, off_t pos, enum uio_rw rw)</span>
+<span class='curline'><a href='../S/209.html#L80'>off_t</a>              80 kern/syscall/loadelf.c 	     off_t offset, vaddr_t vaddr,</span>
+<span class='curline'><a href='../S/209.html#L221'>off_t</a>             221 kern/syscall/loadelf.c 		off_t offset = eh.e_phoff + i*eh.e_phentsize;</span>
+<span class='curline'><a href='../S/209.html#L266'>off_t</a>             266 kern/syscall/loadelf.c 		off_t offset = eh.e_phoff + i*eh.e_phentsize;</span>
+<span class='curline'><a href='../S/214.html#L143'>off_t</a>             143 kern/test/fstest.c 	off_t pos=0;</span>
+<span class='curline'><a href='../S/214.html#L726'>off_t</a>             726 kern/test/fstest.c 	off_t rpos=0, wpos=0;</span>
+<span class='curline'><a href='../S/229.html#L86'>off_t</a>              86 kern/vfs/device.c dev_tryseek(struct device *d, off_t pos)</span>
+<span class='curline'><a href='../S/229.html#L256'>off_t</a>             256 kern/vfs/device.c dev_truncate(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/229.html#L263'>off_t</a>             263 kern/vfs/device.c 	if (d-&gt;d_blocks &gt; 0 &amp;&amp; (off_t)(d-&gt;d_blocks*d-&gt;d_blocksize) == len) {</span>
+<span class='curline'><a href='../S/232.html#L110'>off_t</a>             110 kern/vfs/vfsfail.c vopfail_truncate_isdir(struct vnode *vn, off_t pos)</span>
+<span class='curline'><a href='../S/466.html#L57'>off_t</a>              57 userland/bin/tac/tac.c 	off_t pos;</span>
+<span class='curline'><a href='../S/466.html#L58'>off_t</a>              58 userland/bin/tac/tac.c 	off_t len;</span>
+<span class='curline'><a href='../S/466.html#L119'>off_t</a>             119 userland/bin/tac/tac.c off_t</span>
+<span class='curline'><a href='../S/466.html#L120'>off_t</a>             120 userland/bin/tac/tac.c dolseek(int fd, const char *name, off_t pos, int whence)</span>
+<span class='curline'><a href='../S/466.html#L122'>off_t</a>             122 userland/bin/tac/tac.c 	off_t ret;</span>
+<span class='curline'><a href='../S/466.html#L195'>off_t</a>             195 userland/bin/tac/tac.c 	off_t indexsize, pos, done;</span>
+<span class='curline'><a href='../S/466.html#L214'>off_t</a>             214 userland/bin/tac/tac.c 			if ((off_t)amount &gt; x.len - done) {</span>
+<span class='curline'><a href='../S/494.html#L133'>off_t</a>             133 userland/include/unistd.h off_t lseek(int filehandle, off_t pos, int code);</span>
+<span class='curline'><a href='../S/494.html#L135'>off_t</a>             135 userland/include/unistd.h int ftruncate(int filehandle, off_t size);</span>
+<span class='curline'><a href='../S/579.html#L211'>off_t</a>             211 userland/testbin/badcall/bad_lseek.c 	off_t pos;</span>
+<span class='curline'><a href='../S/579.html#L253'>off_t</a>             253 userland/testbin/badcall/bad_lseek.c 	if (pos != (off_t) strlen(message)) {</span>
+<span class='curline'><a href='../S/609.html#L166'>off_t</a>             166 userland/testbin/bigseek/bigseek.c dolseek(int fd, off_t pos, int whence, const char *whencestr, off_t expected)</span>
+<span class='curline'><a href='../S/609.html#L168'>off_t</a>             168 userland/testbin/bigseek/bigseek.c 	off_t result;</span>
+<span class='curline'><a href='../S/609.html#L183'>off_t</a>             183 userland/testbin/bigseek/bigseek.c try_seeking(int fd, off_t pos, off_t cursize)</span>
+<span class='curline'><a href='../S/609.html#L215'>off_t</a>             215 userland/testbin/bigseek/bigseek.c 	off_t cursize;</span>
+<span class='curline'><a href='../S/609.html#L228'>off_t</a>             228 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x1000LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L232'>off_t</a>             232 userland/testbin/bigseek/bigseek.c 	cursize = (off_t)0x1000LL + strlen(slogans[1]);</span>
+<span class='curline'><a href='../S/609.html#L234'>off_t</a>             234 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0, cursize);</span>
+<span class='curline'><a href='../S/609.html#L240'>off_t</a>             240 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x1000LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L244'>off_t</a>             244 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x20LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L245'>off_t</a>             245 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x7fffffffLL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L246'>off_t</a>             246 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x80000000LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L247'>off_t</a>             247 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x80000020LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L248'>off_t</a>             248 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x100000000LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L249'>off_t</a>             249 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x100000020LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L250'>off_t</a>             250 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x180000000LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L251'>off_t</a>             251 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x180000020LL, cursize);</span>
+<span class='curline'><a href='../S/609.html#L259'>off_t</a>             259 userland/testbin/bigseek/bigseek.c 	try_seeking(fd, (off_t)0x100000000LL, cursize);</span>
+<span class='curline'><a href='../S/621.html#L62'>off_t</a>              62 userland/testbin/dirseek/dirseek.c 	off_t pos;</span>
+<span class='curline'><a href='../S/621.html#L132'>off_t</a>             132 userland/testbin/dirseek/dirseek.c 	off_t pos;</span>
+<span class='curline'><a href='../S/621.html#L198'>off_t</a>             198 userland/testbin/dirseek/dirseek.c 	off_t pos;</span>
+<span class='curline'><a href='../S/621.html#L217'>off_t</a>             217 userland/testbin/dirseek/dirseek.c 	off_t pos;</span>
+<span class='curline'><a href='../S/621.html#L258'>off_t</a>             258 userland/testbin/dirseek/dirseek.c 	off_t pos;</span>
+<span class='curline'><a href='../S/621.html#L327'>off_t</a>             327 userland/testbin/dirseek/dirseek.c 	off_t pos;</span>
+<span class='curline'><a href='../S/621.html#L364'>off_t</a>             364 userland/testbin/dirseek/dirseek.c 	off_t pos, pos2, eof;</span>
+<span class='curline'><a href='../S/642.html#L101'>off_t</a>             101 userland/testbin/frack/check.c 			off_t len;</span>
+<span class='curline'><a href='../S/642.html#L108'>off_t</a>             108 userland/testbin/frack/check.c 			off_t pos;</span>
+<span class='curline'><a href='../S/642.html#L109'>off_t</a>             109 userland/testbin/frack/check.c 			off_t len;</span>
+<span class='curline'><a href='../S/642.html#L111'>off_t</a>             111 userland/testbin/frack/check.c 			off_t oldfilesize;</span>
+<span class='curline'><a href='../S/642.html#L213'>off_t</a>             213 userland/testbin/frack/check.c 			off_t len;</span>
+<span class='curline'><a href='../S/642.html#L313'>off_t</a>             313 userland/testbin/frack/check.c fc_create_truncate(struct fschange *prev_thisfile, unsigned file, off_t len)</span>
+<span class='curline'><a href='../S/642.html#L327'>off_t</a>             327 userland/testbin/frack/check.c 		off_t pos, off_t len, off_t oldfilesize,</span>
+<span class='curline'><a href='../S/642.html#L747'>off_t</a>             747 userland/testbin/frack/check.c 	off_t endpos;</span>
+<span class='curline'><a href='../S/642.html#L1559'>off_t</a>            1559 userland/testbin/frack/check.c off_t</span>
+<span class='curline'><a href='../S/642.html#L1649'>off_t</a>            1649 userland/testbin/frack/check.c 	    off_t pos, off_t len)</span>
+<span class='curline'><a href='../S/642.html#L1653'>off_t</a>            1653 userland/testbin/frack/check.c 	off_t prevlen;</span>
+<span class='curline'><a href='../S/642.html#L1670'>off_t</a>            1670 userland/testbin/frack/check.c check_truncate(int handle, unsigned name, off_t len)</span>
+<span class='curline'><a href='../S/642.html#L2192'>off_t</a>            2192 userland/testbin/frack/check.c 					off_t alen, blen;</span>
+<span class='curline'><a href='../S/642.html#L2321'>off_t</a>            2321 userland/testbin/frack/check.c checkfilezeros(int fd, const char *namestr, off_t start, off_t end)</span>
+<span class='curline'><a href='../S/642.html#L2327'>off_t</a>            2327 userland/testbin/frack/check.c 	off_t origstart = start;</span>
+<span class='curline'><a href='../S/642.html#L2386'>off_t</a>            2386 userland/testbin/frack/check.c 	      off_t regionstart, off_t checkstart,</span>
+<span class='curline'><a href='../S/642.html#L2387'>off_t</a>            2387 userland/testbin/frack/check.c 	      off_t checkend, off_t regionend)</span>
+<span class='curline'><a href='../S/642.html#L2432'>off_t</a>            2432 userland/testbin/frack/check.c 	      off_t zerostart,</span>
+<span class='curline'><a href='../S/642.html#L2433'>off_t</a>            2433 userland/testbin/frack/check.c 	      off_t regionstart, off_t checkstart,</span>
+<span class='curline'><a href='../S/642.html#L2434'>off_t</a>            2434 userland/testbin/frack/check.c 	      off_t checkend, off_t regionend)</span>
+<span class='curline'><a href='../S/642.html#L2460'>off_t</a>            2460 userland/testbin/frack/check.c 	       off_t start, off_t end)</span>
+<span class='curline'><a href='../S/642.html#L2464'>off_t</a>            2464 userland/testbin/frack/check.c 		off_t tlen;</span>
+<span class='curline'><a href='../S/642.html#L2494'>off_t</a>            2494 userland/testbin/frack/check.c 		off_t wstart, wend;</span>
+<span class='curline'><a href='../S/642.html#L2497'>off_t</a>            2497 userland/testbin/frack/check.c 		off_t oldfilesize, zerostart;</span>
+<span class='curline'><a href='../S/642.html#L2594'>off_t</a>            2594 userland/testbin/frack/check.c change_is_present(int fd, const char *namestr, off_t filesize,</span>
+<span class='curline'><a href='../S/642.html#L2597'>off_t</a>            2597 userland/testbin/frack/check.c 	off_t pos, len, oldfilesize, zerostart;</span>
+<span class='curline'><a href='../S/643.html#L36'>off_t</a>              36 userland/testbin/frack/check.h 		 off_t pos, off_t len);</span>
+<span class='curline'><a href='../S/643.html#L37'>off_t</a>              37 userland/testbin/frack/check.h void check_truncate(int handle, unsigned name, off_t len);</span>
+<span class='curline'><a href='../S/644.html#L48'>off_t</a>              48 userland/testbin/frack/data.c prepdata(unsigned code, unsigned seq, char *buf, off_t len)</span>
+<span class='curline'><a href='../S/644.html#L123'>off_t</a>             123 userland/testbin/frack/data.c data_matches(const char *namestr, off_t regionoffset,</span>
+<span class='curline'><a href='../S/644.html#L124'>off_t</a>             124 userland/testbin/frack/data.c 	     unsigned code, unsigned seq, off_t zerostart, off_t len,</span>
+<span class='curline'><a href='../S/644.html#L125'>off_t</a>             125 userland/testbin/frack/data.c 	     off_t checkstart, off_t checklen)</span>
+<span class='curline'><a href='../S/644.html#L128'>off_t</a>             128 userland/testbin/frack/data.c 	off_t where;</span>
+<span class='curline'><a href='../S/644.html#L130'>off_t</a>             130 userland/testbin/frack/data.c 	off_t absend, slop;</span>
+<span class='curline'><a href='../S/644.html#L199'>off_t</a>             199 userland/testbin/frack/data.c data_check(const char *namestr, off_t regionoffset,</span>
+<span class='curline'><a href='../S/644.html#L200'>off_t</a>             200 userland/testbin/frack/data.c 	   unsigned code, unsigned seq, off_t zerostart, off_t len,</span>
+<span class='curline'><a href='../S/644.html#L201'>off_t</a>             201 userland/testbin/frack/data.c 	   off_t checkstart, off_t checklen)</span>
+<span class='curline'><a href='../S/644.html#L215'>off_t</a>             215 userland/testbin/frack/data.c data_map(unsigned code, unsigned seq, off_t len)</span>
+<span class='curline'><a href='../S/644.html#L223'>off_t</a>             223 userland/testbin/frack/data.c data_mapreadbuf(off_t len)</span>
+<span class='curline'><a href='../S/645.html#L31'>off_t</a>              31 userland/testbin/frack/data.h void *data_map(unsigned code, unsigned seq, off_t len);</span>
+<span class='curline'><a href='../S/645.html#L32'>off_t</a>              32 userland/testbin/frack/data.h void *data_mapreadbuf(off_t len);</span>
+<span class='curline'><a href='../S/645.html#L33'>off_t</a>              33 userland/testbin/frack/data.h int data_matches(const char *namestr, off_t regionoffset,</span>
+<span class='curline'><a href='../S/645.html#L34'>off_t</a>              34 userland/testbin/frack/data.h 		 unsigned code, unsigned seq, off_t zerostart, off_t len,</span>
+<span class='curline'><a href='../S/645.html#L35'>off_t</a>              35 userland/testbin/frack/data.h 		 off_t checkstart, off_t checklen);</span>
+<span class='curline'><a href='../S/645.html#L36'>off_t</a>              36 userland/testbin/frack/data.h void data_check(const char *namestr, off_t regionoffset,</span>
+<span class='curline'><a href='../S/645.html#L37'>off_t</a>              37 userland/testbin/frack/data.h 		unsigned code, unsigned seq, off_t zerostart, off_t len,</span>
+<span class='curline'><a href='../S/645.html#L38'>off_t</a>              38 userland/testbin/frack/data.h 		off_t checkstart, off_t checklen);</span>
+<span class='curline'><a href='../S/646.html#L103'>off_t</a>             103 userland/testbin/frack/do.c 	 off_t pos, off_t len)</span>
+<span class='curline'><a href='../S/646.html#L105'>off_t</a>             105 userland/testbin/frack/do.c 	off_t done = 0;</span>
+<span class='curline'><a href='../S/646.html#L129'>off_t</a>             129 userland/testbin/frack/do.c do_truncate(int fd, unsigned name, off_t len)</span>
+<span class='curline'><a href='../S/647.html#L38'>off_t</a>              38 userland/testbin/frack/do.h 	      off_t pos, off_t len);</span>
+<span class='curline'><a href='../S/647.html#L39'>off_t</a>              39 userland/testbin/frack/do.h void do_truncate(int handle, unsigned name, off_t len);</span>
+<span class='curline'><a href='../S/653.html#L169'>off_t</a>             169 userland/testbin/frack/ops.c op_write(struct file *f, off_t pos, off_t len)</span>
+<span class='curline'><a href='../S/653.html#L171'>off_t</a>             171 userland/testbin/frack/ops.c 	off_t amount;</span>
+<span class='curline'><a href='../S/653.html#L194'>off_t</a>             194 userland/testbin/frack/ops.c op_truncate(struct file *f, off_t len)</span>
+<span class='curline'><a href='../S/654.html#L38'>off_t</a>              38 userland/testbin/frack/ops.h void op_write(struct file *, off_t, off_t);</span>
+<span class='curline'><a href='../S/654.html#L39'>off_t</a>              39 userland/testbin/frack/ops.h void op_truncate(struct file *, off_t);</span>
+<span class='curline'><a href='../S/657.html#L220'>off_t</a>             220 userland/testbin/frack/workloads.c 	off_t pos;</span>
+<span class='curline'><a href='../S/657.html#L233'>off_t</a>             233 userland/testbin/frack/workloads.c 		pos = (off_t)BLOCKSIZE * blocknum;</span>
+<span class='curline'><a href='../S/657.html#L1383'>off_t</a>            1383 userland/testbin/frack/workloads.c 	off_t maxpos, pos, len;</span>
+<span class='curline'><a href='../S/678.html#L54'>off_t</a>              54 userland/testbin/poisondisk/poisondisk.c 	off_t sectors, i;</span>
+<span class='curline'><a href='../S/680.html#L120'>off_t</a>             120 userland/testbin/psort/psort.c static off_t correctsize;</span>
+<span class='curline'><a href='../S/680.html#L326'>off_t</a>             326 userland/testbin/psort/psort.c off_t</span>
+<span class='curline'><a href='../S/680.html#L417'>off_t</a>             417 userland/testbin/psort/psort.c dolseek(const char *name, int fd, off_t offset, int whence)</span>
+<span class='curline'><a href='../S/680.html#L525'>off_t</a>             525 userland/testbin/psort/psort.c 	off_t offset;</span>
+<span class='curline'><a href='../S/680.html#L729'>off_t</a>             729 userland/testbin/psort/psort.c 	off_t binsize;</span>
+<span class='curline'><a href='../S/680.html#L739'>off_t</a>             739 userland/testbin/psort/psort.c 		if (binsize &gt; (off_t) sizeof(workspace)) {</span>
+<span class='curline'><a href='../S/680.html#L841'>off_t</a>             841 userland/testbin/psort/psort.c 	off_t mypos;</span>
+<span class='curline'><a href='../S/680.html#L872'>off_t</a>             872 userland/testbin/psort/psort.c 	off_t totsize;</span>
+<span class='curline'><a href='../S/680.html#L892'>off_t</a>             892 userland/testbin/psort/psort.c 	off_t totsize;</span>
+<span class='curline'><a href='../S/680.html#L981'>off_t</a>             981 userland/testbin/psort/psort.c 	off_t totvsize, correctvsize;</span>
+<span class='curline'><a href='../S/680.html#L984'>off_t</a>             984 userland/testbin/psort/psort.c 	correctvsize = (off_t) numprocs*2*sizeof(int);</span>
+<span class='curline'><a href='../S/680.html#L1213'>off_t</a>            1213 userland/testbin/psort/psort.c 	correctsize = (off_t) (numkeys*sizeof(int));</span>
+<span class='curline'><a href='../S/682.html#L34'>off_t</a>              34 userland/testbin/randcall/extern.h off_t randoff(void);</span>
+<span class='curline'><a href='../S/684.html#L96'>off_t</a>              96 userland/testbin/randcall/main.c off_t</span>
+<span class='curline'><a href='../S/684.html#L99'>off_t</a>              99 userland/testbin/randcall/main.c 	off_t x;</span>
+<span class='curline'><a href='../S/698.html#L115'>off_t</a>             115 userland/testbin/schedpong/results.c 	off_t pos;</span>
+<span class='curline'><a href='../S/698.html#L146'>off_t</a>             146 userland/testbin/schedpong/results.c 	off_t pos;</span>
+<span class='curline'><a href='../S/709.html#L52'>off_t</a>              52 userland/testbin/tail/tail.c tail(int file, off_t where, const char *filename)</span>
+</pre>
+</body>
+</html>

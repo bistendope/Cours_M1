@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>curproc</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L161'>curproc</a>           161 kern/arch/mips/vm/dumbvm.c 	if (curproc == NULL) {</span>
+<span class='curline'><a href='../S/208.html#L157'>curproc</a>           157 kern/proc/proc.c 		if (proc == curproc) {</span>
+<span class='curline'><a href='../S/208.html#L214'>curproc</a>           214 kern/proc/proc.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L215'>curproc</a>           215 kern/proc/proc.c 	if (curproc-&gt;p_cwd != NULL) {</span>
+<span class='curline'><a href='../S/208.html#L216'>curproc</a>           216 kern/proc/proc.c 		VOP_INCREF(curproc-&gt;p_cwd);</span>
+<span class='curline'><a href='../S/208.html#L217'>curproc</a>           217 kern/proc/proc.c 		newproc-&gt;p_cwd = curproc-&gt;p_cwd;</span>
+<span class='curline'><a href='../S/208.html#L219'>curproc</a>           219 kern/proc/proc.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L291'>curproc</a>           291 kern/proc/proc.c 	struct proc *proc = curproc;</span>
+<span class='curline'><a href='../S/208.html#L311'>curproc</a>           311 kern/proc/proc.c 	struct proc *proc = curproc;</span>
+<span class='curline'><a href='../S/231.html#L53'>curproc</a>            53 kern/vfs/vfscwd.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L54'>curproc</a>            54 kern/vfs/vfscwd.c 	if (curproc-&gt;p_cwd!=NULL) {</span>
+<span class='curline'><a href='../S/231.html#L55'>curproc</a>            55 kern/vfs/vfscwd.c 		VOP_INCREF(curproc-&gt;p_cwd);</span>
+<span class='curline'><a href='../S/231.html#L56'>curproc</a>            56 kern/vfs/vfscwd.c 		*ret = curproc-&gt;p_cwd;</span>
+<span class='curline'><a href='../S/231.html#L61'>curproc</a>            61 kern/vfs/vfscwd.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L87'>curproc</a>            87 kern/vfs/vfscwd.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L88'>curproc</a>            88 kern/vfs/vfscwd.c 	old = curproc-&gt;p_cwd;</span>
+<span class='curline'><a href='../S/231.html#L89'>curproc</a>            89 kern/vfs/vfscwd.c 	curproc-&gt;p_cwd = dir;</span>
+<span class='curline'><a href='../S/231.html#L90'>curproc</a>            90 kern/vfs/vfscwd.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L107'>curproc</a>           107 kern/vfs/vfscwd.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L108'>curproc</a>           108 kern/vfs/vfscwd.c 	old = curproc-&gt;p_cwd;</span>
+<span class='curline'><a href='../S/231.html#L109'>curproc</a>           109 kern/vfs/vfscwd.c 	curproc-&gt;p_cwd = NULL;</span>
+<span class='curline'><a href='../S/231.html#L110'>curproc</a>           110 kern/vfs/vfscwd.c 	spinlock_release(&amp;curproc-&gt;p_lock);</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>semfs</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/123.html#L81'>semfs</a>              81 kern/fs/semfs/semfs.h 	struct semfs *semv_semfs;		/* Back-pointer to fs */</span>
+<span class='curline'><a href='../S/123.html#L114'>semfs</a>             114 kern/fs/semfs/semfs.h int semfs_sem_insert(struct semfs *, struct semfs_sem *, unsigned *);</span>
+<span class='curline'><a href='../S/123.html#L120'>semfs</a>             120 kern/fs/semfs/semfs.h int semfs_getvnode(struct semfs *, unsigned, struct vnode **ret);</span>
+<span class='curline'><a href='../S/124.html#L71'>semfs</a>              71 kern/fs/semfs/semfs_fsops.c 	struct semfs *semfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/124.html#L75'>semfs</a>              75 kern/fs/semfs/semfs_fsops.c 	result = semfs_getvnode(semfs, SEMFS_ROOTDIR, &amp;vn);</span>
+<span class='curline'><a href='../S/124.html#L94'>semfs</a>              94 kern/fs/semfs/semfs_fsops.c semfs_destroy(struct semfs *semfs)</span>
+<span class='curline'><a href='../S/124.html#L100'>semfs</a>             100 kern/fs/semfs/semfs_fsops.c 	num = semfs_semarray_num(semfs-&gt;semfs_sems);</span>
+<span class='curline'><a href='../S/124.html#L102'>semfs</a>             102 kern/fs/semfs/semfs_fsops.c 		sem = semfs_semarray_get(semfs-&gt;semfs_sems, i);</span>
+<span class='curline'><a href='../S/124.html#L105'>semfs</a>             105 kern/fs/semfs/semfs_fsops.c 	semfs_semarray_setsize(semfs-&gt;semfs_sems, 0);</span>
+<span class='curline'><a href='../S/124.html#L107'>semfs</a>             107 kern/fs/semfs/semfs_fsops.c 	num = semfs_direntryarray_num(semfs-&gt;semfs_dents);</span>
+<span class='curline'><a href='../S/124.html#L109'>semfs</a>             109 kern/fs/semfs/semfs_fsops.c 		dent = semfs_direntryarray_get(semfs-&gt;semfs_dents, i);</span>
+<span class='curline'><a href='../S/124.html#L112'>semfs</a>             112 kern/fs/semfs/semfs_fsops.c 	semfs_direntryarray_setsize(semfs-&gt;semfs_dents, 0);</span>
+<span class='curline'><a href='../S/124.html#L114'>semfs</a>             114 kern/fs/semfs/semfs_fsops.c 	semfs_direntryarray_destroy(semfs-&gt;semfs_dents);</span>
+<span class='curline'><a href='../S/124.html#L115'>semfs</a>             115 kern/fs/semfs/semfs_fsops.c 	lock_destroy(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/124.html#L116'>semfs</a>             116 kern/fs/semfs/semfs_fsops.c 	semfs_semarray_destroy(semfs-&gt;semfs_sems);</span>
+<span class='curline'><a href='../S/124.html#L117'>semfs</a>             117 kern/fs/semfs/semfs_fsops.c 	vnodearray_destroy(semfs-&gt;semfs_vnodes);</span>
+<span class='curline'><a href='../S/124.html#L118'>semfs</a>             118 kern/fs/semfs/semfs_fsops.c 	lock_destroy(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/124.html#L119'>semfs</a>             119 kern/fs/semfs/semfs_fsops.c 	kfree(semfs);</span>
+<span class='curline'><a href='../S/124.html#L130'>semfs</a>             130 kern/fs/semfs/semfs_fsops.c 	struct semfs *semfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/124.html#L132'>semfs</a>             132 kern/fs/semfs/semfs_fsops.c 	lock_acquire(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/124.html#L133'>semfs</a>             133 kern/fs/semfs/semfs_fsops.c 	if (vnodearray_num(semfs-&gt;semfs_vnodes) &gt; 0) {</span>
+<span class='curline'><a href='../S/124.html#L134'>semfs</a>             134 kern/fs/semfs/semfs_fsops.c 		lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/124.html#L138'>semfs</a>             138 kern/fs/semfs/semfs_fsops.c 	lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/124.html#L139'>semfs</a>             139 kern/fs/semfs/semfs_fsops.c 	semfs_destroy(semfs);</span>
+<span class='curline'><a href='../S/124.html#L158'>semfs</a>             158 kern/fs/semfs/semfs_fsops.c struct semfs *</span>
+<span class='curline'><a href='../S/124.html#L161'>semfs</a>             161 kern/fs/semfs/semfs_fsops.c 	struct semfs *semfs;</span>
+<span class='curline'><a href='../S/124.html#L163'>semfs</a>             163 kern/fs/semfs/semfs_fsops.c 	semfs = kmalloc(sizeof(*semfs));</span>
+<span class='curline'><a href='../S/124.html#L164'>semfs</a>             164 kern/fs/semfs/semfs_fsops.c 	if (semfs == NULL) {</span>
+<span class='curline'><a href='../S/124.html#L168'>semfs</a>             168 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_tablelock = lock_create("semfs_table");</span>
+<span class='curline'><a href='../S/124.html#L169'>semfs</a>             169 kern/fs/semfs/semfs_fsops.c 	if (semfs-&gt;semfs_tablelock == NULL) {</span>
+<span class='curline'><a href='../S/124.html#L172'>semfs</a>             172 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_vnodes = vnodearray_create();</span>
+<span class='curline'><a href='../S/124.html#L173'>semfs</a>             173 kern/fs/semfs/semfs_fsops.c 	if (semfs-&gt;semfs_vnodes == NULL) {</span>
+<span class='curline'><a href='../S/124.html#L176'>semfs</a>             176 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_sems = semfs_semarray_create();</span>
+<span class='curline'><a href='../S/124.html#L177'>semfs</a>             177 kern/fs/semfs/semfs_fsops.c 	if (semfs-&gt;semfs_sems == NULL) {</span>
+<span class='curline'><a href='../S/124.html#L181'>semfs</a>             181 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_dirlock = lock_create("semfs_dir");</span>
+<span class='curline'><a href='../S/124.html#L182'>semfs</a>             182 kern/fs/semfs/semfs_fsops.c 	if (semfs-&gt;semfs_dirlock == NULL) {</span>
+<span class='curline'><a href='../S/124.html#L185'>semfs</a>             185 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_dents = semfs_direntryarray_create();</span>
+<span class='curline'><a href='../S/124.html#L186'>semfs</a>             186 kern/fs/semfs/semfs_fsops.c 	if (semfs-&gt;semfs_dents == NULL) {</span>
+<span class='curline'><a href='../S/124.html#L190'>semfs</a>             190 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_absfs.fs_data = semfs;</span>
+<span class='curline'><a href='../S/124.html#L191'>semfs</a>             191 kern/fs/semfs/semfs_fsops.c 	semfs-&gt;semfs_absfs.fs_ops = &amp;semfs_fsops;</span>
+<span class='curline'><a href='../S/124.html#L192'>semfs</a>             192 kern/fs/semfs/semfs_fsops.c 	return semfs;</span>
+<span class='curline'><a href='../S/124.html#L195'>semfs</a>             195 kern/fs/semfs/semfs_fsops.c 	lock_destroy(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/124.html#L197'>semfs</a>             197 kern/fs/semfs/semfs_fsops.c 	semfs_semarray_destroy(semfs-&gt;semfs_sems);</span>
+<span class='curline'><a href='../S/124.html#L199'>semfs</a>             199 kern/fs/semfs/semfs_fsops.c 	vnodearray_destroy(semfs-&gt;semfs_vnodes);</span>
+<span class='curline'><a href='../S/124.html#L201'>semfs</a>             201 kern/fs/semfs/semfs_fsops.c 	lock_destroy(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/124.html#L203'>semfs</a>             203 kern/fs/semfs/semfs_fsops.c 	kfree(semfs);</span>
+<span class='curline'><a href='../S/124.html#L215'>semfs</a>             215 kern/fs/semfs/semfs_fsops.c 	struct semfs *semfs;</span>
+<span class='curline'><a href='../S/124.html#L218'>semfs</a>             218 kern/fs/semfs/semfs_fsops.c 	semfs = semfs_create();</span>
+<span class='curline'><a href='../S/124.html#L219'>semfs</a>             219 kern/fs/semfs/semfs_fsops.c 	if (semfs == NULL) {</span>
+<span class='curline'><a href='../S/124.html#L222'>semfs</a>             222 kern/fs/semfs/semfs_fsops.c 	result = vfs_addfs("sem", &amp;semfs-&gt;semfs_absfs);</span>
+<span class='curline'><a href='../S/125.html#L93'>semfs</a>              93 kern/fs/semfs/semfs_obj.c semfs_sem_insert(struct semfs *semfs, struct semfs_sem *sem, unsigned *ret)</span>
+<span class='curline'><a href='../S/125.html#L97'>semfs</a>              97 kern/fs/semfs/semfs_obj.c 	KASSERT(lock_do_i_hold(semfs-&gt;semfs_tablelock));</span>
+<span class='curline'><a href='../S/125.html#L98'>semfs</a>              98 kern/fs/semfs/semfs_obj.c 	num = semfs_semarray_num(semfs-&gt;semfs_sems);</span>
+<span class='curline'><a href='../S/125.html#L104'>semfs</a>             104 kern/fs/semfs/semfs_obj.c 		if (semfs_semarray_get(semfs-&gt;semfs_sems, i) == NULL) {</span>
+<span class='curline'><a href='../S/125.html#L105'>semfs</a>             105 kern/fs/semfs/semfs_obj.c 			semfs_semarray_set(semfs-&gt;semfs_sems, i, sem);</span>
+<span class='curline'><a href='../S/125.html#L110'>semfs</a>             110 kern/fs/semfs/semfs_obj.c 	return semfs_semarray_add(semfs-&gt;semfs_sems, sem, ret);</span>
+<span class='curline'><a href='../S/126.html#L115'>semfs</a>             115 kern/fs/semfs/semfs_vnops.c semfs_getsembynum(struct semfs *semfs, unsigned semnum)</span>
+<span class='curline'><a href='../S/126.html#L119'>semfs</a>             119 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L120'>semfs</a>             120 kern/fs/semfs/semfs_vnops.c 	sem = semfs_semarray_get(semfs-&gt;semfs_sems, semnum);</span>
+<span class='curline'><a href='../S/126.html#L121'>semfs</a>             121 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L130'>semfs</a>             130 kern/fs/semfs/semfs_vnops.c 	struct semfs *semfs = semv-&gt;semv_semfs;</span>
+<span class='curline'><a href='../S/126.html#L132'>semfs</a>             132 kern/fs/semfs/semfs_vnops.c 	return semfs_getsembynum(semfs, semv-&gt;semv_semnum);</span>
+<span class='curline'><a href='../S/126.html#L306'>semfs</a>             306 kern/fs/semfs/semfs_vnops.c 	struct semfs *semfs = dirsemv-&gt;semv_semfs;</span>
+<span class='curline'><a href='../S/126.html#L314'>semfs</a>             314 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L316'>semfs</a>             316 kern/fs/semfs/semfs_vnops.c 	num = semfs_direntryarray_num(semfs-&gt;semfs_dents);</span>
+<span class='curline'><a href='../S/126.html#L322'>semfs</a>             322 kern/fs/semfs/semfs_vnops.c 		dent = semfs_direntryarray_get(semfs-&gt;semfs_dents, pos);</span>
+<span class='curline'><a href='../S/126.html#L327'>semfs</a>             327 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L339'>semfs</a>             339 kern/fs/semfs/semfs_vnops.c 	struct semfs *semfs = semv-&gt;semv_semfs;</span>
+<span class='curline'><a href='../S/126.html#L343'>semfs</a>             343 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L344'>semfs</a>             344 kern/fs/semfs/semfs_vnops.c 	buf-&gt;st_size = semfs_direntryarray_num(semfs-&gt;semfs_dents);</span>
+<span class='curline'><a href='../S/126.html#L345'>semfs</a>             345 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L378'>semfs</a>             378 kern/fs/semfs/semfs_vnops.c 	struct semfs *semfs = dirsemv-&gt;semv_semfs;</span>
+<span class='curline'><a href='../S/126.html#L389'>semfs</a>             389 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L390'>semfs</a>             390 kern/fs/semfs/semfs_vnops.c 	num = semfs_direntryarray_num(semfs-&gt;semfs_dents);</span>
+<span class='curline'><a href='../S/126.html#L393'>semfs</a>             393 kern/fs/semfs/semfs_vnops.c 		dent = semfs_direntryarray_get(semfs-&gt;semfs_dents, i);</span>
+<span class='curline'><a href='../S/126.html#L403'>semfs</a>             403 kern/fs/semfs/semfs_vnops.c 				lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L406'>semfs</a>             406 kern/fs/semfs/semfs_vnops.c 			result = semfs_getvnode(semfs, dent-&gt;semd_semnum,</span>
+<span class='curline'><a href='../S/126.html#L408'>semfs</a>             408 kern/fs/semfs/semfs_vnops.c 			lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L419'>semfs</a>             419 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L420'>semfs</a>             420 kern/fs/semfs/semfs_vnops.c 	result = semfs_sem_insert(semfs, sem, &amp;semnum);</span>
+<span class='curline'><a href='../S/126.html#L421'>semfs</a>             421 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L432'>semfs</a>             432 kern/fs/semfs/semfs_vnops.c 		semfs_direntryarray_set(semfs-&gt;semfs_dents, empty, dent);</span>
+<span class='curline'><a href='../S/126.html#L435'>semfs</a>             435 kern/fs/semfs/semfs_vnops.c 		result = semfs_direntryarray_add(semfs-&gt;semfs_dents, dent,</span>
+<span class='curline'><a href='../S/126.html#L442'>semfs</a>             442 kern/fs/semfs/semfs_vnops.c 	result = semfs_getvnode(semfs, semnum, resultvn);</span>
+<span class='curline'><a href='../S/126.html#L448'>semfs</a>             448 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L452'>semfs</a>             452 kern/fs/semfs/semfs_vnops.c 	semfs_direntryarray_set(semfs-&gt;semfs_dents, empty, NULL);</span>
+<span class='curline'><a href='../S/126.html#L456'>semfs</a>             456 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L457'>semfs</a>             457 kern/fs/semfs/semfs_vnops.c 	semfs_semarray_set(semfs-&gt;semfs_sems, semnum, NULL);</span>
+<span class='curline'><a href='../S/126.html#L458'>semfs</a>             458 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L462'>semfs</a>             462 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L475'>semfs</a>             475 kern/fs/semfs/semfs_vnops.c 	struct semfs *semfs = dirsemv-&gt;semv_semfs;</span>
+<span class='curline'><a href='../S/126.html#L485'>semfs</a>             485 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L486'>semfs</a>             486 kern/fs/semfs/semfs_vnops.c 	num = semfs_direntryarray_num(semfs-&gt;semfs_dents);</span>
+<span class='curline'><a href='../S/126.html#L488'>semfs</a>             488 kern/fs/semfs/semfs_vnops.c 		dent = semfs_direntryarray_get(semfs-&gt;semfs_dents, i);</span>
+<span class='curline'><a href='../S/126.html#L494'>semfs</a>             494 kern/fs/semfs/semfs_vnops.c 			sem = semfs_getsembynum(semfs, dent-&gt;semd_semnum);</span>
+<span class='curline'><a href='../S/126.html#L499'>semfs</a>             499 kern/fs/semfs/semfs_vnops.c 				lock_acquire(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L500'>semfs</a>             500 kern/fs/semfs/semfs_vnops.c 				semfs_semarray_set(semfs-&gt;semfs_sems,</span>
+<span class='curline'><a href='../S/126.html#L502'>semfs</a>             502 kern/fs/semfs/semfs_vnops.c 				lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L509'>semfs</a>             509 kern/fs/semfs/semfs_vnops.c 			semfs_direntryarray_set(semfs-&gt;semfs_dents, i, NULL);</span>
+<span class='curline'><a href='../S/126.html#L517'>semfs</a>             517 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L529'>semfs</a>             529 kern/fs/semfs/semfs_vnops.c 	struct semfs *semfs = dirsemv-&gt;semv_semfs;</span>
+<span class='curline'><a href='../S/126.html#L540'>semfs</a>             540 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L541'>semfs</a>             541 kern/fs/semfs/semfs_vnops.c 	num = semfs_direntryarray_num(semfs-&gt;semfs_dents);</span>
+<span class='curline'><a href='../S/126.html#L543'>semfs</a>             543 kern/fs/semfs/semfs_vnops.c 		dent = semfs_direntryarray_get(semfs-&gt;semfs_dents, i);</span>
+<span class='curline'><a href='../S/126.html#L548'>semfs</a>             548 kern/fs/semfs/semfs_vnops.c 			result = semfs_getvnode(semfs, dent-&gt;semd_semnum,</span>
+<span class='curline'><a href='../S/126.html#L550'>semfs</a>             550 kern/fs/semfs/semfs_vnops.c 			lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L554'>semfs</a>             554 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_dirlock);</span>
+<span class='curline'><a href='../S/126.html#L599'>semfs</a>             599 kern/fs/semfs/semfs_vnops.c 	struct semfs *semfs = semv-&gt;semv_semfs;</span>
+<span class='curline'><a href='../S/126.html#L604'>semfs</a>             604 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L613'>semfs</a>             613 kern/fs/semfs/semfs_vnops.c 		lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L620'>semfs</a>             620 kern/fs/semfs/semfs_vnops.c 	num = vnodearray_num(semfs-&gt;semfs_vnodes);</span>
+<span class='curline'><a href='../S/126.html#L622'>semfs</a>             622 kern/fs/semfs/semfs_vnops.c 		vn2 = vnodearray_get(semfs-&gt;semfs_vnodes, i);</span>
+<span class='curline'><a href='../S/126.html#L624'>semfs</a>             624 kern/fs/semfs/semfs_vnops.c 			vnodearray_remove(semfs-&gt;semfs_vnodes, i);</span>
+<span class='curline'><a href='../S/126.html#L630'>semfs</a>             630 kern/fs/semfs/semfs_vnops.c 		sem = semfs_semarray_get(semfs-&gt;semfs_sems, semv-&gt;semv_semnum);</span>
+<span class='curline'><a href='../S/126.html#L634'>semfs</a>             634 kern/fs/semfs/semfs_vnops.c 			semfs_semarray_set(semfs-&gt;semfs_sems,</span>
+<span class='curline'><a href='../S/126.html#L641'>semfs</a>             641 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L719'>semfs</a>             719 kern/fs/semfs/semfs_vnops.c semfs_vnode_create(struct semfs *semfs, unsigned semnum)</span>
+<span class='curline'><a href='../S/126.html#L737'>semfs</a>             737 kern/fs/semfs/semfs_vnops.c 	semv-&gt;semv_semfs = semfs;</span>
+<span class='curline'><a href='../S/126.html#L741'>semfs</a>             741 kern/fs/semfs/semfs_vnops.c 			    &amp;semfs-&gt;semfs_absfs, semv);</span>
+<span class='curline'><a href='../S/126.html#L753'>semfs</a>             753 kern/fs/semfs/semfs_vnops.c semfs_getvnode(struct semfs *semfs, unsigned semnum, struct vnode **ret)</span>
+<span class='curline'><a href='../S/126.html#L762'>semfs</a>             762 kern/fs/semfs/semfs_vnops.c 	lock_acquire(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L765'>semfs</a>             765 kern/fs/semfs/semfs_vnops.c 	num = vnodearray_num(semfs-&gt;semfs_vnodes);</span>
+<span class='curline'><a href='../S/126.html#L767'>semfs</a>             767 kern/fs/semfs/semfs_vnops.c 		vn = vnodearray_get(semfs-&gt;semfs_vnodes, i);</span>
+<span class='curline'><a href='../S/126.html#L771'>semfs</a>             771 kern/fs/semfs/semfs_vnops.c 			lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L778'>semfs</a>             778 kern/fs/semfs/semfs_vnops.c 	semv = semfs_vnode_create(semfs, semnum);</span>
+<span class='curline'><a href='../S/126.html#L780'>semfs</a>             780 kern/fs/semfs/semfs_vnops.c 		lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L783'>semfs</a>             783 kern/fs/semfs/semfs_vnops.c 	result = vnodearray_add(semfs-&gt;semfs_vnodes, &amp;semv-&gt;semv_absvn, NULL);</span>
+<span class='curline'><a href='../S/126.html#L786'>semfs</a>             786 kern/fs/semfs/semfs_vnops.c 		lock_release(semfs-&gt;semfs_tablelock);</span>
+<span class='curline'><a href='../S/126.html#L790'>semfs</a>             790 kern/fs/semfs/semfs_vnops.c 		sem = semfs_semarray_get(semfs-&gt;semfs_sems, semnum);</span>
+<span class='curline'><a href='../S/126.html#L795'>semfs</a>             795 kern/fs/semfs/semfs_vnops.c 	lock_release(semfs-&gt;semfs_tablelock);</span>
+</pre>
+</body>
+</html>

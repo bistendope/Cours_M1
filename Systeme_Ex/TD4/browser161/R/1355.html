@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>err</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/62.html#L83'>err</a>                83 kern/arch/mips/syscall/syscall.c 	int err;</span>
+<span class='curline'><a href='../S/62.html#L104'>err</a>               104 kern/arch/mips/syscall/syscall.c 		err = sys_reboot(tf-&gt;tf_a0);</span>
+<span class='curline'><a href='../S/62.html#L108'>err</a>               108 kern/arch/mips/syscall/syscall.c 		err = sys___time((userptr_t)tf-&gt;tf_a0,</span>
+<span class='curline'><a href='../S/62.html#L116'>err</a>               116 kern/arch/mips/syscall/syscall.c 		err = ENOSYS;</span>
+<span class='curline'><a href='../S/62.html#L121'>err</a>               121 kern/arch/mips/syscall/syscall.c 	if (err) {</span>
+<span class='curline'><a href='../S/62.html#L127'>err</a>               127 kern/arch/mips/syscall/syscall.c 		tf-&gt;tf_v0 = err;</span>
+<span class='curline'><a href='../S/101.html#L104'>err</a>               104 kern/dev/lamebus/lhd.c lhd_iodone(struct lhd_softc *lh, int err)</span>
+<span class='curline'><a href='../S/101.html#L106'>err</a>               106 kern/dev/lamebus/lhd.c 	lh-&gt;lh_result = err;</span>
+<span class='curline'><a href='../S/214.html#L119'>err</a>               119 kern/test/fstest.c 	int err;</span>
+<span class='curline'><a href='../S/214.html#L124'>err</a>               124 kern/test/fstest.c 	err = vfs_remove(buf);</span>
+<span class='curline'><a href='../S/214.html#L125'>err</a>               125 kern/test/fstest.c 	if (err) {</span>
+<span class='curline'><a href='../S/214.html#L126'>err</a>               126 kern/test/fstest.c 		kprintf("Could not remove %s: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L139'>err</a>               139 kern/test/fstest.c 	int err;</span>
+<span class='curline'><a href='../S/214.html#L161'>err</a>               161 kern/test/fstest.c 	err = vfs_open(buf, flags, 0664, &amp;vn);</span>
+<span class='curline'><a href='../S/214.html#L162'>err</a>               162 kern/test/fstest.c 	if (err) {</span>
+<span class='curline'><a href='../S/214.html#L164'>err</a>               164 kern/test/fstest.c 			name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L176'>err</a>               176 kern/test/fstest.c 		err = VOP_WRITE(vn, &amp;ku);</span>
+<span class='curline'><a href='../S/214.html#L177'>err</a>               177 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L178'>err</a>               178 kern/test/fstest.c 			kprintf("%s: Write error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L216'>err</a>               216 kern/test/fstest.c 	int err;</span>
+<span class='curline'><a href='../S/214.html#L228'>err</a>               228 kern/test/fstest.c 	err = vfs_open(buf, O_RDONLY, 0664, &amp;vn);</span>
+<span class='curline'><a href='../S/214.html#L229'>err</a>               229 kern/test/fstest.c 	if (err) {</span>
+<span class='curline'><a href='../S/214.html#L231'>err</a>               231 kern/test/fstest.c 			strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L237'>err</a>               237 kern/test/fstest.c 		err = VOP_READ(vn, &amp;ku);</span>
+<span class='curline'><a href='../S/214.html#L238'>err</a>               238 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L239'>err</a>               239 kern/test/fstest.c 			kprintf("%s: Read error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L317'>err</a>               317 kern/test/fstest.c 	int i, err;</span>
+<span class='curline'><a href='../S/214.html#L329'>err</a>               329 kern/test/fstest.c 		err = thread_fork("readstress", NULL,</span>
+<span class='curline'><a href='../S/214.html#L331'>err</a>               331 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L333'>err</a>               333 kern/test/fstest.c 			      strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L384'>err</a>               384 kern/test/fstest.c 	int i, err;</span>
+<span class='curline'><a href='../S/214.html#L391'>err</a>               391 kern/test/fstest.c 		err = thread_fork("writestress", NULL,</span>
+<span class='curline'><a href='../S/214.html#L393'>err</a>               393 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L394'>err</a>               394 kern/test/fstest.c 			panic("thread_fork failed %s\n", strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L426'>err</a>               426 kern/test/fstest.c 	int i, err;</span>
+<span class='curline'><a href='../S/214.html#L436'>err</a>               436 kern/test/fstest.c 	err = vfs_open(name, O_WRONLY|O_CREAT|O_TRUNC, 0664, &amp;vn);</span>
+<span class='curline'><a href='../S/214.html#L437'>err</a>               437 kern/test/fstest.c 	if (err) {</span>
+<span class='curline'><a href='../S/214.html#L438'>err</a>               438 kern/test/fstest.c 		kprintf("Could not create test file: %s\n", strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L445'>err</a>               445 kern/test/fstest.c 		err = thread_fork("writestress2", NULL,</span>
+<span class='curline'><a href='../S/214.html#L447'>err</a>               447 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L449'>err</a>               449 kern/test/fstest.c 			      strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L511'>err</a>               511 kern/test/fstest.c 	int i, err;</span>
+<span class='curline'><a href='../S/214.html#L518'>err</a>               518 kern/test/fstest.c 		err = thread_fork("longstress", NULL,</span>
+<span class='curline'><a href='../S/214.html#L520'>err</a>               520 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L522'>err</a>               522 kern/test/fstest.c 			      strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L540'>err</a>               540 kern/test/fstest.c 	int i, err;</span>
+<span class='curline'><a href='../S/214.html#L556'>err</a>               556 kern/test/fstest.c 		err = vfs_open(buf, O_WRONLY|O_CREAT|O_TRUNC, 0664, &amp;vn);</span>
+<span class='curline'><a href='../S/214.html#L557'>err</a>               557 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L559'>err</a>               559 kern/test/fstest.c 				name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L567'>err</a>               567 kern/test/fstest.c 		err = VOP_WRITE(vn, &amp;ku);</span>
+<span class='curline'><a href='../S/214.html#L569'>err</a>               569 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L570'>err</a>               570 kern/test/fstest.c 			kprintf("%s: Write error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L596'>err</a>               596 kern/test/fstest.c 		err = vfs_open(buf, O_RDONLY, 0664, &amp;vn);</span>
+<span class='curline'><a href='../S/214.html#L597'>err</a>               597 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L599'>err</a>               599 kern/test/fstest.c 				name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L604'>err</a>               604 kern/test/fstest.c 		err = VOP_READ(vn, &amp;ku);</span>
+<span class='curline'><a href='../S/214.html#L606'>err</a>               606 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L607'>err</a>               607 kern/test/fstest.c 			kprintf("%s: Read error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L653'>err</a>               653 kern/test/fstest.c 	int i, err;</span>
+<span class='curline'><a href='../S/214.html#L660'>err</a>               660 kern/test/fstest.c 		err = thread_fork("createstress", NULL,</span>
+<span class='curline'><a href='../S/214.html#L662'>err</a>               662 kern/test/fstest.c 		if (err) {</span>
+<span class='curline'><a href='../S/214.html#L664'>err</a>               664 kern/test/fstest.c 			      strerror(err));</span>
+<span class='curline'><a href='../S/440.html#L64'>err</a>                64 userland/bin/cat/cat.c 				err(1, "stdout");</span>
+<span class='curline'><a href='../S/440.html#L73'>err</a>                73 userland/bin/cat/cat.c 		err(1, "%s", name);</span>
+<span class='curline'><a href='../S/440.html#L98'>err</a>                98 userland/bin/cat/cat.c 		err(1, "%s", file);</span>
+<span class='curline'><a href='../S/442.html#L54'>err</a>                54 userland/bin/cp/cp.c 		err(1, "%s", from);</span>
+<span class='curline'><a href='../S/442.html#L58'>err</a>                58 userland/bin/cp/cp.c 		err(1, "%s", to);</span>
+<span class='curline'><a href='../S/442.html#L76'>err</a>                76 userland/bin/cp/cp.c 				err(1, "%s", to);</span>
+<span class='curline'><a href='../S/442.html#L85'>err</a>                85 userland/bin/cp/cp.c 		err(1, "%s", from);</span>
+<span class='curline'><a href='../S/442.html#L89'>err</a>                89 userland/bin/cp/cp.c 		err(1, "%s: close", from);</span>
+<span class='curline'><a href='../S/442.html#L93'>err</a>                93 userland/bin/cp/cp.c 		err(1, "%s: close", to);</span>
+<span class='curline'><a href='../S/446.html#L54'>err</a>                54 userland/bin/ln/ln.c 		err(1, "%s", path);</span>
+<span class='curline'><a href='../S/446.html#L68'>err</a>                68 userland/bin/ln/ln.c 		err(1, "%s or %s", oldfile, newfile);</span>
+<span class='curline'><a href='../S/448.html#L100'>err</a>               100 userland/bin/ls/ls.c 		err(1, "%s", path);</span>
+<span class='curline'><a href='../S/448.html#L103'>err</a>               103 userland/bin/ls/ls.c 		err(1, "%s: fstat", path);</span>
+<span class='curline'><a href='../S/448.html#L146'>err</a>               146 userland/bin/ls/ls.c 			err(1, "%s", path);</span>
+<span class='curline'><a href='../S/448.html#L149'>err</a>               149 userland/bin/ls/ls.c 			err(1, "%s: fstat", path);</span>
+<span class='curline'><a href='../S/448.html#L209'>err</a>               209 userland/bin/ls/ls.c 		err(1, "%s", path);</span>
+<span class='curline'><a href='../S/448.html#L227'>err</a>               227 userland/bin/ls/ls.c 		err(1, "%s: getdirentry", path);</span>
+<span class='curline'><a href='../S/448.html#L248'>err</a>               248 userland/bin/ls/ls.c 		err(1, "%s", path);</span>
+<span class='curline'><a href='../S/448.html#L280'>err</a>               280 userland/bin/ls/ls.c 		err(1, "%s", path);</span>
+<span class='curline'><a href='../S/452.html#L50'>err</a>                50 userland/bin/mkdir/mkdir.c 		err(1, "%s", argv[1]);</span>
+<span class='curline'><a href='../S/454.html#L52'>err</a>                52 userland/bin/mv/mv.c 		err(1, "%s or %s", oldfile, newfile);</span>
+<span class='curline'><a href='../S/456.html#L51'>err</a>                51 userland/bin/pwd/pwd.c 		err(1, ".");</span>
+<span class='curline'><a href='../S/458.html#L44'>err</a>                44 userland/bin/rm/rm.c 		err(1, "%s", file);</span>
+<span class='curline'><a href='../S/460.html#L48'>err</a>                48 userland/bin/rmdir/rmdir.c 		err(1, "%s", argv[1]);</span>
+<span class='curline'><a href='../S/466.html#L97'>err</a>                97 userland/bin/tac/tac.c 		err(1, "%s: read", name);</span>
+<span class='curline'><a href='../S/466.html#L110'>err</a>               110 userland/bin/tac/tac.c 		err(1, "%s: write", name);</span>
+<span class='curline'><a href='../S/466.html#L126'>err</a>               126 userland/bin/tac/tac.c 		err(1, "%s: lseek", name);</span>
+<span class='curline'><a href='../S/466.html#L150'>err</a>               150 userland/bin/tac/tac.c 			err(1, "%s", name);</span>
+<span class='curline'><a href='../S/466.html#L238'>err</a>               238 userland/bin/tac/tac.c 		err(1, "%s", name);</span>
+<span class='curline'><a href='../S/466.html#L242'>err</a>               242 userland/bin/tac/tac.c 			err(1, "%s: remove", name);</span>
+<span class='curline'><a href='../S/470.html#L50'>err</a>                50 userland/include/err.h __DEAD void err(int exitcode, const char *fmt, ...);</span>
+<span class='curline'><a href='../S/498.html#L50'>err</a>                50 userland/lib/hostcompat/host-err.h void err(int exitcode, const char *fmt, ...);</span>
+<span class='curline'><a href='../S/508.html#L48'>err</a>                48 userland/lib/libc/stdio/printf.c 	int *err = mydata;</span>
+<span class='curline'><a href='../S/508.html#L51'>err</a>                51 userland/lib/libc/stdio/printf.c 	*err = (ret == -1) ? errno : 0;</span>
+<span class='curline'><a href='../S/508.html#L71'>err</a>                71 userland/lib/libc/stdio/printf.c 	int chars, err;</span>
+<span class='curline'><a href='../S/508.html#L72'>err</a>                72 userland/lib/libc/stdio/printf.c 	chars = __vprintf(__printf_send, &amp;err, fmt, ap);</span>
+<span class='curline'><a href='../S/508.html#L73'>err</a>                73 userland/lib/libc/stdio/printf.c 	if (err) {</span>
+<span class='curline'><a href='../S/508.html#L74'>err</a>                74 userland/lib/libc/stdio/printf.c 		errno = err;</span>
+<span class='curline'><a href='../S/514.html#L192'>err</a>               192 userland/lib/libc/stdlib/malloc.c 		err(1, "malloc: initial sbrk failed");</span>
+<span class='curline'><a href='../S/514.html#L210'>err</a>               210 userland/lib/libc/stdlib/malloc.c 			err(1, "malloc: sbrk failed aligning heap base");</span>
+<span class='curline'><a href='../S/514.html#L213'>err</a>               213 userland/lib/libc/stdlib/malloc.c 			err(1, "malloc: heap base moved during init");</span>
+<span class='curline'><a href='../S/529.html#L48'>err</a>                48 userland/lib/libtest/triple.c 		err(1, "fork");</span>
+<span class='curline'><a href='../S/529.html#L52'>err</a>                52 userland/lib/libtest/triple.c 		err(1, "%s: execv", prog);</span>
+<span class='curline'><a href='../S/537.html#L65'>err</a>                65 userland/sbin/mksfs/disk.c 		err(1, "%s", path);</span>
+<span class='curline'><a href='../S/537.html#L68'>err</a>                68 userland/sbin/mksfs/disk.c 		err(1, "%s: fstat", path);</span>
+<span class='curline'><a href='../S/537.html#L135'>err</a>               135 userland/sbin/mksfs/disk.c 		err(1, "lseek");</span>
+<span class='curline'><a href='../S/537.html#L144'>err</a>               144 userland/sbin/mksfs/disk.c 			err(1, "write");</span>
+<span class='curline'><a href='../S/537.html#L147'>err</a>               147 userland/sbin/mksfs/disk.c 			err(1, "write returned 0?");</span>
+<span class='curline'><a href='../S/537.html#L171'>err</a>               171 userland/sbin/mksfs/disk.c 		err(1, "lseek");</span>
+<span class='curline'><a href='../S/537.html#L180'>err</a>               180 userland/sbin/mksfs/disk.c 			err(1, "read");</span>
+<span class='curline'><a href='../S/537.html#L183'>err</a>               183 userland/sbin/mksfs/disk.c 			err(1, "unexpected EOF in mid-sector");</span>
+<span class='curline'><a href='../S/537.html#L197'>err</a>               197 userland/sbin/mksfs/disk.c 		err(1, "close");</span>
+<span class='curline'><a href='../S/572.html#L47'>err</a>                47 userland/testbin/badcall/bad_execv.c 	int pid, rv, status, err;</span>
+<span class='curline'><a href='../S/572.html#L56'>err</a>                56 userland/testbin/badcall/bad_execv.c 		err = errno;</span>
+<span class='curline'><a href='../S/572.html#L58'>err</a>                58 userland/testbin/badcall/bad_execv.c 		report_result(pid, err);</span>
+<span class='curline'><a href='../S/572.html#L70'>err</a>                70 userland/testbin/badcall/bad_execv.c 		err = errno;</span>
+<span class='curline'><a href='../S/572.html#L72'>err</a>                72 userland/testbin/badcall/bad_execv.c 		report_result(rv, err);</span>
+<span class='curline'><a href='../S/589.html#L63'>err</a>                63 userland/testbin/badcall/bad_sbrk.c enforce_sbrk(long val, const char *desc, int err)</span>
+<span class='curline'><a href='../S/589.html#L70'>err</a>                70 userland/testbin/badcall/bad_sbrk.c 	report_check(result, errno, err);</span>
+<span class='curline'><a href='../S/593.html#L50'>err</a>                50 userland/testbin/badcall/bad_waitpid.c 	int err;</span>
+<span class='curline'><a href='../S/593.html#L54'>err</a>                54 userland/testbin/badcall/bad_waitpid.c 	err = errno;</span>
+<span class='curline'><a href='../S/593.html#L56'>err</a>                56 userland/testbin/badcall/bad_waitpid.c 	if (pid &lt;= 0 &amp;&amp; rv == -1 &amp;&amp; err == ENOSYS) {</span>
+<span class='curline'><a href='../S/593.html#L57'>err</a>                57 userland/testbin/badcall/bad_waitpid.c 		err = ESRCH;</span>
+<span class='curline'><a href='../S/593.html#L59'>err</a>                59 userland/testbin/badcall/bad_waitpid.c 	else if (err == ENOSYS) {</span>
+<span class='curline'><a href='../S/593.html#L62'>err</a>                62 userland/testbin/badcall/bad_waitpid.c 	report_check2(rv, err, ESRCH, ECHILD);</span>
+<span class='curline'><a href='../S/603.html#L130'>err</a>               130 userland/testbin/bigexec/bigexec.c 	err(1, "execv");</span>
+<span class='curline'><a href='../S/603.html#L146'>err</a>               146 userland/testbin/bigexec/bigexec.c 	err(1, "execv");</span>
+<span class='curline'><a href='../S/603.html#L251'>err</a>               251 userland/testbin/bigexec/bigexec.c 		err(1, "argc is negative!?");</span>
+<span class='curline'><a href='../S/605.html#L86'>err</a>                86 userland/testbin/bigfile/bigfile.c 		err(1, "%s: create", filename);</span>
+<span class='curline'><a href='../S/605.html#L99'>err</a>                99 userland/testbin/bigfile/bigfile.c 			err(1, "%s: write", filename);</span>
+<span class='curline'><a href='../S/609.html#L83'>err</a>                83 userland/testbin/bigseek/bigseek.c 		err(1, "write");</span>
+<span class='curline'><a href='../S/609.html#L104'>err</a>               104 userland/testbin/bigseek/bigseek.c 		err(1, "read");</span>
+<span class='curline'><a href='../S/609.html#L152'>err</a>               152 userland/testbin/bigseek/bigseek.c 		err(1, "read");</span>
+<span class='curline'><a href='../S/609.html#L172'>err</a>               172 userland/testbin/bigseek/bigseek.c 		err(1, "lseek(fd, 0x%llx, %s)", pos, whencestr);</span>
+<span class='curline'><a href='../S/609.html#L221'>err</a>               221 userland/testbin/bigseek/bigseek.c 		err(1, "%s", TESTFILE);</span>
+<span class='curline'><a href='../S/611.html#L48'>err</a>                48 userland/testbin/bloat/bloat.c 			err(1, "After %u pages: sbrk", totalpages);</span>
+<span class='curline'><a href='../S/613.html#L49'>err</a>                49 userland/testbin/conman/conman.c 			err(1, "stdin: read");</span>
+<span class='curline'><a href='../S/615.html#L301'>err</a>               301 userland/testbin/crash/crash.c 			err(1, "fork");</span>
+<span class='curline'><a href='../S/615.html#L306'>err</a>               306 userland/testbin/crash/crash.c 				err(1, "waitpid");</span>
+<span class='curline'><a href='../S/621.html#L113'>err</a>               113 userland/testbin/dirseek/dirseek.c 		err(1, ".: open");</span>
+<span class='curline'><a href='../S/621.html#L122'>err</a>               122 userland/testbin/dirseek/dirseek.c 		err(1, ".: close");</span>
+<span class='curline'><a href='../S/621.html#L142'>err</a>               142 userland/testbin/dirseek/dirseek.c 		err(1, ".: lseek(0, SEEK_CUR)");</span>
+<span class='curline'><a href='../S/621.html#L168'>err</a>               168 userland/testbin/dirseek/dirseek.c 			err(1, ".: lseek(0, SEEK_CUR)");</span>
+<span class='curline'><a href='../S/621.html#L173'>err</a>               173 userland/testbin/dirseek/dirseek.c 		err(1, ".: entry %d: getdirentry", n);</span>
+<span class='curline'><a href='../S/621.html#L202'>err</a>               202 userland/testbin/dirseek/dirseek.c 		err(1, ".: lseek(0, SEEK_CUR)");</span>
+<span class='curline'><a href='../S/621.html#L223'>err</a>               223 userland/testbin/dirseek/dirseek.c 		err(1, ".: lseek(0, SEEK_SET)");</span>
+<span class='curline'><a href='../S/621.html#L241'>err</a>               241 userland/testbin/dirseek/dirseek.c 		err(1, ".: getdirentry");</span>
+<span class='curline'><a href='../S/621.html#L261'>err</a>               261 userland/testbin/dirseek/dirseek.c 		err(1, ".: lseek(%ld, SEEK_SET)", (long) testfiles[which].pos);</span>
+<span class='curline'><a href='../S/621.html#L310'>err</a>               310 userland/testbin/dirseek/dirseek.c 		err(1, ".: at EOF: getdirentry");</span>
+<span class='curline'><a href='../S/621.html#L334'>err</a>               334 userland/testbin/dirseek/dirseek.c 		err(1, ".: lseek(0, SEEK_END)");</span>
+<span class='curline'><a href='../S/621.html#L371'>err</a>               371 userland/testbin/dirseek/dirseek.c 		err(1, ".: lseek(0, SEEK_END)");</span>
+<span class='curline'><a href='../S/621.html#L470'>err</a>               470 userland/testbin/dirseek/dirseek.c 		err(1, "%s: create", name);</span>
+<span class='curline'><a href='../S/621.html#L475'>err</a>               475 userland/testbin/dirseek/dirseek.c 		err(1, "%s: write", name);</span>
+<span class='curline'><a href='../S/621.html#L482'>err</a>               482 userland/testbin/dirseek/dirseek.c 		err(1, "%s: close", name);</span>
+<span class='curline'><a href='../S/621.html#L496'>err</a>               496 userland/testbin/dirseek/dirseek.c 		err(1, "%s: mkdir", TESTDIR);</span>
+<span class='curline'><a href='../S/621.html#L501'>err</a>               501 userland/testbin/dirseek/dirseek.c 		err(1, "%s: chdir", TESTDIR);</span>
+<span class='curline'><a href='../S/621.html#L527'>err</a>               527 userland/testbin/dirseek/dirseek.c 				err(1, "%s: remove", testfiles[i].name);</span>
+<span class='curline'><a href='../S/621.html#L534'>err</a>               534 userland/testbin/dirseek/dirseek.c 		err(1, "..: chdir");</span>
+<span class='curline'><a href='../S/621.html#L539'>err</a>               539 userland/testbin/dirseek/dirseek.c 		err(1, "%s: rmdir", TESTDIR);</span>
+<span class='curline'><a href='../S/623.html#L64'>err</a>                64 userland/testbin/dirtest/dirtest.c 			err(1, "%s: mkdir", dirname);</span>
+<span class='curline'><a href='../S/623.html#L79'>err</a>                79 userland/testbin/dirtest/dirtest.c 			err(1, "%s: rmdir", dirname);</span>
+<span class='curline'><a href='../S/626.html#L86'>err</a>                86 userland/testbin/f_test/f_read.c 		err(1, "%s: open", FNAME);</span>
+<span class='curline'><a href='../S/626.html#L92'>err</a>                92 userland/testbin/f_test/f_read.c 			err(1, "%s: read", FNAME);</span>
+<span class='curline'><a href='../S/627.html#L132'>err</a>               132 userland/testbin/f_test/f_test.c 		err(1, "[BIGFILE]: %s: open for write", BIGFILE_NAME);</span>
+<span class='curline'><a href='../S/627.html#L153'>err</a>               153 userland/testbin/f_test/f_test.c 		err(1, "[BIGFILE]: %s: open for read", BIGFILE_NAME);</span>
+<span class='curline'><a href='../S/627.html#L159'>err</a>               159 userland/testbin/f_test/f_test.c 			err(1, "[BIGFILE]: read");</span>
+<span class='curline'><a href='../S/627.html#L181'>err</a>               181 userland/testbin/f_test/f_test.c 		err(1, "[BIGFILE]: %s: remove", BIGFILE_NAME);</span>
+<span class='curline'><a href='../S/627.html#L203'>err</a>               203 userland/testbin/f_test/f_test.c 		err(1, "[CONCUR]: %s: open", FNAME);</span>
+<span class='curline'><a href='../S/627.html#L232'>err</a>               232 userland/testbin/f_test/f_test.c 		err(1, "[CONCUR]: %s: remove", FNAME);</span>
+<span class='curline'><a href='../S/627.html#L259'>err</a>               259 userland/testbin/f_test/f_test.c 			err(1, "[DIRTEST]: %s: mkdir", dirname);</span>
+<span class='curline'><a href='../S/627.html#L267'>err</a>               267 userland/testbin/f_test/f_test.c 			err(1, "[DIRTEST]: %s: open", dirname);</span>
+<span class='curline'><a href='../S/627.html#L281'>err</a>               281 userland/testbin/f_test/f_test.c 			 err(1, "[DIRTEST]: %s: remove", dirname);</span>
+<span class='curline'><a href='../S/627.html#L288'>err</a>               288 userland/testbin/f_test/f_test.c 			err(1, "[DIRTEST]: %s: rmdir", dirname);</span>
+<span class='curline'><a href='../S/628.html#L74'>err</a>                74 userland/testbin/f_test/f_write.c 		err(1, "%s: open", FNAME);</span>
+<span class='curline'><a href='../S/630.html#L231'>err</a>               231 userland/testbin/factorial/factorial.c 	err(1, "execv");</span>
+<span class='curline'><a href='../S/632.html#L56'>err</a>                56 userland/testbin/farm/farm.c 		err(1, "fork");</span>
+<span class='curline'><a href='../S/632.html#L60'>err</a>                60 userland/testbin/farm/farm.c 		err(1, "%s", prog);</span>
+<span class='curline'><a href='../S/636.html#L68'>err</a>                68 userland/testbin/filetest/filetest.c 		err(1, "%s: open for write", file);</span>
+<span class='curline'><a href='../S/636.html#L74'>err</a>                74 userland/testbin/filetest/filetest.c 		err(1, "%s: write", file);</span>
+<span class='curline'><a href='../S/636.html#L79'>err</a>                79 userland/testbin/filetest/filetest.c 		err(1, "%s: close (1st time)", file);</span>
+<span class='curline'><a href='../S/636.html#L84'>err</a>                84 userland/testbin/filetest/filetest.c 		err(1, "%s: open for read", file);</span>
+<span class='curline'><a href='../S/636.html#L89'>err</a>                89 userland/testbin/filetest/filetest.c 		err(1, "%s: read", file);</span>
+<span class='curline'><a href='../S/636.html#L93'>err</a>                93 userland/testbin/filetest/filetest.c 		err(1, "%s: close (2nd time)", file);</span>
+<span class='curline'><a href='../S/636.html#L104'>err</a>               104 userland/testbin/filetest/filetest.c 		err(1, "%s: remove", file);</span>
+<span class='curline'><a href='../S/642.html#L1910'>err</a>              1910 userland/testbin/frack/check.c 		err(1, "%s: stat", dirnamestr);</span>
+<span class='curline'><a href='../S/642.html#L1915'>err</a>              1915 userland/testbin/frack/check.c 		err(1, "%s: chdir", dirnamestr);</span>
+<span class='curline'><a href='../S/642.html#L1923'>err</a>              1923 userland/testbin/frack/check.c 		err(1, "In %s: .: stat", dirnamestr);</span>
+<span class='curline'><a href='../S/642.html#L1939'>err</a>              1939 userland/testbin/frack/check.c 		err(1, "In %s: ..: stat", dirnamestr);</span>
+<span class='curline'><a href='../S/642.html#L1956'>err</a>              1956 userland/testbin/frack/check.c 		err(1, "In %s: .: open", dirnamestr);</span>
+<span class='curline'><a href='../S/642.html#L1979'>err</a>              1979 userland/testbin/frack/check.c 			err(1, "In %s: %s: stat", dirnamestr, subnamestr);</span>
+<span class='curline'><a href='../S/642.html#L2002'>err</a>              2002 userland/testbin/frack/check.c 		err(1, "In %s; ..: chdir", dirnamestr);</span>
+<span class='curline'><a href='../S/642.html#L2021'>err</a>              2021 userland/testbin/frack/check.c 		err(1, ".: stat");</span>
+<span class='curline'><a href='../S/642.html#L2332'>err</a>              2332 userland/testbin/frack/check.c 		err(1, "%s: lseek to %lld", namestr, start);</span>
+<span class='curline'><a href='../S/642.html#L2342'>err</a>              2342 userland/testbin/frack/check.c 			err(1, "%s: read %u at %lld", namestr, len, start);</span>
+<span class='curline'><a href='../S/642.html#L2402'>err</a>              2402 userland/testbin/frack/check.c 		err(1, "%s: lseek to %lld", namestr, checkstart);</span>
+<span class='curline'><a href='../S/642.html#L2408'>err</a>              2408 userland/testbin/frack/check.c 			err(1, "%s: read %u at %lld",</span>
+<span class='curline'><a href='../S/642.html#L2650'>err</a>              2650 userland/testbin/frack/check.c 		err(1, "%s: open", namestr);</span>
+<span class='curline'><a href='../S/642.html#L2786'>err</a>              2786 userland/testbin/frack/check.c 				err(1, "%s: chdir", namestr);</span>
+<span class='curline'><a href='../S/642.html#L2791'>err</a>              2791 userland/testbin/frack/check.c 				err(1, "..: chdir");</span>
+<span class='curline'><a href='../S/646.html#L51'>err</a>                51 userland/testbin/frack/do.c 		err(1, "%s: opendir", namestr);</span>
+<span class='curline'><a href='../S/646.html#L73'>err</a>                73 userland/testbin/frack/do.c 		err(1, "%s: create", namestr);</span>
+<span class='curline'><a href='../S/646.html#L88'>err</a>                88 userland/testbin/frack/do.c 		err(1, "%s: open", namestr);</span>
+<span class='curline'><a href='../S/646.html#L113'>err</a>               113 userland/testbin/frack/do.c 		err(1, "%s: lseek to %lld", name_get(name), pos);</span>
+<span class='curline'><a href='../S/646.html#L119'>err</a>               119 userland/testbin/frack/do.c 			err(1, "%s: write %lld at %lld", name_get(name),</span>
+<span class='curline'><a href='../S/646.html#L135'>err</a>               135 userland/testbin/frack/do.c 		err(1, "%s: truncate to %lld", namestr, len);</span>
+<span class='curline'><a href='../S/646.html#L147'>err</a>               147 userland/testbin/frack/do.c 		err(1, "%s: mkdir", namestr);</span>
+<span class='curline'><a href='../S/646.html#L159'>err</a>               159 userland/testbin/frack/do.c 		err(1, "%s: rmdir", namestr);</span>
+<span class='curline'><a href='../S/646.html#L171'>err</a>               171 userland/testbin/frack/do.c 		err(1, "%s: remove", namestr);</span>
+<span class='curline'><a href='../S/646.html#L184'>err</a>               184 userland/testbin/frack/do.c 		err(1, "link %s to %s", fromstr, tostr);</span>
+<span class='curline'><a href='../S/646.html#L197'>err</a>               197 userland/testbin/frack/do.c 		err(1, "rename %s to %s", fromstr, tostr);</span>
+<span class='curline'><a href='../S/646.html#L217'>err</a>               217 userland/testbin/frack/do.c 		err(1, "rename %s to %s", frombuf, tobuf);</span>
+<span class='curline'><a href='../S/646.html#L229'>err</a>               229 userland/testbin/frack/do.c 		err(1, "chdir: %s", namestr);</span>
+<span class='curline'><a href='../S/646.html#L238'>err</a>               238 userland/testbin/frack/do.c 		err(1, "chdir: ..");</span>
+<span class='curline'><a href='../S/657.html#L63'>err</a>                63 userland/testbin/frack/workloads.c 		err(1, "Invalid number %s", str);</span>
+<span class='curline'><a href='../S/659.html#L70'>err</a>                70 userland/testbin/hash/hash.c 		err(1, "%s", argv[1]);</span>
+<span class='curline'><a href='../S/667.html#L602'>err</a>               602 userland/testbin/malloctest/malloctest.c 		err(1, "%s", _PATH_RANDOM);</span>
+<span class='curline'><a href='../S/667.html#L606'>err</a>               606 userland/testbin/malloctest/malloctest.c 		err(1, "%s", _PATH_RANDOM);</span>
+<span class='curline'><a href='../S/672.html#L99'>err</a>                99 userland/testbin/multiexec/multiexec.c 		err(1, "%s: create", sem-&gt;name);</span>
+<span class='curline'><a href='../S/672.html#L110'>err</a>               110 userland/testbin/multiexec/multiexec.c 		err(1, "%s: open", sem-&gt;name);</span>
+<span class='curline'><a href='../S/672.html#L135'>err</a>               135 userland/testbin/multiexec/multiexec.c 		err(1, "%s: read", sem-&gt;name);</span>
+<span class='curline'><a href='../S/672.html#L150'>err</a>               150 userland/testbin/multiexec/multiexec.c 		err(1, "%s: write", sem-&gt;name);</span>
+<span class='curline'><a href='../S/676.html#L253'>err</a>               253 userland/testbin/parallelvm/parallelvm.c 		err(1, "%s: create", sem-&gt;name);</span>
+<span class='curline'><a href='../S/676.html#L264'>err</a>               264 userland/testbin/parallelvm/parallelvm.c 		err(1, "%s: open", sem-&gt;name);</span>
+<span class='curline'><a href='../S/676.html#L289'>err</a>               289 userland/testbin/parallelvm/parallelvm.c 		err(1, "%s: read", sem-&gt;name);</span>
+<span class='curline'><a href='../S/676.html#L304'>err</a>               304 userland/testbin/parallelvm/parallelvm.c 		err(1, "%s: write", sem-&gt;name);</span>
+<span class='curline'><a href='../S/676.html#L385'>err</a>               385 userland/testbin/parallelvm/parallelvm.c 				err(1, "waitpid");</span>
+<span class='curline'><a href='../S/680.html#L202'>err</a>               202 userland/testbin/psort/psort.c vscomplain(char *buf, size_t len, const char *fmt, va_list ap, int err)</span>
+<span class='curline'><a href='../S/680.html#L217'>err</a>               217 userland/testbin/psort/psort.c 	if (err &gt;= 0) {</span>
+<span class='curline'><a href='../S/680.html#L218'>err</a>               218 userland/testbin/psort/psort.c 		snprintf(buf+pos, len-pos, ": %s\n", strerror(err));</span>
+<span class='curline'><a href='../S/680.html#L254'>err</a>               254 userland/testbin/psort/psort.c 	int err = errno;</span>
+<span class='curline'><a href='../S/680.html#L257'>err</a>               257 userland/testbin/psort/psort.c 	vscomplain(buf, sizeof(buf), fmt, ap, err);</span>
+<span class='curline'><a href='../S/687.html#L61'>err</a>                61 userland/testbin/redirect/redirect.c 		err(1, "%s", path);</span>
+<span class='curline'><a href='../S/687.html#L74'>err</a>                74 userland/testbin/redirect/redirect.c 		err(1, "%s: dup2", file);</span>
+<span class='curline'><a href='../S/687.html#L101'>err</a>               101 userland/testbin/redirect/redirect.c 		err(1, "%s: write", INFILE);</span>
+<span class='curline'><a href='../S/687.html#L123'>err</a>               123 userland/testbin/redirect/redirect.c 		err(1, "%s: read", OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L149'>err</a>               149 userland/testbin/redirect/redirect.c 		err(1, "fork");</span>
+<span class='curline'><a href='../S/687.html#L171'>err</a>               171 userland/testbin/redirect/redirect.c 		err(1, "waitpid");</span>
+<span class='curline'><a href='../S/689.html#L63'>err</a>                63 userland/testbin/rmdirtest/rmdirtest.c 		err(1, "getcwd (not in test dir)");</span>
+<span class='curline'><a href='../S/689.html#L67'>err</a>                67 userland/testbin/rmdirtest/rmdirtest.c 		err(1, "%s: mkdir", testdir);</span>
+<span class='curline'><a href='../S/689.html#L71'>err</a>                71 userland/testbin/rmdirtest/rmdirtest.c 		err(1, "%s: chdir", testdir);</span>
+<span class='curline'><a href='../S/689.html#L91'>err</a>                91 userland/testbin/rmdirtest/rmdirtest.c 		err(1, "%s: rmdir", tmp);</span>
+<span class='curline'><a href='../S/689.html#L105'>err</a>               105 userland/testbin/rmdirtest/rmdirtest.c 		err(1, "%s: chdir", startpoint);</span>
+<span class='curline'><a href='../S/689.html#L143'>err</a>               143 userland/testbin/rmdirtest/rmdirtest.c 		err(1, ".: open");</span>
+<span class='curline'><a href='../S/689.html#L150'>err</a>               150 userland/testbin/rmdirtest/rmdirtest.c 		err(1, "removed %s: close", testdir);</span>
+<span class='curline'><a href='../S/689.html#L177'>err</a>               177 userland/testbin/rmdirtest/rmdirtest.c 			err(1, ".");</span>
+<span class='curline'><a href='../S/689.html#L193'>err</a>               193 userland/testbin/rmdirtest/rmdirtest.c 			err(1, "..");</span>
+<span class='curline'><a href='../S/689.html#L211'>err</a>               211 userland/testbin/rmdirtest/rmdirtest.c 			err(1, "%s", buf);</span>
+<span class='curline'><a href='../S/689.html#L245'>err</a>               245 userland/testbin/rmdirtest/rmdirtest.c 			err(1, "%s", buf);</span>
+<span class='curline'><a href='../S/689.html#L286'>err</a>               286 userland/testbin/rmdirtest/rmdirtest.c 			err(1, "mkdir in removed dir");</span>
+<span class='curline'><a href='../S/689.html#L322'>err</a>               322 userland/testbin/rmdirtest/rmdirtest.c 		err(1, ".: open");</span>
+<span class='curline'><a href='../S/689.html#L346'>err</a>               346 userland/testbin/rmdirtest/rmdirtest.c 			err(1, ".: getdirentry");</span>
+<span class='curline'><a href='../S/689.html#L355'>err</a>               355 userland/testbin/rmdirtest/rmdirtest.c 		err(1, "removed %s: close", testdir);</span>
+<span class='curline'><a href='../S/689.html#L377'>err</a>               377 userland/testbin/rmdirtest/rmdirtest.c 			err(1, "getcwd after removing %s", testdir);</span>
+<span class='curline'><a href='../S/691.html#L68'>err</a>                68 userland/testbin/rmtest/rmtest.c 		err(1, "fork");</span>
+<span class='curline'><a href='../S/691.html#L74'>err</a>                74 userland/testbin/rmtest/rmtest.c 			err(1, "%s: remove", TEST);</span>
+<span class='curline'><a href='../S/691.html#L80'>err</a>                80 userland/testbin/rmtest/rmtest.c 		err(1, "waitpid");</span>
+<span class='curline'><a href='../S/691.html#L126'>err</a>               126 userland/testbin/rmtest/rmtest.c 		err(1, "lseek");</span>
+<span class='curline'><a href='../S/691.html#L157'>err</a>               157 userland/testbin/rmtest/rmtest.c 		err(1, "Unexpected error reopening the file");</span>
+<span class='curline'><a href='../S/693.html#L94'>err</a>                94 userland/testbin/sbrktest/sbrktest.c 		err(1, "%s", _PATH_RANDOM);</span>
+<span class='curline'><a href='../S/693.html#L98'>err</a>                98 userland/testbin/sbrktest/sbrktest.c 		err(1, "%s", _PATH_RANDOM);</span>
+<span class='curline'><a href='../S/693.html#L116'>err</a>               116 userland/testbin/sbrktest/sbrktest.c 		err(1, "fork");</span>
+<span class='curline'><a href='../S/693.html#L130'>err</a>               130 userland/testbin/sbrktest/sbrktest.c 		err(1, "waitpid");</span>
+<span class='curline'><a href='../S/693.html#L266'>err</a>               266 userland/testbin/sbrktest/sbrktest.c 		err(1, "FAILED: sbrk");</span>
+<span class='curline'><a href='../S/694.html#L165'>err</a>               165 userland/testbin/schedpong/grind.c 		err(1, "malloc");</span>
+<span class='curline'><a href='../S/695.html#L71'>err</a>                71 userland/testbin/schedpong/main.c 		err(1, "waitpid");</span>
+<span class='curline'><a href='../S/695.html#L106'>err</a>               106 userland/testbin/schedpong/main.c 			err(1, "fork");</span>
+<span class='curline'><a href='../S/695.html#L157'>err</a>               157 userland/testbin/schedpong/main.c 		err(1, "fork");</span>
+<span class='curline'><a href='../S/697.html#L64'>err</a>                64 userland/testbin/schedpong/pong.c 		err(1, "pong: too many pongers -- recompile pong.c");</span>
+<span class='curline'><a href='../S/698.html#L56'>err</a>                56 userland/testbin/schedpong/results.c 		err(1, "%s", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L91'>err</a>                91 userland/testbin/schedpong/results.c 		err(1, "%s", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L122'>err</a>               122 userland/testbin/schedpong/results.c 		err(1, "%s: lseek", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L126'>err</a>               126 userland/testbin/schedpong/results.c 		err(1, "%s: write (seconds)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L133'>err</a>               133 userland/testbin/schedpong/results.c 		err(1, "%s: write (nsecs)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L153'>err</a>               153 userland/testbin/schedpong/results.c 		err(1, "%s: lseek", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L157'>err</a>               157 userland/testbin/schedpong/results.c 		err(1, "%s: read (seconds)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/698.html#L164'>err</a>               164 userland/testbin/schedpong/results.c 		err(1, "%s: read (nsecs)", RESULTSFILE);</span>
+<span class='curline'><a href='../S/702.html#L55'>err</a>                55 userland/testbin/schedpong/usem.c 		err(1, "%s: create", sem-&gt;name);</span>
+<span class='curline'><a href='../S/702.html#L66'>err</a>                66 userland/testbin/schedpong/usem.c 		err(1, "%s: open", sem-&gt;name);</span>
+<span class='curline'><a href='../S/702.html#L92'>err</a>                92 userland/testbin/schedpong/usem.c 		err(1, "%s: read", sem-&gt;name);</span>
+<span class='curline'><a href='../S/702.html#L116'>err</a>               116 userland/testbin/schedpong/usem.c 		err(1, "%s: write", sem-&gt;name);</span>
+<span class='curline'><a href='../S/707.html#L63'>err</a>                63 userland/testbin/sparsefile/sparsefile.c 		err(1, "Sparse files of length zero are not meaningful");</span>
+<span class='curline'><a href='../S/707.html#L70'>err</a>                70 userland/testbin/sparsefile/sparsefile.c 		err(1, "%s: create", filename);</span>
+<span class='curline'><a href='../S/707.html#L74'>err</a>                74 userland/testbin/sparsefile/sparsefile.c 		err(1, "%s: lseek", filename);</span>
+<span class='curline'><a href='../S/707.html#L78'>err</a>                78 userland/testbin/sparsefile/sparsefile.c 		err(1, "%s: write", filename);</span>
+<span class='curline'><a href='../S/709.html#L57'>err</a>                57 userland/testbin/tail/tail.c 		err(1, "%s", filename);</span>
+<span class='curline'><a href='../S/709.html#L75'>err</a>                75 userland/testbin/tail/tail.c 		err(1, "%s", argv[1]);</span>
+<span class='curline'><a href='../S/719.html#L128'>err</a>               128 userland/testbin/usemtest/usemtest.c 		err(1, "%s: create", sem-&gt;name);</span>
+<span class='curline'><a href='../S/719.html#L140'>err</a>               140 userland/testbin/usemtest/usemtest.c 		err(1, "%s: open", sem-&gt;name);</span>
+<span class='curline'><a href='../S/719.html#L169'>err</a>               169 userland/testbin/usemtest/usemtest.c 		err(1, "%s: read", sem-&gt;name);</span>
+<span class='curline'><a href='../S/719.html#L185'>err</a>               185 userland/testbin/usemtest/usemtest.c 		err(1, "%s: write", sem-&gt;name);</span>
+<span class='curline'><a href='../S/719.html#L299'>err</a>               299 userland/testbin/usemtest/usemtest.c 			err(1, "fork");</span>
+<span class='curline'><a href='../S/719.html#L358'>err</a>               358 userland/testbin/usemtest/usemtest.c 			err(1, "fork");</span>
+<span class='curline'><a href='../S/723.html#L118'>err</a>               118 userland/testbin/zero/zero.c 		err(1, "sbrk");</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>lamebus_softc</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/73.html#L84'>lamebus_softc</a>      84 kern/arch/sys161/dev/lamebus_machdep.c static struct lamebus_softc *lamebus;</span>
+<span class='curline'><a href='../S/73.html#L137'>lamebus_softc</a>     137 kern/arch/sys161/dev/lamebus_machdep.c lamebus_map_area(struct lamebus_softc *bus, int slot, uint32_t offset)</span>
+<span class='curline'><a href='../S/73.html#L153'>lamebus_softc</a>     153 kern/arch/sys161/dev/lamebus_machdep.c lamebus_read_register(struct lamebus_softc *bus, int slot, uint32_t offset)</span>
+<span class='curline'><a href='../S/73.html#L172'>lamebus_softc</a>     172 kern/arch/sys161/dev/lamebus_machdep.c lamebus_write_register(struct lamebus_softc *bus, int slot,</span>
+<span class='curline'><a href='../S/98.html#L44'>lamebus_softc</a>      44 kern/dev/lamebus/emu_att.c attach_emu_to_lamebus(int emuno, struct lamebus_softc *sc)</span>
+<span class='curline'><a href='../S/99.html#L68'>lamebus_softc</a>      68 kern/dev/lamebus/lamebus.c read_cfg_register(struct lamebus_softc *lb, int slot, uint32_t offset)</span>
+<span class='curline'><a href='../S/99.html#L81'>lamebus_softc</a>      81 kern/dev/lamebus/lamebus.c write_cfg_register(struct lamebus_softc *lb, int slot, uint32_t offset,</span>
+<span class='curline'><a href='../S/99.html#L94'>lamebus_softc</a>      94 kern/dev/lamebus/lamebus.c read_ctl_register(struct lamebus_softc *lb, uint32_t offset)</span>
+<span class='curline'><a href='../S/99.html#L106'>lamebus_softc</a>     106 kern/dev/lamebus/lamebus.c write_ctl_register(struct lamebus_softc *lb, uint32_t offset, uint32_t val)</span>
+<span class='curline'><a href='../S/99.html#L117'>lamebus_softc</a>     117 kern/dev/lamebus/lamebus.c write_ctlcpu_register(struct lamebus_softc *lb, unsigned hw_cpunum,</span>
+<span class='curline'><a href='../S/99.html#L128'>lamebus_softc</a>     128 kern/dev/lamebus/lamebus.c lamebus_find_cpus(struct lamebus_softc *lamebus)</span>
+<span class='curline'><a href='../S/99.html#L197'>lamebus_softc</a>     197 kern/dev/lamebus/lamebus.c lamebus_start_cpus(struct lamebus_softc *lamebus)</span>
+<span class='curline'><a href='../S/99.html#L251'>lamebus_softc</a>     251 kern/dev/lamebus/lamebus.c lamebus_probe(struct lamebus_softc *sc,</span>
+<span class='curline'><a href='../S/99.html#L310'>lamebus_softc</a>     310 kern/dev/lamebus/lamebus.c lamebus_mark(struct lamebus_softc *sc, int slot)</span>
+<span class='curline'><a href='../S/99.html#L330'>lamebus_softc</a>     330 kern/dev/lamebus/lamebus.c lamebus_unmark(struct lamebus_softc *sc, int slot)</span>
+<span class='curline'><a href='../S/99.html#L351'>lamebus_softc</a>     351 kern/dev/lamebus/lamebus.c lamebus_attach_interrupt(struct lamebus_softc *sc, int slot,</span>
+<span class='curline'><a href='../S/99.html#L379'>lamebus_softc</a>     379 kern/dev/lamebus/lamebus.c lamebus_detach_interrupt(struct lamebus_softc *sc, int slot)</span>
+<span class='curline'><a href='../S/99.html#L403'>lamebus_softc</a>     403 kern/dev/lamebus/lamebus.c lamebus_mask_interrupt(struct lamebus_softc *lamebus, int slot)</span>
+<span class='curline'><a href='../S/99.html#L416'>lamebus_softc</a>     416 kern/dev/lamebus/lamebus.c lamebus_unmask_interrupt(struct lamebus_softc *lamebus, int slot)</span>
+<span class='curline'><a href='../S/99.html#L433'>lamebus_softc</a>     433 kern/dev/lamebus/lamebus.c lamebus_interrupt(struct lamebus_softc *lamebus)</span>
+<span class='curline'><a href='../S/99.html#L582'>lamebus_softc</a>     582 kern/dev/lamebus/lamebus.c lamebus_poweroff(struct lamebus_softc *lamebus)</span>
+<span class='curline'><a href='../S/99.html#L615'>lamebus_softc</a>     615 kern/dev/lamebus/lamebus.c lamebus_assert_ipi(struct lamebus_softc *lamebus, struct cpu *target)</span>
+<span class='curline'><a href='../S/99.html#L625'>lamebus_softc</a>     625 kern/dev/lamebus/lamebus.c lamebus_clear_ipi(struct lamebus_softc *lamebus, struct cpu *target)</span>
+<span class='curline'><a href='../S/99.html#L638'>lamebus_softc</a>     638 kern/dev/lamebus/lamebus.c struct lamebus_softc *</span>
+<span class='curline'><a href='../S/99.html#L641'>lamebus_softc</a>     641 kern/dev/lamebus/lamebus.c 	struct lamebus_softc *lamebus;</span>
+<span class='curline'><a href='../S/99.html#L645'>lamebus_softc</a>     645 kern/dev/lamebus/lamebus.c 	lamebus = kmalloc(sizeof(struct lamebus_softc));</span>
+<span class='curline'><a href='../S/100.html#L97'>lamebus_softc</a>      97 kern/dev/lamebus/lamebus.h struct lamebus_softc *lamebus_init(void);</span>
+<span class='curline'><a href='../S/100.html#L102'>lamebus_softc</a>     102 kern/dev/lamebus/lamebus.h void lamebus_find_cpus(struct lamebus_softc *lamebus);</span>
+<span class='curline'><a href='../S/100.html#L107'>lamebus_softc</a>     107 kern/dev/lamebus/lamebus.h void lamebus_start_cpus(struct lamebus_softc *lamebus);</span>
+<span class='curline'><a href='../S/100.html#L116'>lamebus_softc</a>     116 kern/dev/lamebus/lamebus.h int lamebus_probe(struct lamebus_softc *,</span>
+<span class='curline'><a href='../S/100.html#L125'>lamebus_softc</a>     125 kern/dev/lamebus/lamebus.h void lamebus_mark(struct lamebus_softc *, int slot);</span>
+<span class='curline'><a href='../S/100.html#L126'>lamebus_softc</a>     126 kern/dev/lamebus/lamebus.h void lamebus_unmark(struct lamebus_softc *, int slot);</span>
+<span class='curline'><a href='../S/100.html#L131'>lamebus_softc</a>     131 kern/dev/lamebus/lamebus.h void lamebus_attach_interrupt(struct lamebus_softc *, int slot,</span>
+<span class='curline'><a href='../S/100.html#L137'>lamebus_softc</a>     137 kern/dev/lamebus/lamebus.h void lamebus_detach_interrupt(struct lamebus_softc *, int slot);</span>
+<span class='curline'><a href='../S/100.html#L142'>lamebus_softc</a>     142 kern/dev/lamebus/lamebus.h void lamebus_mask_interrupt(struct lamebus_softc *, int slot);</span>
+<span class='curline'><a href='../S/100.html#L143'>lamebus_softc</a>     143 kern/dev/lamebus/lamebus.h void lamebus_unmask_interrupt(struct lamebus_softc *, int slot);</span>
+<span class='curline'><a href='../S/100.html#L148'>lamebus_softc</a>     148 kern/dev/lamebus/lamebus.h void lamebus_interrupt(struct lamebus_softc *);</span>
+<span class='curline'><a href='../S/100.html#L153'>lamebus_softc</a>     153 kern/dev/lamebus/lamebus.h void lamebus_poweroff(struct lamebus_softc *);</span>
+<span class='curline'><a href='../S/100.html#L163'>lamebus_softc</a>     163 kern/dev/lamebus/lamebus.h void lamebus_assert_ipi(struct lamebus_softc *, struct cpu *targetcpu);</span>
+<span class='curline'><a href='../S/100.html#L164'>lamebus_softc</a>     164 kern/dev/lamebus/lamebus.h void lamebus_clear_ipi(struct lamebus_softc *, struct cpu *targetcpu);</span>
+<span class='curline'><a href='../S/100.html#L170'>lamebus_softc</a>     170 kern/dev/lamebus/lamebus.h uint32_t lamebus_read_register(struct lamebus_softc *, int slot,</span>
+<span class='curline'><a href='../S/100.html#L172'>lamebus_softc</a>     172 kern/dev/lamebus/lamebus.h void lamebus_write_register(struct lamebus_softc *, int slot,</span>
+<span class='curline'><a href='../S/100.html#L178'>lamebus_softc</a>     178 kern/dev/lamebus/lamebus.h void *lamebus_map_area(struct lamebus_softc *, int slot,</span>
+<span class='curline'><a href='../S/103.html#L43'>lamebus_softc</a>      43 kern/dev/lamebus/lhd_att.c attach_lhd_to_lamebus(int lhdno, struct lamebus_softc *sc)</span>
+<span class='curline'><a href='../S/105.html#L41'>lamebus_softc</a>      41 kern/dev/lamebus/lnet_att.c attach_lnet_to_lamebus(int lnetno, struct lamebus_softc *sc)</span>
+<span class='curline'><a href='../S/108.html#L40'>lamebus_softc</a>      40 kern/dev/lamebus/lrandom_att.c attach_lrandom_to_lamebus(int lrandomno, struct lamebus_softc *sc)</span>
+<span class='curline'><a href='../S/111.html#L45'>lamebus_softc</a>      45 kern/dev/lamebus/lscreen_att.c attach_lscreen_to_lamebus(int lscreenno, struct lamebus_softc *sc)</span>
+<span class='curline'><a href='../S/114.html#L40'>lamebus_softc</a>      40 kern/dev/lamebus/lser_att.c attach_lser_to_lamebus(int lserno, struct lamebus_softc *sc)</span>
+<span class='curline'><a href='../S/117.html#L43'>lamebus_softc</a>      43 kern/dev/lamebus/ltimer_att.c attach_ltimer_to_lamebus(int ltimerno, struct lamebus_softc *sc)</span>
+<span class='curline'><a href='../S/120.html#L44'>lamebus_softc</a>      44 kern/dev/lamebus/ltrace_att.c attach_ltrace_to_lamebus(int ltraceno, struct lamebus_softc *sc)</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/lib/hostcompat/hostcompat.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/781.html'>lib</a>/<a href='../files/784.html'>hostcompat</a>/hostcompat.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L56'>[^]</a><a href='#L188'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L56' title='Defined at 56.'>hostcompat_ttyreset</a></li>
+<li><a href='#L66' title='Defined at 66.'>hostcompat_ttyresume</a></li>
+<li><a href='#L76' title='Defined at 76.'>hostcompat_ttysetup</a></li>
+<li><a href='#L130' title='Defined at 130.'>hostcompat_die</a></li>
+<li><a href='#L150' title='Defined at 150.'>hostcompat_stop</a></li>
+<li><a href='#L167' title='Defined at 167.'>hostcompat_cont</a></li>
+<li><a href='#L188' title='Defined at 188.'>hostcompat_init</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>unistd.h</a>&gt;
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#include</em> &lt;termios.h&gt;
+<a id='L32' name='L32'></a>  32 <em class='sharp'>#include</em> &lt;<a href='../I/41.html'>signal.h</a>&gt;
+<a id='L33' name='L33'></a>  33 <em class='sharp'>#include</em> &lt;<a href='480.html'>stdlib.h</a>&gt;
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='479.html'>stdio.h</a>&gt;
+<a id='L35' name='L35'></a>  35 
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> "<a href='500.html'>hostcompat.h</a>"
+<a id='L37' name='L37'></a>  37 
+<a id='L38' name='L38'></a>  38 <em class='comment'>/*</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * The program name.</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> * This is used in err.c.</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> */</em>
+<a id='L42' name='L42'></a>  42 <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *hostcompat_progname = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L43' name='L43'></a>  43 
+<a id='L44' name='L44'></a>  44 <em class='comment'>/*</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> * Unix tty state, for when we're running and to put it back the way it was,</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> * respectively.</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> */</em>
+<a id='L48' name='L48'></a>  48 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> termios hostcompat_runtios;
+<a id='L49' name='L49'></a>  49 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> termios hostcompat_savetios;
+<a id='L50' name='L50'></a>  50 
+<a id='L51' name='L51'></a>  51 <em class='comment'>/*</em>
+<a id='L52' name='L52'></a>  52 <em class='comment'> * Put the tty state back the way it was.</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'> */</em>
+<a id='L54' name='L54'></a>  54 <strong class='reserved'>static</strong>
+<a id='L55' name='L55'></a>  55 <strong class='reserved'>void</strong>
+<a id='L56' name='L56'></a>  56 <a href='../R/1476.html' title='Multiple referred from 3 places.'>hostcompat_ttyreset</a>(<strong class='reserved'>void</strong>)
+<a id='L57' name='L57'></a>  57 <em class='brace'>{</em>
+<a id='L58' name='L58'></a>  58         tcsetattr(<a href='../S/170.html#L34' title='Defined at 34 in kern/include/kern/unistd.h.'>STDIN_FILENO</a>, TCSADRAIN, &amp;hostcompat_savetios);
+<a id='L59' name='L59'></a>  59 <em class='brace'>}</em>
+<a id='L60' name='L60'></a>  60 
+<a id='L61' name='L61'></a>  61 <em class='comment'>/*</em>
+<a id='L62' name='L62'></a>  62 <em class='comment'> * Set the tty state back to the way we want it for running.</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'> */</em>
+<a id='L64' name='L64'></a>  64 <strong class='reserved'>static</strong>
+<a id='L65' name='L65'></a>  65 <strong class='reserved'>void</strong>
+<a id='L66' name='L66'></a>  66 <a href='../S/499.html#L172' title='Referred from 172 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_ttyresume</a>(<strong class='reserved'>void</strong>)
+<a id='L67' name='L67'></a>  67 <em class='brace'>{</em>
+<a id='L68' name='L68'></a>  68         tcsetattr(<a href='../S/170.html#L34' title='Defined at 34 in kern/include/kern/unistd.h.'>STDIN_FILENO</a>, TCSADRAIN, &amp;hostcompat_runtios);
+<a id='L69' name='L69'></a>  69 <em class='brace'>}</em>
+<a id='L70' name='L70'></a>  70 
+<a id='L71' name='L71'></a>  71 <em class='comment'>/*</em>
+<a id='L72' name='L72'></a>  72 <em class='comment'> * Set up the tty state stuff.</em>
+<a id='L73' name='L73'></a>  73 <em class='comment'> */</em>
+<a id='L74' name='L74'></a>  74 <strong class='reserved'>static</strong>
+<a id='L75' name='L75'></a>  75 <strong class='reserved'>int</strong>
+<a id='L76' name='L76'></a>  76 <a href='../S/499.html#L196' title='Referred from 196 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_ttysetup</a>(<strong class='reserved'>void</strong>)
+<a id='L77' name='L77'></a>  77 <em class='brace'>{</em>
+<a id='L78' name='L78'></a>  78         <strong class='reserved'>struct</strong> termios tios;
+<a id='L79' name='L79'></a>  79 
+<a id='L80' name='L80'></a>  80         <em class='comment'>/* Get the current tty state. */</em>
+<a id='L81' name='L81'></a>  81         <strong class='reserved'>if</strong> (tcgetattr(<a href='../S/170.html#L34' title='Defined at 34 in kern/include/kern/unistd.h.'>STDIN_FILENO</a>, &amp;tios) &lt; 0) <em class='brace'>{</em>
+<a id='L82' name='L82'></a>  82                 <em class='comment'>/* stdin is not a tty */</em>
+<a id='L83' name='L83'></a>  83                 <strong class='reserved'>return</strong> -1;
+<a id='L84' name='L84'></a>  84         <em class='brace'>}</em>
+<a id='L85' name='L85'></a>  85 
+<a id='L86' name='L86'></a>  86         hostcompat_savetios = tios;
+<a id='L87' name='L87'></a>  87 
+<a id='L88' name='L88'></a>  88         <em class='comment'>/* Turn off canonical ("cooked") input. */</em>
+<a id='L89' name='L89'></a>  89         tios.c_lflag &amp;= ~ICANON;
+<a id='L90' name='L90'></a>  90 
+<a id='L91' name='L91'></a>  91         <em class='comment'>/*</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'>         * With canonical input off, this says how many characters must be</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'>         * typed before read() will return.</em>
+<a id='L94' name='L94'></a>  94 <em class='comment'>         */</em>
+<a id='L95' name='L95'></a>  95         tios.c_cc[VMIN] = 1;
+<a id='L96' name='L96'></a>  96 
+<a id='L97' name='L97'></a>  97         <em class='comment'>/* This can be used to set up read timeouts, but we don't need that. */</em>
+<a id='L98' name='L98'></a>  98         tios.c_cc[VTIME] = 0;
+<a id='L99' name='L99'></a>  99 
+<a id='L100' name='L100'></a> 100         <em class='comment'>/* Turn off echoing of keypresses. */</em>
+<a id='L101' name='L101'></a> 101         tios.c_lflag &amp;= ~(ECHO|ECHONL|ECHOCTL);
+<a id='L102' name='L102'></a> 102 
+<a id='L103' name='L103'></a> 103         <em class='comment'>/* Do not support XON/XOFF flow control. */</em>
+<a id='L104' name='L104'></a> 104         tios.c_iflag &amp;= ~(IXON|IXOFF);
+<a id='L105' name='L105'></a> 105 
+<a id='L106' name='L106'></a> 106         <em class='comment'>/* On input, we want no CR/LF translation. */</em>
+<a id='L107' name='L107'></a> 107         tios.c_iflag &amp;= ~(INLCR|IGNCR|ICRNL);
+<a id='L108' name='L108'></a> 108 
+<a id='L109' name='L109'></a> 109         <em class='comment'>/* However, on output we want LF ('\n') mapped to CRLF. */</em>
+<a id='L110' name='L110'></a> 110 <em class='sharp'>#ifdef</em> OCRNL    <em class='comment'>/* missing on OS X */</em>
+<a id='L111' name='L111'></a> 111         tios.c_oflag &amp;= ~(OCRNL);
+<a id='L112' name='L112'></a> 112 <em class='sharp'>#endif</em>
+<a id='L113' name='L113'></a> 113         tios.c_oflag |= OPOST|ONLCR;
+<a id='L114' name='L114'></a> 114 
+<a id='L115' name='L115'></a> 115         <em class='comment'>/* Enable keyboard signals (^C, ^Z, etc.) because they're useful. */</em>
+<a id='L116' name='L116'></a> 116         tios.c_lflag |= ISIG;
+<a id='L117' name='L117'></a> 117 
+<a id='L118' name='L118'></a> 118         <em class='comment'>/* Set the new tty state. */</em>
+<a id='L119' name='L119'></a> 119         hostcompat_runtios = tios;
+<a id='L120' name='L120'></a> 120         tcsetattr(<a href='../S/170.html#L34' title='Defined at 34 in kern/include/kern/unistd.h.'>STDIN_FILENO</a>, TCSADRAIN, &amp;tios);
+<a id='L121' name='L121'></a> 121 
+<a id='L122' name='L122'></a> 122         <strong class='reserved'>return</strong> 0;
+<a id='L123' name='L123'></a> 123 <em class='brace'>}</em>
+<a id='L124' name='L124'></a> 124 
+<a id='L125' name='L125'></a> 125 <em class='comment'>/*</em>
+<a id='L126' name='L126'></a> 126 <em class='comment'> * Signal handler for all the fatal signals (SIGSEGV, SIGTERM, etc.)</em>
+<a id='L127' name='L127'></a> 127 <em class='comment'> */</em>
+<a id='L128' name='L128'></a> 128 <strong class='reserved'>static</strong>
+<a id='L129' name='L129'></a> 129 <strong class='reserved'>void</strong>
+<a id='L130' name='L130'></a> 130 <a href='../R/1472.html' title='Multiple referred from 20 places.'>hostcompat_die</a>(<strong class='reserved'>int</strong> sig)
+<a id='L131' name='L131'></a> 131 <em class='brace'>{</em>
+<a id='L132' name='L132'></a> 132         <em class='comment'>/* Set the tty back to the way we found it */</em>
+<a id='L133' name='L133'></a> 133         <a href='../S/499.html#L56' title='Defined at 56 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_ttyreset</a>();
+<a id='L134' name='L134'></a> 134 
+<a id='L135' name='L135'></a> 135         <em class='comment'>/* Make sure the default action will occur when we get another signal*/</em>
+<a id='L136' name='L136'></a> 136         signal(sig, <a href='../S/163.html#L108' title='Defined at 108 in kern/include/kern/signal.h.'>SIG_DFL</a>);
+<a id='L137' name='L137'></a> 137 
+<a id='L138' name='L138'></a> 138         <em class='comment'>/* Post the signal back to ourselves, to cause the right exit status.*/</em>
+<a id='L139' name='L139'></a> 139         kill(getpid(), sig);
+<a id='L140' name='L140'></a> 140 
+<a id='L141' name='L141'></a> 141         <em class='comment'>/* Just in case. */</em>
+<a id='L142' name='L142'></a> 142         _exit(255);
+<a id='L143' name='L143'></a> 143 <em class='brace'>}</em>
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145 <em class='comment'>/*</em>
+<a id='L146' name='L146'></a> 146 <em class='comment'> * Signal handler for the stop signals (SIGTSTP, SIGTTIN, etc.)</em>
+<a id='L147' name='L147'></a> 147 <em class='comment'> */</em>
+<a id='L148' name='L148'></a> 148 <strong class='reserved'>static</strong>
+<a id='L149' name='L149'></a> 149 <strong class='reserved'>void</strong>
+<a id='L150' name='L150'></a> 150 <a href='../R/1475.html' title='Multiple referred from 6 places.'>hostcompat_stop</a>(<strong class='reserved'>int</strong> sig)
+<a id='L151' name='L151'></a> 151 <em class='brace'>{</em>
+<a id='L152' name='L152'></a> 152         <em class='comment'>/* Set the tty back to the way we found it */</em>
+<a id='L153' name='L153'></a> 153         <a href='../S/499.html#L56' title='Defined at 56 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_ttyreset</a>();
+<a id='L154' name='L154'></a> 154 
+<a id='L155' name='L155'></a> 155         <em class='comment'>/* Make sure the default action will occur when we get another signal*/</em>
+<a id='L156' name='L156'></a> 156         signal(sig, <a href='../S/163.html#L108' title='Defined at 108 in kern/include/kern/signal.h.'>SIG_DFL</a>);
+<a id='L157' name='L157'></a> 157 
+<a id='L158' name='L158'></a> 158         <em class='comment'>/* Post the signal back to ourselves. */</em>
+<a id='L159' name='L159'></a> 159         kill(getpid(), sig);
+<a id='L160' name='L160'></a> 160 <em class='brace'>}</em>
+<a id='L161' name='L161'></a> 161 
+<a id='L162' name='L162'></a> 162 <em class='comment'>/*</em>
+<a id='L163' name='L163'></a> 163 <em class='comment'> * Signal handler for SIGCONT.</em>
+<a id='L164' name='L164'></a> 164 <em class='comment'> */</em>
+<a id='L165' name='L165'></a> 165 <strong class='reserved'>static</strong>
+<a id='L166' name='L166'></a> 166 <strong class='reserved'>void</strong>
+<a id='L167' name='L167'></a> 167 <a href='../R/1471.html' title='Multiple referred from 2 places.'>hostcompat_cont</a>(<strong class='reserved'>int</strong> sig)
+<a id='L168' name='L168'></a> 168 <em class='brace'>{</em>
+<a id='L169' name='L169'></a> 169         (<strong class='reserved'>void</strong>)sig;
+<a id='L170' name='L170'></a> 170 
+<a id='L171' name='L171'></a> 171         <em class='comment'>/* Set the tty to the way we want it for running. */</em>
+<a id='L172' name='L172'></a> 172         <a href='../S/499.html#L66' title='Defined at 66 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_ttyresume</a>();
+<a id='L173' name='L173'></a> 173 
+<a id='L174' name='L174'></a> 174         <em class='comment'>/*</em>
+<a id='L175' name='L175'></a> 175 <em class='comment'>         * Reload the signal handlers for stop/continue signals, in case</em>
+<a id='L176' name='L176'></a> 176 <em class='comment'>         * they were set up with one-shot signals.</em>
+<a id='L177' name='L177'></a> 177 <em class='comment'>         */</em>
+<a id='L178' name='L178'></a> 178         signal(<a href='../S/163.html#L76' title='Defined at 76 in kern/include/kern/signal.h.'>SIGTTIN</a>, <a href='../S/499.html#L150' title='Defined at 150 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_stop</a>);
+<a id='L179' name='L179'></a> 179         signal(<a href='../S/163.html#L77' title='Defined at 77 in kern/include/kern/signal.h.'>SIGTTOU</a>, <a href='../S/499.html#L150' title='Defined at 150 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_stop</a>);
+<a id='L180' name='L180'></a> 180         signal(<a href='../S/163.html#L73' title='Defined at 73 in kern/include/kern/signal.h.'>SIGTSTP</a>, <a href='../S/499.html#L150' title='Defined at 150 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_stop</a>);
+<a id='L181' name='L181'></a> 181         signal(<a href='../S/163.html#L74' title='Defined at 74 in kern/include/kern/signal.h.'>SIGCONT</a>, <a href='../S/499.html#L167' title='Defined at 167 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_cont</a>);
+<a id='L182' name='L182'></a> 182 <em class='brace'>}</em>
+<a id='L183' name='L183'></a> 183 
+<a id='L184' name='L184'></a> 184 <em class='comment'>/*</em>
+<a id='L185' name='L185'></a> 185 <em class='comment'> * Initialize the hostcompat library.</em>
+<a id='L186' name='L186'></a> 186 <em class='comment'> */</em>
+<a id='L187' name='L187'></a> 187 <strong class='reserved'>void</strong>
+<a id='L188' name='L188'></a> 188 <a href='../R/1473.html' title='Multiple referred from 5 places.'>hostcompat_init</a>(<strong class='reserved'>int</strong> argc, <strong class='reserved'>char</strong> *argv[])
+<a id='L189' name='L189'></a> 189 <em class='brace'>{</em>
+<a id='L190' name='L190'></a> 190         <em class='comment'>/* Set the program name */</em>
+<a id='L191' name='L191'></a> 191         <strong class='reserved'>if</strong> (argc &gt; 0 &amp;&amp; argv[0] != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L192' name='L192'></a> 192                 hostcompat_progname = argv[0];
+<a id='L193' name='L193'></a> 193         <em class='brace'>}</em>
+<a id='L194' name='L194'></a> 194 
+<a id='L195' name='L195'></a> 195         <em class='comment'>/* Set the tty modes */</em>
+<a id='L196' name='L196'></a> 196         <strong class='reserved'>if</strong> (<a href='../S/499.html#L76' title='Defined at 76 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_ttysetup</a>() &lt; 0) <em class='brace'>{</em>
+<a id='L197' name='L197'></a> 197                 <strong class='reserved'>return</strong>;
+<a id='L198' name='L198'></a> 198         <em class='brace'>}</em>
+<a id='L199' name='L199'></a> 199 
+<a id='L200' name='L200'></a> 200         <em class='comment'>/* When exit() is called, clean up */</em>
+<a id='L201' name='L201'></a> 201         atexit(<a href='../S/499.html#L56' title='Defined at 56 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_ttyreset</a>);
+<a id='L202' name='L202'></a> 202 
+<a id='L203' name='L203'></a> 203         <em class='comment'>/* stdout/stderr should be unbuffered */</em>
+<a id='L204' name='L204'></a> 204         setvbuf(stdout, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, _IONBF, 0);
+<a id='L205' name='L205'></a> 205         setvbuf(stderr, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, _IONBF, 0);
+<a id='L206' name='L206'></a> 206 
+<a id='L207' name='L207'></a> 207         <em class='comment'>/* Catch all the fatal signals, so we can clean up */</em>
+<a id='L208' name='L208'></a> 208         signal(<a href='../S/163.html#L56' title='Defined at 56 in kern/include/kern/signal.h.'>SIGHUP</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L209' name='L209'></a> 209         signal(<a href='../S/163.html#L57' title='Defined at 57 in kern/include/kern/signal.h.'>SIGINT</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L210' name='L210'></a> 210         signal(<a href='../S/163.html#L58' title='Defined at 58 in kern/include/kern/signal.h.'>SIGQUIT</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L211' name='L211'></a> 211         signal(<a href='../S/163.html#L59' title='Defined at 59 in kern/include/kern/signal.h.'>SIGILL</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L212' name='L212'></a> 212         signal(<a href='../S/163.html#L60' title='Defined at 60 in kern/include/kern/signal.h.'>SIGTRAP</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L213' name='L213'></a> 213         signal(<a href='../S/163.html#L61' title='Defined at 61 in kern/include/kern/signal.h.'>SIGABRT</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L214' name='L214'></a> 214 <em class='sharp'>#ifdef</em> <a href='../S/163.html#L62' title='Defined at 62 in kern/include/kern/signal.h.'>SIGEMT</a>
+<a id='L215' name='L215'></a> 215         signal(<a href='../S/163.html#L62' title='Defined at 62 in kern/include/kern/signal.h.'>SIGEMT</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L216' name='L216'></a> 216 <em class='sharp'>#endif</em>
+<a id='L217' name='L217'></a> 217         signal(<a href='../S/163.html#L63' title='Defined at 63 in kern/include/kern/signal.h.'>SIGFPE</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L218' name='L218'></a> 218         signal(<a href='../S/163.html#L65' title='Defined at 65 in kern/include/kern/signal.h.'>SIGBUS</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L219' name='L219'></a> 219         signal(<a href='../S/163.html#L66' title='Defined at 66 in kern/include/kern/signal.h.'>SIGSEGV</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L220' name='L220'></a> 220         signal(<a href='../S/163.html#L67' title='Defined at 67 in kern/include/kern/signal.h.'>SIGSYS</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L221' name='L221'></a> 221         signal(<a href='../S/163.html#L68' title='Defined at 68 in kern/include/kern/signal.h.'>SIGPIPE</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L222' name='L222'></a> 222         signal(<a href='../S/163.html#L69' title='Defined at 69 in kern/include/kern/signal.h.'>SIGALRM</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L223' name='L223'></a> 223         signal(<a href='../S/163.html#L70' title='Defined at 70 in kern/include/kern/signal.h.'>SIGTERM</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L224' name='L224'></a> 224         signal(<a href='../S/163.html#L79' title='Defined at 79 in kern/include/kern/signal.h.'>SIGXCPU</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L225' name='L225'></a> 225         signal(<a href='../S/163.html#L80' title='Defined at 80 in kern/include/kern/signal.h.'>SIGXFSZ</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L226' name='L226'></a> 226         signal(<a href='../S/163.html#L81' title='Defined at 81 in kern/include/kern/signal.h.'>SIGVTALRM</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L227' name='L227'></a> 227         signal(<a href='../S/163.html#L82' title='Defined at 82 in kern/include/kern/signal.h.'>SIGPROF</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L228' name='L228'></a> 228         signal(<a href='../S/163.html#L85' title='Defined at 85 in kern/include/kern/signal.h.'>SIGUSR1</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L229' name='L229'></a> 229         signal(<a href='../S/163.html#L86' title='Defined at 86 in kern/include/kern/signal.h.'>SIGUSR2</a>, <a href='../S/499.html#L130' title='Defined at 130 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_die</a>);
+<a id='L230' name='L230'></a> 230 
+<a id='L231' name='L231'></a> 231         <em class='comment'>/* Catch the stop signals, so we can adjust the tty */</em>
+<a id='L232' name='L232'></a> 232         signal(<a href='../S/163.html#L76' title='Defined at 76 in kern/include/kern/signal.h.'>SIGTTIN</a>, <a href='../S/499.html#L150' title='Defined at 150 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_stop</a>);
+<a id='L233' name='L233'></a> 233         signal(<a href='../S/163.html#L77' title='Defined at 77 in kern/include/kern/signal.h.'>SIGTTOU</a>, <a href='../S/499.html#L150' title='Defined at 150 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_stop</a>);
+<a id='L234' name='L234'></a> 234         signal(<a href='../S/163.html#L73' title='Defined at 73 in kern/include/kern/signal.h.'>SIGTSTP</a>, <a href='../S/499.html#L150' title='Defined at 150 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_stop</a>);
+<a id='L235' name='L235'></a> 235 
+<a id='L236' name='L236'></a> 236         <em class='comment'>/* Catch the continue signal, so we can adjust the tty */</em>
+<a id='L237' name='L237'></a> 237         signal(<a href='../S/163.html#L74' title='Defined at 74 in kern/include/kern/signal.h.'>SIGCONT</a>, <a href='../S/499.html#L167' title='Defined at 167 in userland/lib/hostcompat/hostcompat.c.'>hostcompat_cont</a>);
+<a id='L238' name='L238'></a> 238 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L56'>[^]</a><a href='#L188'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>strlen</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/24.html#L372'>strlen</a>            372 common/libc/printf/__printf.c 	int len = strlen(prefix)+strlen(prefix2)+strlen(stuff);</span>
+<span class='curline'><a href='../S/24.html#L389'>strlen</a>            389 common/libc/printf/__printf.c 	__pf_print(pf, prefix, strlen(prefix));</span>
+<span class='curline'><a href='../S/24.html#L390'>strlen</a>            390 common/libc/printf/__printf.c 	__pf_print(pf, prefix2, strlen(prefix2));</span>
+<span class='curline'><a href='../S/24.html#L398'>strlen</a>            398 common/libc/printf/__printf.c 	__pf_print(pf, stuff, strlen(stuff));</span>
+<span class='curline'><a href='../S/31.html#L51'>strlen</a>             51 common/libc/string/strcat.c 	offset = strlen(dest);</span>
+<span class='curline'><a href='../S/36.html#L53'>strlen</a>             53 common/libc/string/strrchr.c 	size_t i = strlen(s)+1;</span>
+<span class='curline'><a href='../S/96.html#L189'>strlen</a>            189 kern/dev/lamebus/emu.c 	if (strlen(name)+1 &gt; EMU_MAXIO) {</span>
+<span class='curline'><a href='../S/96.html#L210'>strlen</a>            210 kern/dev/lamebus/emu.c 	emu_wreg(sc, REG_IOLEN, strlen(name));</span>
+<span class='curline'><a href='../S/96.html#L805'>strlen</a>            805 kern/dev/lamebus/emu.c 		if (strlen(pathname)+1 &gt; len) {</span>
+<span class='curline'><a href='../S/96.html#L816'>strlen</a>            816 kern/dev/lamebus/emu.c 	if (strlen(s)+1 &gt; len) {</span>
+<span class='curline'><a href='../S/126.html#L323'>strlen</a>            323 kern/fs/semfs/semfs_vnops.c 		result = uiomove(dent-&gt;semd_name, strlen(dent-&gt;semd_name),</span>
+<span class='curline'><a href='../S/126.html#L567'>strlen</a>            567 kern/fs/semfs/semfs_vnops.c         if (strlen(path)+1 &gt; bufmax) {</span>
+<span class='curline'><a href='../S/129.html#L169'>strlen</a>            169 kern/fs/sfs/sfs_dir.c 	if (strlen(name)+1 &gt; sizeof(sd.sfd_name)) {</span>
+<span class='curline'><a href='../S/133.html#L535'>strlen</a>            535 kern/fs/sfs/sfs_vnops.c 	if (strlen(path)+1 &gt; buflen) {</span>
+<span class='curline'><a href='../S/172.html#L142'>strlen</a>            142 kern/include/lib.h size_t strlen(const char *str);</span>
+<span class='curline'><a href='../S/202.html#L42'>strlen</a>             42 kern/lib/misc.c 	z = kmalloc(strlen(s)+1);</span>
+<span class='curline'><a href='../S/206.html#L87'>strlen</a>             87 kern/main/menu.c 	KASSERT(strlen(args[0]) &lt; sizeof(progname));</span>
+<span class='curline'><a href='../S/206.html#L393'>strlen</a>            393 kern/main/menu.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/206.html#L394'>strlen</a>            394 kern/main/menu.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/206.html#L420'>strlen</a>            420 kern/main/menu.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/206.html#L421'>strlen</a>            421 kern/main/menu.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/206.html#L449'>strlen</a>            449 kern/main/menu.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/206.html#L450'>strlen</a>            450 kern/main/menu.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/214.html#L108'>strlen</a>            108 kern/test/fstest.c 	KASSERT(strlen(buf) &lt; buflen);</span>
+<span class='curline'><a href='../S/214.html#L150'>strlen</a>            150 kern/test/fstest.c 	KASSERT(sizeof(buf) &gt; strlen(SLOGAN));</span>
+<span class='curline'><a href='../S/214.html#L170'>strlen</a>            170 kern/test/fstest.c 			pos += strlen(SLOGAN);</span>
+<span class='curline'><a href='../S/214.html#L175'>strlen</a>            175 kern/test/fstest.c 		uio_kinit(&amp;iov, &amp;ku, buf, strlen(SLOGAN), pos, UIO_WRITE);</span>
+<span class='curline'><a href='../S/214.html#L193'>strlen</a>            193 kern/test/fstest.c 		shouldbytes += strlen(SLOGAN);</span>
+<span class='curline'><a href='../S/214.html#L202'>strlen</a>            202 kern/test/fstest.c 			(unsigned long) (NCHUNKS*strlen(SLOGAN)));</span>
+<span class='curline'><a href='../S/214.html#L236'>strlen</a>            236 kern/test/fstest.c 		uio_kinit(&amp;iov, &amp;ku, buf, strlen(SLOGAN), bytes, UIO_READ);</span>
+<span class='curline'><a href='../S/214.html#L250'>strlen</a>            250 kern/test/fstest.c 		buf[strlen(SLOGAN)] = 0;</span>
+<span class='curline'><a href='../S/214.html#L264'>strlen</a>            264 kern/test/fstest.c 	if (bytes != NCHUNKS*strlen(SLOGAN)) {</span>
+<span class='curline'><a href='../S/214.html#L267'>strlen</a>            267 kern/test/fstest.c 			(unsigned long) (NCHUNKS*strlen(SLOGAN)));</span>
+<span class='curline'><a href='../S/214.html#L566'>strlen</a>            566 kern/test/fstest.c 		uio_kinit(&amp;iov, &amp;ku, buf, strlen(SLOGAN), 0, UIO_WRITE);</span>
+<span class='curline'><a href='../S/214.html#L580'>strlen</a>            580 kern/test/fstest.c 		if (bytes != strlen(SLOGAN)) {</span>
+<span class='curline'><a href='../S/214.html#L583'>strlen</a>            583 kern/test/fstest.c 				(unsigned long) strlen(SLOGAN));</span>
+<span class='curline'><a href='../S/214.html#L603'>strlen</a>            603 kern/test/fstest.c 		uio_kinit(&amp;iov, &amp;ku, buf, strlen(SLOGAN), 0, UIO_READ);</span>
+<span class='curline'><a href='../S/214.html#L616'>strlen</a>            616 kern/test/fstest.c 		buf[strlen(SLOGAN)] = 0;</span>
+<span class='curline'><a href='../S/214.html#L626'>strlen</a>            626 kern/test/fstest.c 		if (bytes != strlen(SLOGAN)) {</span>
+<span class='curline'><a href='../S/214.html#L629'>strlen</a>            629 kern/test/fstest.c 				(unsigned long) strlen(SLOGAN));</span>
+<span class='curline'><a href='../S/214.html#L691'>strlen</a>            691 kern/test/fstest.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/214.html#L692'>strlen</a>            692 kern/test/fstest.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/229.html#L314'>strlen</a>            314 kern/vfs/device.c 	if (strlen(pathname)&gt;0) {</span>
+<span class='curline'><a href='../S/231.html#L169'>strlen</a>            169 kern/vfs/vfscwd.c 	result = uiomove((char *)name, strlen(name), uio);</span>
+<span class='curline'><a href='../S/233.html#L311'>strlen</a>            311 kern/vfs/vfslist.c 	char *s = kmalloc(strlen(name)+3+1);</span>
+<span class='curline'><a href='../S/233.html#L593'>strlen</a>            593 kern/vfs/vfslist.c 	len = strlen(devname);</span>
+<span class='curline'><a href='../S/234.html#L84'>strlen</a>             84 kern/vfs/vfslookup.c 		if (strlen(s)&gt;0) {</span>
+<span class='curline'><a href='../S/234.html#L257'>strlen</a>            257 kern/vfs/vfslookup.c 	if (strlen(path)==0) {</span>
+<span class='curline'><a href='../S/234.html#L289'>strlen</a>            289 kern/vfs/vfslookup.c 	if (strlen(path)==0) {</span>
+<span class='curline'><a href='../S/481.html#L45'>strlen</a>             45 userland/include/string.h size_t strlen(const char *);</span>
+<span class='curline'><a href='../S/506.html#L47'>strlen</a>             47 userland/lib/libc/stdio/__puts.c 	len = strlen(str);</span>
+<span class='curline'><a href='../S/513.html#L65'>strlen</a>             65 userland/lib/libc/stdlib/getenv.c 	varlen = strlen(var);</span>
+<span class='curline'><a href='../S/517.html#L59'>strlen</a>             59 userland/lib/libc/stdlib/system.c 	if (strlen(cmd) &gt;= sizeof(tmp)) {</span>
+<span class='curline'><a href='../S/523.html#L48'>strlen</a>             48 userland/lib/libc/unix/__assert.c 	write(STDERR_FILENO, buf, strlen(buf));</span>
+<span class='curline'><a href='../S/524.html#L67'>strlen</a>             67 userland/lib/libc/unix/err.c 	__senderr(NULL, str, strlen(str));</span>
+<span class='curline'><a href='../S/526.html#L67'>strlen</a>             67 userland/lib/libc/unix/execvp.c 			len = strlen(s);</span>
+<span class='curline'><a href='../S/532.html#L87'>strlen</a>             87 userland/sbin/dumpsfs/dumpsfs.c 	dlen = strlen(desc);</span>
+<span class='curline'><a href='../S/532.html#L88'>strlen</a>             88 userland/sbin/dumpsfs/dumpsfs.c 	vlen = strlen(val);</span>
+<span class='curline'><a href='../S/532.html#L549'>strlen</a>            549 userland/sbin/dumpsfs/dumpsfs.c 						j = strlen(argv[i]);</span>
+<span class='curline'><a href='../S/537.html#L88'>strlen</a>             88 userland/sbin/mksfs/disk.c 		buf[strlen(HOSTSTRING)] = 0;</span>
+<span class='curline'><a href='../S/540.html#L135'>strlen</a>            135 userland/sbin/mksfs/mksfs.c 	if (strlen(volname) &gt;= SFS_VOLNAME_SIZE) {</span>
+<span class='curline'><a href='../S/540.html#L210'>strlen</a>            210 userland/sbin/mksfs/mksfs.c 		if (strlen(s)!=1) {</span>
+<span class='curline'><a href='../S/556.html#L406'>strlen</a>            406 userland/sbin/sfsck/pass1.c 			char path[strlen(pathsofar)+SFS_NAMELEN+1];</span>
+<span class='curline'><a href='../S/557.html#L248'>strlen</a>            248 userland/sbin/sfsck/pass2.c 			char path[strlen(pathsofar)+SFS_NAMELEN+1];</span>
+<span class='curline'><a href='../S/561.html#L458'>strlen</a>            458 userland/sbin/sfsck/sfs.c 			assert(strlen(name) &lt; sizeof(d[i].sfd_name));</span>
+<span class='curline'><a href='../S/579.html#L73'>strlen</a>             73 userland/testbin/badcall/bad_lseek.c 	size_t len = strlen(slogan);</span>
+<span class='curline'><a href='../S/579.html#L253'>strlen</a>            253 userland/testbin/badcall/bad_lseek.c 	if (pos != (off_t) strlen(message)) {</span>
+<span class='curline'><a href='../S/579.html#L255'>strlen</a>            255 userland/testbin/badcall/bad_lseek.c 			     (long long) pos, strlen(message));</span>
+<span class='curline'><a href='../S/599.html#L58'>strlen</a>             58 userland/testbin/badcall/driver.c 		len = strlen(string);</span>
+<span class='curline'><a href='../S/601.html#L71'>strlen</a>             71 userland/testbin/badcall/report.c 	outbufpos = strlen(outbuf);</span>
+<span class='curline'><a href='../S/603.html#L71'>strlen</a>             71 userland/testbin/bigexec/bigexec.c 		len = strlen(name);</span>
+<span class='curline'><a href='../S/603.html#L237'>strlen</a>            237 userland/testbin/bigexec/bigexec.c 		else if (strlen(s) &lt; 72) {</span>
+<span class='curline'><a href='../S/603.html#L242'>strlen</a>            242 userland/testbin/bigexec/bigexec.c 			      i, strlen(s), s);</span>
+<span class='curline'><a href='../S/603.html#L255'>strlen</a>            255 userland/testbin/bigexec/bigexec.c 	assert(strlen(word8) == 8);</span>
+<span class='curline'><a href='../S/603.html#L256'>strlen</a>            256 userland/testbin/bigexec/bigexec.c 	assert(strlen(word4050) == 4050);</span>
+<span class='curline'><a href='../S/603.html#L257'>strlen</a>            257 userland/testbin/bigexec/bigexec.c 	assert(strlen(word16320) == 16320);</span>
+<span class='curline'><a href='../S/603.html#L258'>strlen</a>            258 userland/testbin/bigexec/bigexec.c 	assert(strlen(word65500) == 65500);</span>
+<span class='curline'><a href='../S/605.html#L92'>strlen</a>             92 userland/testbin/bigfile/bigfile.c 		if (strlen(buffer) &lt; chunksize) {</span>
+<span class='curline'><a href='../S/605.html#L93'>strlen</a>             93 userland/testbin/bigfile/bigfile.c 			offset = chunksize - strlen(buffer);</span>
+<span class='curline'><a href='../S/605.html#L94'>strlen</a>             94 userland/testbin/bigfile/bigfile.c 			memmove(buffer + offset, buffer, strlen(buffer)+1);</span>
+<span class='curline'><a href='../S/605.html#L97'>strlen</a>             97 userland/testbin/bigfile/bigfile.c 		len = write(fd, buffer, strlen(buffer));</span>
+<span class='curline'><a href='../S/607.html#L219'>strlen</a>            219 userland/testbin/bigfork/bigfork.c 		(void)write(STDOUT_FILENO, msg, strlen(msg));</span>
+<span class='curline'><a href='../S/609.html#L77'>strlen</a>             77 userland/testbin/bigseek/bigseek.c 	len = strlen(slogans[which]);</span>
+<span class='curline'><a href='../S/609.html#L111'>strlen</a>            111 userland/testbin/bigseek/bigseek.c 	len = strlen(slogans[which]);</span>
+<span class='curline'><a href='../S/609.html#L226'>strlen</a>            226 userland/testbin/bigseek/bigseek.c 	cursize = strlen(slogans[0]);</span>
+<span class='curline'><a href='../S/609.html#L232'>strlen</a>            232 userland/testbin/bigseek/bigseek.c 	cursize = (off_t)0x1000LL + strlen(slogans[1]);</span>
+<span class='curline'><a href='../S/619.html#L101'>strlen</a>            101 userland/testbin/dirconc/dirconc.c 	write(STDOUT_FILENO, buf, strlen(buf));</span>
+<span class='curline'><a href='../S/621.html#L473'>strlen</a>            473 userland/testbin/dirseek/dirseek.c 	r = write(fd, buf, strlen(buf));</span>
+<span class='curline'><a href='../S/621.html#L477'>strlen</a>            477 userland/testbin/dirseek/dirseek.c 	if ((unsigned)r != strlen(buf)) {</span>
+<span class='curline'><a href='../S/623.html#L74'>strlen</a>             74 userland/testbin/dirtest/dirtest.c 		dirname[strlen(dirname) - strlen(onename) - 1] = 0;</span>
+<span class='curline'><a href='../S/627.html#L270'>strlen</a>            270 userland/testbin/f_test/f_test.c 		dirname[strlen(dirname) - strlen(fmp)] = '\0';</span>
+<span class='curline'><a href='../S/627.html#L284'>strlen</a>            284 userland/testbin/f_test/f_test.c 		dirname[strlen(dirname) - strlen(fmp)] = '\0';</span>
+<span class='curline'><a href='../S/627.html#L291'>strlen</a>            291 userland/testbin/f_test/f_test.c 		dirname[strlen(dirname) - strlen(tmp)] = '\0';</span>
+<span class='curline'><a href='../S/630.html#L72'>strlen</a>             72 userland/testbin/factorial/factorial.c 	len = strlen(txt);</span>
+<span class='curline'><a href='../S/640.html#L211'>strlen</a>            211 userland/testbin/forktest/forktest.c 	write(STDERR_FILENO, expected, strlen(expected));</span>
+<span class='curline'><a href='../S/644.html#L55'>strlen</a>             55 userland/testbin/frack/data.c 	slen = strlen(smallbuf);</span>
+<span class='curline'><a href='../S/657.html#L65'>strlen</a>             65 userland/testbin/frack/workloads.c 	if (strlen(x) &gt; 0) {</span>
+<span class='curline'><a href='../S/674.html#L185'>strlen</a>            185 userland/testbin/palin/palin.c 	end = palindrome+strlen(palindrome);</span>
+<span class='curline'><a href='../S/676.html#L103'>strlen</a>            103 userland/testbin/parallelvm/parallelvm.c 	write(STDOUT_FILENO, buf, strlen(buf));</span>
+<span class='curline'><a href='../S/680.html#L212'>strlen</a>            212 userland/testbin/psort/psort.c 	pos = strlen(buf);</span>
+<span class='curline'><a href='../S/680.html#L215'>strlen</a>            215 userland/testbin/psort/psort.c 	pos = strlen(buf);</span>
+<span class='curline'><a href='../S/680.html#L238'>strlen</a>            238 userland/testbin/psort/psort.c 	junk = write(STDERR_FILENO, buf, strlen(buf));</span>
+<span class='curline'><a href='../S/680.html#L261'>strlen</a>            261 userland/testbin/psort/psort.c 	junk = write(STDERR_FILENO, buf, strlen(buf));</span>
+<span class='curline'><a href='../S/687.html#L99'>strlen</a>             99 userland/testbin/redirect/redirect.c 	r = write(fd, slogan, strlen(slogan));</span>
+<span class='curline'><a href='../S/687.html#L103'>strlen</a>            103 userland/testbin/redirect/redirect.c 	if ((size_t)r != strlen(slogan)) {</span>
+<span class='curline'><a href='../S/687.html#L105'>strlen</a>            105 userland/testbin/redirect/redirect.c 		     INFILE, r, strlen(slogan));</span>
+<span class='curline'><a href='../S/687.html#L128'>strlen</a>            128 userland/testbin/redirect/redirect.c 	if ((size_t)r != strlen(slogan)) {</span>
+<span class='curline'><a href='../S/687.html#L130'>strlen</a>            130 userland/testbin/redirect/redirect.c 		     OUTFILE, r, strlen(slogan));</span>
+<span class='curline'><a href='../S/693.html#L145'>strlen</a>            145 userland/testbin/sbrktest/sbrktest.c 	write(STDOUT_FILENO, msg, strlen(msg));</span>
+</pre>
+</body>
+</html>

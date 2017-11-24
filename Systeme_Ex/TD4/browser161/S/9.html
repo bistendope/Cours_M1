@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>common/gcc-millicode/longlong.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/724.html'>common</a>/<a href='../files/725.html'>gcc-millicode</a>/longlong.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/8.html' title='Multiple included from 19 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*-</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 1992, 1993</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The Regents of the University of California.  All rights reserved.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * This software was developed by the Computer Systems Engineering group</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * at Lawrence Berkeley Laboratory under DARPA contract BG 91-66 and</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * contributed to Berkeley.</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> *</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> * are met:</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> *</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L29' name='L29'></a>  29 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L30' name='L30'></a>  30 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> *</em>
+<a id='L33' name='L33'></a>  33 <em class='comment'> * From:</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> *      @(#)quad.h      8.1 (Berkeley) 6/4/93</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> *      NetBSD: quad.h,v 1.1 2005/12/20 20:29:40 christos Exp</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> */</em>
+<a id='L37' name='L37'></a>  37 
+<a id='L38' name='L38'></a>  38 <em class='comment'>/*</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * Long long arithmetic.</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> *</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> * This library makes the following assumptions:</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> *</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> *  - The type long long exists.</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> *</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> *  - A long long variable is exactly twice as long as `int'.</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> *</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> *  - The machine's arithmetic is two's complement.</em>
+<a id='L48' name='L48'></a>  48 <em class='comment'> *</em>
+<a id='L49' name='L49'></a>  49 <em class='comment'> * This library can provide 128-bit arithmetic on a machine with</em>
+<a id='L50' name='L50'></a>  50 <em class='comment'> * 128-bit long longs and 64-bit ints, for instance, or 96-bit</em>
+<a id='L51' name='L51'></a>  51 <em class='comment'> * arithmetic on machines with 48-bit ints.</em>
+<a id='L52' name='L52'></a>  52 <em class='comment'> *</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'> * The names are built into gcc.</em>
+<a id='L54' name='L54'></a>  54 <em class='comment'> */</em>
+<a id='L55' name='L55'></a>  55 
+<a id='L56' name='L56'></a>  56 <em class='sharp'>#if</em> <strong class='reserved'>defined</strong>(_KERNEL)
+<a id='L57' name='L57'></a>  57 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L58' name='L58'></a>  58 <em class='sharp'>#include</em> &lt;<a href='../I/38.html'>endian.h</a>&gt;
+<a id='L59' name='L59'></a>  59 <em class='sharp'>#else</em>
+<a id='L60' name='L60'></a>  60 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>sys/types.h</a>&gt;
+<a id='L61' name='L61'></a>  61 <em class='sharp'>#include</em> &lt;<a href='../I/38.html'>sys/endian.h</a>&gt;
+<a id='L62' name='L62'></a>  62 <em class='sharp'>#endif</em>
+<a id='L63' name='L63'></a>  63 
+<a id='L64' name='L64'></a>  64 <em class='sharp'>#include</em> &lt;<a href='../I/138.html'>limits.h</a>&gt;
+<a id='L65' name='L65'></a>  65 
+<a id='L66' name='L66'></a>  66 <em class='comment'>/*</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'> * Depending on the desired operation, we view a `long long' in</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'> * one or more of the following formats.</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> */</em>
+<a id='L70' name='L70'></a>  70 <strong class='reserved'>union</strong> <a href='../R/2271.html' title='Multiple referred from 16 places.'>uu</a> <em class='brace'>{</em>
+<a id='L71' name='L71'></a>  71         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          ll;          <em class='comment'>/* as a (signed) long long */</em>
+<a id='L72' name='L72'></a>  72         <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong> ull;         <em class='comment'>/* as an unsigned long long */</em>
+<a id='L73' name='L73'></a>  73         <strong class='reserved'>int</strong>                si[2];       <em class='comment'>/* as two (signed) ints */</em>
+<a id='L74' name='L74'></a>  74         <strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>       ui[2];       <em class='comment'>/* as two unsigned ints */</em>
+<a id='L75' name='L75'></a>  75 <em class='brace'>}</em>;
+<a id='L76' name='L76'></a>  76 
+<a id='L77' name='L77'></a>  77 <em class='comment'>/*</em>
+<a id='L78' name='L78'></a>  78 <em class='comment'> * Define high and low parts of a long long.</em>
+<a id='L79' name='L79'></a>  79 <em class='comment'> */</em>
+<a id='L80' name='L80'></a>  80 <em class='sharp'>#if</em> <a href='../S/46.html#L42' title='Defined at 42 in kern/arch/mips/include/kern/endian.h.'>_BYTE_ORDER</a> == <a href='../S/152.html#L42' title='Defined at 42 in kern/include/kern/endian.h.'>_LITTLE_ENDIAN</a>
+<a id='L81' name='L81'></a>  81 <em class='sharp'>#define</em> <a href='../R/230.html' title='Multiple referred from 31 places.'>H</a> 1
+<a id='L82' name='L82'></a>  82 <em class='sharp'>#define</em> <a href='../R/282.html' title='Multiple referred from 33 places.'>L</a> 0
+<a id='L83' name='L83'></a>  83 <em class='sharp'>#endif</em>
+<a id='L84' name='L84'></a>  84 
+<a id='L85' name='L85'></a>  85 <em class='sharp'>#if</em> <a href='../S/46.html#L42' title='Defined at 42 in kern/arch/mips/include/kern/endian.h.'>_BYTE_ORDER</a> == <a href='../S/152.html#L43' title='Defined at 43 in kern/include/kern/endian.h.'>_BIG_ENDIAN</a>
+<a id='L86' name='L86'></a>  86 <em class='sharp'>#define</em> <a href='../R/230.html' title='Multiple referred from 31 places.'>H</a> 0
+<a id='L87' name='L87'></a>  87 <em class='sharp'>#define</em> <a href='../R/282.html' title='Multiple referred from 33 places.'>L</a> 1
+<a id='L88' name='L88'></a>  88 <em class='sharp'>#endif</em>
+<a id='L89' name='L89'></a>  89 
+<a id='L90' name='L90'></a>  90 
+<a id='L91' name='L91'></a>  91 <em class='comment'>/*</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'> * Total number of bits in a long long and in the pieces that make it up.</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'> * These are used for shifting, and also below for halfword extraction</em>
+<a id='L94' name='L94'></a>  94 <em class='comment'> * and assembly.</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'> */</em>
+<a id='L96' name='L96'></a>  96 <em class='sharp'>#define</em> LONGLONG_BITS   (<strong class='reserved'>sizeof</strong>(<strong class='reserved'>long</strong> <strong class='reserved'>long</strong>) * <a href='../D/46.html' title='Multiple defined in 2 places.'>CHAR_BIT</a>)
+<a id='L97' name='L97'></a>  97 <em class='sharp'>#define</em> <a href='../R/262.html' title='Multiple referred from 13 places.'>INT_BITS</a>        (<strong class='reserved'>sizeof</strong>(<strong class='reserved'>int</strong>) * <a href='../D/46.html' title='Multiple defined in 2 places.'>CHAR_BIT</a>)
+<a id='L98' name='L98'></a>  98 <em class='sharp'>#define</em> <a href='../R/231.html' title='Multiple referred from 7 places.'>HALF_BITS</a>       (<strong class='reserved'>sizeof</strong>(<strong class='reserved'>int</strong>) * <a href='../D/46.html' title='Multiple defined in 2 places.'>CHAR_BIT</a> / 2)
+<a id='L99' name='L99'></a>  99 
+<a id='L100' name='L100'></a> 100 <em class='comment'>/*</em>
+<a id='L101' name='L101'></a> 101 <em class='comment'> * Extract high and low shortwords from longword, and move low shortword of</em>
+<a id='L102' name='L102'></a> 102 <em class='comment'> * longword to upper half of long, i.e., produce the upper longword of</em>
+<a id='L103' name='L103'></a> 103 <em class='comment'> * ((long long)(x) &lt;&lt; (number_of_bits_in_int/2)).</em>
+<a id='L104' name='L104'></a> 104 <em class='comment'> * [`x' must actually be unsigned int.]</em>
+<a id='L105' name='L105'></a> 105 <em class='comment'> *</em>
+<a id='L106' name='L106'></a> 106 <em class='comment'> * These are used in the multiply code, to split a longword into upper</em>
+<a id='L107' name='L107'></a> 107 <em class='comment'> * and lower halves, and to reassemble a product as a long long, shifted</em>
+<a id='L108' name='L108'></a> 108 <em class='comment'> * left (sizeof(int)*CHAR_BIT/2).</em>
+<a id='L109' name='L109'></a> 109 <em class='comment'> */</em>
+<a id='L110' name='L110'></a> 110 <em class='sharp'>#define</em> <a href='../R/243.html' title='Multiple referred from 13 places.'>HHALF</a>(x)        ((<strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>)(x) &gt;&gt; <a href='../S/9.html#L98' title='Defined at 98 in common/gcc-millicode/longlong.h.'>HALF_BITS</a>)
+<a id='L111' name='L111'></a> 111 <em class='sharp'>#define</em> <a href='../R/307.html' title='Multiple referred from 13 places.'>LHALF</a>(x)        ((<strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>)(x) &amp; (((<strong class='reserved'>int</strong>)1 &lt;&lt; <a href='../S/9.html#L98' title='Defined at 98 in common/gcc-millicode/longlong.h.'>HALF_BITS</a>) - 1))
+<a id='L112' name='L112'></a> 112 <em class='sharp'>#define</em> <a href='../R/320.html' title='Multiple referred from 4 places.'>LHUP</a>(x)         ((<strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>)(x) &lt;&lt; <a href='../S/9.html#L98' title='Defined at 98 in common/gcc-millicode/longlong.h.'>HALF_BITS</a>)
+<a id='L113' name='L113'></a> 113 
+<a id='L114' name='L114'></a> 114 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/2.html#L47' title='Defined at 47 in common/gcc-millicode/adddi3.c.'>__adddi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L115' name='L115'></a> 115 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/3.html#L44' title='Defined at 44 in common/gcc-millicode/anddi3.c.'>__anddi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L116' name='L116'></a> 116 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/4.html#L45' title='Defined at 45 in common/gcc-millicode/ashldi3.c.'>__ashldi3</a>     (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>);
+<a id='L117' name='L117'></a> 117 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/5.html#L44' title='Defined at 44 in common/gcc-millicode/ashrdi3.c.'>__ashrdi3</a>     (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>);
+<a id='L118' name='L118'></a> 118 <strong class='reserved'>int</strong>                <a href='../S/6.html#L46' title='Defined at 46 in common/gcc-millicode/cmpdi2.c.'>__cmpdi2</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L119' name='L119'></a> 119 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/7.html#L45' title='Defined at 45 in common/gcc-millicode/divdi3.c.'>__divdi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L120' name='L120'></a> 120 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/8.html#L44' title='Defined at 44 in common/gcc-millicode/iordi3.c.'>__iordi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L121' name='L121'></a> 121 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/10.html#L45' title='Defined at 45 in common/gcc-millicode/lshldi3.c.'>__lshldi3</a>     (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>);
+<a id='L122' name='L122'></a> 122 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/11.html#L44' title='Defined at 44 in common/gcc-millicode/lshrdi3.c.'>__lshrdi3</a>     (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>int</strong>);
+<a id='L123' name='L123'></a> 123 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/12.html#L46' title='Defined at 46 in common/gcc-millicode/moddi3.c.'>__moddi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L124' name='L124'></a> 124 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/13.html#L100' title='Defined at 100 in common/gcc-millicode/muldi3.c.'>__muldi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L125' name='L125'></a> 125 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/14.html#L44' title='Defined at 44 in common/gcc-millicode/negdi2.c.'>__negdi2</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L126' name='L126'></a> 126 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/15.html#L45' title='Defined at 45 in common/gcc-millicode/notdi2.c.'>__one_cmpldi2</a> (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L127' name='L127'></a> 127 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/18.html#L46' title='Defined at 46 in common/gcc-millicode/subdi3.c.'>__subdi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L128' name='L128'></a> 128 <strong class='reserved'>int</strong>                <a href='../S/19.html#L45' title='Defined at 45 in common/gcc-millicode/ucmpdi2.c.'>__ucmpdi2</a>     (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L129' name='L129'></a> 129 <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong> <a href='../S/20.html#L44' title='Defined at 44 in common/gcc-millicode/udivdi3.c.'>__udivdi3</a>     (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L130' name='L130'></a> 130 <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong> <a href='../S/21.html#L44' title='Defined at 44 in common/gcc-millicode/umoddi3.c.'>__umoddi3</a>     (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L131' name='L131'></a> 131 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          <a href='../S/22.html#L44' title='Defined at 44 in common/gcc-millicode/xordi3.c.'>__xordi3</a>      (         <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,          <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L132' name='L132'></a> 132 
+<a id='L133' name='L133'></a> 133 <em class='sharp'>#ifndef</em> _KERNEL
+<a id='L134' name='L134'></a> 134 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          __fixdfdi     (<strong class='reserved'>double</strong>);
+<a id='L135' name='L135'></a> 135 <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>          __fixsfdi     (<strong class='reserved'>float</strong>);
+<a id='L136' name='L136'></a> 136 <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong> __fixunsdfdi  (<strong class='reserved'>double</strong>);
+<a id='L137' name='L137'></a> 137 <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong> __fixunssfdi  (<strong class='reserved'>float</strong>);
+<a id='L138' name='L138'></a> 138 <strong class='reserved'>double</strong>             __floatdidf   (<strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L139' name='L139'></a> 139 <strong class='reserved'>float</strong>              __floatdisf   (<strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L140' name='L140'></a> 140 <strong class='reserved'>double</strong>             __floatunsdidf(<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>);
+<a id='L141' name='L141'></a> 141 <em class='sharp'>#endif</em>
+<a id='L142' name='L142'></a> 142 
+<a id='L143' name='L143'></a> 143 <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong> <a href='../S/16.html#L68' title='Defined at 68 in common/gcc-millicode/qdivrem.c.'>__qdivrem</a>     (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong>,
+<a id='L144' name='L144'></a> 144                                   <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> <strong class='reserved'>long</strong> *);
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

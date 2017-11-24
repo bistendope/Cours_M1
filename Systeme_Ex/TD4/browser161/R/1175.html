@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>curthread</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/44.html#L63'>curthread</a>          63 kern/arch/mips/include/current.h register struct thread *curthread __asm("$23");	/* s7 register */</span>
+<span class='curline'><a href='../S/44.html#L71'>curthread</a>          71 kern/arch/mips/include/current.h #define INIT_CURCPU(cpu, thread) (curthread = (thread), curcpu = (cpu))</span>
+<span class='curline'><a href='../S/61.html#L146'>curthread</a>         146 kern/arch/mips/locore/trap.c 	if (curthread != NULL &amp;&amp; curthread-&gt;t_stack != NULL) {</span>
+<span class='curline'><a href='../S/61.html#L147'>curthread</a>         147 kern/arch/mips/locore/trap.c 		KASSERT((vaddr_t)tf &gt; (vaddr_t)curthread-&gt;t_stack);</span>
+<span class='curline'><a href='../S/61.html#L148'>curthread</a>         148 kern/arch/mips/locore/trap.c 		KASSERT((vaddr_t)tf &lt; (vaddr_t)(curthread-&gt;t_stack</span>
+<span class='curline'><a href='../S/61.html#L157'>curthread</a>         157 kern/arch/mips/locore/trap.c 		old_in = curthread-&gt;t_in_interrupt;</span>
+<span class='curline'><a href='../S/61.html#L158'>curthread</a>         158 kern/arch/mips/locore/trap.c 		curthread-&gt;t_in_interrupt = 1;</span>
+<span class='curline'><a href='../S/61.html#L177'>curthread</a>         177 kern/arch/mips/locore/trap.c 		if (curthread-&gt;t_curspl == 0) {</span>
+<span class='curline'><a href='../S/61.html#L178'>curthread</a>         178 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/61.html#L179'>curthread</a>         179 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/61.html#L180'>curthread</a>         180 kern/arch/mips/locore/trap.c 			curthread-&gt;t_curspl = IPL_HIGH;</span>
+<span class='curline'><a href='../S/61.html#L181'>curthread</a>         181 kern/arch/mips/locore/trap.c 			curthread-&gt;t_iplhigh_count++;</span>
+<span class='curline'><a href='../S/61.html#L191'>curthread</a>         191 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_curspl == IPL_HIGH);</span>
+<span class='curline'><a href='../S/61.html#L192'>curthread</a>         192 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_iplhigh_count == 1);</span>
+<span class='curline'><a href='../S/61.html#L193'>curthread</a>         193 kern/arch/mips/locore/trap.c 			curthread-&gt;t_iplhigh_count--;</span>
+<span class='curline'><a href='../S/61.html#L194'>curthread</a>         194 kern/arch/mips/locore/trap.c 			curthread-&gt;t_curspl = 0;</span>
+<span class='curline'><a href='../S/61.html#L197'>curthread</a>         197 kern/arch/mips/locore/trap.c 		curthread-&gt;t_in_interrupt = old_in;</span>
+<span class='curline'><a href='../S/61.html#L218'>curthread</a>         218 kern/arch/mips/locore/trap.c 		KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/61.html#L219'>curthread</a>         219 kern/arch/mips/locore/trap.c 		KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/61.html#L300'>curthread</a>         300 kern/arch/mips/locore/trap.c 	if (curthread != NULL &amp;&amp;</span>
+<span class='curline'><a href='../S/61.html#L301'>curthread</a>         301 kern/arch/mips/locore/trap.c 	    curthread-&gt;t_machdep.tm_badfaultfunc != NULL) {</span>
+<span class='curline'><a href='../S/61.html#L302'>curthread</a>         302 kern/arch/mips/locore/trap.c 		tf-&gt;tf_epc = (vaddr_t) curthread-&gt;t_machdep.tm_badfaultfunc;</span>
+<span class='curline'><a href='../S/61.html#L331'>curthread</a>         331 kern/arch/mips/locore/trap.c 	if (curthread-&gt;t_stack == NULL) {</span>
+<span class='curline'><a href='../S/61.html#L335'>curthread</a>         335 kern/arch/mips/locore/trap.c 	cputhreads[curcpu-&gt;c_number] = (vaddr_t)curthread;</span>
+<span class='curline'><a href='../S/61.html#L336'>curthread</a>         336 kern/arch/mips/locore/trap.c 	cpustacks[curcpu-&gt;c_number] = (vaddr_t)curthread-&gt;t_stack + STACK_SIZE;</span>
+<span class='curline'><a href='../S/61.html#L380'>curthread</a>         380 kern/arch/mips/locore/trap.c 	cputhreads[curcpu-&gt;c_number] = (vaddr_t)curthread;</span>
+<span class='curline'><a href='../S/61.html#L381'>curthread</a>         381 kern/arch/mips/locore/trap.c 	cpustacks[curcpu-&gt;c_number] = (vaddr_t)curthread-&gt;t_stack + STACK_SIZE;</span>
+<span class='curline'><a href='../S/62.html#L85'>curthread</a>          85 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread != NULL);</span>
+<span class='curline'><a href='../S/62.html#L86'>curthread</a>          86 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/62.html#L87'>curthread</a>          87 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/62.html#L144'>curthread</a>         144 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/62.html#L146'>curthread</a>         146 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/69.html#L89'>curthread</a>          89 kern/arch/mips/vm/dumbvm.c 		KASSERT(curthread-&gt;t_in_interrupt == 0);</span>
+<span class='curline'><a href='../S/73.html#L90'>curthread</a>          90 kern/arch/sys161/dev/lamebus_machdep.c 	KASSERT(curthread-&gt;t_curspl &gt; 0);</span>
+<span class='curline'><a href='../S/73.html#L304'>curthread</a>         304 kern/arch/sys161/dev/lamebus_machdep.c 	KASSERT(curthread-&gt;t_curspl &gt; 0);</span>
+<span class='curline'><a href='../S/86.html#L208'>curthread</a>         208 kern/dev/generic/console.c 	else if (curthread-&gt;t_in_interrupt ||</span>
+<span class='curline'><a href='../S/86.html#L209'>curthread</a>         209 kern/dev/generic/console.c 		 curthread-&gt;t_curspl &gt; 0 ||</span>
+<span class='curline'><a href='../S/86.html#L223'>curthread</a>         223 kern/dev/generic/console.c 	KASSERT(!curthread-&gt;t_in_interrupt &amp;&amp; curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/145.html#L79'>curthread</a>          79 kern/include/current.h #define curcpu curthread-&gt;t_cpu</span>
+<span class='curline'><a href='../S/145.html#L80'>curthread</a>          80 kern/include/current.h #define CURCPU_EXISTS() (curthread != NULL)</span>
+<span class='curline'><a href='../S/145.html#L90'>curthread</a>          90 kern/include/current.h #define curproc (curthread-&gt;t_proc)</span>
+<span class='curline'><a href='../S/201.html#L103'>curthread</a>         103 kern/lib/kprintf.c 		&amp;&amp; curthread-&gt;t_in_interrupt == false</span>
+<span class='curline'><a href='../S/201.html#L104'>curthread</a>         104 kern/lib/kprintf.c 		&amp;&amp; curthread-&gt;t_curspl == 0</span>
+<span class='curline'><a href='../S/205.html#L118'>curthread</a>         118 kern/main/main.c 	KASSERT(curthread-&gt;t_curspl &gt; 0);</span>
+<span class='curline'><a href='../S/205.html#L120'>curthread</a>         120 kern/main/main.c 	KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/217.html#L343'>curthread</a>         343 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/217.html#L344'>curthread</a>         344 kern/test/semunit.c 		curthread-&gt;t_in_interrupt = true;</span>
+<span class='curline'><a href='../S/217.html#L350'>curthread</a>         350 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == true);</span>
+<span class='curline'><a href='../S/217.html#L351'>curthread</a>         351 kern/test/semunit.c 		curthread-&gt;t_in_interrupt = false;</span>
+<span class='curline'><a href='../S/217.html#L417'>curthread</a>         417 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/217.html#L418'>curthread</a>         418 kern/test/semunit.c 		curthread-&gt;t_in_interrupt = true;</span>
+<span class='curline'><a href='../S/217.html#L424'>curthread</a>         424 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == true);</span>
+<span class='curline'><a href='../S/217.html#L425'>curthread</a>         425 kern/test/semunit.c 		curthread-&gt;t_in_interrupt = false;</span>
+<span class='curline'><a href='../S/217.html#L501'>curthread</a>         501 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/217.html#L502'>curthread</a>         502 kern/test/semunit.c 		curthread-&gt;t_in_interrupt = true;</span>
+<span class='curline'><a href='../S/217.html#L508'>curthread</a>         508 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == true);</span>
+<span class='curline'><a href='../S/217.html#L509'>curthread</a>         509 kern/test/semunit.c 		curthread-&gt;t_in_interrupt = false;</span>
+<span class='curline'><a href='../S/217.html#L632'>curthread</a>         632 kern/test/semunit.c 	semu17_thread = curthread;</span>
+<span class='curline'><a href='../S/217.html#L785'>curthread</a>         785 kern/test/semunit.c 	curthread-&gt;t_in_interrupt = true;</span>
+<span class='curline'><a href='../S/217.html#L802'>curthread</a>         802 kern/test/semunit.c 	curthread-&gt;t_in_interrupt = true;</span>
+<span class='curline'><a href='../S/225.html#L89'>curthread</a>          89 kern/thread/spl.c 	struct thread *cur = curthread;</span>
+<span class='curline'><a href='../S/225.html#L109'>curthread</a>         109 kern/thread/spl.c 	struct thread *cur = curthread;</span>
+<span class='curline'><a href='../S/225.html#L134'>curthread</a>         134 kern/thread/spl.c 	struct thread *cur = curthread;</span>
+<span class='curline'><a href='../S/226.html#L99'>curthread</a>          99 kern/thread/synch.c         KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/227.html#L239'>curthread</a>         239 kern/thread/thread.c 		curthread-&gt;t_cpu = curcpu;</span>
+<span class='curline'><a href='../S/227.html#L240'>curthread</a>         240 kern/thread/thread.c 		curcpu-&gt;c_curthread = curthread;</span>
+<span class='curline'><a href='../S/227.html#L267'>curthread</a>         267 kern/thread/thread.c 	KASSERT(thread != curthread);</span>
+<span class='curline'><a href='../S/227.html#L303'>curthread</a>         303 kern/thread/thread.c 		KASSERT(z != curthread);</span>
+<span class='curline'><a href='../S/227.html#L390'>curthread</a>         390 kern/thread/thread.c 	KASSERT(curthread != NULL);</span>
+<span class='curline'><a href='../S/227.html#L391'>curthread</a>         391 kern/thread/thread.c 	KASSERT(curthread-&gt;t_proc != NULL);</span>
+<span class='curline'><a href='../S/227.html#L392'>curthread</a>         392 kern/thread/thread.c 	KASSERT(curthread-&gt;t_proc == kproc);</span>
+<span class='curline'><a href='../S/227.html#L411'>curthread</a>         411 kern/thread/thread.c 	KASSERT(curthread != NULL);</span>
+<span class='curline'><a href='../S/227.html#L521'>curthread</a>         521 kern/thread/thread.c 	newthread-&gt;t_cpu = curthread-&gt;t_cpu;</span>
+<span class='curline'><a href='../S/227.html#L525'>curthread</a>         525 kern/thread/thread.c 		proc = curthread-&gt;t_proc;</span>
+<span class='curline'><a href='../S/227.html#L567'>curthread</a>         567 kern/thread/thread.c 	DEBUGASSERT(curcpu-&gt;c_curthread == curthread);</span>
+<span class='curline'><a href='../S/227.html#L568'>curthread</a>         568 kern/thread/thread.c 	DEBUGASSERT(curthread-&gt;t_cpu == curcpu-&gt;c_self);</span>
+<span class='curline'><a href='../S/227.html#L573'>curthread</a>         573 kern/thread/thread.c 	cur = curthread;</span>
+<span class='curline'><a href='../S/227.html#L661'>curthread</a>         661 kern/thread/thread.c 	curthread = next;</span>
+<span class='curline'><a href='../S/227.html#L744'>curthread</a>         744 kern/thread/thread.c 	cur = curthread;</span>
+<span class='curline'><a href='../S/227.html#L783'>curthread</a>         783 kern/thread/thread.c 	cur = curthread;</span>
+<span class='curline'><a href='../S/227.html#L912'>curthread</a>         912 kern/thread/thread.c 			if (t == curthread) {</span>
+<span class='curline'><a href='../S/227.html#L1003'>curthread</a>        1003 kern/thread/thread.c 	KASSERT(!curthread-&gt;t_in_interrupt);</span>
+<span class='curline'><a href='../S/238.html#L102'>curthread</a>         102 kern/vm/copyinout.c 	longjmp(curthread-&gt;t_machdep.tm_copyjmp, 1);</span>
+<span class='curline'><a href='../S/238.html#L167'>curthread</a>         167 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = copyfail;</span>
+<span class='curline'><a href='../S/238.html#L169'>curthread</a>         169 kern/vm/copyinout.c 	result = setjmp(curthread-&gt;t_machdep.tm_copyjmp);</span>
+<span class='curline'><a href='../S/238.html#L171'>curthread</a>         171 kern/vm/copyinout.c 		curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+<span class='curline'><a href='../S/238.html#L177'>curthread</a>         177 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+<span class='curline'><a href='../S/238.html#L203'>curthread</a>         203 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = copyfail;</span>
+<span class='curline'><a href='../S/238.html#L205'>curthread</a>         205 kern/vm/copyinout.c 	result = setjmp(curthread-&gt;t_machdep.tm_copyjmp);</span>
+<span class='curline'><a href='../S/238.html#L207'>curthread</a>         207 kern/vm/copyinout.c 		curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+<span class='curline'><a href='../S/238.html#L213'>curthread</a>         213 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+<span class='curline'><a href='../S/238.html#L276'>curthread</a>         276 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = copyfail;</span>
+<span class='curline'><a href='../S/238.html#L278'>curthread</a>         278 kern/vm/copyinout.c 	result = setjmp(curthread-&gt;t_machdep.tm_copyjmp);</span>
+<span class='curline'><a href='../S/238.html#L280'>curthread</a>         280 kern/vm/copyinout.c 		curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+<span class='curline'><a href='../S/238.html#L286'>curthread</a>         286 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+<span class='curline'><a href='../S/238.html#L309'>curthread</a>         309 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = copyfail;</span>
+<span class='curline'><a href='../S/238.html#L311'>curthread</a>         311 kern/vm/copyinout.c 	result = setjmp(curthread-&gt;t_machdep.tm_copyjmp);</span>
+<span class='curline'><a href='../S/238.html#L313'>curthread</a>         313 kern/vm/copyinout.c 		curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+<span class='curline'><a href='../S/238.html#L319'>curthread</a>         319 kern/vm/copyinout.c 	curthread-&gt;t_machdep.tm_badfaultfunc = NULL;</span>
+</pre>
+</body>
+</html>

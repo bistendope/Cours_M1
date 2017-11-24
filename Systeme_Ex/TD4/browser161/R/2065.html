@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>spinlock</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L65'>spinlock</a>           65 kern/arch/mips/vm/dumbvm.c static struct spinlock stealmem_lock = SPINLOCK_INITIALIZER;</span>
+<span class='curline'><a href='../S/100.html#L83'>spinlock</a>           83 kern/dev/lamebus/lamebus.h 	struct spinlock ls_lock;</span>
+<span class='curline'><a href='../S/110.html#L38'>spinlock</a>           38 kern/dev/lamebus/lscreen.h 	struct spinlock ls_lock;      // protects data and device regs</span>
+<span class='curline'><a href='../S/113.html#L37'>spinlock</a>           37 kern/dev/lamebus/lser.h 	struct spinlock ls_lock;    /* protects ls_wbusy and device regs */</span>
+<span class='curline'><a href='../S/144.html#L71'>spinlock</a>           71 kern/include/cpu.h 	struct spinlock c_runqueue_lock;</span>
+<span class='curline'><a href='../S/144.html#L89'>spinlock</a>           89 kern/include/cpu.h 	struct spinlock c_ipi_lock;</span>
+<span class='curline'><a href='../S/176.html#L64'>spinlock</a>           64 kern/include/proc.h 	struct spinlock p_lock;		/* Lock for this structure */</span>
+<span class='curline'><a href='../S/180.html#L86'>spinlock</a>           86 kern/include/spinlock.h void spinlock_init(struct spinlock *lk);</span>
+<span class='curline'><a href='../S/180.html#L87'>spinlock</a>           87 kern/include/spinlock.h void spinlock_cleanup(struct spinlock *lk);</span>
+<span class='curline'><a href='../S/180.html#L89'>spinlock</a>           89 kern/include/spinlock.h void spinlock_acquire(struct spinlock *lk);</span>
+<span class='curline'><a href='../S/180.html#L90'>spinlock</a>           90 kern/include/spinlock.h void spinlock_release(struct spinlock *lk);</span>
+<span class='curline'><a href='../S/180.html#L92'>spinlock</a>           92 kern/include/spinlock.h bool spinlock_do_i_hold(struct spinlock *lk);</span>
+<span class='curline'><a href='../S/184.html#L49'>spinlock</a>           49 kern/include/synch.h 	struct spinlock sem_lock;</span>
+<span class='curline'><a href='../S/195.html#L53'>spinlock</a>           53 kern/include/vnode.h 	struct spinlock vn_countlock;   /* Lock for vn_refcount */</span>
+<span class='curline'><a href='../S/196.html#L38'>spinlock</a>           38 kern/include/wchan.h struct spinlock; /* in spinlock.h */</span>
+<span class='curline'><a href='../S/196.html#L57'>spinlock</a>           57 kern/include/wchan.h bool wchan_isempty(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/196.html#L67'>spinlock</a>           67 kern/include/wchan.h void wchan_sleep(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/196.html#L76'>spinlock</a>           76 kern/include/wchan.h void wchan_wakeone(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/196.html#L77'>spinlock</a>           77 kern/include/wchan.h void wchan_wakeall(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/201.html#L51'>spinlock</a>           51 kern/lib/kprintf.c static struct spinlock kprintf_spinlock;</span>
+<span class='curline'><a href='../S/217.html#L62'>spinlock</a>           62 kern/test/semunit.c static struct spinlock waiters_lock = SPINLOCK_INITIALIZER;</span>
+<span class='curline'><a href='../S/217.html#L138'>spinlock</a>          138 kern/test/semunit.c spinlock_not_held(struct spinlock *splk)</span>
+<span class='curline'><a href='../S/217.html#L283'>spinlock</a>          283 kern/test/semunit.c 	struct spinlock lk;</span>
+<span class='curline'><a href='../S/217.html#L599'>spinlock</a>          599 kern/test/semunit.c 	struct spinlock lk;</span>
+<span class='curline'><a href='../S/221.html#L54'>spinlock</a>           54 kern/test/tt3.c static struct spinlock spinlocks[NWAITCHANS];</span>
+<span class='curline'><a href='../S/221.html#L91'>spinlock</a>           91 kern/test/tt3.c 			struct spinlock *lk;</span>
+<span class='curline'><a href='../S/221.html#L125'>spinlock</a>          125 kern/test/tt3.c 			struct spinlock *lk;</span>
+<span class='curline'><a href='../S/222.html#L60'>spinlock</a>           60 kern/thread/clock.c static struct spinlock lbolt_lock;</span>
+<span class='curline'><a href='../S/223.html#L40'>spinlock</a>           40 kern/thread/hangman.c static struct spinlock hangman_lock = SPINLOCK_INITIALIZER;</span>
+<span class='curline'><a href='../S/224.html#L51'>spinlock</a>           51 kern/thread/spinlock.c spinlock_init(struct spinlock *splk)</span>
+<span class='curline'><a href='../S/224.html#L62'>spinlock</a>           62 kern/thread/spinlock.c spinlock_cleanup(struct spinlock *splk)</span>
+<span class='curline'><a href='../S/224.html#L76'>spinlock</a>           76 kern/thread/spinlock.c spinlock_acquire(struct spinlock *splk)</span>
+<span class='curline'><a href='../S/224.html#L128'>spinlock</a>          128 kern/thread/spinlock.c spinlock_release(struct spinlock *splk)</span>
+<span class='curline'><a href='../S/224.html#L148'>spinlock</a>          148 kern/thread/spinlock.c spinlock_do_i_hold(struct spinlock *splk)</span>
+<span class='curline'><a href='../S/227.html#L562'>spinlock</a>          562 kern/thread/thread.c thread_switch(threadstate_t newstate, struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L1000'>spinlock</a>         1000 kern/thread/thread.c wchan_sleep(struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L1019'>spinlock</a>         1019 kern/thread/thread.c wchan_wakeone(struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L1048'>spinlock</a>         1048 kern/thread/thread.c wchan_wakeall(struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L1082'>spinlock</a>         1082 kern/thread/thread.c wchan_isempty(struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/239.html#L169'>spinlock</a>          169 kern/vm/kmalloc.c static struct spinlock kmalloc_spinlock = SPINLOCK_INITIALIZER;</span>
+</pre>
+</body>
+</html>

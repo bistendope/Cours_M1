@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>sfs_direntry</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/129.html#L48'>sfs_direntry</a>       48 kern/fs/sfs/sfs_dir.c sfs_readdir(struct sfs_vnode *sv, int slot, struct sfs_direntry *sd)</span>
+<span class='curline'><a href='../S/129.html#L53'>sfs_direntry</a>       53 kern/fs/sfs/sfs_dir.c 	actualpos = slot * sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/129.html#L64'>sfs_direntry</a>       64 kern/fs/sfs/sfs_dir.c sfs_writedir(struct sfs_vnode *sv, int slot, struct sfs_direntry *sd)</span>
+<span class='curline'><a href='../S/129.html#L70'>sfs_direntry</a>       70 kern/fs/sfs/sfs_dir.c 	actualpos = slot * sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/129.html#L90'>sfs_direntry</a>       90 kern/fs/sfs/sfs_dir.c 	if (size % sizeof(struct sfs_direntry) != 0) {</span>
+<span class='curline'><a href='../S/129.html#L95'>sfs_direntry</a>       95 kern/fs/sfs/sfs_dir.c 	return size / sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/129.html#L107'>sfs_direntry</a>      107 kern/fs/sfs/sfs_dir.c 	struct sfs_direntry tsd;</span>
+<span class='curline'><a href='../S/129.html#L158'>sfs_direntry</a>      158 kern/fs/sfs/sfs_dir.c 	struct sfs_direntry sd;</span>
+<span class='curline'><a href='../S/129.html#L198'>sfs_direntry</a>      198 kern/fs/sfs/sfs_dir.c 	struct sfs_direntry sd;</span>
+<span class='curline'><a href='../S/130.html#L330'>sfs_direntry</a>      330 kern/fs/sfs/sfs_fsops.c 	COMPILE_ASSERT(SFS_BLOCKSIZE % sizeof(struct sfs_direntry) == 0);</span>
+<span class='curline'><a href='../S/532.html#L303'>sfs_direntry</a>      303 userland/sbin/dumpsfs/dumpsfs.c 	struct sfs_direntry sds[SFS_BLOCKSIZE/sizeof(struct sfs_direntry)];</span>
+<span class='curline'><a href='../S/532.html#L304'>sfs_direntry</a>      304 userland/sbin/dumpsfs/dumpsfs.c 	int nsds = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/532.html#L333'>sfs_direntry</a>      333 userland/sbin/dumpsfs/dumpsfs.c 	nentries = SWAP32(sfi-&gt;sfi_size) / sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/532.html#L334'>sfs_direntry</a>      334 userland/sbin/dumpsfs/dumpsfs.c 	if (SWAP32(sfi-&gt;sfi_size) % sizeof(struct sfs_direntry) != 0) {</span>
+<span class='curline'><a href='../S/532.html#L345'>sfs_direntry</a>      345 userland/sbin/dumpsfs/dumpsfs.c 	struct sfs_direntry sds[SFS_BLOCKSIZE/sizeof(struct sfs_direntry)];</span>
+<span class='curline'><a href='../S/532.html#L346'>sfs_direntry</a>      346 userland/sbin/dumpsfs/dumpsfs.c 	int nsds = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/532.html#L371'>sfs_direntry</a>      371 userland/sbin/dumpsfs/dumpsfs.c 	nentries = SWAP32(sfi-&gt;sfi_size) / sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/540.html#L75'>sfs_direntry</a>       75 userland/sbin/mksfs/mksfs.c 	assert(SFS_BLOCKSIZE % sizeof(struct sfs_direntry) == 0);</span>
+<span class='curline'><a href='../S/556.html#L296'>sfs_direntry</a>      296 userland/sbin/sfsck/pass1.c pass1_direntry(const char *path, uint32_t index, struct sfs_direntry *sfd)</span>
+<span class='curline'><a href='../S/556.html#L363'>sfs_direntry</a>      363 userland/sbin/sfsck/pass1.c 	struct sfs_direntry *direntries;</span>
+<span class='curline'><a href='../S/556.html#L369'>sfs_direntry</a>      369 userland/sbin/sfsck/pass1.c 	if (sfi.sfi_size % sizeof(struct sfs_direntry) != 0) {</span>
+<span class='curline'><a href='../S/556.html#L374'>sfs_direntry</a>      374 userland/sbin/sfsck/pass1.c 					   sizeof(struct sfs_direntry));</span>
+<span class='curline'><a href='../S/556.html#L384'>sfs_direntry</a>      384 userland/sbin/sfsck/pass1.c 	ndirentries = sfi.sfi_size/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/557.html#L66'>sfs_direntry</a>       66 userland/sbin/sfsck/pass2.c 	struct sfs_direntry *direntries;</span>
+<span class='curline'><a href='../S/557.html#L85'>sfs_direntry</a>       85 userland/sbin/sfsck/pass2.c 	ndirentries = sfi.sfi_size/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/557.html#L87'>sfs_direntry</a>       87 userland/sbin/sfsck/pass2.c 				    SFS_BLOCKSIZE/sizeof(struct sfs_direntry));</span>
+<span class='curline'><a href='../S/557.html#L88'>sfs_direntry</a>       88 userland/sbin/sfsck/pass2.c 	dirsize = maxdirentries * sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/557.html#L107'>sfs_direntry</a>      107 userland/sbin/sfsck/pass2.c 		struct sfs_direntry *d1 = &amp;direntries[sortvector[i]];</span>
+<span class='curline'><a href='../S/557.html#L108'>sfs_direntry</a>      108 userland/sbin/sfsck/pass2.c 		struct sfs_direntry *d2 = &amp;direntries[sortvector[i+1]];</span>
+<span class='curline'><a href='../S/557.html#L189'>sfs_direntry</a>      189 userland/sbin/sfsck/pass2.c 			sfi.sfi_size += sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/557.html#L218'>sfs_direntry</a>      218 userland/sbin/sfsck/pass2.c 			sfi.sfi_size += sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L53'>sfs_direntry</a>       53 userland/sbin/sfsck/sfs.c 	assert(SFS_BLOCKSIZE % sizeof(struct sfs_direntry) == 0);</span>
+<span class='curline'><a href='../S/561.html#L104'>sfs_direntry</a>      104 userland/sbin/sfsck/sfs.c swapdir(struct sfs_direntry *sfd)</span>
+<span class='curline'><a href='../S/561.html#L275'>sfs_direntry</a>      275 userland/sbin/sfsck/sfs.c sfs_readdirblock(struct sfs_direntry *d, uint32_t diskblock)</span>
+<span class='curline'><a href='../S/561.html#L277'>sfs_direntry</a>      277 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L298'>sfs_direntry</a>      298 userland/sbin/sfsck/sfs.c sfs_readdir(struct sfs_dinode *sfi, struct sfs_direntry *d, unsigned nd)</span>
+<span class='curline'><a href='../S/561.html#L300'>sfs_direntry</a>      300 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L304'>sfs_direntry</a>      304 userland/sbin/sfsck/sfs.c 	struct sfs_direntry buffer[atonce];</span>
+<span class='curline'><a href='../S/561.html#L331'>sfs_direntry</a>      331 userland/sbin/sfsck/sfs.c sfs_writedirblock(struct sfs_direntry *d, uint32_t diskblock)</span>
+<span class='curline'><a href='../S/561.html#L333'>sfs_direntry</a>      333 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L363'>sfs_direntry</a>      363 userland/sbin/sfsck/sfs.c sfs_writedir(const struct sfs_dinode *sfi, struct sfs_direntry *d, unsigned nd)</span>
+<span class='curline'><a href='../S/561.html#L365'>sfs_direntry</a>      365 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L369'>sfs_direntry</a>      369 userland/sbin/sfsck/sfs.c 	struct sfs_direntry buffer[atonce];</span>
+<span class='curline'><a href='../S/561.html#L398'>sfs_direntry</a>      398 userland/sbin/sfsck/sfs.c static struct sfs_direntry *global_sortdirs;</span>
+<span class='curline'><a href='../S/561.html#L410'>sfs_direntry</a>      410 userland/sbin/sfsck/sfs.c 	const struct sfs_direntry *ad = &amp;global_sortdirs[*a];</span>
+<span class='curline'><a href='../S/561.html#L411'>sfs_direntry</a>      411 userland/sbin/sfsck/sfs.c 	const struct sfs_direntry *bd = &amp;global_sortdirs[*b];</span>
+<span class='curline'><a href='../S/561.html#L433'>sfs_direntry</a>      433 userland/sbin/sfsck/sfs.c sfsdir_sort(struct sfs_direntry *d, unsigned nd, int *vector)</span>
+<span class='curline'><a href='../S/561.html#L452'>sfs_direntry</a>      452 userland/sbin/sfsck/sfs.c sfsdir_tryadd(struct sfs_direntry *d, int nd, const char *name, uint32_t ino)</span>
+<span class='curline'><a href='../S/562.html#L43'>sfs_direntry</a>       43 userland/sbin/sfsck/sfs.h struct sfs_direntry;</span>
+<span class='curline'><a href='../S/562.html#L69'>sfs_direntry</a>       69 userland/sbin/sfsck/sfs.h void sfs_readdir(struct sfs_dinode *sfi, struct sfs_direntry *d, unsigned nd);</span>
+<span class='curline'><a href='../S/562.html#L71'>sfs_direntry</a>       71 userland/sbin/sfsck/sfs.h 		  struct sfs_direntry *d, unsigned nd);</span>
+<span class='curline'><a href='../S/562.html#L74'>sfs_direntry</a>       74 userland/sbin/sfsck/sfs.h int sfsdir_tryadd(struct sfs_direntry *d, int nd,</span>
+<span class='curline'><a href='../S/562.html#L78'>sfs_direntry</a>       78 userland/sbin/sfsck/sfs.h void sfsdir_sort(struct sfs_direntry *d, unsigned nd, int *vector);</span>
+</pre>
+</body>
+</html>

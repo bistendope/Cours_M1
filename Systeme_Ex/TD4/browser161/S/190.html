@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/include/types.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/751.html'>include</a>/types.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/42.html' title='Multiple included from 161 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2007, 2008</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#ifndef</em> <a href='../S/190.html#L31' title='Defined at 31 in kern/include/types.h.'>_TYPES_H_</a>
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#define</em> <a href='../S/190.html#L30' title='Referred from 30 in kern/include/types.h.'>_TYPES_H_</a>
+<a id='L32' name='L32'></a>  32 
+<a id='L33' name='L33'></a>  33 <em class='comment'>/*</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * Master kernel header file.</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> *</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> * The model for the include files in the kernel is as follows:</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> *</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> *     - Every source file includes this file, &lt;types.h&gt;, first.</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> *</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> *     - Every other header file may assume this file has been</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> *       included, but should explicitly include any other headers it</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> *       uses to compile.</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> *</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> *     - Some exceptions to the previous rules exist among the headers</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> *       exported to userland; those files should be included in the</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> *       kernel only indirectly via other, non-exported, headers, as</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> *       described in comments therein.</em>
+<a id='L48' name='L48'></a>  48 <em class='comment'> *</em>
+<a id='L49' name='L49'></a>  49 <em class='comment'> *     - Every source or header file should include each file it</em>
+<a id='L50' name='L50'></a>  50 <em class='comment'> *       directly uses, even if that header is included via some other</em>
+<a id='L51' name='L51'></a>  51 <em class='comment'> *       header. This helps to prevent build failures when unrelated</em>
+<a id='L52' name='L52'></a>  52 <em class='comment'> *       dependencies are changed around.</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'> *</em>
+<a id='L54' name='L54'></a>  54 <em class='comment'> *     - As a matter of convention, the ordering of include files in</em>
+<a id='L55' name='L55'></a>  55 <em class='comment'> *       the base system is in order of subsystem dependence. That is,</em>
+<a id='L56' name='L56'></a>  56 <em class='comment'> *       lower-level code like &lt;spinlock.h&gt; should come before</em>
+<a id='L57' name='L57'></a>  57 <em class='comment'> *       higher-level code like &lt;addrspace.h&gt; or &lt;vfs.h&gt;. This</em>
+<a id='L58' name='L58'></a>  58 <em class='comment'> *       convention helps one to keep keep track of (and learn) the</em>
+<a id='L59' name='L59'></a>  59 <em class='comment'> *       organization of the system.</em>
+<a id='L60' name='L60'></a>  60 <em class='comment'> *</em>
+<a id='L61' name='L61'></a>  61 <em class='comment'> *       The general ordering is as follows:</em>
+<a id='L62' name='L62'></a>  62 <em class='comment'> *           1. &lt;types.h&gt;</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'> *           2. Kernel ABI definitions, e.g. &lt;kern/errno.h&gt;.</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'> *           3. Support code: &lt;lib.h&gt;, arrays, queues, etc.</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'> *           4. Low-level code: locks, trapframes, etc.</em>
+<a id='L66' name='L66'></a>  66 <em class='comment'> *           5. Kernel subsystems: threads, VM, VFS, etc.</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'> *           6. System call layer, e.g. &lt;elf.h&gt;, &lt;syscall.h&gt;.</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'> *</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> *       Subsystem-private headers (the only extant example is</em>
+<a id='L70' name='L70'></a>  70 <em class='comment'> *       switchframe.h) and then kernel option headers generated by</em>
+<a id='L71' name='L71'></a>  71 <em class='comment'> *       config come last.</em>
+<a id='L72' name='L72'></a>  72 <em class='comment'> *</em>
+<a id='L73' name='L73'></a>  73 <em class='comment'> *       There is no one perfect ordering, because the kernel is not</em>
+<a id='L74' name='L74'></a>  74 <em class='comment'> *       composed of perfectly nested layers. But for the most part</em>
+<a id='L75' name='L75'></a>  75 <em class='comment'> *       this principle produces a workable result.</em>
+<a id='L76' name='L76'></a>  76 <em class='comment'> */</em>
+<a id='L77' name='L77'></a>  77 
+<a id='L78' name='L78'></a>  78 
+<a id='L79' name='L79'></a>  79 <em class='comment'>/* Get types visible to userland, both MI and MD. */</em>
+<a id='L80' name='L80'></a>  80 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>kern/types.h</a>&gt;
+<a id='L81' name='L81'></a>  81 
+<a id='L82' name='L82'></a>  82 <em class='comment'>/* Get machine-dependent types not visible to userland. */</em>
+<a id='L83' name='L83'></a>  83 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>machine/types.h</a>&gt;
+<a id='L84' name='L84'></a>  84 
+<a id='L85' name='L85'></a>  85 <em class='comment'>/*</em>
+<a id='L86' name='L86'></a>  86 <em class='comment'> * Define userptr_t as a pointer to a one-byte struct, so it won't mix</em>
+<a id='L87' name='L87'></a>  87 <em class='comment'> * with other pointers.</em>
+<a id='L88' name='L88'></a>  88 <em class='comment'> */</em>
+<a id='L89' name='L89'></a>  89 
+<a id='L90' name='L90'></a>  90 <strong class='reserved'>struct</strong> <a href='../R/939.html' title='Multiple referred from 2 places.'>__userptr</a> <em class='brace'>{</em> <strong class='reserved'>char</strong> _dummy; <em class='brace'>}</em>;
+<a id='L91' name='L91'></a>  91 <strong class='reserved'>typedef</strong> <strong class='reserved'>struct</strong> <a href='../S/190.html#L90' title='Defined at 90 in kern/include/types.h.'>__userptr</a> *<a href='../S/190.html#L91' title='Defined at 91 in kern/include/types.h.'>userptr_t</a>;
+<a id='L92' name='L92'></a>  92 <strong class='reserved'>typedef</strong> <strong class='reserved'>const</strong> <strong class='reserved'>struct</strong> <a href='../S/190.html#L90' title='Defined at 90 in kern/include/types.h.'>__userptr</a> *<a href='../R/1143.html' title='Multiple referred from 6 places.'>const_userptr_t</a>;
+<a id='L93' name='L93'></a>  93 
+<a id='L94' name='L94'></a>  94 <em class='comment'>/*</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'> * Proper (non-underscore) names for the types that are exposed to</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'> * userland.</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'> */</em>
+<a id='L98' name='L98'></a>  98 
+<a id='L99' name='L99'></a>  99 <em class='comment'>/* machine-dependent from &lt;kern/machine/types.h&gt;... */</em>
+<a id='L100' name='L100'></a> 100 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L43' title='Defined at 43 in kern/arch/mips/include/kern/types.h.'>__i8</a> int8_t;
+<a id='L101' name='L101'></a> 101 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L44' title='Defined at 44 in kern/arch/mips/include/kern/types.h.'>__i16</a> int16_t;
+<a id='L102' name='L102'></a> 102 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L45' title='Defined at 45 in kern/arch/mips/include/kern/types.h.'>__i32</a> <a href='../S/62.html#L82' title='Referred from 82 in kern/arch/mips/syscall/syscall.c.'>int32_t</a>;
+<a id='L103' name='L103'></a> 103 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L46' title='Defined at 46 in kern/arch/mips/include/kern/types.h.'>__i64</a> int64_t;
+<a id='L104' name='L104'></a> 104 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a> <a href='../R/2253.html' title='Multiple referred from 21 places.'>uint8_t</a>;
+<a id='L105' name='L105'></a> 105 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L49' title='Defined at 49 in kern/arch/mips/include/kern/types.h.'>__u16</a> <a href='../R/2250.html' title='Multiple referred from 26 places.'>uint16_t</a>;
+<a id='L106' name='L106'></a> 106 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L50' title='Defined at 50 in kern/arch/mips/include/kern/types.h.'>__u32</a> <a href='../R/2251.html' title='Multiple referred from 412 places.'>uint32_t</a>;
+<a id='L107' name='L107'></a> 107 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L51' title='Defined at 51 in kern/arch/mips/include/kern/types.h.'>__u64</a> <a href='../R/2252.html' title='Multiple referred from 16 places.'>uint64_t</a>;
+<a id='L108' name='L108'></a> 108 <strong class='reserved'>typedef</strong> <a href='../D/1240.html' title='Multiple defined in 2 places.'>__size_t</a> <a href='../R/2052.html' title='Multiple referred from 277 places.'>size_t</a>;
+<a id='L109' name='L109'></a> 109 <strong class='reserved'>typedef</strong> <a href='../D/1243.html' title='Multiple defined in 2 places.'>__ssize_t</a> <a href='../R/2085.html' title='Multiple referred from 29 places.'>ssize_t</a>;
+<a id='L110' name='L110'></a> 110 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L54' title='Defined at 54 in kern/arch/mips/include/kern/types.h.'>__intptr_t</a> intptr_t;
+<a id='L111' name='L111'></a> 111 <strong class='reserved'>typedef</strong> <a href='../S/50.html#L55' title='Defined at 55 in kern/arch/mips/include/kern/types.h.'>__uintptr_t</a> <a href='../R/2255.html' title='Multiple referred from 27 places.'>uintptr_t</a>;
+<a id='L112' name='L112'></a> 112 <strong class='reserved'>typedef</strong> <a href='../D/1233.html' title='Multiple defined in 2 places.'>__ptrdiff_t</a> ptrdiff_t;
+<a id='L113' name='L113'></a> 113 
+<a id='L114' name='L114'></a> 114 <em class='comment'>/* ...and machine-independent from &lt;kern/types.h&gt;. */</em>
+<a id='L115' name='L115'></a> 115 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L64' title='Defined at 64 in kern/include/kern/types.h.'>__blkcnt_t</a> <a href='../R/1016.html' title='Multiple referred from 2 places.'>blkcnt_t</a>;
+<a id='L116' name='L116'></a> 116 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L65' title='Defined at 65 in kern/include/kern/types.h.'>__blksize_t</a> <a href='../R/1017.html' title='Multiple referred from 2 places.'>blksize_t</a>;
+<a id='L117' name='L117'></a> 117 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L67' title='Defined at 67 in kern/include/kern/types.h.'>__daddr_t</a> <a href='../R/1185.html' title='Multiple referred from 19 places.'>daddr_t</a>;
+<a id='L118' name='L118'></a> 118 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L68' title='Defined at 68 in kern/include/kern/types.h.'>__dev_t</a> <a href='../R/1204.html' title='Multiple referred from 3 places.'>dev_t</a>;
+<a id='L119' name='L119'></a> 119 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L69' title='Defined at 69 in kern/include/kern/types.h.'>__fsid_t</a> fsid_t;
+<a id='L120' name='L120'></a> 120 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L70' title='Defined at 70 in kern/include/kern/types.h.'>__gid_t</a> <a href='../S/165.html#L64' title='Referred from 64 in kern/include/kern/stat.h.'>gid_t</a>;
+<a id='L121' name='L121'></a> 121 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L71' title='Defined at 71 in kern/include/kern/types.h.'>__in_addr_t</a> in_addr_t;
+<a id='L122' name='L122'></a> 122 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L72' title='Defined at 72 in kern/include/kern/types.h.'>__in_port_t</a> in_port_t;
+<a id='L123' name='L123'></a> 123 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L73' title='Defined at 73 in kern/include/kern/types.h.'>__ino_t</a> <a href='../R/1494.html' title='Multiple referred from 2 places.'>ino_t</a>;
+<a id='L124' name='L124'></a> 124 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L74' title='Defined at 74 in kern/include/kern/types.h.'>__mode_t</a> <a href='../R/1668.html' title='Multiple referred from 25 places.'>mode_t</a>;
+<a id='L125' name='L125'></a> 125 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L75' title='Defined at 75 in kern/include/kern/types.h.'>__nlink_t</a> <a href='../S/165.html#L46' title='Referred from 46 in kern/include/kern/stat.h.'>nlink_t</a>;
+<a id='L126' name='L126'></a> 126 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L76' title='Defined at 76 in kern/include/kern/types.h.'>__off_t</a> <a href='../R/1695.html' title='Multiple referred from 157 places.'>off_t</a>;
+<a id='L127' name='L127'></a> 127 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L77' title='Defined at 77 in kern/include/kern/types.h.'>__pid_t</a> <a href='../R/1736.html' title='Multiple referred from 60 places.'>pid_t</a>;
+<a id='L128' name='L128'></a> 128 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L78' title='Defined at 78 in kern/include/kern/types.h.'>__rlim_t</a> rlim_t;
+<a id='L129' name='L129'></a> 129 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L79' title='Defined at 79 in kern/include/kern/types.h.'>__sa_family_t</a> sa_family_t;
+<a id='L130' name='L130'></a> 130 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L80' title='Defined at 80 in kern/include/kern/types.h.'>__time_t</a> <a href='../R/2225.html' title='Multiple referred from 20 places.'>time_t</a>;
+<a id='L131' name='L131'></a> 131 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L81' title='Defined at 81 in kern/include/kern/types.h.'>__uid_t</a> <a href='../S/165.html#L63' title='Referred from 63 in kern/include/kern/stat.h.'>uid_t</a>;
+<a id='L132' name='L132'></a> 132 
+<a id='L133' name='L133'></a> 133 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L83' title='Defined at 83 in kern/include/kern/types.h.'>__nfds_t</a> nfds_t;
+<a id='L134' name='L134'></a> 134 <strong class='reserved'>typedef</strong> <a href='../S/169.html#L84' title='Defined at 84 in kern/include/kern/types.h.'>__socklen_t</a> <a href='../R/2059.html' title='Multiple referred from 3 places.'>socklen_t</a>;
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136 <em class='comment'>/*</em>
+<a id='L137' name='L137'></a> 137 <em class='comment'> * Number of bits per byte.</em>
+<a id='L138' name='L138'></a> 138 <em class='comment'> */</em>
+<a id='L139' name='L139'></a> 139 
+<a id='L140' name='L140'></a> 140 <em class='sharp'>#define</em> <a href='../R/42.html' title='Multiple referred from 10 places.'>CHAR_BIT</a> <a href='../S/50.html#L75' title='Defined at 75 in kern/arch/mips/include/kern/types.h.'>__CHAR_BIT</a>
+<a id='L141' name='L141'></a> 141 
+<a id='L142' name='L142'></a> 142 <em class='comment'>/*</em>
+<a id='L143' name='L143'></a> 143 <em class='comment'> * Null pointer.</em>
+<a id='L144' name='L144'></a> 144 <em class='comment'> */</em>
+<a id='L145' name='L145'></a> 145 
+<a id='L146' name='L146'></a> 146 <em class='sharp'>#define</em> <a href='../R/425.html' title='Multiple referred from 788 places.'>NULL</a> ((<strong class='reserved'>void</strong> *)0)
+<a id='L147' name='L147'></a> 147 
+<a id='L148' name='L148'></a> 148 <em class='comment'>/*</em>
+<a id='L149' name='L149'></a> 149 <em class='comment'> * Boolean.</em>
+<a id='L150' name='L150'></a> 150 <em class='comment'> */</em>
+<a id='L151' name='L151'></a> 151 <strong class='reserved'>typedef</strong> <strong class='reserved'>_Bool</strong> <a href='../R/1022.html' title='Multiple referred from 94 places.'>bool</a>;
+<a id='L152' name='L152'></a> 152 <em class='sharp'>#define</em> <a href='../R/2240.html' title='Multiple referred from 90 places.'>true</a>  1
+<a id='L153' name='L153'></a> 153 <em class='sharp'>#define</em> <a href='../R/1372.html' title='Multiple referred from 94 places.'>false</a> 0
+<a id='L154' name='L154'></a> 154 
+<a id='L155' name='L155'></a> 155 <em class='sharp'>#endif</em> <em class='comment'>/* _TYPES_H_ */</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

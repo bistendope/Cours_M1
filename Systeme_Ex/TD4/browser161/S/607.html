@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/testbin/bigfork/bigfork.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/801.html'>testbin</a>/<a href='../files/807.html'>bigfork</a>/bigfork.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L70'>[^]</a><a href='#L234'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L70' title='Defined at 70.'>init</a></li>
+<li><a href='#L84' title='Defined at 84.'>add</a></li>
+<li><a href='#L97' title='Defined at 97.'>mul</a></li>
+<li><a href='#L113' title='Defined at 113.'>scale</a></li>
+<li><a href='#L126' title='Defined at 126.'>grind</a></li>
+<li><a href='#L139' title='Defined at 139.'>trace</a></li>
+<li><a href='#L155' title='Defined at 155.'>dofork</a></li>
+<li><a href='#L168' title='Defined at 168.'>dowait</a></li>
+<li><a href='#L194' title='Defined at 194.'>dotest</a></li>
+<li><a href='#L234' title='Defined at 234.'>main</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2015</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * bigfork - concurrent VM test that behaves somewhat better than</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> * parallelvm.</em>
+<a id='L33' name='L33'></a>  33 <em class='comment'> *</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * This test is a mixture of forktest and parallelvm: it does nested</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> * forks like forktest, and aimless matrix operations like parallelvm;</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> * the goal is to serve as a performance benchmark more than as a</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * stress test (though it can be that too) and in particular to</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> * exhibit less timing variance than parallelvm does. The variance is</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * still fairly high, but the variance of parallelvm is horrific.</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> */</em>
+<a id='L41' name='L41'></a>  41 
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#include</em> &lt;<a href='479.html'>stdio.h</a>&gt;
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#include</em> &lt;<a href='480.html'>stdlib.h</a>&gt;
+<a id='L44' name='L44'></a>  44 <em class='sharp'>#include</em> &lt;<a href='481.html'>string.h</a>&gt;
+<a id='L45' name='L45'></a>  45 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>unistd.h</a>&gt;
+<a id='L46' name='L46'></a>  46 <em class='sharp'>#include</em> &lt;<a href='470.html'>err.h</a>&gt;
+<a id='L47' name='L47'></a>  47 
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#define</em> <a href='../R/20.html' title='Multiple referred from 4 places.'>BRANCHES</a> 6
+<a id='L49' name='L49'></a>  49 
+<a id='L50' name='L50'></a>  50 <em class='comment'>/*</em>
+<a id='L51' name='L51'></a>  51 <em class='comment'> * 6 branches gives 64 procs at the final stage, and we want this to</em>
+<a id='L52' name='L52'></a>  52 <em class='comment'> * use about 4M. So each proc's memory load should be about 1/16M or</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'> * 64K. Which is 16384 ints, or four 64x64 matrixes.</em>
+<a id='L54' name='L54'></a>  54 <em class='comment'> */</em>
+<a id='L55' name='L55'></a>  55 <em class='sharp'>#define</em> <a href='../R/93.html' title='Multiple referred from 52 places.'>DIM</a> 64
+<a id='L56' name='L56'></a>  56 
+<a id='L57' name='L57'></a>  57 <strong class='reserved'>static</strong> <strong class='reserved'>int</strong> m1[<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>], m2[<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>], m3[<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>], m4[<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>];
+<a id='L58' name='L58'></a>  58 <strong class='reserved'>static</strong> <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> right[<a href='../S/607.html#L48' title='Defined at 48 in userland/testbin/bigfork/bigfork.c.'>BRANCHES</a>] = <em class='brace'>{</em>
+<a id='L59' name='L59'></a>  59         536763422,
+<a id='L60' name='L60'></a>  60         478946723,
+<a id='L61' name='L61'></a>  61         375722852,
+<a id='L62' name='L62'></a>  62         369910585,
+<a id='L63' name='L63'></a>  63         328220902,
+<a id='L64' name='L64'></a>  64         62977821,
+<a id='L65' name='L65'></a>  65 <em class='brace'>}</em>;
+<a id='L66' name='L66'></a>  66 <strong class='reserved'>static</strong> <strong class='reserved'>unsigned</strong> failures;
+<a id='L67' name='L67'></a>  67 
+<a id='L68' name='L68'></a>  68 <strong class='reserved'>static</strong>
+<a id='L69' name='L69'></a>  69 <strong class='reserved'>void</strong>
+<a id='L70' name='L70'></a>  70 <a href='../S/607.html#L236' title='Referred from 236 in userland/testbin/bigfork/bigfork.c.'>init</a>(<strong class='reserved'>void</strong>)
+<a id='L71' name='L71'></a>  71 <em class='brace'>{</em>
+<a id='L72' name='L72'></a>  72         <strong class='reserved'>unsigned</strong> i, j;
+<a id='L73' name='L73'></a>  73 
+<a id='L74' name='L74'></a>  74         <a href='../S/516.html#L250' title='Defined at 250 in userland/lib/libc/stdlib/random.c.'>srandom</a>(73771);
+<a id='L75' name='L75'></a>  75         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; i++) <em class='brace'>{</em>
+<a id='L76' name='L76'></a>  76                 <strong class='reserved'>for</strong> (j=0; j&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; j++) <em class='brace'>{</em>
+<a id='L77' name='L77'></a>  77                         m1[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j] = <a href='../D/2207.html' title='Multiple defined in 2 places.'>random</a>() % 11 - 5;
+<a id='L78' name='L78'></a>  78                 <em class='brace'>}</em>
+<a id='L79' name='L79'></a>  79         <em class='brace'>}</em>
+<a id='L80' name='L80'></a>  80 <em class='brace'>}</em>
+<a id='L81' name='L81'></a>  81 
+<a id='L82' name='L82'></a>  82 <strong class='reserved'>static</strong>
+<a id='L83' name='L83'></a>  83 <strong class='reserved'>void</strong>
+<a id='L84' name='L84'></a>  84 <a href='../S/607.html#L132' title='Referred from 132 in userland/testbin/bigfork/bigfork.c.'>add</a>(<strong class='reserved'>int</strong> *x, <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> *a, <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> *b)
+<a id='L85' name='L85'></a>  85 <em class='brace'>{</em>
+<a id='L86' name='L86'></a>  86         <strong class='reserved'>unsigned</strong> i, j;
+<a id='L87' name='L87'></a>  87 
+<a id='L88' name='L88'></a>  88         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; i++) <em class='brace'>{</em>
+<a id='L89' name='L89'></a>  89                 <strong class='reserved'>for</strong> (j=0; j&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; j++) <em class='brace'>{</em>
+<a id='L90' name='L90'></a>  90                         x[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j] = a[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j] + b[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j];
+<a id='L91' name='L91'></a>  91                 <em class='brace'>}</em>
+<a id='L92' name='L92'></a>  92         <em class='brace'>}</em>
+<a id='L93' name='L93'></a>  93 <em class='brace'>}</em>
+<a id='L94' name='L94'></a>  94 
+<a id='L95' name='L95'></a>  95 <strong class='reserved'>static</strong>
+<a id='L96' name='L96'></a>  96 <strong class='reserved'>void</strong>
+<a id='L97' name='L97'></a>  97 <a href='../R/1676.html' title='Multiple referred from 2 places.'>mul</a>(<strong class='reserved'>int</strong> *x, <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> *a, <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> *b)
+<a id='L98' name='L98'></a>  98 <em class='brace'>{</em>
+<a id='L99' name='L99'></a>  99         <strong class='reserved'>unsigned</strong> i, j, k;
+<a id='L100' name='L100'></a> 100 
+<a id='L101' name='L101'></a> 101         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; i++) <em class='brace'>{</em>
+<a id='L102' name='L102'></a> 102                 <strong class='reserved'>for</strong> (j=0; j&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; j++) <em class='brace'>{</em>
+<a id='L103' name='L103'></a> 103                         x[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j] = 0;
+<a id='L104' name='L104'></a> 104                         <strong class='reserved'>for</strong> (k=0; k&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; k++) <em class='brace'>{</em>
+<a id='L105' name='L105'></a> 105                                 x[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j] += a[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+k] * b[k*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j]; 
+<a id='L106' name='L106'></a> 106                         <em class='brace'>}</em>
+<a id='L107' name='L107'></a> 107                 <em class='brace'>}</em>
+<a id='L108' name='L108'></a> 108         <em class='brace'>}</em>
+<a id='L109' name='L109'></a> 109 <em class='brace'>}</em>
+<a id='L110' name='L110'></a> 110 
+<a id='L111' name='L111'></a> 111 <strong class='reserved'>static</strong>
+<a id='L112' name='L112'></a> 112 <strong class='reserved'>void</strong>
+<a id='L113' name='L113'></a> 113 <a href='../S/607.html#L134' title='Referred from 134 in userland/testbin/bigfork/bigfork.c.'>scale</a>(<strong class='reserved'>int</strong> *x, <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> *a, <strong class='reserved'>int</strong> b)
+<a id='L114' name='L114'></a> 114 <em class='brace'>{</em>
+<a id='L115' name='L115'></a> 115         <strong class='reserved'>unsigned</strong> i, j;
+<a id='L116' name='L116'></a> 116 
+<a id='L117' name='L117'></a> 117         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; i++) <em class='brace'>{</em>
+<a id='L118' name='L118'></a> 118                 <strong class='reserved'>for</strong> (j=0; j&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; j++) <em class='brace'>{</em>
+<a id='L119' name='L119'></a> 119                         x[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j] = a[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+j] / b;
+<a id='L120' name='L120'></a> 120                 <em class='brace'>}</em>
+<a id='L121' name='L121'></a> 121         <em class='brace'>}</em>
+<a id='L122' name='L122'></a> 122 <em class='brace'>}</em>
+<a id='L123' name='L123'></a> 123 
+<a id='L124' name='L124'></a> 124 <strong class='reserved'>static</strong>
+<a id='L125' name='L125'></a> 125 <strong class='reserved'>void</strong>
+<a id='L126' name='L126'></a> 126 <a href='../R/1461.html' title='Multiple referred from 3 places.'>grind</a>(<strong class='reserved'>void</strong>)
+<a id='L127' name='L127'></a> 127 <em class='brace'>{</em>
+<a id='L128' name='L128'></a> 128         <em class='comment'>/*</em>
+<a id='L129' name='L129'></a> 129 <em class='comment'>         * compute: m2 = m1*m1, m3 = m2+m1, m4 = m3*m3, m1 = m4 / 2</em>
+<a id='L130' name='L130'></a> 130 <em class='comment'>         */</em>
+<a id='L131' name='L131'></a> 131          <a href='../S/607.html#L97' title='Defined at 97 in userland/testbin/bigfork/bigfork.c.'>mul</a>(m2, m1, m1);
+<a id='L132' name='L132'></a> 132          <a href='../S/607.html#L84' title='Defined at 84 in userland/testbin/bigfork/bigfork.c.'>add</a>(m3, m2, m1);
+<a id='L133' name='L133'></a> 133          <a href='../S/607.html#L97' title='Defined at 97 in userland/testbin/bigfork/bigfork.c.'>mul</a>(m4, m3, m3);
+<a id='L134' name='L134'></a> 134          <a href='../S/607.html#L113' title='Defined at 113 in userland/testbin/bigfork/bigfork.c.'>scale</a>(m1, m4, 2);
+<a id='L135' name='L135'></a> 135 <em class='brace'>}</em>
+<a id='L136' name='L136'></a> 136 
+<a id='L137' name='L137'></a> 137 <strong class='reserved'>static</strong>
+<a id='L138' name='L138'></a> 138 <strong class='reserved'>int</strong>
+<a id='L139' name='L139'></a> 139 <a href='../R/2234.html' title='Multiple referred from 3 places.'>trace</a>(<strong class='reserved'>void</strong>)
+<a id='L140' name='L140'></a> 140 <em class='brace'>{</em>
+<a id='L141' name='L141'></a> 141         <strong class='reserved'>unsigned</strong> i;
+<a id='L142' name='L142'></a> 142         <strong class='reserved'>int</strong> val = 0;
+<a id='L143' name='L143'></a> 143 
+<a id='L144' name='L144'></a> 144         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>; i++) <em class='brace'>{</em>
+<a id='L145' name='L145'></a> 145                 val += m1[i*<a href='../D/115.html' title='Multiple defined in 4 places.'>DIM</a>+i];
+<a id='L146' name='L146'></a> 146         <em class='brace'>}</em>
+<a id='L147' name='L147'></a> 147         <strong class='reserved'>while</strong> (val &lt; 0) <em class='brace'>{</em>
+<a id='L148' name='L148'></a> 148                 val += 0x20000000;
+<a id='L149' name='L149'></a> 149         <em class='brace'>}</em>
+<a id='L150' name='L150'></a> 150         <strong class='reserved'>return</strong> val % 0x20000000;
+<a id='L151' name='L151'></a> 151 <em class='brace'>}</em>
+<a id='L152' name='L152'></a> 152 
+<a id='L153' name='L153'></a> 153 <strong class='reserved'>static</strong>
+<a id='L154' name='L154'></a> 154 <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a>
+<a id='L155' name='L155'></a> 155 <a href='../R/1251.html' title='Multiple referred from 18 places.'>dofork</a>(<strong class='reserved'>void</strong>)
+<a id='L156' name='L156'></a> 156 <em class='brace'>{</em>
+<a id='L157' name='L157'></a> 157         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid;
+<a id='L158' name='L158'></a> 158 
+<a id='L159' name='L159'></a> 159         pid = fork();
+<a id='L160' name='L160'></a> 160         <strong class='reserved'>if</strong> (pid &lt; 0) <em class='brace'>{</em>
+<a id='L161' name='L161'></a> 161                 <a href='../D/2824.html' title='Multiple defined in 2 places.'>warn</a>("fork");
+<a id='L162' name='L162'></a> 162         <em class='brace'>}</em>
+<a id='L163' name='L163'></a> 163         <strong class='reserved'>return</strong> pid;
+<a id='L164' name='L164'></a> 164 <em class='brace'>}</em>
+<a id='L165' name='L165'></a> 165 
+<a id='L166' name='L166'></a> 166 <strong class='reserved'>static</strong>
+<a id='L167' name='L167'></a> 167 <strong class='reserved'>void</strong>
+<a id='L168' name='L168'></a> 168 <a href='../R/1272.html' title='Multiple referred from 28 places.'>dowait</a>(<a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pid)
+<a id='L169' name='L169'></a> 169 <em class='brace'>{</em>
+<a id='L170' name='L170'></a> 170         <strong class='reserved'>int</strong> status;
+<a id='L171' name='L171'></a> 171 
+<a id='L172' name='L172'></a> 172         <strong class='reserved'>if</strong> (pid == -1) <em class='brace'>{</em>
+<a id='L173' name='L173'></a> 173                 failures++;
+<a id='L174' name='L174'></a> 174                 <strong class='reserved'>return</strong>;
+<a id='L175' name='L175'></a> 175         <em class='brace'>}</em>
+<a id='L176' name='L176'></a> 176         <strong class='reserved'>if</strong> (pid == 0) <em class='brace'>{</em>
+<a id='L177' name='L177'></a> 177                 <a href='../S/512.html#L38' title='Defined at 38 in userland/lib/libc/stdlib/exit.c.'>exit</a>(failures);
+<a id='L178' name='L178'></a> 178         <em class='brace'>}</em>
+<a id='L179' name='L179'></a> 179         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L180' name='L180'></a> 180                 <strong class='reserved'>if</strong> (waitpid(pid, &amp;status, 0) &lt; 0) <em class='brace'>{</em>
+<a id='L181' name='L181'></a> 181                         <a href='../D/2824.html' title='Multiple defined in 2 places.'>warn</a>("waitpid(%d)", pid);
+<a id='L182' name='L182'></a> 182                 <em class='brace'>}</em>
+<a id='L183' name='L183'></a> 183                 <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (<a href='../S/171.html#L66' title='Defined at 66 in kern/include/kern/wait.h.'>WIFSIGNALED</a>(status)) <em class='brace'>{</em>
+<a id='L184' name='L184'></a> 184                         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("pid %d: signal %d", pid, <a href='../S/171.html#L69' title='Defined at 69 in kern/include/kern/wait.h.'>WTERMSIG</a>(status));
+<a id='L185' name='L185'></a> 185                 <em class='brace'>}</em>
+<a id='L186' name='L186'></a> 186                 <strong class='reserved'>else</strong> <strong class='reserved'>if</strong> (<a href='../S/171.html#L68' title='Defined at 68 in kern/include/kern/wait.h.'>WEXITSTATUS</a>(status) &gt; 0) <em class='brace'>{</em>
+<a id='L187' name='L187'></a> 187                         failures += <a href='../S/171.html#L68' title='Defined at 68 in kern/include/kern/wait.h.'>WEXITSTATUS</a>(status);
+<a id='L188' name='L188'></a> 188                 <em class='brace'>}</em>
+<a id='L189' name='L189'></a> 189         <em class='brace'>}</em>
+<a id='L190' name='L190'></a> 190 <em class='brace'>}</em>
+<a id='L191' name='L191'></a> 191 
+<a id='L192' name='L192'></a> 192 <strong class='reserved'>static</strong>
+<a id='L193' name='L193'></a> 193 <strong class='reserved'>void</strong>
+<a id='L194' name='L194'></a> 194 <a href='../R/1270.html' title='Multiple referred from 7 places.'>dotest</a>(<strong class='reserved'>void</strong>)
+<a id='L195' name='L195'></a> 195 <em class='brace'>{</em>
+<a id='L196' name='L196'></a> 196         <strong class='reserved'>unsigned</strong> i, me;
+<a id='L197' name='L197'></a> 197         <a href='../D/2145.html' title='Multiple defined in 2 places.'>pid_t</a> pids[<a href='../S/607.html#L48' title='Defined at 48 in userland/testbin/bigfork/bigfork.c.'>BRANCHES</a>];
+<a id='L198' name='L198'></a> 198         <strong class='reserved'>int</strong> t;
+<a id='L199' name='L199'></a> 199         <strong class='reserved'>char</strong> msg[128];
+<a id='L200' name='L200'></a> 200 
+<a id='L201' name='L201'></a> 201         me = 0;
+<a id='L202' name='L202'></a> 202         <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/607.html#L48' title='Defined at 48 in userland/testbin/bigfork/bigfork.c.'>BRANCHES</a>; i++) <em class='brace'>{</em>
+<a id='L203' name='L203'></a> 203                 pids[i] = <a href='../D/1613.html' title='Multiple defined in 5 places.'>dofork</a>();
+<a id='L204' name='L204'></a> 204                 <strong class='reserved'>if</strong> (pids[i] == 0) <em class='brace'>{</em>
+<a id='L205' name='L205'></a> 205                         me += 1U&lt;&lt;i;
+<a id='L206' name='L206'></a> 206                 <em class='brace'>}</em>
+<a id='L207' name='L207'></a> 207                 <a href='../D/1850.html' title='Multiple defined in 2 places.'>grind</a>();
+<a id='L208' name='L208'></a> 208                 t = <a href='../D/2688.html' title='Multiple defined in 2 places.'>trace</a>();
+<a id='L209' name='L209'></a> 209                 <strong class='reserved'>if</strong> (t == right[i]) <em class='brace'>{</em>
+<a id='L210' name='L210'></a> 210                         <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(msg, <strong class='reserved'>sizeof</strong>(msg),
+<a id='L211' name='L211'></a> 211                                  "Stage %u #%u done: %d\n", i, me, <a href='../D/2688.html' title='Multiple defined in 2 places.'>trace</a>());
+<a id='L212' name='L212'></a> 212                 <em class='brace'>}</em>
+<a id='L213' name='L213'></a> 213                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L214' name='L214'></a> 214                         <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(msg, <strong class='reserved'>sizeof</strong>(msg),
+<a id='L215' name='L215'></a> 215                                  "Stage %u #%u FAILED: got %d, expected %d\n",
+<a id='L216' name='L216'></a> 216                                  i, me, t, right[i]);
+<a id='L217' name='L217'></a> 217                         failures++;
+<a id='L218' name='L218'></a> 218                 <em class='brace'>}</em>
+<a id='L219' name='L219'></a> 219                 (<strong class='reserved'>void</strong>)write(<a href='../S/170.html#L35' title='Defined at 35 in kern/include/kern/unistd.h.'>STDOUT_FILENO</a>, msg, <a href='../S/35.html#L47' title='Defined at 47 in common/libc/string/strlen.c.'>strlen</a>(msg));
+<a id='L220' name='L220'></a> 220         <em class='brace'>}</em>
+<a id='L221' name='L221'></a> 221 
+<a id='L222' name='L222'></a> 222         <strong class='reserved'>for</strong> (i=<a href='../S/607.html#L48' title='Defined at 48 in userland/testbin/bigfork/bigfork.c.'>BRANCHES</a>; i-- &gt; 0; ) <em class='brace'>{</em>
+<a id='L223' name='L223'></a> 223                 <a href='../D/1637.html' title='Multiple defined in 9 places.'>dowait</a>(pids[i]);
+<a id='L224' name='L224'></a> 224         <em class='brace'>}</em>
+<a id='L225' name='L225'></a> 225         <strong class='reserved'>if</strong> (failures &gt; 0) <em class='brace'>{</em>
+<a id='L226' name='L226'></a> 226                 <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("%u failures.\n", failures);
+<a id='L227' name='L227'></a> 227         <em class='brace'>}</em>
+<a id='L228' name='L228'></a> 228         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L229' name='L229'></a> 229                 <a href='../S/508.html#L56' title='Defined at 56 in userland/lib/libc/stdio/printf.c.'>printf</a>("Done.\n");
+<a id='L230' name='L230'></a> 230         <em class='brace'>}</em>
+<a id='L231' name='L231'></a> 231 <em class='brace'>}</em>
+<a id='L232' name='L232'></a> 232 
+<a id='L233' name='L233'></a> 233 <strong class='reserved'>int</strong>
+<a id='L234' name='L234'></a> 234 main(<strong class='reserved'>void</strong>)
+<a id='L235' name='L235'></a> 235 <em class='brace'>{</em>
+<a id='L236' name='L236'></a> 236         <a href='../S/607.html#L70' title='Defined at 70 in userland/testbin/bigfork/bigfork.c.'>init</a>();
+<a id='L237' name='L237'></a> 237         <a href='../D/1635.html' title='Multiple defined in 4 places.'>dotest</a>();
+<a id='L238' name='L238'></a> 238         <strong class='reserved'>return</strong> 0;
+<a id='L239' name='L239'></a> 239 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L70'>[^]</a><a href='#L234'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>assert</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/24.html#L43'>assert</a>             43 common/libc/printf/__printf.c #define assert KASSERT</span>
+<span class='curline'><a href='../S/469.html#L36'>assert</a>             36 userland/include/assert.h #undef assert</span>
+<span class='curline'><a href='../S/469.html#L50'>assert</a>             50 userland/include/assert.h #define assert(x) ((void)(x))	/* retain any side effects of X */</span>
+<span class='curline'><a href='../S/469.html#L52'>assert</a>             52 userland/include/assert.h #define assert(x) ((void)0)	/* mysteriously hide any side effects of X */</span>
+<span class='curline'><a href='../S/469.html#L56'>assert</a>             56 userland/include/assert.h #define assert(x) ((x) ? (void)0 : __bad_assert(__FILE__, __LINE__, #x))</span>
+</pre>
+</body>
+</html>

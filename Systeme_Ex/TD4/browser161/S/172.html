@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/include/lib.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/751.html'>include</a>/lib.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/152.html' title='Multiple included from 93 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#ifndef</em> <a href='../S/172.html#L31' title='Defined at 31 in kern/include/lib.h.'>_LIB_H_</a>
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#define</em> <a href='../S/172.html#L30' title='Referred from 30 in kern/include/lib.h.'>_LIB_H_</a>
+<a id='L32' name='L32'></a>  32 
+<a id='L33' name='L33'></a>  33 <em class='comment'>/*</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * Miscellaneous standard C functions for the kernel, and other widely used</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> * kernel functions.</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> *</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * Note: setjmp and longjmp are in &lt;setjmp.h&gt;.</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> */</em>
+<a id='L39' name='L39'></a>  39 
+<a id='L40' name='L40'></a>  40 
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> &lt;<a href='../I/121.html'>cdefs.h</a>&gt;
+<a id='L42' name='L42'></a>  42 
+<a id='L43' name='L43'></a>  43 <em class='comment'>/*</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> * Assert macros.</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> *</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> * KASSERT and DEBUGASSERT are the same, except that they can be</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> * toggled independently. DEBUGASSERT is used in places where making</em>
+<a id='L48' name='L48'></a>  48 <em class='comment'> * checks is likely to be expensive and relatively unlikely to be</em>
+<a id='L49' name='L49'></a>  49 <em class='comment'> * helpful.</em>
+<a id='L50' name='L50'></a>  50 <em class='comment'> *</em>
+<a id='L51' name='L51'></a>  51 <em class='comment'> * Note that there's also a COMPILE_ASSERT for compile-time checks;</em>
+<a id='L52' name='L52'></a>  52 <em class='comment'> * it's in &lt;cdefs.h&gt;.</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'> *</em>
+<a id='L54' name='L54'></a>  54 <em class='comment'> * Regular assertions (KASSERT) are disabled by the kernel config</em>
+<a id='L55' name='L55'></a>  55 <em class='comment'> * option "noasserts". DEBUGASSERT could be controlled by kernel</em>
+<a id='L56' name='L56'></a>  56 <em class='comment'> * config also, but since it's likely to be wanted only rarely during</em>
+<a id='L57' name='L57'></a>  57 <em class='comment'> * testing there doesn't seem much point; one can just edit this file</em>
+<a id='L58' name='L58'></a>  58 <em class='comment'> * temporarily instead.</em>
+<a id='L59' name='L59'></a>  59 <em class='comment'> */</em>
+<a id='L60' name='L60'></a>  60 <em class='sharp'>#include</em> "opt-noasserts.h"
+<a id='L61' name='L61'></a>  61 
+<a id='L62' name='L62'></a>  62 <em class='sharp'>#if</em> OPT_NOASSERTS
+<a id='L63' name='L63'></a>  63 <em class='sharp'>#define</em> <a href='../R/279.html' title='Multiple referred from 447 places.'>KASSERT</a>(expr) ((<strong class='reserved'>void</strong>)(expr))
+<a id='L64' name='L64'></a>  64 <em class='sharp'>#else</em>
+<a id='L65' name='L65'></a>  65 <em class='sharp'>#define</em> <a href='../R/279.html' title='Multiple referred from 447 places.'>KASSERT</a>(expr) \
+<a id='L66' name='L66'></a>  66         ((expr) ? (<strong class='reserved'>void</strong>)0 : <a href='../S/201.html#L212' title='Defined at 212 in kern/lib/kprintf.c.'>badassert</a>(#expr, __FILE__, __LINE__, __func__))
+<a id='L67' name='L67'></a>  67 <em class='sharp'>#endif</em>
+<a id='L68' name='L68'></a>  68 
+<a id='L69' name='L69'></a>  69 <em class='sharp'>#if</em> 1 <em class='comment'>/* no debug asserts */</em>
+<a id='L70' name='L70'></a>  70 <em class='sharp'>#define</em> <a href='../R/76.html' title='Multiple referred from 30 places.'>DEBUGASSERT</a>(expr) ((<strong class='reserved'>void</strong>)(expr))
+<a id='L71' name='L71'></a>  71 <em class='sharp'>#else</em>
+<a id='L72' name='L72'></a>  72 <em class='sharp'>#define</em> <a href='../R/76.html' title='Multiple referred from 30 places.'>DEBUGASSERT</a>(expr) \
+<a id='L73' name='L73'></a>  73         ((expr) ? (<strong class='reserved'>void</strong>)0 : <a href='../S/201.html#L212' title='Defined at 212 in kern/lib/kprintf.c.'>badassert</a>(#expr, __FILE__, __LINE__, __func__))
+<a id='L74' name='L74'></a>  74 <em class='sharp'>#endif</em>
+<a id='L75' name='L75'></a>  75 
+<a id='L76' name='L76'></a>  76 <em class='comment'>/*</em>
+<a id='L77' name='L77'></a>  77 <em class='comment'> * Bit flags for DEBUG()</em>
+<a id='L78' name='L78'></a>  78 <em class='comment'> */</em>
+<a id='L79' name='L79'></a>  79 <em class='sharp'>#define</em> DB_LOCORE      0x0001
+<a id='L80' name='L80'></a>  80 <em class='sharp'>#define</em> <a href='../S/61.html#L221' title='Referred from 221 in kern/arch/mips/locore/trap.c.'>DB_SYSCALL</a>     0x0002
+<a id='L81' name='L81'></a>  81 <em class='sharp'>#define</em> DB_INTERRUPT   0x0004
+<a id='L82' name='L82'></a>  82 <em class='sharp'>#define</em> DB_DEVICE      0x0008
+<a id='L83' name='L83'></a>  83 <em class='sharp'>#define</em> <a href='../S/227.html#L920' title='Referred from 920 in kern/thread/thread.c.'>DB_THREADS</a>     0x0010
+<a id='L84' name='L84'></a>  84 <em class='sharp'>#define</em> <a href='../R/74.html' title='Multiple referred from 2 places.'>DB_VM</a>          0x0020
+<a id='L85' name='L85'></a>  85 <em class='sharp'>#define</em> <a href='../R/69.html' title='Multiple referred from 2 places.'>DB_EXEC</a>        0x0040
+<a id='L86' name='L86'></a>  86 <em class='sharp'>#define</em> DB_VFS         0x0080
+<a id='L87' name='L87'></a>  87 <em class='sharp'>#define</em> <a href='../R/70.html' title='Multiple referred from 3 places.'>DB_SEMFS</a>       0x0100
+<a id='L88' name='L88'></a>  88 <em class='sharp'>#define</em> <a href='../S/132.html#L67' title='Referred from 67 in kern/fs/sfs/sfs_io.c.'>DB_SFS</a>         0x0200
+<a id='L89' name='L89'></a>  89 <em class='sharp'>#define</em> DB_NET         0x0400
+<a id='L90' name='L90'></a>  90 <em class='sharp'>#define</em> DB_NETFS       0x0800
+<a id='L91' name='L91'></a>  91 <em class='sharp'>#define</em> DB_KMALLOC     0x1000
+<a id='L92' name='L92'></a>  92 
+<a id='L93' name='L93'></a>  93 <strong class='reserved'>extern</strong> <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> dbflags;
+<a id='L94' name='L94'></a>  94 
+<a id='L95' name='L95'></a>  95 <em class='comment'>/*</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'> * DEBUG() is for conditionally printing debug messages to the console.</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'> *</em>
+<a id='L98' name='L98'></a>  98 <em class='comment'> * The idea is that you put lots of lines of the form</em>
+<a id='L99' name='L99'></a>  99 <em class='comment'> *</em>
+<a id='L100' name='L100'></a> 100 <em class='comment'> *      DEBUG(DB_VM, "VM free pages: %u\n", free_pages);</em>
+<a id='L101' name='L101'></a> 101 <em class='comment'> *</em>
+<a id='L102' name='L102'></a> 102 <em class='comment'> * throughout the kernel; then you can toggle whether these messages</em>
+<a id='L103' name='L103'></a> 103 <em class='comment'> * are printed or not at runtime by setting the value of dbflags with</em>
+<a id='L104' name='L104'></a> 104 <em class='comment'> * the debugger.</em>
+<a id='L105' name='L105'></a> 105 <em class='comment'> *</em>
+<a id='L106' name='L106'></a> 106 <em class='comment'> * Unfortunately, as of this writing, there are only a very few such</em>
+<a id='L107' name='L107'></a> 107 <em class='comment'> * messages actually present in the system yet. Feel free to add more.</em>
+<a id='L108' name='L108'></a> 108 <em class='comment'> *</em>
+<a id='L109' name='L109'></a> 109 <em class='comment'> * DEBUG is a varargs macro. These were added to the language in C99.</em>
+<a id='L110' name='L110'></a> 110 <em class='comment'> */</em>
+<a id='L111' name='L111'></a> 111 <em class='sharp'>#define</em> <a href='../R/75.html' title='Multiple referred from 10 places.'>DEBUG</a>(d, ...) ((dbflags &amp; (d)) ? <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>(__VA_ARGS__) : 0)
+<a id='L112' name='L112'></a> 112 
+<a id='L113' name='L113'></a> 113 <em class='comment'>/*</em>
+<a id='L114' name='L114'></a> 114 <em class='comment'> * Random number generator, using the random device.</em>
+<a id='L115' name='L115'></a> 115 <em class='comment'> *</em>
+<a id='L116' name='L116'></a> 116 <em class='comment'> * random() returns a number between 0 and randmax() inclusive.</em>
+<a id='L117' name='L117'></a> 117 <em class='comment'> */</em>
+<a id='L118' name='L118'></a> 118 <em class='sharp'>#define</em> <a href='../R/482.html' title='Multiple referred from 7 places.'>RANDOM_MAX</a> (<a href='../S/88.html#L152' title='Defined at 152 in kern/dev/generic/random.c.'>randmax</a>())
+<a id='L119' name='L119'></a> 119 <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> <a href='../S/88.html#L152' title='Defined at 152 in kern/dev/generic/random.c.'>randmax</a>(<strong class='reserved'>void</strong>);
+<a id='L120' name='L120'></a> 120 <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> <a href='../D/2207.html' title='Multiple defined in 2 places.'>random</a>(<strong class='reserved'>void</strong>);
+<a id='L121' name='L121'></a> 121 
+<a id='L122' name='L122'></a> 122 <em class='comment'>/*</em>
+<a id='L123' name='L123'></a> 123 <em class='comment'> * Kernel heap memory allocation. Like malloc/free.</em>
+<a id='L124' name='L124'></a> 124 <em class='comment'> * If out of memory, kmalloc returns NULL.</em>
+<a id='L125' name='L125'></a> 125 <em class='comment'> *</em>
+<a id='L126' name='L126'></a> 126 <em class='comment'> * kheap_nextgeneration, dump, and dumpall do nothing unless heap</em>
+<a id='L127' name='L127'></a> 127 <em class='comment'> * labeling (for leak detection) in kmalloc.c (q.v.) is enabled.</em>
+<a id='L128' name='L128'></a> 128 <em class='comment'> */</em>
+<a id='L129' name='L129'></a> 129 <strong class='reserved'>void</strong> *<a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> size);
+<a id='L130' name='L130'></a> 130 <strong class='reserved'>void</strong> <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(<strong class='reserved'>void</strong> *ptr);
+<a id='L131' name='L131'></a> 131 <strong class='reserved'>void</strong> <a href='../S/239.html#L801' title='Defined at 801 in kern/vm/kmalloc.c.'>kheap_printstats</a>(<strong class='reserved'>void</strong>);
+<a id='L132' name='L132'></a> 132 <strong class='reserved'>void</strong> <a href='../S/239.html#L701' title='Defined at 701 in kern/vm/kmalloc.c.'>kheap_nextgeneration</a>(<strong class='reserved'>void</strong>);
+<a id='L133' name='L133'></a> 133 <strong class='reserved'>void</strong> <a href='../S/239.html#L711' title='Defined at 711 in kern/vm/kmalloc.c.'>kheap_dump</a>(<strong class='reserved'>void</strong>);
+<a id='L134' name='L134'></a> 134 <strong class='reserved'>void</strong> <a href='../S/239.html#L724' title='Defined at 724 in kern/vm/kmalloc.c.'>kheap_dumpall</a>(<strong class='reserved'>void</strong>);
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136 <em class='comment'>/*</em>
+<a id='L137' name='L137'></a> 137 <em class='comment'> * C string functions.</em>
+<a id='L138' name='L138'></a> 138 <em class='comment'> *</em>
+<a id='L139' name='L139'></a> 139 <em class='comment'> * kstrdup is like strdup, but calls kmalloc instead of malloc.</em>
+<a id='L140' name='L140'></a> 140 <em class='comment'> * If out of memory, it returns NULL.</em>
+<a id='L141' name='L141'></a> 141 <em class='comment'> */</em>
+<a id='L142' name='L142'></a> 142 <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> <a href='../S/35.html#L47' title='Defined at 47 in common/libc/string/strlen.c.'>strlen</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *str);
+<a id='L143' name='L143'></a> 143 <strong class='reserved'>int</strong> <a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *str1, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *str2);
+<a id='L144' name='L144'></a> 144 <strong class='reserved'>char</strong> *<a href='../S/34.html#L46' title='Defined at 46 in common/libc/string/strcpy.c.'>strcpy</a>(<strong class='reserved'>char</strong> *dest, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *src);
+<a id='L145' name='L145'></a> 145 <strong class='reserved'>char</strong> *<a href='../S/31.html#L47' title='Defined at 47 in common/libc/string/strcat.c.'>strcat</a>(<strong class='reserved'>char</strong> *dest, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *src);
+<a id='L146' name='L146'></a> 146 <strong class='reserved'>char</strong> *<a href='../S/202.html#L38' title='Defined at 38 in kern/lib/misc.c.'>kstrdup</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *str);
+<a id='L147' name='L147'></a> 147 <strong class='reserved'>char</strong> *<a href='../S/32.html#L47' title='Defined at 47 in common/libc/string/strchr.c.'>strchr</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *searched, <strong class='reserved'>int</strong> searchfor);
+<a id='L148' name='L148'></a> 148 <strong class='reserved'>char</strong> *<a href='../S/36.html#L47' title='Defined at 47 in common/libc/string/strrchr.c.'>strrchr</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *searched, <strong class='reserved'>int</strong> searchfor);
+<a id='L149' name='L149'></a> 149 <strong class='reserved'>char</strong> *<a href='../S/37.html#L50' title='Defined at 50 in common/libc/string/strtok_r.c.'>strtok_r</a>(<strong class='reserved'>char</strong> *buf, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *seps, <strong class='reserved'>char</strong> **context);
+<a id='L150' name='L150'></a> 150 
+<a id='L151' name='L151'></a> 151 <strong class='reserved'>void</strong> *<a href='../S/28.html#L48' title='Defined at 48 in common/libc/string/memcpy.c.'>memcpy</a>(<strong class='reserved'>void</strong> *dest, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *src, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> len);
+<a id='L152' name='L152'></a> 152 <strong class='reserved'>void</strong> *<a href='../S/29.html#L49' title='Defined at 49 in common/libc/string/memmove.c.'>memmove</a>(<strong class='reserved'>void</strong> *dest, <strong class='reserved'>const</strong> <strong class='reserved'>void</strong> *src, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> len);
+<a id='L153' name='L153'></a> 153 <strong class='reserved'>void</strong> *<a href='../S/30.html#L42' title='Defined at 42 in common/libc/string/memset.c.'>memset</a>(<strong class='reserved'>void</strong> *block, <strong class='reserved'>int</strong> ch, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> len);
+<a id='L154' name='L154'></a> 154 <strong class='reserved'>void</strong> <a href='../S/27.html#L49' title='Defined at 49 in common/libc/string/bzero.c.'>bzero</a>(<strong class='reserved'>void</strong> *ptr, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> len);
+<a id='L155' name='L155'></a> 155 <strong class='reserved'>int</strong> <a href='../S/26.html#L50' title='Defined at 50 in common/libc/stdlib/atoi.c.'>atoi</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *str);
+<a id='L156' name='L156'></a> 156 
+<a id='L157' name='L157'></a> 157 <strong class='reserved'>int</strong> <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(<strong class='reserved'>char</strong> *buf, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> maxlen, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *fmt, ...) <a href='../D/1170.html' title='Multiple defined in 4 places.'>__PF</a>(3,4);
+<a id='L158' name='L158'></a> 158 
+<a id='L159' name='L159'></a> 159 <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *<a href='../D/2537.html' title='Multiple defined in 2 places.'>strerror</a>(<strong class='reserved'>int</strong> errcode);
+<a id='L160' name='L160'></a> 160 
+<a id='L161' name='L161'></a> 161 <em class='comment'>/*</em>
+<a id='L162' name='L162'></a> 162 <em class='comment'> * Low-level console access.</em>
+<a id='L163' name='L163'></a> 163 <em class='comment'> */</em>
+<a id='L164' name='L164'></a> 164 <strong class='reserved'>void</strong> <a href='../S/86.html#L201' title='Defined at 201 in kern/dev/generic/console.c.'>putch</a>(<strong class='reserved'>int</strong> ch);
+<a id='L165' name='L165'></a> 165 <strong class='reserved'>int</strong> <a href='../S/86.html#L219' title='Defined at 219 in kern/dev/generic/console.c.'>getch</a>(<strong class='reserved'>void</strong>);
+<a id='L166' name='L166'></a> 166 <strong class='reserved'>void</strong> <a href='../S/84.html#L63' title='Defined at 63 in kern/dev/generic/beep.c.'>beep</a>(<strong class='reserved'>void</strong>);
+<a id='L167' name='L167'></a> 167 
+<a id='L168' name='L168'></a> 168 <em class='comment'>/*</em>
+<a id='L169' name='L169'></a> 169 <em class='comment'> * Higher-level console output.</em>
+<a id='L170' name='L170'></a> 170 <em class='comment'> *</em>
+<a id='L171' name='L171'></a> 171 <em class='comment'> * kprintf is like printf, only in the kernel.</em>
+<a id='L172' name='L172'></a> 172 <em class='comment'> * panic prepends the string "panic: " to the message printed, and then</em>
+<a id='L173' name='L173'></a> 173 <em class='comment'> * resets the system.</em>
+<a id='L174' name='L174'></a> 174 <em class='comment'> * badassert calls panic in a way suitable for an assertion failure.</em>
+<a id='L175' name='L175'></a> 175 <em class='comment'> * kgets is like gets, only with a buffer size argument.</em>
+<a id='L176' name='L176'></a> 176 <em class='comment'> *</em>
+<a id='L177' name='L177'></a> 177 <em class='comment'> * kprintf_bootstrap sets up a lock for kprintf and should be called</em>
+<a id='L178' name='L178'></a> 178 <em class='comment'> * during boot once malloc is available and before any additional</em>
+<a id='L179' name='L179'></a> 179 <em class='comment'> * threads are created.</em>
+<a id='L180' name='L180'></a> 180 <em class='comment'> */</em>
+<a id='L181' name='L181'></a> 181 <strong class='reserved'>int</strong> <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *format, ...) <a href='../D/1170.html' title='Multiple defined in 4 places.'>__PF</a>(1,2);
+<a id='L182' name='L182'></a> 182 <a href='../D/1160.html' title='Multiple defined in 4 places.'>__DEAD</a> <strong class='reserved'>void</strong> <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *format, ...) <a href='../D/1170.html' title='Multiple defined in 4 places.'>__PF</a>(1,2);
+<a id='L183' name='L183'></a> 183 <a href='../D/1160.html' title='Multiple defined in 4 places.'>__DEAD</a> <strong class='reserved'>void</strong> <a href='../S/201.html#L212' title='Defined at 212 in kern/lib/kprintf.c.'>badassert</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *expr, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *<a href='../S/653.html#L43' title='Defined at 43 in userland/testbin/frack/ops.c.'>file</a>,
+<a id='L184' name='L184'></a> 184                       <strong class='reserved'>int</strong> line, <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *func);
+<a id='L185' name='L185'></a> 185 
+<a id='L186' name='L186'></a> 186 <strong class='reserved'>void</strong> <a href='../S/200.html#L54' title='Defined at 54 in kern/lib/kgets.c.'>kgets</a>(<strong class='reserved'>char</strong> *buf, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> maxbuflen);
+<a id='L187' name='L187'></a> 187 
+<a id='L188' name='L188'></a> 188 <strong class='reserved'>void</strong> <a href='../S/201.html#L65' title='Defined at 65 in kern/lib/kprintf.c.'>kprintf_bootstrap</a>(<strong class='reserved'>void</strong>);
+<a id='L189' name='L189'></a> 189 
+<a id='L190' name='L190'></a> 190 <em class='comment'>/*</em>
+<a id='L191' name='L191'></a> 191 <em class='comment'> * Other miscellaneous stuff</em>
+<a id='L192' name='L192'></a> 192 <em class='comment'> */</em>
+<a id='L193' name='L193'></a> 193 
+<a id='L194' name='L194'></a> 194 <em class='sharp'>#define</em> <a href='../R/97.html' title='Multiple referred from 11 places.'>DIVROUNDUP</a>(a,b) (((a)+(b)-1)/(b))
+<a id='L195' name='L195'></a> 195 <em class='sharp'>#define</em> <a href='../R/501.html' title='Multiple referred from 2 places.'>ROUNDUP</a>(a,b)    (<a href='../D/120.html' title='Multiple defined in 3 places.'>DIVROUNDUP</a>(a,b)*(b))
+<a id='L196' name='L196'></a> 196 
+<a id='L197' name='L197'></a> 197 
+<a id='L198' name='L198'></a> 198 <em class='sharp'>#endif</em> <em class='comment'>/* _LIB_H_ */</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

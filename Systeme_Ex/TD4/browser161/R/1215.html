@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>dir</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/96.html#L736'>dir</a>               736 kern/dev/lamebus/emu.c emufs_creat(struct vnode *dir, const char *name, bool excl, mode_t mode,</span>
+<span class='curline'><a href='../S/96.html#L739'>dir</a>               739 kern/dev/lamebus/emu.c 	struct emufs_vnode *ev = dir-&gt;vn_data;</span>
+<span class='curline'><a href='../S/96.html#L740'>dir</a>               740 kern/dev/lamebus/emu.c 	struct emufs_fs *ef = dir-&gt;vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/96.html#L767'>dir</a>               767 kern/dev/lamebus/emu.c emufs_lookup(struct vnode *dir, char *pathname, struct vnode **ret)</span>
+<span class='curline'><a href='../S/96.html#L769'>dir</a>               769 kern/dev/lamebus/emu.c 	struct emufs_vnode *ev = dir-&gt;vn_data;</span>
+<span class='curline'><a href='../S/96.html#L770'>dir</a>               770 kern/dev/lamebus/emu.c 	struct emufs_fs *ef = dir-&gt;vn_fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/96.html#L797'>dir</a>               797 kern/dev/lamebus/emu.c emufs_lookparent(struct vnode *dir, char *pathname, struct vnode **ret,</span>
+<span class='curline'><a href='../S/96.html#L808'>dir</a>               808 kern/dev/lamebus/emu.c 		VOP_INCREF(dir);</span>
+<span class='curline'><a href='../S/96.html#L809'>dir</a>               809 kern/dev/lamebus/emu.c 		*ret = dir;</span>
+<span class='curline'><a href='../S/96.html#L821'>dir</a>               821 kern/dev/lamebus/emu.c 	return emufs_lookup(dir, pathname, ret);</span>
+<span class='curline'><a href='../S/133.html#L356'>dir</a>               356 kern/fs/sfs/sfs_vnops.c sfs_link(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/133.html#L358'>dir</a>               358 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = dir-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L362'>dir</a>               362 kern/fs/sfs/sfs_vnops.c 	KASSERT(file-&gt;vn_fs == dir-&gt;vn_fs);</span>
+<span class='curline'><a href='../S/133.html#L392'>dir</a>               392 kern/fs/sfs/sfs_vnops.c sfs_remove(struct vnode *dir, const char *name)</span>
+<span class='curline'><a href='../S/133.html#L394'>dir</a>               394 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *sv = dir-&gt;vn_data;</span>
+<span class='curline'><a href='../S/193.html#L62'>dir</a>                62 kern/include/vfs.h int vfs_setcurdir(struct vnode *dir);</span>
+<span class='curline'><a href='../S/195.html#L189'>dir</a>               189 kern/include/vnode.h 	int (*vop_getdirentry)(struct vnode *dir, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L201'>dir</a>               201 kern/include/vnode.h 	int (*vop_creat)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L204'>dir</a>               204 kern/include/vnode.h 	int (*vop_symlink)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L208'>dir</a>               208 kern/include/vnode.h 	int (*vop_link)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L210'>dir</a>               210 kern/include/vnode.h 	int (*vop_remove)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L212'>dir</a>               212 kern/include/vnode.h 	int (*vop_rmdir)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L219'>dir</a>               219 kern/include/vnode.h 	int (*vop_lookup)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L221'>dir</a>               221 kern/include/vnode.h 	int (*vop_lookparent)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L301'>dir</a>               301 kern/include/vnode.h int vopfail_link_notdir(struct vnode *dir, const char *name,</span>
+<span class='curline'><a href='../S/195.html#L303'>dir</a>               303 kern/include/vnode.h int vopfail_link_nosys(struct vnode *dir, const char *name,</span>
+<span class='curline'><a href='../S/229.html#L306'>dir</a>               306 kern/vfs/device.c dev_lookup(struct vnode *dir,</span>
+<span class='curline'><a href='../S/229.html#L317'>dir</a>               317 kern/vfs/device.c 	VOP_INCREF(dir);</span>
+<span class='curline'><a href='../S/229.html#L318'>dir</a>               318 kern/vfs/device.c 	*result = dir;</span>
+<span class='curline'><a href='../S/231.html#L71'>dir</a>                71 kern/vfs/vfscwd.c vfs_setcurdir(struct vnode *dir)</span>
+<span class='curline'><a href='../S/231.html#L77'>dir</a>                77 kern/vfs/vfscwd.c 	result = VOP_GETTYPE(dir, &amp;vtype);</span>
+<span class='curline'><a href='../S/231.html#L85'>dir</a>                85 kern/vfs/vfscwd.c 	VOP_INCREF(dir);</span>
+<span class='curline'><a href='../S/231.html#L89'>dir</a>                89 kern/vfs/vfscwd.c 	curproc-&gt;p_cwd = dir;</span>
+<span class='curline'><a href='../S/232.html#L180'>dir</a>               180 kern/vfs/vfsfail.c vopfail_link_notdir(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/232.html#L182'>dir</a>               182 kern/vfs/vfsfail.c 	(void)dir;</span>
+<span class='curline'><a href='../S/232.html#L189'>dir</a>               189 kern/vfs/vfsfail.c vopfail_link_nosys(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/232.html#L191'>dir</a>               191 kern/vfs/vfsfail.c 	(void)dir;</span>
+<span class='curline'><a href='../S/235.html#L68'>dir</a>                68 kern/vfs/vfspath.c 		struct vnode *dir;</span>
+<span class='curline'><a href='../S/235.html#L71'>dir</a>                71 kern/vfs/vfspath.c 		result = vfs_lookparent(path, &amp;dir, name, sizeof(name));</span>
+<span class='curline'><a href='../S/235.html#L76'>dir</a>                76 kern/vfs/vfspath.c 		result = VOP_CREAT(dir, name, excl, mode, &amp;vn);</span>
+<span class='curline'><a href='../S/235.html#L78'>dir</a>                78 kern/vfs/vfspath.c 		VOP_DECREF(dir);</span>
+<span class='curline'><a href='../S/235.html#L139'>dir</a>               139 kern/vfs/vfspath.c 	struct vnode *dir;</span>
+<span class='curline'><a href='../S/235.html#L143'>dir</a>               143 kern/vfs/vfspath.c 	result = vfs_lookparent(path, &amp;dir, name, sizeof(name));</span>
+<span class='curline'><a href='../S/235.html#L148'>dir</a>               148 kern/vfs/vfspath.c 	result = VOP_REMOVE(dir, name);</span>
+<span class='curline'><a href='../S/235.html#L149'>dir</a>               149 kern/vfs/vfspath.c 	VOP_DECREF(dir);</span>
+<span class='curline'><a href='../S/642.html#L120'>dir</a>               120 userland/testbin/frack/check.c 			unsigned dir;</span>
+<span class='curline'><a href='../S/642.html#L128'>dir</a>               128 userland/testbin/frack/check.c 			unsigned dir;</span>
+<span class='curline'><a href='../S/642.html#L137'>dir</a>               137 userland/testbin/frack/check.c 			unsigned dir;</span>
+<span class='curline'><a href='../S/642.html#L146'>dir</a>               146 userland/testbin/frack/check.c 			unsigned dir;</span>
+<span class='curline'><a href='../S/642.html#L346'>dir</a>               346 userland/testbin/frack/check.c 		unsigned dir, unsigned name, unsigned newfile)</span>
+<span class='curline'><a href='../S/642.html#L352'>dir</a>               352 userland/testbin/frack/check.c 	mdc-&gt;fc_creat.dir = dir;</span>
+<span class='curline'><a href='../S/642.html#L361'>dir</a>               361 userland/testbin/frack/check.c 		unsigned dir, unsigned name, unsigned newdir)</span>
+<span class='curline'><a href='../S/642.html#L367'>dir</a>               367 userland/testbin/frack/check.c 	mdc-&gt;fc_mkdir.dir = dir;</span>
+<span class='curline'><a href='../S/642.html#L376'>dir</a>               376 userland/testbin/frack/check.c 		unsigned dir, unsigned name, unsigned victimdir)</span>
+<span class='curline'><a href='../S/642.html#L383'>dir</a>               383 userland/testbin/frack/check.c 	mdc-&gt;fc_rmdir.dir = dir;</span>
+<span class='curline'><a href='../S/642.html#L393'>dir</a>               393 userland/testbin/frack/check.c 		 unsigned dir, unsigned name, unsigned victimfile)</span>
+<span class='curline'><a href='../S/642.html#L400'>dir</a>               400 userland/testbin/frack/check.c 	mdc-&gt;fc_unlink.dir = dir;</span>
+<span class='curline'><a href='../S/642.html#L611'>dir</a>               611 userland/testbin/frack/check.c fsdir_add_entry(struct fsobject *dir, struct fsdirent *nde)</span>
+<span class='curline'><a href='../S/642.html#L615'>dir</a>               615 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L616'>dir</a>               616 userland/testbin/frack/check.c 	for (ode = dir-&gt;obj_dir.entries; ode != NULL; ode = ode-&gt;next) {</span>
+<span class='curline'><a href='../S/642.html#L619'>dir</a>               619 userland/testbin/frack/check.c 			    dir-&gt;obj_dir.identity, name_get(nde-&gt;name));</span>
+<span class='curline'><a href='../S/642.html#L622'>dir</a>               622 userland/testbin/frack/check.c 	nde-&gt;next = dir-&gt;obj_dir.entries;</span>
+<span class='curline'><a href='../S/642.html#L623'>dir</a>               623 userland/testbin/frack/check.c 	dir-&gt;obj_dir.entries = nde;</span>
+<span class='curline'><a href='../S/642.html#L632'>dir</a>               632 userland/testbin/frack/check.c fsdir_find_entry(struct fsobject *dir, unsigned name, int croak)</span>
+<span class='curline'><a href='../S/642.html#L636'>dir</a>               636 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L637'>dir</a>               637 userland/testbin/frack/check.c 	for (de = dir-&gt;obj_dir.entries; de != NULL; de = de-&gt;next) {</span>
+<span class='curline'><a href='../S/642.html#L644'>dir</a>               644 userland/testbin/frack/check.c 		    dir-&gt;obj_dir.identity, name_get(name));</span>
+<span class='curline'><a href='../S/642.html#L654'>dir</a>               654 userland/testbin/frack/check.c fsdir_remove_entry(struct fsobject *dir, unsigned name)</span>
+<span class='curline'><a href='../S/642.html#L658'>dir</a>               658 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L659'>dir</a>               659 userland/testbin/frack/check.c 	prevptr = &amp;dir-&gt;obj_dir.entries;</span>
+<span class='curline'><a href='../S/642.html#L668'>dir</a>               668 userland/testbin/frack/check.c 	    dir-&gt;obj_dir.identity, name_get(name));</span>
+<span class='curline'><a href='../S/642.html#L800'>dir</a>               800 userland/testbin/frack/check.c 		obj1 = finddir(rootdir, change-&gt;fc_creat.dir);</span>
+<span class='curline'><a href='../S/642.html#L810'>dir</a>               810 userland/testbin/frack/check.c 		obj1 = finddir(rootdir, change-&gt;fc_mkdir.dir);</span>
+<span class='curline'><a href='../S/642.html#L824'>dir</a>               824 userland/testbin/frack/check.c 		obj1 = finddir(rootdir, change-&gt;fc_rmdir.dir);</span>
+<span class='curline'><a href='../S/642.html#L839'>dir</a>               839 userland/testbin/frack/check.c 		obj1 = finddir(rootdir, change-&gt;fc_unlink.dir);</span>
+<span class='curline'><a href='../S/642.html#L1083'>dir</a>              1083 userland/testbin/frack/check.c 			if (here-&gt;fc_creat.dir == dirnum) {</span>
+<span class='curline'><a href='../S/642.html#L1088'>dir</a>              1088 userland/testbin/frack/check.c 			if (here-&gt;fc_mkdir.dir == dirnum ||</span>
+<span class='curline'><a href='../S/642.html#L1094'>dir</a>              1094 userland/testbin/frack/check.c 			if (here-&gt;fc_rmdir.dir == dirnum ||</span>
+<span class='curline'><a href='../S/642.html#L1100'>dir</a>              1100 userland/testbin/frack/check.c 			if (here-&gt;fc_unlink.dir == dirnum) {</span>
+<span class='curline'><a href='../S/642.html#L1184'>dir</a>              1184 userland/testbin/frack/check.c 		if (fc-&gt;fc_creat.dir == dirnum) {</span>
+<span class='curline'><a href='../S/642.html#L1189'>dir</a>              1189 userland/testbin/frack/check.c 		if (fc-&gt;fc_mkdir.dir == dirnum) {</span>
+<span class='curline'><a href='../S/642.html#L1194'>dir</a>              1194 userland/testbin/frack/check.c 		if (fc-&gt;fc_rmdir.dir == dirnum) {</span>
+<span class='curline'><a href='../S/642.html#L1202'>dir</a>              1202 userland/testbin/frack/check.c 		if (fc-&gt;fc_unlink.dir == dirnum) {</span>
+<span class='curline'><a href='../S/642.html#L1264'>dir</a>              1264 userland/testbin/frack/check.c 			if (here-&gt;fc_creat.dir == dirnum &amp;&amp;</span>
+<span class='curline'><a href='../S/642.html#L1272'>dir</a>              1272 userland/testbin/frack/check.c 			if (here-&gt;fc_mkdir.dir == dirnum &amp;&amp;</span>
+<span class='curline'><a href='../S/642.html#L1283'>dir</a>              1283 userland/testbin/frack/check.c 			if (here-&gt;fc_rmdir.dir == dirnum &amp;&amp;</span>
+<span class='curline'><a href='../S/642.html#L1292'>dir</a>              1292 userland/testbin/frack/check.c 			if (here-&gt;fc_unlink.dir == dirnum &amp;&amp;</span>
+<span class='curline'><a href='../S/642.html#L1443'>dir</a>              1443 userland/testbin/frack/check.c 				return here-&gt;fc_mkdir.dir;</span>
+<span class='curline'><a href='../S/642.html#L2775'>dir</a>              2775 userland/testbin/frack/check.c checkallfilecontents(struct fsobject *dir, struct fschange *change)</span>
+<span class='curline'><a href='../S/642.html#L2780'>dir</a>              2780 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2781'>dir</a>              2781 userland/testbin/frack/check.c 	for (de = dir-&gt;obj_dir.entries; de != NULL; de = de-&gt;next) {</span>
+<span class='curline'><a href='../S/653.html#L70'>dir</a>                70 userland/testbin/frack/ops.c DECLPOOL(dir, MAXDIRS);</span>
+<span class='curline'><a href='../S/653.html#L72'>dir</a>                72 userland/testbin/frack/ops.c struct dir *</span>
+<span class='curline'><a href='../S/653.html#L75'>dir</a>                75 userland/testbin/frack/ops.c 	struct dir *ret;</span>
+<span class='curline'><a href='../S/653.html#L77'>dir</a>                77 userland/testbin/frack/ops.c 	ret = POOLALLOC(dir);</span>
+<span class='curline'><a href='../S/653.html#L89'>dir</a>                89 userland/testbin/frack/ops.c op_closedir(struct dir *d)</span>
+<span class='curline'><a href='../S/653.html#L98'>dir</a>                98 userland/testbin/frack/ops.c 	POOLFREE(dir, d);</span>
+<span class='curline'><a href='../S/654.html#L32'>dir</a>                32 userland/testbin/frack/ops.h struct dir;</span>
+<span class='curline'><a href='../S/654.html#L34'>dir</a>                34 userland/testbin/frack/ops.h struct dir *op_opendir(unsigned);</span>
+<span class='curline'><a href='../S/654.html#L35'>dir</a>                35 userland/testbin/frack/ops.h void op_closedir(struct dir *);</span>
+<span class='curline'><a href='../S/657.html#L857'>dir</a>               857 userland/testbin/frack/workloads.c 	struct dir *d;</span>
+<span class='curline'><a href='../S/657.html#L988'>dir</a>               988 userland/testbin/frack/workloads.c 	struct dir *dirs[27];</span>
+</pre>
+</body>
+</html>

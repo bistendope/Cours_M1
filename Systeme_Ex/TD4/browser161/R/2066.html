@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>spinlock_acquire</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L99'>spinlock_acquire</a>   99 kern/arch/mips/vm/dumbvm.c 	spinlock_acquire(&amp;stealmem_lock);</span>
+<span class='curline'><a href='../S/96.html#L483'>spinlock_acquire</a>  483 kern/dev/lamebus/emu.c 	spinlock_acquire(&amp;ev-&gt;ev_v.vn_countlock);</span>
+<span class='curline'><a href='../S/99.html#L263'>spinlock_acquire</a>  263 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L315'>spinlock_acquire</a>  315 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L335'>spinlock_acquire</a>  335 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L358'>spinlock_acquire</a>  358 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L384'>spinlock_acquire</a>  384 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L408'>spinlock_acquire</a>  408 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L421'>spinlock_acquire</a>  421 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L460'>spinlock_acquire</a>  460 kern/dev/lamebus/lamebus.c 	spinlock_acquire(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/99.html#L535'>spinlock_acquire</a>  535 kern/dev/lamebus/lamebus.c 		spinlock_acquire(&amp;lamebus-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/109.html#L88'>spinlock_acquire</a>   88 kern/dev/lamebus/lscreen.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/109.html#L157'>spinlock_acquire</a>  157 kern/dev/lamebus/lscreen.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/112.html#L56'>spinlock_acquire</a>   56 kern/dev/lamebus/lser.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/112.html#L92'>spinlock_acquire</a>   92 kern/dev/lamebus/lser.c 	spinlock_acquire(&amp;ls-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/112.html#L136'>spinlock_acquire</a>  136 kern/dev/lamebus/lser.c 	spinlock_acquire(&amp;sc-&gt;ls_lock);</span>
+<span class='curline'><a href='../S/126.html#L607'>spinlock_acquire</a>  607 kern/fs/semfs/semfs_vnops.c 	spinlock_acquire(&amp;vn-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/131.html#L83'>spinlock_acquire</a>   83 kern/fs/sfs/sfs_inode.c 	spinlock_acquire(&amp;v-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/180.html#L89'>spinlock_acquire</a>   89 kern/include/spinlock.h void spinlock_acquire(struct spinlock *lk);</span>
+<span class='curline'><a href='../S/201.html#L111'>spinlock_acquire</a>  111 kern/lib/kprintf.c 		spinlock_acquire(&amp;kprintf_spinlock);</span>
+<span class='curline'><a href='../S/208.html#L214'>spinlock_acquire</a>  214 kern/proc/proc.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L240'>spinlock_acquire</a>  240 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L269'>spinlock_acquire</a>  269 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L297'>spinlock_acquire</a>  297 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/208.html#L315'>spinlock_acquire</a>  315 kern/proc/proc.c 	spinlock_acquire(&amp;proc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/217.html#L99'>spinlock_acquire</a>   99 kern/test/semunit.c 	spinlock_acquire(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L114'>spinlock_acquire</a>  114 kern/test/semunit.c 	spinlock_acquire(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L294'>spinlock_acquire</a>  294 kern/test/semunit.c 	spinlock_acquire(&amp;lk);</span>
+<span class='curline'><a href='../S/217.html#L411'>spinlock_acquire</a>  411 kern/test/semunit.c 	spinlock_acquire(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L437'>spinlock_acquire</a>  437 kern/test/semunit.c 	spinlock_acquire(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L495'>spinlock_acquire</a>  495 kern/test/semunit.c 	spinlock_acquire(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L521'>spinlock_acquire</a>  521 kern/test/semunit.c 	spinlock_acquire(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L529'>spinlock_acquire</a>  529 kern/test/semunit.c 	spinlock_acquire(&amp;waiters_lock);</span>
+<span class='curline'><a href='../S/217.html#L607'>spinlock_acquire</a>  607 kern/test/semunit.c 	spinlock_acquire(&amp;lk);</span>
+<span class='curline'><a href='../S/221.html#L97'>spinlock_acquire</a>   97 kern/test/tt3.c 			spinlock_acquire(lk);</span>
+<span class='curline'><a href='../S/221.html#L131'>spinlock_acquire</a>  131 kern/test/tt3.c 			spinlock_acquire(lk);</span>
+<span class='curline'><a href='../S/222.html#L83'>spinlock_acquire</a>   83 kern/thread/clock.c 	spinlock_acquire(&amp;lbolt_lock);</span>
+<span class='curline'><a href='../S/222.html#L115'>spinlock_acquire</a>  115 kern/thread/clock.c 	spinlock_acquire(&amp;lbolt_lock);</span>
+<span class='curline'><a href='../S/223.html#L118'>spinlock_acquire</a>  118 kern/thread/hangman.c 	spinlock_acquire(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L140'>spinlock_acquire</a>  140 kern/thread/hangman.c 	spinlock_acquire(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/223.html#L168'>spinlock_acquire</a>  168 kern/thread/hangman.c 	spinlock_acquire(&amp;hangman_lock);</span>
+<span class='curline'><a href='../S/226.html#L102'>spinlock_acquire</a>  102 kern/thread/synch.c 	spinlock_acquire(&amp;sem-&gt;sem_lock);</span>
+<span class='curline'><a href='../S/226.html#L128'>spinlock_acquire</a>  128 kern/thread/synch.c 	spinlock_acquire(&amp;sem-&gt;sem_lock);</span>
+<span class='curline'><a href='../S/227.html#L464'>spinlock_acquire</a>  464 kern/thread/thread.c 		spinlock_acquire(&amp;targetcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L588'>spinlock_acquire</a>  588 kern/thread/thread.c 	spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L648'>spinlock_acquire</a>  648 kern/thread/thread.c 			spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L860'>spinlock_acquire</a>  860 kern/thread/thread.c 		spinlock_acquire(&amp;c-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L875'>spinlock_acquire</a>  875 kern/thread/thread.c 	spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L887'>spinlock_acquire</a>  887 kern/thread/thread.c 		spinlock_acquire(&amp;c-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L941'>spinlock_acquire</a>  941 kern/thread/thread.c 		spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L1012'>spinlock_acquire</a> 1012 kern/thread/thread.c 	spinlock_acquire(lk);</span>
+<span class='curline'><a href='../S/227.html#L1106'>spinlock_acquire</a> 1106 kern/thread/thread.c 	spinlock_acquire(&amp;target-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1137'>spinlock_acquire</a> 1137 kern/thread/thread.c 	spinlock_acquire(&amp;target-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1172'>spinlock_acquire</a> 1172 kern/thread/thread.c 	spinlock_acquire(&amp;curcpu-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1183'>spinlock_acquire</a> 1183 kern/thread/thread.c 		spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/231.html#L53'>spinlock_acquire</a>   53 kern/vfs/vfscwd.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L87'>spinlock_acquire</a>   87 kern/vfs/vfscwd.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/231.html#L107'>spinlock_acquire</a>  107 kern/vfs/vfscwd.c 	spinlock_acquire(&amp;curproc-&gt;p_lock);</span>
+<span class='curline'><a href='../S/236.html#L84'>spinlock_acquire</a>   84 kern/vfs/vnode.c 	spinlock_acquire(&amp;vn-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/236.html#L102'>spinlock_acquire</a>  102 kern/vfs/vnode.c 	spinlock_acquire(&amp;vn-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/236.html#L162'>spinlock_acquire</a>  162 kern/vfs/vnode.c 	spinlock_acquire(&amp;v-&gt;vn_countlock);</span>
+<span class='curline'><a href='../S/239.html#L233'>spinlock_acquire</a>  233 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L244'>spinlock_acquire</a>  244 kern/vm/kmalloc.c 		spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L704'>spinlock_acquire</a>  704 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L715'>spinlock_acquire</a>  715 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L730'>spinlock_acquire</a>  730 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L806'>spinlock_acquire</a>  806 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L910'>spinlock_acquire</a>  910 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L978'>spinlock_acquire</a>  978 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L1064'>spinlock_acquire</a> 1064 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+<span class='curline'><a href='../S/239.html#L1154'>spinlock_acquire</a> 1154 kern/vm/kmalloc.c 	spinlock_acquire(&amp;kmalloc_spinlock);</span>
+</pre>
+</body>
+</html>

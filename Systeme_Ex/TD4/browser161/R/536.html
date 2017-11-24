@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>SFS_BLOCKSIZE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/127.html#L49'>SFS_BLOCKSIZE</a>      49 kern/fs/sfs/sfs_balloc.c 	static char zeros[SFS_BLOCKSIZE];</span>
+<span class='curline'><a href='../S/127.html#L51'>SFS_BLOCKSIZE</a>      51 kern/fs/sfs/sfs_balloc.c 	return sfs_writeblock(sfs, block, zeros, SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/128.html#L67'>SFS_BLOCKSIZE</a>      67 kern/fs/sfs/sfs_bmap.c 	KASSERT(sizeof(idbuf)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/128.html#L218'>SFS_BLOCKSIZE</a>     218 kern/fs/sfs/sfs_bmap.c 	uint32_t blocklen = DIVROUNDUP(len, SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/128.html#L226'>SFS_BLOCKSIZE</a>     226 kern/fs/sfs/sfs_bmap.c 	KASSERT(sizeof(idbuf)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/130.html#L88'>SFS_BLOCKSIZE</a>      88 kern/fs/sfs/sfs_fsops.c 		void *ptr = freemapdata + j*SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/130.html#L93'>SFS_BLOCKSIZE</a>      93 kern/fs/sfs/sfs_fsops.c 					       SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/130.html#L97'>SFS_BLOCKSIZE</a>      97 kern/fs/sfs/sfs_fsops.c 						SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/130.html#L328'>SFS_BLOCKSIZE</a>     328 kern/fs/sfs/sfs_fsops.c 	COMPILE_ASSERT(sizeof(struct sfs_superblock)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/130.html#L329'>SFS_BLOCKSIZE</a>     329 kern/fs/sfs/sfs_fsops.c 	COMPILE_ASSERT(sizeof(struct sfs_dinode)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/130.html#L330'>SFS_BLOCKSIZE</a>     330 kern/fs/sfs/sfs_fsops.c 	COMPILE_ASSERT(SFS_BLOCKSIZE % sizeof(struct sfs_direntry) == 0);</span>
+<span class='curline'><a href='../S/130.html#L404'>SFS_BLOCKSIZE</a>     404 kern/fs/sfs/sfs_fsops.c 	if (dev-&gt;d_blocksize != SFS_BLOCKSIZE) {</span>
+<span class='curline'><a href='../S/132.html#L69'>SFS_BLOCKSIZE</a>      69 kern/fs/sfs/sfs_io.c 	      uio-&gt;uio_offset / SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L87'>SFS_BLOCKSIZE</a>      87 kern/fs/sfs/sfs_io.c 				uio-&gt;uio_offset / SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L98'>SFS_BLOCKSIZE</a>      98 kern/fs/sfs/sfs_io.c 				uio-&gt;uio_offset / SFS_BLOCKSIZE, tries);</span>
+<span class='curline'><a href='../S/132.html#L113'>SFS_BLOCKSIZE</a>     113 kern/fs/sfs/sfs_io.c 	KASSERT(len == SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L128'>SFS_BLOCKSIZE</a>     128 kern/fs/sfs/sfs_io.c 	KASSERT(len == SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L160'>SFS_BLOCKSIZE</a>     160 kern/fs/sfs/sfs_io.c 	static char iobuf[SFS_BLOCKSIZE];</span>
+<span class='curline'><a href='../S/132.html#L170'>SFS_BLOCKSIZE</a>     170 kern/fs/sfs/sfs_io.c 	KASSERT(skipstart + len &lt;= SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L176'>SFS_BLOCKSIZE</a>     176 kern/fs/sfs/sfs_io.c 	fileblock = uio-&gt;uio_offset / SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L241'>SFS_BLOCKSIZE</a>     241 kern/fs/sfs/sfs_io.c 	fileblock = uio-&gt;uio_offset / SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L257'>SFS_BLOCKSIZE</a>     257 kern/fs/sfs/sfs_io.c 		return uiomovezeros(SFS_BLOCKSIZE, uio);</span>
+<span class='curline'><a href='../S/132.html#L265'>SFS_BLOCKSIZE</a>     265 kern/fs/sfs/sfs_io.c 	diskoff = diskblock * SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L271'>SFS_BLOCKSIZE</a>     271 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_resid &gt;= SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L273'>SFS_BLOCKSIZE</a>     273 kern/fs/sfs/sfs_io.c 	diskres = SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L325'>SFS_BLOCKSIZE</a>     325 kern/fs/sfs/sfs_io.c 	blkoff = uio-&gt;uio_offset % SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L331'>SFS_BLOCKSIZE</a>     331 kern/fs/sfs/sfs_io.c 		uint32_t len = SFS_BLOCKSIZE - blkoff;</span>
+<span class='curline'><a href='../S/132.html#L353'>SFS_BLOCKSIZE</a>     353 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_offset % SFS_BLOCKSIZE == 0);</span>
+<span class='curline'><a href='../S/132.html#L354'>SFS_BLOCKSIZE</a>     354 kern/fs/sfs/sfs_io.c 	nblocks = uio-&gt;uio_resid / SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L365'>SFS_BLOCKSIZE</a>     365 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_resid &lt; SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L424'>SFS_BLOCKSIZE</a>     424 kern/fs/sfs/sfs_io.c 	static char metaiobuf[SFS_BLOCKSIZE];</span>
+<span class='curline'><a href='../S/132.html#L430'>SFS_BLOCKSIZE</a>     430 kern/fs/sfs/sfs_io.c 	vnblock = actualpos / SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L431'>SFS_BLOCKSIZE</a>     431 kern/fs/sfs/sfs_io.c 	blockoffset = actualpos % SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/134.html#L42'>SFS_BLOCKSIZE</a>      42 kern/fs/sfs/sfsprivate.h     uio_kinit(iov, uio, ptr, SFS_BLOCKSIZE, ((off_t)(block))*SFS_BLOCKSIZE, rw)</span>
+<span class='curline'><a href='../S/162.html#L54'>SFS_BLOCKSIZE</a>      54 kern/include/kern/sfs.h #define SFS_BITSPERBLOCK (SFS_BLOCKSIZE * CHAR_BIT)</span>
+<span class='curline'><a href='../S/532.html#L164'>SFS_BLOCKSIZE</a>     164 userland/sbin/dumpsfs/dumpsfs.c 	dumpvalf("Block size", "%u bytes", SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/532.html#L182'>SFS_BLOCKSIZE</a>     182 userland/sbin/dumpsfs/dumpsfs.c 	uint8_t data[SFS_BLOCKSIZE], mask;</span>
+<span class='curline'><a href='../S/532.html#L194'>SFS_BLOCKSIZE</a>     194 userland/sbin/dumpsfs/dumpsfs.c 		for (j=0; j&lt;SFS_BLOCKSIZE; j++) {</span>
+<span class='curline'><a href='../S/532.html#L235'>SFS_BLOCKSIZE</a>     235 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t ib[SFS_BLOCKSIZE/sizeof(uint32_t)];</span>
+<span class='curline'><a href='../S/532.html#L263'>SFS_BLOCKSIZE</a>     263 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t ib[SFS_BLOCKSIZE/sizeof(uint32_t)];</span>
+<span class='curline'><a href='../S/532.html#L286'>SFS_BLOCKSIZE</a>     286 userland/sbin/dumpsfs/dumpsfs.c 	numblocks = DIVROUNDUP(SWAP32(sfi-&gt;sfi_size), SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/532.html#L303'>SFS_BLOCKSIZE</a>     303 userland/sbin/dumpsfs/dumpsfs.c 	struct sfs_direntry sds[SFS_BLOCKSIZE/sizeof(struct sfs_direntry)];</span>
+<span class='curline'><a href='../S/532.html#L304'>SFS_BLOCKSIZE</a>     304 userland/sbin/dumpsfs/dumpsfs.c 	int nsds = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/532.html#L345'>SFS_BLOCKSIZE</a>     345 userland/sbin/dumpsfs/dumpsfs.c 	struct sfs_direntry sds[SFS_BLOCKSIZE/sizeof(struct sfs_direntry)];</span>
+<span class='curline'><a href='../S/532.html#L346'>SFS_BLOCKSIZE</a>     346 userland/sbin/dumpsfs/dumpsfs.c 	int nsds = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/532.html#L380'>SFS_BLOCKSIZE</a>     380 userland/sbin/dumpsfs/dumpsfs.c 	uint8_t data[SFS_BLOCKSIZE];</span>
+<span class='curline'><a href='../S/532.html#L385'>SFS_BLOCKSIZE</a>     385 userland/sbin/dumpsfs/dumpsfs.c 		printf("    0x%6x  [sparse]\n", fileblock * SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/532.html#L390'>SFS_BLOCKSIZE</a>     390 userland/sbin/dumpsfs/dumpsfs.c 	for (i=0; i&lt;SFS_BLOCKSIZE; i++) {</span>
+<span class='curline'><a href='../S/532.html#L393'>SFS_BLOCKSIZE</a>     393 userland/sbin/dumpsfs/dumpsfs.c 				 fileblock * SFS_BLOCKSIZE + i);</span>
+<span class='curline'><a href='../S/540.html#L64'>SFS_BLOCKSIZE</a>      64 userland/sbin/mksfs/mksfs.c static char freemapbuf[MAXFREEMAPBLOCKS * SFS_BLOCKSIZE];</span>
+<span class='curline'><a href='../S/540.html#L73'>SFS_BLOCKSIZE</a>      73 userland/sbin/mksfs/mksfs.c 	assert(sizeof(struct sfs_superblock)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/540.html#L74'>SFS_BLOCKSIZE</a>      74 userland/sbin/mksfs/mksfs.c 	assert(sizeof(struct sfs_dinode)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/540.html#L75'>SFS_BLOCKSIZE</a>      75 userland/sbin/mksfs/mksfs.c 	assert(SFS_BLOCKSIZE % sizeof(struct sfs_direntry) == 0);</span>
+<span class='curline'><a href='../S/540.html#L162'>SFS_BLOCKSIZE</a>     162 userland/sbin/mksfs/mksfs.c 		ptr = freemapbuf + i*SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/540.html#L225'>SFS_BLOCKSIZE</a>     225 userland/sbin/mksfs/mksfs.c 	if (blocksize!=SFS_BLOCKSIZE) {</span>
+<span class='curline'><a href='../S/540.html#L227'>SFS_BLOCKSIZE</a>     227 userland/sbin/mksfs/mksfs.c 		     blocksize, SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/548.html#L63'>SFS_BLOCKSIZE</a>      63 userland/sbin/sfsck/freemap.c 	mapbytes = mapblocks * SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/548.html#L227'>SFS_BLOCKSIZE</a>     227 userland/sbin/sfsck/freemap.c 	uint8_t actual[SFS_BLOCKSIZE], *expected, *tofree, tmp;</span>
+<span class='curline'><a href='../S/548.html#L236'>SFS_BLOCKSIZE</a>     236 userland/sbin/sfsck/freemap.c 		expected = freemapdata + i*SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/548.html#L237'>SFS_BLOCKSIZE</a>     237 userland/sbin/sfsck/freemap.c 		tofree = tofreedata + i*SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/548.html#L240'>SFS_BLOCKSIZE</a>     240 userland/sbin/sfsck/freemap.c 		for (j=0; j&lt;SFS_BLOCKSIZE; j++) {</span>
+<span class='curline'><a href='../S/556.html#L192'>SFS_BLOCKSIZE</a>     192 userland/sbin/sfsck/pass1.c 	size = SFS_ROUNDUP(sfi-&gt;sfi_size, SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/556.html#L196'>SFS_BLOCKSIZE</a>     196 userland/sbin/sfsck/pass1.c 	ibs.fileblocks = size/SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/557.html#L87'>SFS_BLOCKSIZE</a>      87 userland/sbin/sfsck/pass2.c 				    SFS_BLOCKSIZE/sizeof(struct sfs_direntry));</span>
+<span class='curline'><a href='../S/561.html#L51'>SFS_BLOCKSIZE</a>      51 userland/sbin/sfsck/sfs.c 	assert(sizeof(struct sfs_superblock)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/561.html#L52'>SFS_BLOCKSIZE</a>      52 userland/sbin/sfsck/sfs.c 	assert(sizeof(struct sfs_dinode)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/561.html#L53'>SFS_BLOCKSIZE</a>      53 userland/sbin/sfsck/sfs.c 	assert(SFS_BLOCKSIZE % sizeof(struct sfs_direntry) == 0);</span>
+<span class='curline'><a href='../S/561.html#L277'>SFS_BLOCKSIZE</a>     277 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L288'>SFS_BLOCKSIZE</a>     288 userland/sbin/sfsck/sfs.c 		bzero(d, SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/561.html#L300'>SFS_BLOCKSIZE</a>     300 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L333'>SFS_BLOCKSIZE</a>     333 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/561.html#L365'>SFS_BLOCKSIZE</a>     365 userland/sbin/sfsck/sfs.c 	const unsigned atonce = SFS_BLOCKSIZE/sizeof(struct sfs_direntry);</span>
+</pre>
+</body>
+</html>

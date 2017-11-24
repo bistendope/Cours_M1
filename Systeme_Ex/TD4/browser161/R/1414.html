@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>fs</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/96.html#L1222'>fs</a>               1222 kern/dev/lamebus/emu.c emufs_sync(struct fs *fs)</span>
+<span class='curline'><a href='../S/96.html#L1224'>fs</a>               1224 kern/dev/lamebus/emu.c 	(void)fs;</span>
+<span class='curline'><a href='../S/96.html#L1233'>fs</a>               1233 kern/dev/lamebus/emu.c emufs_getvolname(struct fs *fs)</span>
+<span class='curline'><a href='../S/96.html#L1236'>fs</a>               1236 kern/dev/lamebus/emu.c 	(void)fs;</span>
+<span class='curline'><a href='../S/96.html#L1245'>fs</a>               1245 kern/dev/lamebus/emu.c emufs_getroot(struct fs *fs, struct vnode **ret)</span>
+<span class='curline'><a href='../S/96.html#L1249'>fs</a>               1249 kern/dev/lamebus/emu.c 	KASSERT(fs != NULL);</span>
+<span class='curline'><a href='../S/96.html#L1251'>fs</a>               1251 kern/dev/lamebus/emu.c 	ef = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/96.html#L1266'>fs</a>               1266 kern/dev/lamebus/emu.c emufs_unmount(struct fs *fs)</span>
+<span class='curline'><a href='../S/96.html#L1269'>fs</a>               1269 kern/dev/lamebus/emu.c 	(void)fs;</span>
+<span class='curline'><a href='../S/123.html#L90'>fs</a>                 90 kern/fs/semfs/semfs.h 	struct fs semfs_absfs;			/* Abstract fs object */</span>
+<span class='curline'><a href='../S/124.html#L47'>fs</a>                 47 kern/fs/semfs/semfs_fsops.c semfs_sync(struct fs *fs)</span>
+<span class='curline'><a href='../S/124.html#L49'>fs</a>                 49 kern/fs/semfs/semfs_fsops.c 	(void)fs;</span>
+<span class='curline'><a href='../S/124.html#L58'>fs</a>                 58 kern/fs/semfs/semfs_fsops.c semfs_getvolname(struct fs *fs)</span>
+<span class='curline'><a href='../S/124.html#L60'>fs</a>                 60 kern/fs/semfs/semfs_fsops.c 	(void)fs;</span>
+<span class='curline'><a href='../S/124.html#L69'>fs</a>                 69 kern/fs/semfs/semfs_fsops.c semfs_getroot(struct fs *fs, struct vnode **ret)</span>
+<span class='curline'><a href='../S/124.html#L71'>fs</a>                 71 kern/fs/semfs/semfs_fsops.c 	struct semfs *semfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/124.html#L128'>fs</a>                128 kern/fs/semfs/semfs_fsops.c semfs_unmount(struct fs *fs)</span>
+<span class='curline'><a href='../S/124.html#L130'>fs</a>                130 kern/fs/semfs/semfs_fsops.c 	struct semfs *semfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/130.html#L172'>fs</a>                172 kern/fs/sfs/sfs_fsops.c sfs_sync(struct fs *fs)</span>
+<span class='curline'><a href='../S/130.html#L209'>fs</a>                209 kern/fs/sfs/sfs_fsops.c 	sfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/130.html#L243'>fs</a>                243 kern/fs/sfs/sfs_fsops.c sfs_getvolname(struct fs *fs)</span>
+<span class='curline'><a href='../S/130.html#L245'>fs</a>                245 kern/fs/sfs/sfs_fsops.c 	struct sfs_fs *sfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/130.html#L277'>fs</a>                277 kern/fs/sfs/sfs_fsops.c sfs_unmount(struct fs *fs)</span>
+<span class='curline'><a href='../S/130.html#L279'>fs</a>                279 kern/fs/sfs/sfs_fsops.c 	struct sfs_fs *sfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/130.html#L386'>fs</a>                386 kern/fs/sfs/sfs_fsops.c sfs_domount(void *options, struct device *dev, struct fs **ret)</span>
+<span class='curline'><a href='../S/131.html#L293'>fs</a>                293 kern/fs/sfs/sfs_inode.c sfs_getroot(struct fs *fs, struct vnode **ret)</span>
+<span class='curline'><a href='../S/131.html#L295'>fs</a>                295 kern/fs/sfs/sfs_inode.c 	struct sfs_fs *sfs = fs-&gt;fs_data;</span>
+<span class='curline'><a href='../S/134.html#L71'>fs</a>                 71 kern/fs/sfs/sfsprivate.h int sfs_getroot(struct fs *fs, struct vnode **ret);</span>
+<span class='curline'><a href='../S/148.html#L51'>fs</a>                 51 kern/include/emufs.h 	struct fs ef_fs;		/* abstract filesystem structure */</span>
+<span class='curline'><a href='../S/150.html#L73'>fs</a>                 73 kern/include/fs.h 	int           (*fsop_sync)(struct fs *);</span>
+<span class='curline'><a href='../S/150.html#L74'>fs</a>                 74 kern/include/fs.h 	const char   *(*fsop_getvolname)(struct fs *);</span>
+<span class='curline'><a href='../S/150.html#L75'>fs</a>                 75 kern/include/fs.h 	int           (*fsop_getroot)(struct fs *, struct vnode **);</span>
+<span class='curline'><a href='../S/150.html#L76'>fs</a>                 76 kern/include/fs.h 	int           (*fsop_unmount)(struct fs *);</span>
+<span class='curline'><a href='../S/150.html#L82'>fs</a>                 82 kern/include/fs.h #define FSOP_SYNC(fs)        ((fs)-&gt;fs_ops-&gt;fsop_sync(fs))</span>
+<span class='curline'><a href='../S/150.html#L83'>fs</a>                 83 kern/include/fs.h #define FSOP_GETVOLNAME(fs)  ((fs)-&gt;fs_ops-&gt;fsop_getvolname(fs))</span>
+<span class='curline'><a href='../S/150.html#L84'>fs</a>                 84 kern/include/fs.h #define FSOP_GETROOT(fs, ret) ((fs)-&gt;fs_ops-&gt;fsop_getroot(fs, ret))</span>
+<span class='curline'><a href='../S/150.html#L85'>fs</a>                 85 kern/include/fs.h #define FSOP_UNMOUNT(fs)     ((fs)-&gt;fs_ops-&gt;fsop_unmount(fs))</span>
+<span class='curline'><a href='../S/178.html#L65'>fs</a>                 65 kern/include/sfs.h 	struct fs sfs_absfs;            /* abstract filesystem structure */</span>
+<span class='curline'><a href='../S/193.html#L46'>fs</a>                 46 kern/include/vfs.h struct fs;     /* abstract structure for a filesystem (fs.h) */</span>
+<span class='curline'><a href='../S/193.html#L67'>fs</a>                 67 kern/include/vfs.h const char *vfs_getdevname(struct fs *fs);</span>
+<span class='curline'><a href='../S/193.html#L175'>fs</a>                175 kern/include/vfs.h int vfs_addfs(const char *devname, struct fs *fs);</span>
+<span class='curline'><a href='../S/193.html#L180'>fs</a>                180 kern/include/vfs.h 			       struct fs **result));</span>
+<span class='curline'><a href='../S/195.html#L55'>fs</a>                 55 kern/include/vnode.h 	struct fs *vn_fs;               /* Filesystem vnode belongs to */</span>
+<span class='curline'><a href='../S/195.html#L274'>fs</a>                274 kern/include/vnode.h 	       struct fs *fs, void *fsdata);</span>
+<span class='curline'><a href='../S/214.html#L105'>fs</a>                105 kern/test/fstest.c 		const char *fs, const char *namesuffix)</span>
+<span class='curline'><a href='../S/214.html#L107'>fs</a>                107 kern/test/fstest.c 	snprintf(buf, buflen, "%s:%s%s", fs, FILENAME, namesuffix);</span>
+<span class='curline'><a href='../S/214.html#L111'>fs</a>                111 kern/test/fstest.c #define MAKENAME() fstest_makename(name, sizeof(name), fs, namesuffix)</span>
+<span class='curline'><a href='../S/214.html#L115'>fs</a>                115 kern/test/fstest.c fstest_remove(const char *fs, const char *namesuffix)</span>
+<span class='curline'><a href='../S/214.html#L135'>fs</a>                135 kern/test/fstest.c fstest_write(const char *fs, const char *namesuffix,</span>
+<span class='curline'><a href='../S/214.html#L213'>fs</a>                213 kern/test/fstest.c fstest_read(const char *fs, const char *namesuffix)</span>
+<span class='curline'><a href='../S/214.html#L304'>fs</a>                304 kern/test/fstest.c readstress_thread(void *fs, unsigned long num)</span>
+<span class='curline'><a href='../S/214.html#L306'>fs</a>                306 kern/test/fstest.c 	const char *filesys = fs;</span>
+<span class='curline'><a href='../S/214.html#L353'>fs</a>                353 kern/test/fstest.c writestress_thread(void *fs, unsigned long num)</span>
+<span class='curline'><a href='../S/214.html#L355'>fs</a>                355 kern/test/fstest.c 	const char *filesys = fs;</span>
+<span class='curline'><a href='../S/214.html#L409'>fs</a>                409 kern/test/fstest.c writestress2_thread(void *fs, unsigned long num)</span>
+<span class='curline'><a href='../S/214.html#L411'>fs</a>                411 kern/test/fstest.c 	const char *filesys = fs;</span>
+<span class='curline'><a href='../S/214.html#L474'>fs</a>                474 kern/test/fstest.c longstress_thread(void *fs, unsigned long num)</span>
+<span class='curline'><a href='../S/214.html#L476'>fs</a>                476 kern/test/fstest.c 	const char *filesys = fs;</span>
+<span class='curline'><a href='../S/214.html#L537'>fs</a>                537 kern/test/fstest.c createstress_thread(void *fs, unsigned long num)</span>
+<span class='curline'><a href='../S/214.html#L539'>fs</a>                539 kern/test/fstest.c 	const char *filesys = fs;</span>
+<span class='curline'><a href='../S/233.html#L82'>fs</a>                 82 kern/vfs/vfslist.c 	struct fs *kd_fs;</span>
+<span class='curline'><a href='../S/233.html#L86'>fs</a>                 86 kern/vfs/vfslist.c #define SWAP_FS	((struct fs *)-1)</span>
+<span class='curline'><a href='../S/233.html#L277'>fs</a>                277 kern/vfs/vfslist.c vfs_getdevname(struct fs *fs)</span>
+<span class='curline'><a href='../S/233.html#L282'>fs</a>                282 kern/vfs/vfslist.c 	KASSERT(fs != NULL);</span>
+<span class='curline'><a href='../S/233.html#L290'>fs</a>                290 kern/vfs/vfslist.c 		if (kd-&gt;kd_fs == fs) {</span>
+<span class='curline'><a href='../S/233.html#L392'>fs</a>                392 kern/vfs/vfslist.c vfs_doadd(const char *dname, int mountable, struct device *dev, struct fs *fs)</span>
+<span class='curline'><a href='../S/233.html#L435'>fs</a>                435 kern/vfs/vfslist.c 	kd-&gt;kd_fs = fs;</span>
+<span class='curline'><a href='../S/233.html#L437'>fs</a>                437 kern/vfs/vfslist.c 	if (fs!=NULL) {</span>
+<span class='curline'><a href='../S/233.html#L438'>fs</a>                438 kern/vfs/vfslist.c 		volname = FSOP_GETVOLNAME(fs);</span>
+<span class='curline'><a href='../S/233.html#L493'>fs</a>                493 kern/vfs/vfslist.c vfs_addfs(const char *devname, struct fs *fs)</span>
+<span class='curline'><a href='../S/233.html#L495'>fs</a>                495 kern/vfs/vfslist.c 	return vfs_doadd(devname, 0, NULL, fs);</span>
+<span class='curline'><a href='../S/233.html#L539'>fs</a>                539 kern/vfs/vfslist.c 	  int (*mountfunc)(void *data, struct device *, struct fs **ret))</span>
+<span class='curline'><a href='../S/233.html#L543'>fs</a>                543 kern/vfs/vfslist.c 	struct fs *fs;</span>
+<span class='curline'><a href='../S/233.html#L561'>fs</a>                561 kern/vfs/vfslist.c 	result = mountfunc(data, kd-&gt;kd_device, &amp;fs);</span>
+<span class='curline'><a href='../S/233.html#L567'>fs</a>                567 kern/vfs/vfslist.c 	KASSERT(fs != NULL);</span>
+<span class='curline'><a href='../S/233.html#L568'>fs</a>                568 kern/vfs/vfslist.c 	KASSERT(fs != SWAP_FS); </span>
+<span class='curline'><a href='../S/233.html#L570'>fs</a>                570 kern/vfs/vfslist.c 	kd-&gt;kd_fs = fs;</span>
+<span class='curline'><a href='../S/233.html#L572'>fs</a>                572 kern/vfs/vfslist.c 	volname = FSOP_GETVOLNAME(fs);</span>
+<span class='curline'><a href='../S/236.html#L45'>fs</a>                 45 kern/vfs/vnode.c 	   struct fs *fs, void *fsdata)</span>
+<span class='curline'><a href='../S/236.html#L53'>fs</a>                 53 kern/vfs/vnode.c 	vn-&gt;vn_fs = fs;</span>
+<span class='curline'><a href='../S/619.html#L277'>fs</a>                277 userland/testbin/dirconc/dirconc.c setup(const char *fs)</span>
+<span class='curline'><a href='../S/619.html#L279'>fs</a>                279 userland/testbin/dirconc/dirconc.c 	if (chdir(fs)&lt;0) {</span>
+<span class='curline'><a href='../S/619.html#L280'>fs</a>                280 userland/testbin/dirconc/dirconc.c 		say("chdir: %s: %s\n", fs, strerror(errno));</span>
+<span class='curline'><a href='../S/619.html#L330'>fs</a>                330 userland/testbin/dirconc/dirconc.c 	const char *fs;</span>
+<span class='curline'><a href='../S/619.html#L338'>fs</a>                338 userland/testbin/dirconc/dirconc.c 		fs = "lhd1:";</span>
+<span class='curline'><a href='../S/619.html#L341'>fs</a>                341 userland/testbin/dirconc/dirconc.c 		fs = argv[1];</span>
+<span class='curline'><a href='../S/619.html#L344'>fs</a>                344 userland/testbin/dirconc/dirconc.c 		fs = argv[1];</span>
+<span class='curline'><a href='../S/619.html#L353'>fs</a>                353 userland/testbin/dirconc/dirconc.c 	setup(fs);</span>
+<span class='curline'><a href='../S/619.html#L354'>fs</a>                354 userland/testbin/dirconc/dirconc.c 	say("Starting in %s/%s\n", fs, TESTDIR);</span>
+<span class='curline'><a href='../S/642.html#L1257'>fs</a>               1257 userland/testbin/frack/check.c 	for (here = fs; here != NULL; here = fs_prevfordir(here, dirnum)) {</span>
+<span class='curline'><a href='../S/642.html#L1430'>fs</a>               1430 userland/testbin/frack/check.c 	for (here = fs; here != NULL; here = fs_prevfordir(here, dirnum)) {</span>
+</pre>
+</body>
+</html>

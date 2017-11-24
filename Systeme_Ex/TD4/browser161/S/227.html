@@ -1,0 +1,1266 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/thread/thread.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/758.html'>thread</a>/thread.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L81'>[^]</a><a href='#L1167'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L81' title='Defined at 81.'>thread_checkstack_init</a></li>
+<li><a href='#L101' title='Defined at 101.'>thread_checkstack</a></li>
+<li><a href='#L117' title='Defined at 117.'>thread_create</a></li>
+<li><a href='#L164' title='Defined at 164.'>cpu_create</a></li>
+<li><a href='#L265' title='Defined at 265.'>thread_destroy</a></li>
+<li><a href='#L298' title='Defined at 298.'>exorcise</a></li>
+<li><a href='#L315' title='Defined at 315.'>thread_panic</a></li>
+<li><a href='#L357' title='Defined at 357.'>thread_shutdown</a></li>
+<li><a href='#L372' title='Defined at 372.'>thread_bootstrap</a></li>
+<li><a href='#L406' title='Defined at 406.'>cpu_hatch</a></li>
+<li><a href='#L427' title='Defined at 427.'>thread_start_cpus</a></li>
+<li><a href='#L452' title='Defined at 452.'>thread_make_runnable</a></li>
+<li><a href='#L495' title='Defined at 495.'>thread_fork</a></li>
+<li><a href='#L562' title='Defined at 562.'>thread_switch</a></li>
+<li><a href='#L739' title='Defined at 739.'>thread_startup</a></li>
+<li><a href='#L779' title='Defined at 779.'>thread_exit</a></li>
+<li><a href='#L807' title='Defined at 807.'>thread_yield</a></li>
+<li><a href='#L822' title='Defined at 822.'>schedule</a></li>
+<li><a href='#L848' title='Defined at 848.'>thread_consider_migration</a></li>
+<li><a href='#L967' title='Defined at 967.'>wchan_create</a></li>
+<li><a href='#L986' title='Defined at 986.'>wchan_destroy</a></li>
+<li><a href='#L1000' title='Defined at 1000.'>wchan_sleep</a></li>
+<li><a href='#L1019' title='Defined at 1019.'>wchan_wakeone</a></li>
+<li><a href='#L1048' title='Defined at 1048.'>wchan_wakeall</a></li>
+<li><a href='#L1082' title='Defined at 1082.'>wchan_isempty</a></li>
+<li><a href='#L1102' title='Defined at 1102.'>ipi_send</a></li>
+<li><a href='#L1116' title='Defined at 1116.'>ipi_broadcast</a></li>
+<li><a href='#L1133' title='Defined at 1133.'>ipi_tlbshootdown</a></li>
+<li><a href='#L1167' title='Defined at 1167.'>interprocessor_interrupt</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009, 2010</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * Core kernel-level thread system.</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> */</em>
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#define</em> <a href='../R/643.html' title='Multiple referred from 3 places.'>THREADINLINE</a>
+<a id='L35' name='L35'></a>  35 
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>kern/errno.h</a>&gt;
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='139.html'>array.h</a>&gt;
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> &lt;<a href='144.html'>cpu.h</a>&gt;
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> &lt;<a href='181.html'>spl.h</a>&gt;
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#include</em> &lt;<a href='../I/45.html'>spinlock.h</a>&gt;
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#include</em> &lt;<a href='196.html'>wchan.h</a>&gt;
+<a id='L44' name='L44'></a>  44 <em class='sharp'>#include</em> &lt;<a href='../I/46.html'>thread.h</a>&gt;
+<a id='L45' name='L45'></a>  45 <em class='sharp'>#include</em> &lt;<a href='188.html'>threadlist.h</a>&gt;
+<a id='L46' name='L46'></a>  46 <em class='sharp'>#include</em> &lt;<a href='189.html'>threadprivate.h</a>&gt;
+<a id='L47' name='L47'></a>  47 <em class='sharp'>#include</em> &lt;<a href='176.html'>proc.h</a>&gt;
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#include</em> &lt;<a href='../I/36.html'>current.h</a>&gt;
+<a id='L49' name='L49'></a>  49 <em class='sharp'>#include</em> &lt;<a href='184.html'>synch.h</a>&gt;
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#include</em> &lt;<a href='138.html'>addrspace.h</a>&gt;
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#include</em> &lt;<a href='174.html'>mainbus.h</a>&gt;
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#include</em> &lt;<a href='195.html'>vnode.h</a>&gt;
+<a id='L53' name='L53'></a>  53 
+<a id='L54' name='L54'></a>  54 
+<a id='L55' name='L55'></a>  55 <em class='comment'>/* Magic number used as a guard value on kernel thread stacks. */</em>
+<a id='L56' name='L56'></a>  56 <em class='sharp'>#define</em> <a href='../R/646.html' title='Multiple referred from 8 places.'>THREAD_STACK_MAGIC</a> 0xbaadf00d
+<a id='L57' name='L57'></a>  57 
+<a id='L58' name='L58'></a>  58 <em class='comment'>/* Wait channel. A wchan is protected by an associated, passed-in spinlock. */</em>
+<a id='L59' name='L59'></a>  59 <strong class='reserved'>struct</strong> <a href='../R/2372.html' title='Multiple referred from 36 places.'>wchan</a> <em class='brace'>{</em>
+<a id='L60' name='L60'></a>  60         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *wc_name;            <em class='comment'>/* name for this channel */</em>
+<a id='L61' name='L61'></a>  61         <strong class='reserved'>struct</strong> <a href='../S/188.html#L63' title='Defined at 63 in kern/include/threadlist.h.'>threadlist</a> wc_threads;   <em class='comment'>/* list of waiting threads */</em>
+<a id='L62' name='L62'></a>  62 <em class='brace'>}</em>;
+<a id='L63' name='L63'></a>  63 
+<a id='L64' name='L64'></a>  64 <em class='comment'>/* Master array of CPUs. */</em>
+<a id='L65' name='L65'></a>  65 <a href='../S/139.html#L258' title='Defined at 258 in kern/include/array.h.'>DECLARRAY</a>(<a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a>, <strong class='reserved'>static</strong> <a href='../D/1175.html' title='Multiple defined in 2 places.'>__UNUSED</a> <strong class='reserved'>inline</strong>);
+<a id='L66' name='L66'></a>  66 <a href='../S/139.html#L259' title='Defined at 259 in kern/include/array.h.'>DEFARRAY</a>(<a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a>, <strong class='reserved'>static</strong> <a href='../D/1175.html' title='Multiple defined in 2 places.'>__UNUSED</a> <strong class='reserved'>inline</strong>);
+<a id='L67' name='L67'></a>  67 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> cpuarray allcpus;
+<a id='L68' name='L68'></a>  68 
+<a id='L69' name='L69'></a>  69 <em class='comment'>/* Used to wait for secondary CPUs to come online. */</em>
+<a id='L70' name='L70'></a>  70 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *cpu_startup_sem;
+<a id='L71' name='L71'></a>  71 
+<a id='L72' name='L72'></a>  72 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L73' name='L73'></a>  73 
+<a id='L74' name='L74'></a>  74 <em class='comment'>/*</em>
+<a id='L75' name='L75'></a>  75 <em class='comment'> * Stick a magic number on the bottom end of the stack. This will</em>
+<a id='L76' name='L76'></a>  76 <em class='comment'> * (sometimes) catch kernel stack overflows. Use thread_checkstack()</em>
+<a id='L77' name='L77'></a>  77 <em class='comment'> * to test this.</em>
+<a id='L78' name='L78'></a>  78 <em class='comment'> */</em>
+<a id='L79' name='L79'></a>  79 <strong class='reserved'>static</strong>
+<a id='L80' name='L80'></a>  80 <strong class='reserved'>void</strong>
+<a id='L81' name='L81'></a>  81 <a href='../R/2178.html' title='Multiple referred from 2 places.'>thread_checkstack_init</a>(<strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>)
+<a id='L82' name='L82'></a>  82 <em class='brace'>{</em>
+<a id='L83' name='L83'></a>  83         ((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> *)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[0] = <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>;
+<a id='L84' name='L84'></a>  84         ((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> *)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[1] = <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>;
+<a id='L85' name='L85'></a>  85         ((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> *)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[2] = <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>;
+<a id='L86' name='L86'></a>  86         ((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> *)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[3] = <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>;
+<a id='L87' name='L87'></a>  87 <em class='brace'>}</em>
+<a id='L88' name='L88'></a>  88 
+<a id='L89' name='L89'></a>  89 <em class='comment'>/*</em>
+<a id='L90' name='L90'></a>  90 <em class='comment'> * Check the magic number we put on the bottom end of the stack in</em>
+<a id='L91' name='L91'></a>  91 <em class='comment'> * thread_checkstack_init. If these assertions go off, it most likely</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'> * means you overflowed your stack at some point, which can cause all</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'> * kinds of mysterious other things to happen.</em>
+<a id='L94' name='L94'></a>  94 <em class='comment'> *</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'> * Note that when -&gt;t_stack is NULL, which is the case if the stack</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'> * cannot be freed (which in turn is the case if the stack is the boot</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'> * stack, and the thread is the boot thread) this doesn't do anything.</em>
+<a id='L98' name='L98'></a>  98 <em class='comment'> */</em>
+<a id='L99' name='L99'></a>  99 <strong class='reserved'>static</strong>
+<a id='L100' name='L100'></a> 100 <strong class='reserved'>void</strong>
+<a id='L101' name='L101'></a> 101 <a href='../R/2177.html' title='Multiple referred from 2 places.'>thread_checkstack</a>(<strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>)
+<a id='L102' name='L102'></a> 102 <em class='brace'>{</em>
+<a id='L103' name='L103'></a> 103         <strong class='reserved'>if</strong> (<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L104' name='L104'></a> 104                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>*)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[0] == <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>);
+<a id='L105' name='L105'></a> 105                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>*)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[1] == <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>);
+<a id='L106' name='L106'></a> 106                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>*)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[2] == <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>);
+<a id='L107' name='L107'></a> 107                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(((<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>*)<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack)[3] == <a href='../S/227.html#L56' title='Defined at 56 in kern/thread/thread.c.'>THREAD_STACK_MAGIC</a>);
+<a id='L108' name='L108'></a> 108         <em class='brace'>}</em>
+<a id='L109' name='L109'></a> 109 <em class='brace'>}</em>
+<a id='L110' name='L110'></a> 110 
+<a id='L111' name='L111'></a> 111 <em class='comment'>/*</em>
+<a id='L112' name='L112'></a> 112 <em class='comment'> * Create a thread. This is used both to create a first thread</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'> * for each CPU and to create subsequent forked threads.</em>
+<a id='L114' name='L114'></a> 114 <em class='comment'> */</em>
+<a id='L115' name='L115'></a> 115 <strong class='reserved'>static</strong>
+<a id='L116' name='L116'></a> 116 <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *
+<a id='L117' name='L117'></a> 117 <a href='../R/2180.html' title='Multiple referred from 2 places.'>thread_create</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name)
+<a id='L118' name='L118'></a> 118 <em class='brace'>{</em>
+<a id='L119' name='L119'></a> 119         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>;
+<a id='L120' name='L120'></a> 120 
+<a id='L121' name='L121'></a> 121         <a href='../D/98.html' title='Multiple defined in 2 places.'>DEBUGASSERT</a>(name != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<strong class='reserved'>sizeof</strong>(*<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>));
+<a id='L124' name='L124'></a> 124         <strong class='reserved'>if</strong> (<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L125' name='L125'></a> 125                 <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L126' name='L126'></a> 126         <em class='brace'>}</em>
+<a id='L127' name='L127'></a> 127 
+<a id='L128' name='L128'></a> 128         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_name = <a href='../S/202.html#L38' title='Defined at 38 in kern/lib/misc.c.'>kstrdup</a>(name);
+<a id='L129' name='L129'></a> 129         <strong class='reserved'>if</strong> (<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_name == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L130' name='L130'></a> 130                 <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>);
+<a id='L131' name='L131'></a> 131                 <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L132' name='L132'></a> 132         <em class='brace'>}</em>
+<a id='L133' name='L133'></a> 133         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_wchan_name = "NEW";
+<a id='L134' name='L134'></a> 134         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_state = <a href='../S/187.html#L62' title='Defined at 62 in kern/include/thread.h.'>S_READY</a>;
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136         <em class='comment'>/* Thread subsystem fields */</em>
+<a id='L137' name='L137'></a> 137         <a href='../S/67.html#L40' title='Defined at 40 in kern/arch/mips/thread/thread_machdep.c.'>thread_machdep_init</a>(&amp;<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_machdep);
+<a id='L138' name='L138'></a> 138         <a href='../S/228.html#L40' title='Defined at 40 in kern/thread/threadlist.c.'>threadlistnode_init</a>(&amp;<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_listnode, <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>);
+<a id='L139' name='L139'></a> 139         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L140' name='L140'></a> 140         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_context = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L141' name='L141'></a> 141         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_cpu = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L142' name='L142'></a> 142         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_proc = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L143' name='L143'></a> 143         <a href='../D/363.html' title='Multiple defined in 2 places.'>HANGMAN_ACTORINIT</a>(&amp;<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_hangman, <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_name);
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145         <em class='comment'>/* Interrupt state fields */</em>
+<a id='L146' name='L146'></a> 146         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_in_interrupt = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L147' name='L147'></a> 147         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_curspl = <a href='../S/181.html#L78' title='Defined at 78 in kern/include/spl.h.'>IPL_HIGH</a>;
+<a id='L148' name='L148'></a> 148         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_iplhigh_count = 1; <em class='comment'>/* corresponding to t_curspl */</em>
+<a id='L149' name='L149'></a> 149 
+<a id='L150' name='L150'></a> 150         <em class='comment'>/* If you add to struct thread, be sure to initialize here */</em>
+<a id='L151' name='L151'></a> 151 
+<a id='L152' name='L152'></a> 152         <strong class='reserved'>return</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>;
+<a id='L153' name='L153'></a> 153 <em class='brace'>}</em>
+<a id='L154' name='L154'></a> 154 
+<a id='L155' name='L155'></a> 155 <em class='comment'>/*</em>
+<a id='L156' name='L156'></a> 156 <em class='comment'> * Create a CPU structure. This is used for the bootup CPU and</em>
+<a id='L157' name='L157'></a> 157 <em class='comment'> * also for secondary CPUs.</em>
+<a id='L158' name='L158'></a> 158 <em class='comment'> *</em>
+<a id='L159' name='L159'></a> 159 <em class='comment'> * The hardware number (the number assigned by firmware or system</em>
+<a id='L160' name='L160'></a> 160 <em class='comment'> * board config or whatnot) is tracked separately because it is not</em>
+<a id='L161' name='L161'></a> 161 <em class='comment'> * necessarily anything sane or meaningful.</em>
+<a id='L162' name='L162'></a> 162 <em class='comment'> */</em>
+<a id='L163' name='L163'></a> 163 <strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *
+<a id='L164' name='L164'></a> 164 <a href='../R/1155.html' title='Multiple referred from 3 places.'>cpu_create</a>(<strong class='reserved'>unsigned</strong> hardware_number)
+<a id='L165' name='L165'></a> 165 <em class='brace'>{</em>
+<a id='L166' name='L166'></a> 166         <strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *c;
+<a id='L167' name='L167'></a> 167         <strong class='reserved'>int</strong> result;
+<a id='L168' name='L168'></a> 168         <strong class='reserved'>char</strong> namebuf[16];
+<a id='L169' name='L169'></a> 169 
+<a id='L170' name='L170'></a> 170         c = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<strong class='reserved'>sizeof</strong>(*c));
+<a id='L171' name='L171'></a> 171         <strong class='reserved'>if</strong> (c == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L172' name='L172'></a> 172                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cpu_create: Out of memory\n");
+<a id='L173' name='L173'></a> 173         <em class='brace'>}</em>
+<a id='L174' name='L174'></a> 174 
+<a id='L175' name='L175'></a> 175         c-&gt;c_self = c;
+<a id='L176' name='L176'></a> 176         c-&gt;c_hardware_number = hardware_number;
+<a id='L177' name='L177'></a> 177 
+<a id='L178' name='L178'></a> 178         c-&gt;c_curthread = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L179' name='L179'></a> 179         <a href='../S/228.html#L61' title='Defined at 61 in kern/thread/threadlist.c.'>threadlist_init</a>(&amp;c-&gt;c_zombies);
+<a id='L180' name='L180'></a> 180         c-&gt;c_hardclocks = 0;
+<a id='L181' name='L181'></a> 181         c-&gt;c_spinlocks = 0;
+<a id='L182' name='L182'></a> 182 
+<a id='L183' name='L183'></a> 183         c-&gt;c_isidle = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L184' name='L184'></a> 184         <a href='../S/228.html#L61' title='Defined at 61 in kern/thread/threadlist.c.'>threadlist_init</a>(&amp;c-&gt;c_runqueue);
+<a id='L185' name='L185'></a> 185         <a href='../S/224.html#L51' title='Defined at 51 in kern/thread/spinlock.c.'>spinlock_init</a>(&amp;c-&gt;c_runqueue_lock);
+<a id='L186' name='L186'></a> 186 
+<a id='L187' name='L187'></a> 187         c-&gt;c_ipi_pending = 0;
+<a id='L188' name='L188'></a> 188         c-&gt;c_numshootdown = 0;
+<a id='L189' name='L189'></a> 189         <a href='../S/224.html#L51' title='Defined at 51 in kern/thread/spinlock.c.'>spinlock_init</a>(&amp;c-&gt;c_ipi_lock);
+<a id='L190' name='L190'></a> 190 
+<a id='L191' name='L191'></a> 191         result = cpuarray_add(&amp;allcpus, c, &amp;c-&gt;c_number);
+<a id='L192' name='L192'></a> 192         <strong class='reserved'>if</strong> (result != 0) <em class='brace'>{</em>
+<a id='L193' name='L193'></a> 193                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cpu_create: array_add: %s\n", <a href='../D/2537.html' title='Multiple defined in 2 places.'>strerror</a>(result));
+<a id='L194' name='L194'></a> 194         <em class='brace'>}</em>
+<a id='L195' name='L195'></a> 195 
+<a id='L196' name='L196'></a> 196         <a href='../S/25.html#L148' title='Defined at 148 in common/libc/printf/snprintf.c.'>snprintf</a>(namebuf, <strong class='reserved'>sizeof</strong>(namebuf), "&lt;boot #%d&gt;", c-&gt;c_number);
+<a id='L197' name='L197'></a> 197         c-&gt;c_curthread = <a href='../S/227.html#L117' title='Defined at 117 in kern/thread/thread.c.'>thread_create</a>(namebuf);
+<a id='L198' name='L198'></a> 198         <strong class='reserved'>if</strong> (c-&gt;c_curthread == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L199' name='L199'></a> 199                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cpu_create: thread_create failed\n");
+<a id='L200' name='L200'></a> 200         <em class='brace'>}</em>
+<a id='L201' name='L201'></a> 201         c-&gt;c_curthread-&gt;t_cpu = c;
+<a id='L202' name='L202'></a> 202 
+<a id='L203' name='L203'></a> 203         <strong class='reserved'>if</strong> (c-&gt;c_number == 0) <em class='brace'>{</em>
+<a id='L204' name='L204'></a> 204                 <em class='comment'>/*</em>
+<a id='L205' name='L205'></a> 205 <em class='comment'>                 * Leave c-&gt;c_curthread-&gt;t_stack NULL for the boot</em>
+<a id='L206' name='L206'></a> 206 <em class='comment'>                 * cpu. This means we're using the boot stack, which</em>
+<a id='L207' name='L207'></a> 207 <em class='comment'>                 * can't be freed. (Exercise: what would it take to</em>
+<a id='L208' name='L208'></a> 208 <em class='comment'>                 * make it possible to free the boot stack?)</em>
+<a id='L209' name='L209'></a> 209 <em class='comment'>                 */</em>
+<a id='L210' name='L210'></a> 210                 <em class='comment'>/*c-&gt;c_curthread-&gt;t_stack = ... */</em>
+<a id='L211' name='L211'></a> 211         <em class='brace'>}</em>
+<a id='L212' name='L212'></a> 212         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L213' name='L213'></a> 213                 c-&gt;c_curthread-&gt;t_stack = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<a href='../S/187.html#L50' title='Defined at 50 in kern/include/thread.h.'>STACK_SIZE</a>);
+<a id='L214' name='L214'></a> 214                 <strong class='reserved'>if</strong> (c-&gt;c_curthread-&gt;t_stack == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L215' name='L215'></a> 215                         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cpu_create: couldn't allocate stack");
+<a id='L216' name='L216'></a> 216                 <em class='brace'>}</em>
+<a id='L217' name='L217'></a> 217                 <a href='../S/227.html#L81' title='Defined at 81 in kern/thread/thread.c.'>thread_checkstack_init</a>(c-&gt;c_curthread);
+<a id='L218' name='L218'></a> 218         <em class='brace'>}</em>
+<a id='L219' name='L219'></a> 219 
+<a id='L220' name='L220'></a> 220         <em class='comment'>/*</em>
+<a id='L221' name='L221'></a> 221 <em class='comment'>         * If there is no curcpu (or curthread) yet, we are creating</em>
+<a id='L222' name='L222'></a> 222 <em class='comment'>         * the first (boot) cpu. Initialize curcpu and curthread as</em>
+<a id='L223' name='L223'></a> 223 <em class='comment'>         * early as possible so that other code can take locks without</em>
+<a id='L224' name='L224'></a> 224 <em class='comment'>         * exploding.</em>
+<a id='L225' name='L225'></a> 225 <em class='comment'>         */</em>
+<a id='L226' name='L226'></a> 226         <strong class='reserved'>if</strong> (!<a href='../D/82.html' title='Multiple defined in 2 places.'>CURCPU_EXISTS</a>()) <em class='brace'>{</em>
+<a id='L227' name='L227'></a> 227                 <em class='comment'>/*</em>
+<a id='L228' name='L228'></a> 228 <em class='comment'>                 * Initializing curcpu and curthread is</em>
+<a id='L229' name='L229'></a> 229 <em class='comment'>                 * machine-dependent because either of curcpu and</em>
+<a id='L230' name='L230'></a> 230 <em class='comment'>                 * curthread might be defined in terms of the other.</em>
+<a id='L231' name='L231'></a> 231 <em class='comment'>                 */</em>
+<a id='L232' name='L232'></a> 232                 <a href='../S/44.html#L71' title='Defined at 71 in kern/arch/mips/include/current.h.'>INIT_CURCPU</a>(c, c-&gt;c_curthread);
+<a id='L233' name='L233'></a> 233 
+<a id='L234' name='L234'></a> 234                 <em class='comment'>/*</em>
+<a id='L235' name='L235'></a> 235 <em class='comment'>                 * Now make sure both t_cpu and c_curthread are</em>
+<a id='L236' name='L236'></a> 236 <em class='comment'>                 * set. This might be partially redundant with</em>
+<a id='L237' name='L237'></a> 237 <em class='comment'>                 * INIT_CURCPU depending on how things are defined.</em>
+<a id='L238' name='L238'></a> 238 <em class='comment'>                 */</em>
+<a id='L239' name='L239'></a> 239                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_cpu = <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>;
+<a id='L240' name='L240'></a> 240                 <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_curthread = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>;
+<a id='L241' name='L241'></a> 241         <em class='brace'>}</em>
+<a id='L242' name='L242'></a> 242 
+<a id='L243' name='L243'></a> 243         <a href='../D/363.html' title='Multiple defined in 2 places.'>HANGMAN_ACTORINIT</a>(&amp;c-&gt;c_hangman, "cpu");
+<a id='L244' name='L244'></a> 244 
+<a id='L245' name='L245'></a> 245         result = <a href='../S/208.html#L234' title='Defined at 234 in kern/proc/proc.c.'>proc_addthread</a>(kproc, c-&gt;c_curthread);
+<a id='L246' name='L246'></a> 246         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L247' name='L247'></a> 247                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("cpu_create: proc_addthread:: %s\n", <a href='../D/2537.html' title='Multiple defined in 2 places.'>strerror</a>(result));
+<a id='L248' name='L248'></a> 248         <em class='brace'>}</em>
+<a id='L249' name='L249'></a> 249 
+<a id='L250' name='L250'></a> 250         <a href='../S/63.html#L76' title='Defined at 76 in kern/arch/mips/thread/cpu.c.'>cpu_machdep_init</a>(c);
+<a id='L251' name='L251'></a> 251 
+<a id='L252' name='L252'></a> 252         <strong class='reserved'>return</strong> c;
+<a id='L253' name='L253'></a> 253 <em class='brace'>}</em>
+<a id='L254' name='L254'></a> 254 
+<a id='L255' name='L255'></a> 255 <em class='comment'>/*</em>
+<a id='L256' name='L256'></a> 256 <em class='comment'> * Destroy a thread.</em>
+<a id='L257' name='L257'></a> 257 <em class='comment'> *</em>
+<a id='L258' name='L258'></a> 258 <em class='comment'> * This function cannot be called in the victim thread's own context.</em>
+<a id='L259' name='L259'></a> 259 <em class='comment'> * Nor can it be called on a running thread.</em>
+<a id='L260' name='L260'></a> 260 <em class='comment'> *</em>
+<a id='L261' name='L261'></a> 261 <em class='comment'> * (Freeing the stack you're actually using to run is ... inadvisable.)</em>
+<a id='L262' name='L262'></a> 262 <em class='comment'> */</em>
+<a id='L263' name='L263'></a> 263 <strong class='reserved'>static</strong>
+<a id='L264' name='L264'></a> 264 <strong class='reserved'>void</strong>
+<a id='L265' name='L265'></a> 265 <a href='../R/2181.html' title='Multiple referred from 3 places.'>thread_destroy</a>(<strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>)
+<a id='L266' name='L266'></a> 266 <em class='brace'>{</em>
+<a id='L267' name='L267'></a> 267         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> != <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>);
+<a id='L268' name='L268'></a> 268         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_state != <a href='../S/187.html#L61' title='Defined at 61 in kern/include/thread.h.'>S_RUN</a>);
+<a id='L269' name='L269'></a> 269 
+<a id='L270' name='L270'></a> 270         <em class='comment'>/*</em>
+<a id='L271' name='L271'></a> 271 <em class='comment'>         * If you add things to struct thread, be sure to clean them up</em>
+<a id='L272' name='L272'></a> 272 <em class='comment'>         * either here or in thread_exit(). (And not both...)</em>
+<a id='L273' name='L273'></a> 273 <em class='comment'>         */</em>
+<a id='L274' name='L274'></a> 274 
+<a id='L275' name='L275'></a> 275         <em class='comment'>/* Thread subsystem fields */</em>
+<a id='L276' name='L276'></a> 276         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_proc == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L277' name='L277'></a> 277         <strong class='reserved'>if</strong> (<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L278' name='L278'></a> 278                 <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_stack);
+<a id='L279' name='L279'></a> 279         <em class='brace'>}</em>
+<a id='L280' name='L280'></a> 280         <a href='../S/228.html#L51' title='Defined at 51 in kern/thread/threadlist.c.'>threadlistnode_cleanup</a>(&amp;<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_listnode);
+<a id='L281' name='L281'></a> 281         <a href='../S/67.html#L46' title='Defined at 46 in kern/arch/mips/thread/thread_machdep.c.'>thread_machdep_cleanup</a>(&amp;<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_machdep);
+<a id='L282' name='L282'></a> 282 
+<a id='L283' name='L283'></a> 283         <em class='comment'>/* sheer paranoia */</em>
+<a id='L284' name='L284'></a> 284         <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_wchan_name = "DESTROYED";
+<a id='L285' name='L285'></a> 285 
+<a id='L286' name='L286'></a> 286         <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>-&gt;t_name);
+<a id='L287' name='L287'></a> 287         <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(<a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a>);
+<a id='L288' name='L288'></a> 288 <em class='brace'>}</em>
+<a id='L289' name='L289'></a> 289 
+<a id='L290' name='L290'></a> 290 <em class='comment'>/*</em>
+<a id='L291' name='L291'></a> 291 <em class='comment'> * Clean up zombies. (Zombies are threads that have exited but still</em>
+<a id='L292' name='L292'></a> 292 <em class='comment'> * need to have thread_destroy called on them.)</em>
+<a id='L293' name='L293'></a> 293 <em class='comment'> *</em>
+<a id='L294' name='L294'></a> 294 <em class='comment'> * The list of zombies is per-cpu.</em>
+<a id='L295' name='L295'></a> 295 <em class='comment'> */</em>
+<a id='L296' name='L296'></a> 296 <strong class='reserved'>static</strong>
+<a id='L297' name='L297'></a> 297 <strong class='reserved'>void</strong>
+<a id='L298' name='L298'></a> 298 <a href='../R/1368.html' title='Multiple referred from 2 places.'>exorcise</a>(<strong class='reserved'>void</strong>)
+<a id='L299' name='L299'></a> 299 <em class='brace'>{</em>
+<a id='L300' name='L300'></a> 300         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *z;
+<a id='L301' name='L301'></a> 301 
+<a id='L302' name='L302'></a> 302         <strong class='reserved'>while</strong> ((z = <a href='../S/228.html#L183' title='Defined at 183 in kern/thread/threadlist.c.'>threadlist_remhead</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_zombies)) != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L303' name='L303'></a> 303                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(z != <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>);
+<a id='L304' name='L304'></a> 304                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(z-&gt;t_state == <a href='../S/187.html#L64' title='Defined at 64 in kern/include/thread.h.'>S_ZOMBIE</a>);
+<a id='L305' name='L305'></a> 305                 <a href='../S/227.html#L265' title='Defined at 265 in kern/thread/thread.c.'>thread_destroy</a>(z);
+<a id='L306' name='L306'></a> 306         <em class='brace'>}</em>
+<a id='L307' name='L307'></a> 307 <em class='brace'>}</em>
+<a id='L308' name='L308'></a> 308 
+<a id='L309' name='L309'></a> 309 <em class='comment'>/*</em>
+<a id='L310' name='L310'></a> 310 <em class='comment'> * On panic, stop the thread system (as much as is reasonably</em>
+<a id='L311' name='L311'></a> 311 <em class='comment'> * possible) to make sure we don't end up letting any other threads</em>
+<a id='L312' name='L312'></a> 312 <em class='comment'> * run.</em>
+<a id='L313' name='L313'></a> 313 <em class='comment'> */</em>
+<a id='L314' name='L314'></a> 314 <strong class='reserved'>void</strong>
+<a id='L315' name='L315'></a> 315 <a href='../R/2188.html' title='Multiple referred from 2 places.'>thread_panic</a>(<strong class='reserved'>void</strong>)
+<a id='L316' name='L316'></a> 316 <em class='brace'>{</em>
+<a id='L317' name='L317'></a> 317         <em class='comment'>/*</em>
+<a id='L318' name='L318'></a> 318 <em class='comment'>         * Kill off other CPUs.</em>
+<a id='L319' name='L319'></a> 319 <em class='comment'>         *</em>
+<a id='L320' name='L320'></a> 320 <em class='comment'>         * We could wait for them to stop, except that they might not.</em>
+<a id='L321' name='L321'></a> 321 <em class='comment'>         */</em>
+<a id='L322' name='L322'></a> 322         <a href='../S/227.html#L1116' title='Defined at 1116 in kern/thread/thread.c.'>ipi_broadcast</a>(<a href='../S/144.html#L164' title='Defined at 164 in kern/include/cpu.h.'>IPI_PANIC</a>);
+<a id='L323' name='L323'></a> 323 
+<a id='L324' name='L324'></a> 324         <em class='comment'>/*</em>
+<a id='L325' name='L325'></a> 325 <em class='comment'>         * Drop runnable threads on the floor.</em>
+<a id='L326' name='L326'></a> 326 <em class='comment'>         *</em>
+<a id='L327' name='L327'></a> 327 <em class='comment'>         * Don't try to get the run queue lock; we might not be able</em>
+<a id='L328' name='L328'></a> 328 <em class='comment'>         * to.  Instead, blat the list structure by hand, and take the</em>
+<a id='L329' name='L329'></a> 329 <em class='comment'>         * risk that it might not be quite atomic.</em>
+<a id='L330' name='L330'></a> 330 <em class='comment'>         */</em>
+<a id='L331' name='L331'></a> 331         <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue.tl_count = 0;
+<a id='L332' name='L332'></a> 332         <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue.tl_head.tln_next = &amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue.tl_tail;
+<a id='L333' name='L333'></a> 333         <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue.tl_tail.tln_prev = &amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue.tl_head;
+<a id='L334' name='L334'></a> 334 
+<a id='L335' name='L335'></a> 335         <em class='comment'>/*</em>
+<a id='L336' name='L336'></a> 336 <em class='comment'>         * Ideally, we want to make sure sleeping threads don't wake</em>
+<a id='L337' name='L337'></a> 337 <em class='comment'>         * up and start running. However, there's no good way to track</em>
+<a id='L338' name='L338'></a> 338 <em class='comment'>         * down all the wchans floating around the system. Another</em>
+<a id='L339' name='L339'></a> 339 <em class='comment'>         * alternative would be to set a global flag to make the wchan</em>
+<a id='L340' name='L340'></a> 340 <em class='comment'>         * wakeup operations do nothing; but that would mean we</em>
+<a id='L341' name='L341'></a> 341 <em class='comment'>         * ourselves couldn't sleep to wait for an I/O completion</em>
+<a id='L342' name='L342'></a> 342 <em class='comment'>         * interrupt, and we'd like to be able to do that if the</em>
+<a id='L343' name='L343'></a> 343 <em class='comment'>         * system isn't that badly hosed.</em>
+<a id='L344' name='L344'></a> 344 <em class='comment'>         *</em>
+<a id='L345' name='L345'></a> 345 <em class='comment'>         * So, do nothing else here.</em>
+<a id='L346' name='L346'></a> 346 <em class='comment'>         *</em>
+<a id='L347' name='L347'></a> 347 <em class='comment'>         * This may prove inadequate in practice and further steps</em>
+<a id='L348' name='L348'></a> 348 <em class='comment'>         * might be needed. It may also be necessary to go through and</em>
+<a id='L349' name='L349'></a> 349 <em class='comment'>         * forcibly unlock all locks or the like...</em>
+<a id='L350' name='L350'></a> 350 <em class='comment'>         */</em>
+<a id='L351' name='L351'></a> 351 <em class='brace'>}</em>
+<a id='L352' name='L352'></a> 352 
+<a id='L353' name='L353'></a> 353 <em class='comment'>/*</em>
+<a id='L354' name='L354'></a> 354 <em class='comment'> * At system shutdown, ask the other CPUs to switch off.</em>
+<a id='L355' name='L355'></a> 355 <em class='comment'> */</em>
+<a id='L356' name='L356'></a> 356 <strong class='reserved'>void</strong>
+<a id='L357' name='L357'></a> 357 <a href='../R/2189.html' title='Multiple referred from 2 places.'>thread_shutdown</a>(<strong class='reserved'>void</strong>)
+<a id='L358' name='L358'></a> 358 <em class='brace'>{</em>
+<a id='L359' name='L359'></a> 359         <em class='comment'>/*</em>
+<a id='L360' name='L360'></a> 360 <em class='comment'>         * Stop the other CPUs.</em>
+<a id='L361' name='L361'></a> 361 <em class='comment'>         *</em>
+<a id='L362' name='L362'></a> 362 <em class='comment'>         * We should probably wait for them to stop and shut them off</em>
+<a id='L363' name='L363'></a> 363 <em class='comment'>         * on the system board.</em>
+<a id='L364' name='L364'></a> 364 <em class='comment'>         */</em>
+<a id='L365' name='L365'></a> 365         <a href='../S/227.html#L1116' title='Defined at 1116 in kern/thread/thread.c.'>ipi_broadcast</a>(<a href='../S/144.html#L165' title='Defined at 165 in kern/include/cpu.h.'>IPI_OFFLINE</a>);
+<a id='L366' name='L366'></a> 366 <em class='brace'>}</em>
+<a id='L367' name='L367'></a> 367 
+<a id='L368' name='L368'></a> 368 <em class='comment'>/*</em>
+<a id='L369' name='L369'></a> 369 <em class='comment'> * Thread system initialization.</em>
+<a id='L370' name='L370'></a> 370 <em class='comment'> */</em>
+<a id='L371' name='L371'></a> 371 <strong class='reserved'>void</strong>
+<a id='L372' name='L372'></a> 372 <a href='../R/2176.html' title='Multiple referred from 2 places.'>thread_bootstrap</a>(<strong class='reserved'>void</strong>)
+<a id='L373' name='L373'></a> 373 <em class='brace'>{</em>
+<a id='L374' name='L374'></a> 374         cpuarray_init(&amp;allcpus);
+<a id='L375' name='L375'></a> 375 
+<a id='L376' name='L376'></a> 376         <em class='comment'>/*</em>
+<a id='L377' name='L377'></a> 377 <em class='comment'>         * Create the cpu structure for the bootup CPU, the one we're</em>
+<a id='L378' name='L378'></a> 378 <em class='comment'>         * currently running on. Assume the hardware number is 0; that</em>
+<a id='L379' name='L379'></a> 379 <em class='comment'>         * might be updated later by mainbus-type code. This also</em>
+<a id='L380' name='L380'></a> 380 <em class='comment'>         * creates a thread structure for the first thread, the one</em>
+<a id='L381' name='L381'></a> 381 <em class='comment'>         * that's already implicitly running when the kernel is</em>
+<a id='L382' name='L382'></a> 382 <em class='comment'>         * started from the bootloader.</em>
+<a id='L383' name='L383'></a> 383 <em class='comment'>         */</em>
+<a id='L384' name='L384'></a> 384         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../D/82.html' title='Multiple defined in 2 places.'>CURCPU_EXISTS</a>() == <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>);
+<a id='L385' name='L385'></a> 385         (<strong class='reserved'>void</strong>)<a href='../S/227.html#L164' title='Defined at 164 in kern/thread/thread.c.'>cpu_create</a>(0);
+<a id='L386' name='L386'></a> 386         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../D/82.html' title='Multiple defined in 2 places.'>CURCPU_EXISTS</a>() == <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>);
+<a id='L387' name='L387'></a> 387 
+<a id='L388' name='L388'></a> 388         <em class='comment'>/* cpu_create() should also have set t_proc. */</em>
+<a id='L389' name='L389'></a> 389         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a> != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L390' name='L390'></a> 390         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a> != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L391' name='L391'></a> 391         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_proc != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L392' name='L392'></a> 392         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_proc == kproc);
+<a id='L393' name='L393'></a> 393 
+<a id='L394' name='L394'></a> 394         <em class='comment'>/* Done */</em>
+<a id='L395' name='L395'></a> 395 <em class='brace'>}</em>
+<a id='L396' name='L396'></a> 396 
+<a id='L397' name='L397'></a> 397 <em class='comment'>/*</em>
+<a id='L398' name='L398'></a> 398 <em class='comment'> * New CPUs come here once MD initialization is finished. curthread</em>
+<a id='L399' name='L399'></a> 399 <em class='comment'> * and curcpu should already be initialized.</em>
+<a id='L400' name='L400'></a> 400 <em class='comment'> *</em>
+<a id='L401' name='L401'></a> 401 <em class='comment'> * Other than clearing thread_start_cpus() to continue, we don't need</em>
+<a id='L402' name='L402'></a> 402 <em class='comment'> * to do anything. The startup thread can just exit; we only need it</em>
+<a id='L403' name='L403'></a> 403 <em class='comment'> * to be able to get into thread_switch() properly.</em>
+<a id='L404' name='L404'></a> 404 <em class='comment'> */</em>
+<a id='L405' name='L405'></a> 405 <strong class='reserved'>void</strong>
+<a id='L406' name='L406'></a> 406 <a href='../S/144.html#L113' title='Referred from 113 in kern/include/cpu.h.'>cpu_hatch</a>(<strong class='reserved'>unsigned</strong> software_number)
+<a id='L407' name='L407'></a> 407 <em class='brace'>{</em>
+<a id='L408' name='L408'></a> 408         <strong class='reserved'>char</strong> buf[64];
+<a id='L409' name='L409'></a> 409 
+<a id='L410' name='L410'></a> 410         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a> != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L411' name='L411'></a> 411         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a> != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L412' name='L412'></a> 412         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number == software_number);
+<a id='L413' name='L413'></a> 413 
+<a id='L414' name='L414'></a> 414         <a href='../S/181.html#L96' title='Defined at 96 in kern/include/spl.h.'>spl0</a>();
+<a id='L415' name='L415'></a> 415         <a href='../S/63.html#L152' title='Defined at 152 in kern/arch/mips/thread/cpu.c.'>cpu_identify</a>(buf, <strong class='reserved'>sizeof</strong>(buf));
+<a id='L416' name='L416'></a> 416 
+<a id='L417' name='L417'></a> 417         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("cpu%u: %s\n", software_number, buf);
+<a id='L418' name='L418'></a> 418 
+<a id='L419' name='L419'></a> 419         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(cpu_startup_sem);
+<a id='L420' name='L420'></a> 420         <a href='../S/227.html#L779' title='Defined at 779 in kern/thread/thread.c.'>thread_exit</a>();
+<a id='L421' name='L421'></a> 421 <em class='brace'>}</em>
+<a id='L422' name='L422'></a> 422 
+<a id='L423' name='L423'></a> 423 <em class='comment'>/*</em>
+<a id='L424' name='L424'></a> 424 <em class='comment'> * Start up secondary cpus. Called from boot().</em>
+<a id='L425' name='L425'></a> 425 <em class='comment'> */</em>
+<a id='L426' name='L426'></a> 426 <strong class='reserved'>void</strong>
+<a id='L427' name='L427'></a> 427 <a href='../R/2190.html' title='Multiple referred from 2 places.'>thread_start_cpus</a>(<strong class='reserved'>void</strong>)
+<a id='L428' name='L428'></a> 428 <em class='brace'>{</em>
+<a id='L429' name='L429'></a> 429         <strong class='reserved'>char</strong> buf[64];
+<a id='L430' name='L430'></a> 430         <strong class='reserved'>unsigned</strong> i;
+<a id='L431' name='L431'></a> 431 
+<a id='L432' name='L432'></a> 432         <a href='../S/63.html#L152' title='Defined at 152 in kern/arch/mips/thread/cpu.c.'>cpu_identify</a>(buf, <strong class='reserved'>sizeof</strong>(buf));
+<a id='L433' name='L433'></a> 433         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("cpu0: %s\n", buf);
+<a id='L434' name='L434'></a> 434 
+<a id='L435' name='L435'></a> 435         cpu_startup_sem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>("cpu_hatch", 0);
+<a id='L436' name='L436'></a> 436         <a href='../S/73.html#L126' title='Defined at 126 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_start_cpus</a>();
+<a id='L437' name='L437'></a> 437 
+<a id='L438' name='L438'></a> 438         <strong class='reserved'>for</strong> (i=0; i&lt;cpuarray_num(&amp;allcpus) - 1; i++) <em class='brace'>{</em>
+<a id='L439' name='L439'></a> 439                 <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(cpu_startup_sem);
+<a id='L440' name='L440'></a> 440         <em class='brace'>}</em>
+<a id='L441' name='L441'></a> 441         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(cpu_startup_sem);
+<a id='L442' name='L442'></a> 442         cpu_startup_sem = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L443' name='L443'></a> 443 <em class='brace'>}</em>
+<a id='L444' name='L444'></a> 444 
+<a id='L445' name='L445'></a> 445 <em class='comment'>/*</em>
+<a id='L446' name='L446'></a> 446 <em class='comment'> * Make a thread runnable.</em>
+<a id='L447' name='L447'></a> 447 <em class='comment'> *</em>
+<a id='L448' name='L448'></a> 448 <em class='comment'> * targetcpu might be curcpu; it might not be, too.</em>
+<a id='L449' name='L449'></a> 449 <em class='comment'> */</em>
+<a id='L450' name='L450'></a> 450 <strong class='reserved'>static</strong>
+<a id='L451' name='L451'></a> 451 <strong class='reserved'>void</strong>
+<a id='L452' name='L452'></a> 452 <a href='../R/2187.html' title='Multiple referred from 4 places.'>thread_make_runnable</a>(<strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *target, <a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a> already_have_lock)
+<a id='L453' name='L453'></a> 453 <em class='brace'>{</em>
+<a id='L454' name='L454'></a> 454         <strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *targetcpu;
+<a id='L455' name='L455'></a> 455 
+<a id='L456' name='L456'></a> 456         <em class='comment'>/* Lock the run queue of the target thread's cpu. */</em>
+<a id='L457' name='L457'></a> 457         targetcpu = target-&gt;t_cpu;
+<a id='L458' name='L458'></a> 458 
+<a id='L459' name='L459'></a> 459         <strong class='reserved'>if</strong> (already_have_lock) <em class='brace'>{</em>
+<a id='L460' name='L460'></a> 460                 <em class='comment'>/* The target thread's cpu should be already locked. */</em>
+<a id='L461' name='L461'></a> 461                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/224.html#L148' title='Defined at 148 in kern/thread/spinlock.c.'>spinlock_do_i_hold</a>(&amp;targetcpu-&gt;c_runqueue_lock));
+<a id='L462' name='L462'></a> 462         <em class='brace'>}</em>
+<a id='L463' name='L463'></a> 463         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L464' name='L464'></a> 464                 <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;targetcpu-&gt;c_runqueue_lock);
+<a id='L465' name='L465'></a> 465         <em class='brace'>}</em>
+<a id='L466' name='L466'></a> 466 
+<a id='L467' name='L467'></a> 467         <em class='comment'>/* Target thread is now ready to run; put it on the run queue. */</em>
+<a id='L468' name='L468'></a> 468         target-&gt;t_state = <a href='../S/187.html#L62' title='Defined at 62 in kern/include/thread.h.'>S_READY</a>;
+<a id='L469' name='L469'></a> 469         <a href='../S/228.html#L173' title='Defined at 173 in kern/thread/threadlist.c.'>threadlist_addtail</a>(&amp;targetcpu-&gt;c_runqueue, target);
+<a id='L470' name='L470'></a> 470 
+<a id='L471' name='L471'></a> 471         <strong class='reserved'>if</strong> (targetcpu-&gt;c_isidle &amp;&amp; targetcpu != <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_self) <em class='brace'>{</em>
+<a id='L472' name='L472'></a> 472                 <em class='comment'>/*</em>
+<a id='L473' name='L473'></a> 473 <em class='comment'>                 * Other processor is idle; send interrupt to make</em>
+<a id='L474' name='L474'></a> 474 <em class='comment'>                 * sure it unidles.</em>
+<a id='L475' name='L475'></a> 475 <em class='comment'>                 */</em>
+<a id='L476' name='L476'></a> 476                 <a href='../S/227.html#L1102' title='Defined at 1102 in kern/thread/thread.c.'>ipi_send</a>(targetcpu, <a href='../S/144.html#L166' title='Defined at 166 in kern/include/cpu.h.'>IPI_UNIDLE</a>);
+<a id='L477' name='L477'></a> 477         <em class='brace'>}</em>
+<a id='L478' name='L478'></a> 478 
+<a id='L479' name='L479'></a> 479         <strong class='reserved'>if</strong> (!already_have_lock) <em class='brace'>{</em>
+<a id='L480' name='L480'></a> 480                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;targetcpu-&gt;c_runqueue_lock);
+<a id='L481' name='L481'></a> 481         <em class='brace'>}</em>
+<a id='L482' name='L482'></a> 482 <em class='brace'>}</em>
+<a id='L483' name='L483'></a> 483 
+<a id='L484' name='L484'></a> 484 <em class='comment'>/*</em>
+<a id='L485' name='L485'></a> 485 <em class='comment'> * Create a new thread based on an existing one.</em>
+<a id='L486' name='L486'></a> 486 <em class='comment'> *</em>
+<a id='L487' name='L487'></a> 487 <em class='comment'> * The new thread has name NAME, and starts executing in function</em>
+<a id='L488' name='L488'></a> 488 <em class='comment'> * ENTRYPOINT. DATA1 and DATA2 are passed to ENTRYPOINT.</em>
+<a id='L489' name='L489'></a> 489 <em class='comment'> *</em>
+<a id='L490' name='L490'></a> 490 <em class='comment'> * The new thread is created in the process P. If P is null, the</em>
+<a id='L491' name='L491'></a> 491 <em class='comment'> * process is inherited from the caller. It will start on the same CPU</em>
+<a id='L492' name='L492'></a> 492 <em class='comment'> * as the caller, unless the scheduler intervenes first.</em>
+<a id='L493' name='L493'></a> 493 <em class='comment'> */</em>
+<a id='L494' name='L494'></a> 494 <strong class='reserved'>int</strong>
+<a id='L495' name='L495'></a> 495 <a href='../R/2183.html' title='Multiple referred from 22 places.'>thread_fork</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name,
+<a id='L496' name='L496'></a> 496             <strong class='reserved'>struct</strong> <a href='../S/176.html#L62' title='Defined at 62 in kern/include/proc.h.'>proc</a> *<a href='../S/176.html#L62' title='Defined at 62 in kern/include/proc.h.'>proc</a>,
+<a id='L497' name='L497'></a> 497             <strong class='reserved'>void</strong> (*entrypoint)(<strong class='reserved'>void</strong> *data1, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> data2),
+<a id='L498' name='L498'></a> 498             <strong class='reserved'>void</strong> *data1, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> data2)
+<a id='L499' name='L499'></a> 499 <em class='brace'>{</em>
+<a id='L500' name='L500'></a> 500         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *newthread;
+<a id='L501' name='L501'></a> 501         <strong class='reserved'>int</strong> result;
+<a id='L502' name='L502'></a> 502 
+<a id='L503' name='L503'></a> 503         newthread = <a href='../S/227.html#L117' title='Defined at 117 in kern/thread/thread.c.'>thread_create</a>(name);
+<a id='L504' name='L504'></a> 504         <strong class='reserved'>if</strong> (newthread == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L505' name='L505'></a> 505                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L506' name='L506'></a> 506         <em class='brace'>}</em>
+<a id='L507' name='L507'></a> 507 
+<a id='L508' name='L508'></a> 508         <em class='comment'>/* Allocate a stack */</em>
+<a id='L509' name='L509'></a> 509         newthread-&gt;t_stack = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<a href='../S/187.html#L50' title='Defined at 50 in kern/include/thread.h.'>STACK_SIZE</a>);
+<a id='L510' name='L510'></a> 510         <strong class='reserved'>if</strong> (newthread-&gt;t_stack == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L511' name='L511'></a> 511                 <a href='../S/227.html#L265' title='Defined at 265 in kern/thread/thread.c.'>thread_destroy</a>(newthread);
+<a id='L512' name='L512'></a> 512                 <strong class='reserved'>return</strong> <a href='../S/154.html#L47' title='Defined at 47 in kern/include/kern/errno.h.'>ENOMEM</a>;
+<a id='L513' name='L513'></a> 513         <em class='brace'>}</em>
+<a id='L514' name='L514'></a> 514         <a href='../S/227.html#L81' title='Defined at 81 in kern/thread/thread.c.'>thread_checkstack_init</a>(newthread);
+<a id='L515' name='L515'></a> 515 
+<a id='L516' name='L516'></a> 516         <em class='comment'>/*</em>
+<a id='L517' name='L517'></a> 517 <em class='comment'>         * Now we clone various fields from the parent thread.</em>
+<a id='L518' name='L518'></a> 518 <em class='comment'>         */</em>
+<a id='L519' name='L519'></a> 519 
+<a id='L520' name='L520'></a> 520         <em class='comment'>/* Thread subsystem fields */</em>
+<a id='L521' name='L521'></a> 521         newthread-&gt;t_cpu = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_cpu;
+<a id='L522' name='L522'></a> 522 
+<a id='L523' name='L523'></a> 523         <em class='comment'>/* Attach the new thread to its process */</em>
+<a id='L524' name='L524'></a> 524         <strong class='reserved'>if</strong> (<a href='../S/176.html#L62' title='Defined at 62 in kern/include/proc.h.'>proc</a> == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L525' name='L525'></a> 525                 <a href='../S/176.html#L62' title='Defined at 62 in kern/include/proc.h.'>proc</a> = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_proc;
+<a id='L526' name='L526'></a> 526         <em class='brace'>}</em>
+<a id='L527' name='L527'></a> 527         result = <a href='../S/208.html#L234' title='Defined at 234 in kern/proc/proc.c.'>proc_addthread</a>(<a href='../S/176.html#L62' title='Defined at 62 in kern/include/proc.h.'>proc</a>, newthread);
+<a id='L528' name='L528'></a> 528         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L529' name='L529'></a> 529                 <em class='comment'>/* thread_destroy will clean up the stack */</em>
+<a id='L530' name='L530'></a> 530                 <a href='../S/227.html#L265' title='Defined at 265 in kern/thread/thread.c.'>thread_destroy</a>(newthread);
+<a id='L531' name='L531'></a> 531                 <strong class='reserved'>return</strong> result;
+<a id='L532' name='L532'></a> 532         <em class='brace'>}</em>
+<a id='L533' name='L533'></a> 533 
+<a id='L534' name='L534'></a> 534         <em class='comment'>/*</em>
+<a id='L535' name='L535'></a> 535 <em class='comment'>         * Because new threads come out holding the cpu runqueue lock</em>
+<a id='L536' name='L536'></a> 536 <em class='comment'>         * (see notes at bottom of thread_switch), we need to account</em>
+<a id='L537' name='L537'></a> 537 <em class='comment'>         * for the spllower() that will be done releasing it.</em>
+<a id='L538' name='L538'></a> 538 <em class='comment'>         */</em>
+<a id='L539' name='L539'></a> 539         newthread-&gt;t_iplhigh_count++;
+<a id='L540' name='L540'></a> 540 
+<a id='L541' name='L541'></a> 541         <em class='comment'>/* Set up the switchframe so entrypoint() gets called */</em>
+<a id='L542' name='L542'></a> 542         <a href='../S/65.html#L55' title='Defined at 55 in kern/arch/mips/thread/switchframe.c.'>switchframe_init</a>(newthread, entrypoint, data1, data2);
+<a id='L543' name='L543'></a> 543 
+<a id='L544' name='L544'></a> 544         <em class='comment'>/* Lock the current cpu's run queue and make the new thread runnable */</em>
+<a id='L545' name='L545'></a> 545         <a href='../S/227.html#L452' title='Defined at 452 in kern/thread/thread.c.'>thread_make_runnable</a>(newthread, <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>);
+<a id='L546' name='L546'></a> 546 
+<a id='L547' name='L547'></a> 547         <strong class='reserved'>return</strong> 0;
+<a id='L548' name='L548'></a> 548 <em class='brace'>}</em>
+<a id='L549' name='L549'></a> 549 
+<a id='L550' name='L550'></a> 550 <em class='comment'>/*</em>
+<a id='L551' name='L551'></a> 551 <em class='comment'> * High level, machine-independent context switch code.</em>
+<a id='L552' name='L552'></a> 552 <em class='comment'> *</em>
+<a id='L553' name='L553'></a> 553 <em class='comment'> * The current thread is queued appropriately and its state is changed</em>
+<a id='L554' name='L554'></a> 554 <em class='comment'> * to NEWSTATE; another thread to run is selected and switched to.</em>
+<a id='L555' name='L555'></a> 555 <em class='comment'> *</em>
+<a id='L556' name='L556'></a> 556 <em class='comment'> * If NEWSTATE is S_SLEEP, the thread is queued on the wait channel</em>
+<a id='L557' name='L557'></a> 557 <em class='comment'> * WC, protected by the spinlock LK. Otherwise WC and Lk should be</em>
+<a id='L558' name='L558'></a> 558 <em class='comment'> * NULL.</em>
+<a id='L559' name='L559'></a> 559 <em class='comment'> */</em>
+<a id='L560' name='L560'></a> 560 <strong class='reserved'>static</strong>
+<a id='L561' name='L561'></a> 561 <strong class='reserved'>void</strong>
+<a id='L562' name='L562'></a> 562 <a href='../R/2192.html' title='Multiple referred from 3 places.'>thread_switch</a>(<a href='../S/187.html#L65' title='Defined at 65 in kern/include/thread.h.'>threadstate_t</a> newstate, <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *wc, <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> *lk)
+<a id='L563' name='L563'></a> 563 <em class='brace'>{</em>
+<a id='L564' name='L564'></a> 564         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *cur, *next;
+<a id='L565' name='L565'></a> 565         <strong class='reserved'>int</strong> spl;
+<a id='L566' name='L566'></a> 566 
+<a id='L567' name='L567'></a> 567         <a href='../D/98.html' title='Multiple defined in 2 places.'>DEBUGASSERT</a>(<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_curthread == <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>);
+<a id='L568' name='L568'></a> 568         <a href='../D/98.html' title='Multiple defined in 2 places.'>DEBUGASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_cpu == <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_self);
+<a id='L569' name='L569'></a> 569 
+<a id='L570' name='L570'></a> 570         <em class='comment'>/* Explicitly disable interrupts on this processor */</em>
+<a id='L571' name='L571'></a> 571         spl = <a href='../S/181.html#L103' title='Defined at 103 in kern/include/spl.h.'>splhigh</a>();
+<a id='L572' name='L572'></a> 572 
+<a id='L573' name='L573'></a> 573         cur = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>;
+<a id='L574' name='L574'></a> 574 
+<a id='L575' name='L575'></a> 575         <em class='comment'>/*</em>
+<a id='L576' name='L576'></a> 576 <em class='comment'>         * If we're idle, return without doing anything. This happens</em>
+<a id='L577' name='L577'></a> 577 <em class='comment'>         * when the timer interrupt interrupts the idle loop.</em>
+<a id='L578' name='L578'></a> 578 <em class='comment'>         */</em>
+<a id='L579' name='L579'></a> 579         <strong class='reserved'>if</strong> (<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_isidle) <em class='brace'>{</em>
+<a id='L580' name='L580'></a> 580                 <a href='../S/225.html#L132' title='Defined at 132 in kern/thread/spl.c.'>splx</a>(spl);
+<a id='L581' name='L581'></a> 581                 <strong class='reserved'>return</strong>;
+<a id='L582' name='L582'></a> 582         <em class='brace'>}</em>
+<a id='L583' name='L583'></a> 583 
+<a id='L584' name='L584'></a> 584         <em class='comment'>/* Check the stack guard band. */</em>
+<a id='L585' name='L585'></a> 585         <a href='../S/227.html#L101' title='Defined at 101 in kern/thread/thread.c.'>thread_checkstack</a>(cur);
+<a id='L586' name='L586'></a> 586 
+<a id='L587' name='L587'></a> 587         <em class='comment'>/* Lock the run queue. */</em>
+<a id='L588' name='L588'></a> 588         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L589' name='L589'></a> 589 
+<a id='L590' name='L590'></a> 590         <em class='comment'>/* Micro-optimization: if nothing to do, just return */</em>
+<a id='L591' name='L591'></a> 591         <strong class='reserved'>if</strong> (newstate == <a href='../S/187.html#L62' title='Defined at 62 in kern/include/thread.h.'>S_READY</a> &amp;&amp; <a href='../S/228.html#L92' title='Defined at 92 in kern/thread/threadlist.c.'>threadlist_isempty</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue)) <em class='brace'>{</em>
+<a id='L592' name='L592'></a> 592                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L593' name='L593'></a> 593                 <a href='../S/225.html#L132' title='Defined at 132 in kern/thread/spl.c.'>splx</a>(spl);
+<a id='L594' name='L594'></a> 594                 <strong class='reserved'>return</strong>;
+<a id='L595' name='L595'></a> 595         <em class='brace'>}</em>
+<a id='L596' name='L596'></a> 596 
+<a id='L597' name='L597'></a> 597         <em class='comment'>/* Put the thread in the right place. */</em>
+<a id='L598' name='L598'></a> 598         <strong class='reserved'>switch</strong> (newstate) <em class='brace'>{</em>
+<a id='L599' name='L599'></a> 599             <strong class='reserved'>case</strong> <a href='../S/187.html#L61' title='Defined at 61 in kern/include/thread.h.'>S_RUN</a>:
+<a id='L600' name='L600'></a> 600                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("Illegal S_RUN in thread_switch\n");
+<a id='L601' name='L601'></a> 601             <strong class='reserved'>case</strong> <a href='../S/187.html#L62' title='Defined at 62 in kern/include/thread.h.'>S_READY</a>:
+<a id='L602' name='L602'></a> 602                 <a href='../S/227.html#L452' title='Defined at 452 in kern/thread/thread.c.'>thread_make_runnable</a>(cur, <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a> <em class='comment'>/*have lock*/</em>);
+<a id='L603' name='L603'></a> 603                 <strong class='reserved'>break</strong>;
+<a id='L604' name='L604'></a> 604             <strong class='reserved'>case</strong> <a href='../S/187.html#L63' title='Defined at 63 in kern/include/thread.h.'>S_SLEEP</a>:
+<a id='L605' name='L605'></a> 605                 cur-&gt;t_wchan_name = wc-&gt;wc_name;
+<a id='L606' name='L606'></a> 606                 <em class='comment'>/*</em>
+<a id='L607' name='L607'></a> 607 <em class='comment'>                 * Add the thread to the list in the wait channel, and</em>
+<a id='L608' name='L608'></a> 608 <em class='comment'>                 * unlock same. To avoid a race with someone else</em>
+<a id='L609' name='L609'></a> 609 <em class='comment'>                 * calling wchan_wake*, we must keep the wchan's</em>
+<a id='L610' name='L610'></a> 610 <em class='comment'>                 * associated spinlock locked from the point the</em>
+<a id='L611' name='L611'></a> 611 <em class='comment'>                 * caller of wchan_sleep locked it until the thread is</em>
+<a id='L612' name='L612'></a> 612 <em class='comment'>                 * on the list.</em>
+<a id='L613' name='L613'></a> 613 <em class='comment'>                 */</em>
+<a id='L614' name='L614'></a> 614                 <a href='../S/228.html#L173' title='Defined at 173 in kern/thread/threadlist.c.'>threadlist_addtail</a>(&amp;wc-&gt;wc_threads, cur);
+<a id='L615' name='L615'></a> 615                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(lk);
+<a id='L616' name='L616'></a> 616                 <strong class='reserved'>break</strong>;
+<a id='L617' name='L617'></a> 617             <strong class='reserved'>case</strong> <a href='../S/187.html#L64' title='Defined at 64 in kern/include/thread.h.'>S_ZOMBIE</a>:
+<a id='L618' name='L618'></a> 618                 cur-&gt;t_wchan_name = "ZOMBIE";
+<a id='L619' name='L619'></a> 619                 <a href='../S/228.html#L173' title='Defined at 173 in kern/thread/threadlist.c.'>threadlist_addtail</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_zombies, cur);
+<a id='L620' name='L620'></a> 620                 <strong class='reserved'>break</strong>;
+<a id='L621' name='L621'></a> 621         <em class='brace'>}</em>
+<a id='L622' name='L622'></a> 622         cur-&gt;t_state = newstate;
+<a id='L623' name='L623'></a> 623 
+<a id='L624' name='L624'></a> 624         <em class='comment'>/*</em>
+<a id='L625' name='L625'></a> 625 <em class='comment'>         * Get the next thread. While there isn't one, call cpu_idle().</em>
+<a id='L626' name='L626'></a> 626 <em class='comment'>         * curcpu-&gt;c_isidle must be true when cpu_idle is</em>
+<a id='L627' name='L627'></a> 627 <em class='comment'>         * called. Unlock the runqueue while idling too, to make sure</em>
+<a id='L628' name='L628'></a> 628 <em class='comment'>         * things can be added to it.</em>
+<a id='L629' name='L629'></a> 629 <em class='comment'>         *</em>
+<a id='L630' name='L630'></a> 630 <em class='comment'>         * Note that we don't need to unlock the runqueue atomically</em>
+<a id='L631' name='L631'></a> 631 <em class='comment'>         * with idling; becoming unidle requires receiving an</em>
+<a id='L632' name='L632'></a> 632 <em class='comment'>         * interrupt (either a hardware interrupt or an interprocessor</em>
+<a id='L633' name='L633'></a> 633 <em class='comment'>         * interrupt from another cpu posting a wakeup) and idling</em>
+<a id='L634' name='L634'></a> 634 <em class='comment'>         * *is* atomic with respect to re-enabling interrupts.</em>
+<a id='L635' name='L635'></a> 635 <em class='comment'>         *</em>
+<a id='L636' name='L636'></a> 636 <em class='comment'>         * Note that c_isidle becomes true briefly even if we don't go</em>
+<a id='L637' name='L637'></a> 637 <em class='comment'>         * idle. However, because one is supposed to hold the runqueue</em>
+<a id='L638' name='L638'></a> 638 <em class='comment'>         * lock to look at it, this should not be visible or matter.</em>
+<a id='L639' name='L639'></a> 639 <em class='comment'>         */</em>
+<a id='L640' name='L640'></a> 640 
+<a id='L641' name='L641'></a> 641         <em class='comment'>/* The current cpu is now idle. */</em>
+<a id='L642' name='L642'></a> 642         <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_isidle = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L643' name='L643'></a> 643         <strong class='reserved'>do</strong> <em class='brace'>{</em>
+<a id='L644' name='L644'></a> 644                 next = <a href='../S/228.html#L183' title='Defined at 183 in kern/thread/threadlist.c.'>threadlist_remhead</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue);
+<a id='L645' name='L645'></a> 645                 <strong class='reserved'>if</strong> (next == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L646' name='L646'></a> 646                         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L647' name='L647'></a> 647                         <a href='../S/63.html#L293' title='Defined at 293 in kern/arch/mips/thread/cpu.c.'>cpu_idle</a>();
+<a id='L648' name='L648'></a> 648                         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L649' name='L649'></a> 649                 <em class='brace'>}</em>
+<a id='L650' name='L650'></a> 650         <em class='brace'>}</em> <strong class='reserved'>while</strong> (next == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L651' name='L651'></a> 651         <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_isidle = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L652' name='L652'></a> 652 
+<a id='L653' name='L653'></a> 653         <em class='comment'>/*</em>
+<a id='L654' name='L654'></a> 654 <em class='comment'>         * Note that curcpu-&gt;c_curthread may be the same variable as</em>
+<a id='L655' name='L655'></a> 655 <em class='comment'>         * curthread and it may not be, depending on how curthread and</em>
+<a id='L656' name='L656'></a> 656 <em class='comment'>         * curcpu are defined by the MD code. We'll assign both and</em>
+<a id='L657' name='L657'></a> 657 <em class='comment'>         * assume the compiler will optimize one away if they're the</em>
+<a id='L658' name='L658'></a> 658 <em class='comment'>         * same.</em>
+<a id='L659' name='L659'></a> 659 <em class='comment'>         */</em>
+<a id='L660' name='L660'></a> 660         <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_curthread = next;
+<a id='L661' name='L661'></a> 661         <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a> = next;
+<a id='L662' name='L662'></a> 662 
+<a id='L663' name='L663'></a> 663         <em class='comment'>/* do the switch (in assembler in switch.S) */</em>
+<a id='L664' name='L664'></a> 664         switchframe_switch(&amp;cur-&gt;t_context, &amp;next-&gt;t_context);
+<a id='L665' name='L665'></a> 665 
+<a id='L666' name='L666'></a> 666         <em class='comment'>/*</em>
+<a id='L667' name='L667'></a> 667 <em class='comment'>         * When we get to this point we are either running in the next</em>
+<a id='L668' name='L668'></a> 668 <em class='comment'>         * thread, or have come back to the same thread again,</em>
+<a id='L669' name='L669'></a> 669 <em class='comment'>         * depending on how you look at it. That is,</em>
+<a id='L670' name='L670'></a> 670 <em class='comment'>         * switchframe_switch returns immediately in another thread</em>
+<a id='L671' name='L671'></a> 671 <em class='comment'>         * context, which in general will be executing here with a</em>
+<a id='L672' name='L672'></a> 672 <em class='comment'>         * different stack and different values in the local</em>
+<a id='L673' name='L673'></a> 673 <em class='comment'>         * variables. (Although new threads go to thread_startup</em>
+<a id='L674' name='L674'></a> 674 <em class='comment'>         * instead.) But, later on when the processor, or some</em>
+<a id='L675' name='L675'></a> 675 <em class='comment'>         * processor, comes back to the previous thread, it's also</em>
+<a id='L676' name='L676'></a> 676 <em class='comment'>         * executing here with the *same* value in the local</em>
+<a id='L677' name='L677'></a> 677 <em class='comment'>         * variables.</em>
+<a id='L678' name='L678'></a> 678 <em class='comment'>         *</em>
+<a id='L679' name='L679'></a> 679 <em class='comment'>         * The upshot, however, is as follows:</em>
+<a id='L680' name='L680'></a> 680 <em class='comment'>         *</em>
+<a id='L681' name='L681'></a> 681 <em class='comment'>         *    - The thread now currently running is "cur", not "next",</em>
+<a id='L682' name='L682'></a> 682 <em class='comment'>         *      because when we return from switchrame_switch on the</em>
+<a id='L683' name='L683'></a> 683 <em class='comment'>         *      same stack, we're back to the thread that</em>
+<a id='L684' name='L684'></a> 684 <em class='comment'>         *      switchframe_switch call switched away from, which is</em>
+<a id='L685' name='L685'></a> 685 <em class='comment'>         *      "cur".</em>
+<a id='L686' name='L686'></a> 686 <em class='comment'>         *</em>
+<a id='L687' name='L687'></a> 687 <em class='comment'>         *    - "cur" is _not_ the thread that just *called*</em>
+<a id='L688' name='L688'></a> 688 <em class='comment'>         *      switchframe_switch.</em>
+<a id='L689' name='L689'></a> 689 <em class='comment'>         *</em>
+<a id='L690' name='L690'></a> 690 <em class='comment'>         *    - If newstate is S_ZOMB we never get back here in that</em>
+<a id='L691' name='L691'></a> 691 <em class='comment'>         *      context at all.</em>
+<a id='L692' name='L692'></a> 692 <em class='comment'>         *</em>
+<a id='L693' name='L693'></a> 693 <em class='comment'>         *    - If the thread just chosen to run ("next") was a new</em>
+<a id='L694' name='L694'></a> 694 <em class='comment'>         *      thread, we don't get to this code again until</em>
+<a id='L695' name='L695'></a> 695 <em class='comment'>         *      *another* context switch happens, because when new</em>
+<a id='L696' name='L696'></a> 696 <em class='comment'>         *      threads return from switchframe_switch they teleport</em>
+<a id='L697' name='L697'></a> 697 <em class='comment'>         *      to thread_startup.</em>
+<a id='L698' name='L698'></a> 698 <em class='comment'>         *</em>
+<a id='L699' name='L699'></a> 699 <em class='comment'>         *    - At this point the thread whose stack we're now on may</em>
+<a id='L700' name='L700'></a> 700 <em class='comment'>         *      have been migrated to another cpu since it last ran.</em>
+<a id='L701' name='L701'></a> 701 <em class='comment'>         *</em>
+<a id='L702' name='L702'></a> 702 <em class='comment'>         * The above is inherently confusing and will probably take a</em>
+<a id='L703' name='L703'></a> 703 <em class='comment'>         * while to get used to.</em>
+<a id='L704' name='L704'></a> 704 <em class='comment'>         *</em>
+<a id='L705' name='L705'></a> 705 <em class='comment'>         * However, the important part is that code placed here, after</em>
+<a id='L706' name='L706'></a> 706 <em class='comment'>         * the call to switchframe_switch, does not necessarily run on</em>
+<a id='L707' name='L707'></a> 707 <em class='comment'>         * every context switch. Thus any such code must be either</em>
+<a id='L708' name='L708'></a> 708 <em class='comment'>         * skippable on some switches or also called from</em>
+<a id='L709' name='L709'></a> 709 <em class='comment'>         * thread_startup.</em>
+<a id='L710' name='L710'></a> 710 <em class='comment'>         */</em>
+<a id='L711' name='L711'></a> 711 
+<a id='L712' name='L712'></a> 712 
+<a id='L713' name='L713'></a> 713         <em class='comment'>/* Clear the wait channel and set the thread state. */</em>
+<a id='L714' name='L714'></a> 714         cur-&gt;t_wchan_name = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L715' name='L715'></a> 715         cur-&gt;t_state = <a href='../S/187.html#L61' title='Defined at 61 in kern/include/thread.h.'>S_RUN</a>;
+<a id='L716' name='L716'></a> 716 
+<a id='L717' name='L717'></a> 717         <em class='comment'>/* Unlock the run queue. */</em>
+<a id='L718' name='L718'></a> 718         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L719' name='L719'></a> 719 
+<a id='L720' name='L720'></a> 720         <em class='comment'>/* Activate our address space in the MMU. */</em>
+<a id='L721' name='L721'></a> 721         <a href='../D/1296.html' title='Multiple defined in 2 places.'>as_activate</a>();
+<a id='L722' name='L722'></a> 722 
+<a id='L723' name='L723'></a> 723         <em class='comment'>/* Clean up dead threads. */</em>
+<a id='L724' name='L724'></a> 724         <a href='../S/227.html#L298' title='Defined at 298 in kern/thread/thread.c.'>exorcise</a>();
+<a id='L725' name='L725'></a> 725 
+<a id='L726' name='L726'></a> 726         <em class='comment'>/* Turn interrupts back on. */</em>
+<a id='L727' name='L727'></a> 727         <a href='../S/225.html#L132' title='Defined at 132 in kern/thread/spl.c.'>splx</a>(spl);
+<a id='L728' name='L728'></a> 728 <em class='brace'>}</em>
+<a id='L729' name='L729'></a> 729 
+<a id='L730' name='L730'></a> 730 <em class='comment'>/*</em>
+<a id='L731' name='L731'></a> 731 <em class='comment'> * This function is where new threads start running. The arguments</em>
+<a id='L732' name='L732'></a> 732 <em class='comment'> * ENTRYPOINT, DATA1, and DATA2 are passed through from thread_fork.</em>
+<a id='L733' name='L733'></a> 733 <em class='comment'> *</em>
+<a id='L734' name='L734'></a> 734 <em class='comment'> * Because new code comes here from inside the middle of</em>
+<a id='L735' name='L735'></a> 735 <em class='comment'> * thread_switch, the beginning part of this function must match the</em>
+<a id='L736' name='L736'></a> 736 <em class='comment'> * tail of thread_switch.</em>
+<a id='L737' name='L737'></a> 737 <em class='comment'> */</em>
+<a id='L738' name='L738'></a> 738 <strong class='reserved'>void</strong>
+<a id='L739' name='L739'></a> 739 <a href='../S/189.html#L55' title='Referred from 55 in kern/include/threadprivate.h.'>thread_startup</a>(<strong class='reserved'>void</strong> (*entrypoint)(<strong class='reserved'>void</strong> *data1, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> data2),
+<a id='L740' name='L740'></a> 740                <strong class='reserved'>void</strong> *data1, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> data2)
+<a id='L741' name='L741'></a> 741 <em class='brace'>{</em>
+<a id='L742' name='L742'></a> 742         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *cur;
+<a id='L743' name='L743'></a> 743 
+<a id='L744' name='L744'></a> 744         cur = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>;
+<a id='L745' name='L745'></a> 745 
+<a id='L746' name='L746'></a> 746         <em class='comment'>/* Clear the wait channel and set the thread state. */</em>
+<a id='L747' name='L747'></a> 747         cur-&gt;t_wchan_name = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L748' name='L748'></a> 748         cur-&gt;t_state = <a href='../S/187.html#L61' title='Defined at 61 in kern/include/thread.h.'>S_RUN</a>;
+<a id='L749' name='L749'></a> 749 
+<a id='L750' name='L750'></a> 750         <em class='comment'>/* Release the runqueue lock acquired in thread_switch. */</em>
+<a id='L751' name='L751'></a> 751         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L752' name='L752'></a> 752 
+<a id='L753' name='L753'></a> 753         <em class='comment'>/* Activate our address space in the MMU. */</em>
+<a id='L754' name='L754'></a> 754         <a href='../D/1296.html' title='Multiple defined in 2 places.'>as_activate</a>();
+<a id='L755' name='L755'></a> 755 
+<a id='L756' name='L756'></a> 756         <em class='comment'>/* Clean up dead threads. */</em>
+<a id='L757' name='L757'></a> 757         <a href='../S/227.html#L298' title='Defined at 298 in kern/thread/thread.c.'>exorcise</a>();
+<a id='L758' name='L758'></a> 758 
+<a id='L759' name='L759'></a> 759         <em class='comment'>/* Enable interrupts. */</em>
+<a id='L760' name='L760'></a> 760         <a href='../S/181.html#L96' title='Defined at 96 in kern/include/spl.h.'>spl0</a>();
+<a id='L761' name='L761'></a> 761 
+<a id='L762' name='L762'></a> 762         <em class='comment'>/* Call the function. */</em>
+<a id='L763' name='L763'></a> 763         entrypoint(data1, data2);
+<a id='L764' name='L764'></a> 764 
+<a id='L765' name='L765'></a> 765         <em class='comment'>/* Done. */</em>
+<a id='L766' name='L766'></a> 766         <a href='../S/227.html#L779' title='Defined at 779 in kern/thread/thread.c.'>thread_exit</a>();
+<a id='L767' name='L767'></a> 767 <em class='brace'>}</em>
+<a id='L768' name='L768'></a> 768 
+<a id='L769' name='L769'></a> 769 <em class='comment'>/*</em>
+<a id='L770' name='L770'></a> 770 <em class='comment'> * Cause the current thread to exit.</em>
+<a id='L771' name='L771'></a> 771 <em class='comment'> *</em>
+<a id='L772' name='L772'></a> 772 <em class='comment'> * The parts of the thread structure we don't actually need to run</em>
+<a id='L773' name='L773'></a> 773 <em class='comment'> * should be cleaned up right away. The rest has to wait until</em>
+<a id='L774' name='L774'></a> 774 <em class='comment'> * thread_destroy is called from exorcise().</em>
+<a id='L775' name='L775'></a> 775 <em class='comment'> *</em>
+<a id='L776' name='L776'></a> 776 <em class='comment'> * Does not return.</em>
+<a id='L777' name='L777'></a> 777 <em class='comment'> */</em>
+<a id='L778' name='L778'></a> 778 <strong class='reserved'>void</strong>
+<a id='L779' name='L779'></a> 779 <a href='../R/2182.html' title='Multiple referred from 6 places.'>thread_exit</a>(<strong class='reserved'>void</strong>)
+<a id='L780' name='L780'></a> 780 <em class='brace'>{</em>
+<a id='L781' name='L781'></a> 781         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *cur;
+<a id='L782' name='L782'></a> 782 
+<a id='L783' name='L783'></a> 783         cur = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>;
+<a id='L784' name='L784'></a> 784 
+<a id='L785' name='L785'></a> 785         <em class='comment'>/*</em>
+<a id='L786' name='L786'></a> 786 <em class='comment'>         * Detach from our process. You might need to move this action</em>
+<a id='L787' name='L787'></a> 787 <em class='comment'>         * around, depending on how your wait/exit works.</em>
+<a id='L788' name='L788'></a> 788 <em class='comment'>         */</em>
+<a id='L789' name='L789'></a> 789         <a href='../S/208.html#L261' title='Defined at 261 in kern/proc/proc.c.'>proc_remthread</a>(cur);
+<a id='L790' name='L790'></a> 790 
+<a id='L791' name='L791'></a> 791         <em class='comment'>/* Make sure we *are* detached (move this only if you're sure!) */</em>
+<a id='L792' name='L792'></a> 792         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(cur-&gt;t_proc == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L793' name='L793'></a> 793 
+<a id='L794' name='L794'></a> 794         <em class='comment'>/* Check the stack guard band. */</em>
+<a id='L795' name='L795'></a> 795         <a href='../S/227.html#L101' title='Defined at 101 in kern/thread/thread.c.'>thread_checkstack</a>(cur);
+<a id='L796' name='L796'></a> 796 
+<a id='L797' name='L797'></a> 797         <em class='comment'>/* Interrupts off on this processor */</em>
+<a id='L798' name='L798'></a> 798         <a href='../S/181.html#L103' title='Defined at 103 in kern/include/spl.h.'>splhigh</a>();
+<a id='L799' name='L799'></a> 799         <a href='../S/227.html#L562' title='Defined at 562 in kern/thread/thread.c.'>thread_switch</a>(<a href='../S/187.html#L64' title='Defined at 64 in kern/include/thread.h.'>S_ZOMBIE</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L800' name='L800'></a> 800         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("braaaaaaaiiiiiiiiiiinssssss\n");
+<a id='L801' name='L801'></a> 801 <em class='brace'>}</em>
+<a id='L802' name='L802'></a> 802 
+<a id='L803' name='L803'></a> 803 <em class='comment'>/*</em>
+<a id='L804' name='L804'></a> 804 <em class='comment'> * Yield the cpu to another process, but stay runnable.</em>
+<a id='L805' name='L805'></a> 805 <em class='comment'> */</em>
+<a id='L806' name='L806'></a> 806 <strong class='reserved'>void</strong>
+<a id='L807' name='L807'></a> 807 <a href='../R/2193.html' title='Multiple referred from 4 places.'>thread_yield</a>(<strong class='reserved'>void</strong>)
+<a id='L808' name='L808'></a> 808 <em class='brace'>{</em>
+<a id='L809' name='L809'></a> 809         <a href='../S/227.html#L562' title='Defined at 562 in kern/thread/thread.c.'>thread_switch</a>(<a href='../S/187.html#L62' title='Defined at 62 in kern/include/thread.h.'>S_READY</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L810' name='L810'></a> 810 <em class='brace'>}</em>
+<a id='L811' name='L811'></a> 811 
+<a id='L812' name='L812'></a> 812 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L813' name='L813'></a> 813 
+<a id='L814' name='L814'></a> 814 <em class='comment'>/*</em>
+<a id='L815' name='L815'></a> 815 <em class='comment'> * Scheduler.</em>
+<a id='L816' name='L816'></a> 816 <em class='comment'> *</em>
+<a id='L817' name='L817'></a> 817 <em class='comment'> * This is called periodically from hardclock(). It should reshuffle</em>
+<a id='L818' name='L818'></a> 818 <em class='comment'> * the current CPU's run queue by job priority.</em>
+<a id='L819' name='L819'></a> 819 <em class='comment'> */</em>
+<a id='L820' name='L820'></a> 820 
+<a id='L821' name='L821'></a> 821 <strong class='reserved'>void</strong>
+<a id='L822' name='L822'></a> 822 <a href='../R/1893.html' title='Multiple referred from 2 places.'>schedule</a>(<strong class='reserved'>void</strong>)
+<a id='L823' name='L823'></a> 823 <em class='brace'>{</em>
+<a id='L824' name='L824'></a> 824         <em class='comment'>/*</em>
+<a id='L825' name='L825'></a> 825 <em class='comment'>         * You can write this. If we do nothing, threads will run in</em>
+<a id='L826' name='L826'></a> 826 <em class='comment'>         * round-robin fashion.</em>
+<a id='L827' name='L827'></a> 827 <em class='comment'>         */</em>
+<a id='L828' name='L828'></a> 828 <em class='brace'>}</em>
+<a id='L829' name='L829'></a> 829 
+<a id='L830' name='L830'></a> 830 <em class='comment'>/*</em>
+<a id='L831' name='L831'></a> 831 <em class='comment'> * Thread migration.</em>
+<a id='L832' name='L832'></a> 832 <em class='comment'> *</em>
+<a id='L833' name='L833'></a> 833 <em class='comment'> * This is also called periodically from hardclock(). If the current</em>
+<a id='L834' name='L834'></a> 834 <em class='comment'> * CPU is busy and other CPUs are idle, or less busy, it should move</em>
+<a id='L835' name='L835'></a> 835 <em class='comment'> * threads across to those other other CPUs.</em>
+<a id='L836' name='L836'></a> 836 <em class='comment'> *</em>
+<a id='L837' name='L837'></a> 837 <em class='comment'> * Migrating threads isn't free because of cache affinity; a thread's</em>
+<a id='L838' name='L838'></a> 838 <em class='comment'> * working cache set will end up having to be moved to the other CPU,</em>
+<a id='L839' name='L839'></a> 839 <em class='comment'> * which is fairly slow. The tradeoff between this performance loss</em>
+<a id='L840' name='L840'></a> 840 <em class='comment'> * and the performance loss due to underutilization of some CPUs is</em>
+<a id='L841' name='L841'></a> 841 <em class='comment'> * something that needs to be tuned and probably is workload-specific.</em>
+<a id='L842' name='L842'></a> 842 <em class='comment'> *</em>
+<a id='L843' name='L843'></a> 843 <em class='comment'> * For here and now, because we know we're running on System/161 and</em>
+<a id='L844' name='L844'></a> 844 <em class='comment'> * System/161 does not (yet) model such cache effects, we'll be very</em>
+<a id='L845' name='L845'></a> 845 <em class='comment'> * aggressive.</em>
+<a id='L846' name='L846'></a> 846 <em class='comment'> */</em>
+<a id='L847' name='L847'></a> 847 <strong class='reserved'>void</strong>
+<a id='L848' name='L848'></a> 848 <a href='../R/2179.html' title='Multiple referred from 2 places.'>thread_consider_migration</a>(<strong class='reserved'>void</strong>)
+<a id='L849' name='L849'></a> 849 <em class='brace'>{</em>
+<a id='L850' name='L850'></a> 850         <strong class='reserved'>unsigned</strong> my_count, total_count, one_share, to_send;
+<a id='L851' name='L851'></a> 851         <strong class='reserved'>unsigned</strong> i, numcpus;
+<a id='L852' name='L852'></a> 852         <strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *c;
+<a id='L853' name='L853'></a> 853         <strong class='reserved'>struct</strong> <a href='../S/188.html#L63' title='Defined at 63 in kern/include/threadlist.h.'>threadlist</a> victims;
+<a id='L854' name='L854'></a> 854         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *t;
+<a id='L855' name='L855'></a> 855 
+<a id='L856' name='L856'></a> 856         my_count = total_count = 0;
+<a id='L857' name='L857'></a> 857         numcpus = cpuarray_num(&amp;allcpus);
+<a id='L858' name='L858'></a> 858         <strong class='reserved'>for</strong> (i=0; i&lt;numcpus; i++) <em class='brace'>{</em>
+<a id='L859' name='L859'></a> 859                 c = cpuarray_get(&amp;allcpus, i);
+<a id='L860' name='L860'></a> 860                 <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;c-&gt;c_runqueue_lock);
+<a id='L861' name='L861'></a> 861                 total_count += c-&gt;c_runqueue.tl_count;
+<a id='L862' name='L862'></a> 862                 <strong class='reserved'>if</strong> (c == <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_self) <em class='brace'>{</em>
+<a id='L863' name='L863'></a> 863                         my_count = c-&gt;c_runqueue.tl_count;
+<a id='L864' name='L864'></a> 864                 <em class='brace'>}</em>
+<a id='L865' name='L865'></a> 865                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;c-&gt;c_runqueue_lock);
+<a id='L866' name='L866'></a> 866         <em class='brace'>}</em>
+<a id='L867' name='L867'></a> 867 
+<a id='L868' name='L868'></a> 868         one_share = <a href='../D/120.html' title='Multiple defined in 3 places.'>DIVROUNDUP</a>(total_count, numcpus);
+<a id='L869' name='L869'></a> 869         <strong class='reserved'>if</strong> (my_count &lt; one_share) <em class='brace'>{</em>
+<a id='L870' name='L870'></a> 870                 <strong class='reserved'>return</strong>;
+<a id='L871' name='L871'></a> 871         <em class='brace'>}</em>
+<a id='L872' name='L872'></a> 872 
+<a id='L873' name='L873'></a> 873         to_send = my_count - one_share;
+<a id='L874' name='L874'></a> 874         <a href='../S/228.html#L61' title='Defined at 61 in kern/thread/threadlist.c.'>threadlist_init</a>(&amp;victims);
+<a id='L875' name='L875'></a> 875         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L876' name='L876'></a> 876         <strong class='reserved'>for</strong> (i=0; i&lt;to_send; i++) <em class='brace'>{</em>
+<a id='L877' name='L877'></a> 877                 t = <a href='../S/228.html#L201' title='Defined at 201 in kern/thread/threadlist.c.'>threadlist_remtail</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue);
+<a id='L878' name='L878'></a> 878                 <a href='../S/228.html#L163' title='Defined at 163 in kern/thread/threadlist.c.'>threadlist_addhead</a>(&amp;victims, t);
+<a id='L879' name='L879'></a> 879         <em class='brace'>}</em>
+<a id='L880' name='L880'></a> 880         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L881' name='L881'></a> 881 
+<a id='L882' name='L882'></a> 882         <strong class='reserved'>for</strong> (i=0; i &lt; numcpus &amp;&amp; to_send &gt; 0; i++) <em class='brace'>{</em>
+<a id='L883' name='L883'></a> 883                 c = cpuarray_get(&amp;allcpus, i);
+<a id='L884' name='L884'></a> 884                 <strong class='reserved'>if</strong> (c == <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_self) <em class='brace'>{</em>
+<a id='L885' name='L885'></a> 885                         <strong class='reserved'>continue</strong>;
+<a id='L886' name='L886'></a> 886                 <em class='brace'>}</em>
+<a id='L887' name='L887'></a> 887                 <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;c-&gt;c_runqueue_lock);
+<a id='L888' name='L888'></a> 888                 <strong class='reserved'>while</strong> (c-&gt;c_runqueue.tl_count &lt; one_share &amp;&amp; to_send &gt; 0) <em class='brace'>{</em>
+<a id='L889' name='L889'></a> 889                         t = <a href='../S/228.html#L183' title='Defined at 183 in kern/thread/threadlist.c.'>threadlist_remhead</a>(&amp;victims);
+<a id='L890' name='L890'></a> 890                         <em class='comment'>/*</em>
+<a id='L891' name='L891'></a> 891 <em class='comment'>                         * Ordinarily, curthread will not appear on</em>
+<a id='L892' name='L892'></a> 892 <em class='comment'>                         * the run queue. However, it can under the</em>
+<a id='L893' name='L893'></a> 893 <em class='comment'>                         * following circumstances:</em>
+<a id='L894' name='L894'></a> 894 <em class='comment'>                         *   - it went to sleep;</em>
+<a id='L895' name='L895'></a> 895 <em class='comment'>                         *   - the processor became idle, so it</em>
+<a id='L896' name='L896'></a> 896 <em class='comment'>                         *     remained curthread;</em>
+<a id='L897' name='L897'></a> 897 <em class='comment'>                         *   - it was reawakened, so it was put on the</em>
+<a id='L898' name='L898'></a> 898 <em class='comment'>                         *     run queue;</em>
+<a id='L899' name='L899'></a> 899 <em class='comment'>                         *   - and the processor hasn't fully unidled</em>
+<a id='L900' name='L900'></a> 900 <em class='comment'>                         *     yet, so all these things are still true.</em>
+<a id='L901' name='L901'></a> 901 <em class='comment'>                         *</em>
+<a id='L902' name='L902'></a> 902 <em class='comment'>                         * If the timer interrupt happens at (almost)</em>
+<a id='L903' name='L903'></a> 903 <em class='comment'>                         * exactly the proper moment, we can come here</em>
+<a id='L904' name='L904'></a> 904 <em class='comment'>                         * while things are in this state and see</em>
+<a id='L905' name='L905'></a> 905 <em class='comment'>                         * curthread. However, *migrating* curthread</em>
+<a id='L906' name='L906'></a> 906 <em class='comment'>                         * can cause bad things to happen (Exercise:</em>
+<a id='L907' name='L907'></a> 907 <em class='comment'>                         * Why? And what?) so shuffle it to the end of</em>
+<a id='L908' name='L908'></a> 908 <em class='comment'>                         * the list and decrement to_send in order to</em>
+<a id='L909' name='L909'></a> 909 <em class='comment'>                         * skip it. Then it goes back on our own run</em>
+<a id='L910' name='L910'></a> 910 <em class='comment'>                         * queue below.</em>
+<a id='L911' name='L911'></a> 911 <em class='comment'>                         */</em>
+<a id='L912' name='L912'></a> 912                         <strong class='reserved'>if</strong> (t == <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>) <em class='brace'>{</em>
+<a id='L913' name='L913'></a> 913                                 <a href='../S/228.html#L173' title='Defined at 173 in kern/thread/threadlist.c.'>threadlist_addtail</a>(&amp;victims, t);
+<a id='L914' name='L914'></a> 914                                 to_send--;
+<a id='L915' name='L915'></a> 915                                 <strong class='reserved'>continue</strong>;
+<a id='L916' name='L916'></a> 916                         <em class='brace'>}</em>
+<a id='L917' name='L917'></a> 917 
+<a id='L918' name='L918'></a> 918                         t-&gt;t_cpu = c;
+<a id='L919' name='L919'></a> 919                         <a href='../S/228.html#L173' title='Defined at 173 in kern/thread/threadlist.c.'>threadlist_addtail</a>(&amp;c-&gt;c_runqueue, t);
+<a id='L920' name='L920'></a> 920                         <a href='../S/172.html#L111' title='Defined at 111 in kern/include/lib.h.'>DEBUG</a>(<a href='../S/172.html#L83' title='Defined at 83 in kern/include/lib.h.'>DB_THREADS</a>,
+<a id='L921' name='L921'></a> 921                               "Migrated thread %s: cpu %u -&gt; %u",
+<a id='L922' name='L922'></a> 922                               t-&gt;t_name, <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number, c-&gt;c_number);
+<a id='L923' name='L923'></a> 923                         to_send--;
+<a id='L924' name='L924'></a> 924                         <strong class='reserved'>if</strong> (c-&gt;c_isidle) <em class='brace'>{</em>
+<a id='L925' name='L925'></a> 925                                 <em class='comment'>/*</em>
+<a id='L926' name='L926'></a> 926 <em class='comment'>                                 * Other processor is idle; send</em>
+<a id='L927' name='L927'></a> 927 <em class='comment'>                                 * interrupt to make sure it unidles.</em>
+<a id='L928' name='L928'></a> 928 <em class='comment'>                                 */</em>
+<a id='L929' name='L929'></a> 929                                 <a href='../S/227.html#L1102' title='Defined at 1102 in kern/thread/thread.c.'>ipi_send</a>(c, <a href='../S/144.html#L166' title='Defined at 166 in kern/include/cpu.h.'>IPI_UNIDLE</a>);
+<a id='L930' name='L930'></a> 930                         <em class='brace'>}</em>
+<a id='L931' name='L931'></a> 931                 <em class='brace'>}</em>
+<a id='L932' name='L932'></a> 932                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;c-&gt;c_runqueue_lock);
+<a id='L933' name='L933'></a> 933         <em class='brace'>}</em>
+<a id='L934' name='L934'></a> 934 
+<a id='L935' name='L935'></a> 935         <em class='comment'>/*</em>
+<a id='L936' name='L936'></a> 936 <em class='comment'>         * Because the code above isn't atomic, the thread counts may have</em>
+<a id='L937' name='L937'></a> 937 <em class='comment'>         * changed while we were working and we may end up with leftovers.</em>
+<a id='L938' name='L938'></a> 938 <em class='comment'>         * Don't panic; just put them back on our own run queue.</em>
+<a id='L939' name='L939'></a> 939 <em class='comment'>         */</em>
+<a id='L940' name='L940'></a> 940         <strong class='reserved'>if</strong> (!<a href='../S/228.html#L92' title='Defined at 92 in kern/thread/threadlist.c.'>threadlist_isempty</a>(&amp;victims)) <em class='brace'>{</em>
+<a id='L941' name='L941'></a> 941                 <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L942' name='L942'></a> 942                 <strong class='reserved'>while</strong> ((t = <a href='../S/228.html#L183' title='Defined at 183 in kern/thread/threadlist.c.'>threadlist_remhead</a>(&amp;victims)) != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L943' name='L943'></a> 943                         <a href='../S/228.html#L173' title='Defined at 173 in kern/thread/threadlist.c.'>threadlist_addtail</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue, t);
+<a id='L944' name='L944'></a> 944                 <em class='brace'>}</em>
+<a id='L945' name='L945'></a> 945                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L946' name='L946'></a> 946         <em class='brace'>}</em>
+<a id='L947' name='L947'></a> 947 
+<a id='L948' name='L948'></a> 948         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/228.html#L92' title='Defined at 92 in kern/thread/threadlist.c.'>threadlist_isempty</a>(&amp;victims));
+<a id='L949' name='L949'></a> 949         <a href='../S/228.html#L75' title='Defined at 75 in kern/thread/threadlist.c.'>threadlist_cleanup</a>(&amp;victims);
+<a id='L950' name='L950'></a> 950 <em class='brace'>}</em>
+<a id='L951' name='L951'></a> 951 
+<a id='L952' name='L952'></a> 952 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L953' name='L953'></a> 953 
+<a id='L954' name='L954'></a> 954 <em class='comment'>/*</em>
+<a id='L955' name='L955'></a> 955 <em class='comment'> * Wait channel functions</em>
+<a id='L956' name='L956'></a> 956 <em class='comment'> */</em>
+<a id='L957' name='L957'></a> 957 
+<a id='L958' name='L958'></a> 958 <em class='comment'>/*</em>
+<a id='L959' name='L959'></a> 959 <em class='comment'> * Create a wait channel. NAME is a symbolic string name for it.</em>
+<a id='L960' name='L960'></a> 960 <em class='comment'> * This is what's displayed by ps -alx in Unix.</em>
+<a id='L961' name='L961'></a> 961 <em class='comment'> *</em>
+<a id='L962' name='L962'></a> 962 <em class='comment'> * NAME should generally be a string constant. If it isn't, alternate</em>
+<a id='L963' name='L963'></a> 963 <em class='comment'> * arrangements should be made to free it after the wait channel is</em>
+<a id='L964' name='L964'></a> 964 <em class='comment'> * destroyed.</em>
+<a id='L965' name='L965'></a> 965 <em class='comment'> */</em>
+<a id='L966' name='L966'></a> 966 <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *
+<a id='L967' name='L967'></a> 967 <a href='../R/2373.html' title='Multiple referred from 4 places.'>wchan_create</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name)
+<a id='L968' name='L968'></a> 968 <em class='brace'>{</em>
+<a id='L969' name='L969'></a> 969         <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *wc;
+<a id='L970' name='L970'></a> 970 
+<a id='L971' name='L971'></a> 971         wc = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<strong class='reserved'>sizeof</strong>(*wc));
+<a id='L972' name='L972'></a> 972         <strong class='reserved'>if</strong> (wc == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L973' name='L973'></a> 973                 <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L974' name='L974'></a> 974         <em class='brace'>}</em>
+<a id='L975' name='L975'></a> 975         <a href='../S/228.html#L61' title='Defined at 61 in kern/thread/threadlist.c.'>threadlist_init</a>(&amp;wc-&gt;wc_threads);
+<a id='L976' name='L976'></a> 976         wc-&gt;wc_name = name;
+<a id='L977' name='L977'></a> 977 
+<a id='L978' name='L978'></a> 978         <strong class='reserved'>return</strong> wc;
+<a id='L979' name='L979'></a> 979 <em class='brace'>}</em>
+<a id='L980' name='L980'></a> 980 
+<a id='L981' name='L981'></a> 981 <em class='comment'>/*</em>
+<a id='L982' name='L982'></a> 982 <em class='comment'> * Destroy a wait channel. Must be empty and unlocked.</em>
+<a id='L983' name='L983'></a> 983 <em class='comment'> * (The corresponding cleanup functions require this.)</em>
+<a id='L984' name='L984'></a> 984 <em class='comment'> */</em>
+<a id='L985' name='L985'></a> 985 <strong class='reserved'>void</strong>
+<a id='L986' name='L986'></a> 986 <a href='../R/2374.html' title='Multiple referred from 2 places.'>wchan_destroy</a>(<strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *wc)
+<a id='L987' name='L987'></a> 987 <em class='brace'>{</em>
+<a id='L988' name='L988'></a> 988         <a href='../S/228.html#L75' title='Defined at 75 in kern/thread/threadlist.c.'>threadlist_cleanup</a>(&amp;wc-&gt;wc_threads);
+<a id='L989' name='L989'></a> 989         <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(wc);
+<a id='L990' name='L990'></a> 990 <em class='brace'>}</em>
+<a id='L991' name='L991'></a> 991 
+<a id='L992' name='L992'></a> 992 <em class='comment'>/*</em>
+<a id='L993' name='L993'></a> 993 <em class='comment'> * Yield the cpu to another process, and go to sleep, on the specified</em>
+<a id='L994' name='L994'></a> 994 <em class='comment'> * wait channel WC, whose associated spinlock is LK. Calling wakeup on</em>
+<a id='L995' name='L995'></a> 995 <em class='comment'> * the channel will make the thread runnable again. The spinlock must</em>
+<a id='L996' name='L996'></a> 996 <em class='comment'> * be locked. The call to thread_switch unlocks it; we relock it</em>
+<a id='L997' name='L997'></a> 997 <em class='comment'> * before returning.</em>
+<a id='L998' name='L998'></a> 998 <em class='comment'> */</em>
+<a id='L999' name='L999'></a> 999 <strong class='reserved'>void</strong>
+<a id='L1000' name='L1000'></a>1000 <a href='../R/2376.html' title='Multiple referred from 4 places.'>wchan_sleep</a>(<strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *wc, <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> *lk)
+<a id='L1001' name='L1001'></a>1001 <em class='brace'>{</em>
+<a id='L1002' name='L1002'></a>1002         <em class='comment'>/* may not sleep in an interrupt handler */</em>
+<a id='L1003' name='L1003'></a>1003         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt);
+<a id='L1004' name='L1004'></a>1004 
+<a id='L1005' name='L1005'></a>1005         <em class='comment'>/* must hold the spinlock */</em>
+<a id='L1006' name='L1006'></a>1006         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/224.html#L148' title='Defined at 148 in kern/thread/spinlock.c.'>spinlock_do_i_hold</a>(lk));
+<a id='L1007' name='L1007'></a>1007 
+<a id='L1008' name='L1008'></a>1008         <em class='comment'>/* must not hold other spinlocks */</em>
+<a id='L1009' name='L1009'></a>1009         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_spinlocks == 1);
+<a id='L1010' name='L1010'></a>1010 
+<a id='L1011' name='L1011'></a>1011         <a href='../S/227.html#L562' title='Defined at 562 in kern/thread/thread.c.'>thread_switch</a>(<a href='../S/187.html#L63' title='Defined at 63 in kern/include/thread.h.'>S_SLEEP</a>, wc, lk);
+<a id='L1012' name='L1012'></a>1012         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(lk);
+<a id='L1013' name='L1013'></a>1013 <em class='brace'>}</em>
+<a id='L1014' name='L1014'></a>1014 
+<a id='L1015' name='L1015'></a>1015 <em class='comment'>/*</em>
+<a id='L1016' name='L1016'></a>1016 <em class='comment'> * Wake up one thread sleeping on a wait channel.</em>
+<a id='L1017' name='L1017'></a>1017 <em class='comment'> */</em>
+<a id='L1018' name='L1018'></a>1018 <strong class='reserved'>void</strong>
+<a id='L1019' name='L1019'></a>1019 <a href='../R/2378.html' title='Multiple referred from 2 places.'>wchan_wakeone</a>(<strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *wc, <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> *lk)
+<a id='L1020' name='L1020'></a>1020 <em class='brace'>{</em>
+<a id='L1021' name='L1021'></a>1021         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *target;
+<a id='L1022' name='L1022'></a>1022 
+<a id='L1023' name='L1023'></a>1023         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/224.html#L148' title='Defined at 148 in kern/thread/spinlock.c.'>spinlock_do_i_hold</a>(lk));
+<a id='L1024' name='L1024'></a>1024 
+<a id='L1025' name='L1025'></a>1025         <em class='comment'>/* Grab a thread from the channel */</em>
+<a id='L1026' name='L1026'></a>1026         target = <a href='../S/228.html#L183' title='Defined at 183 in kern/thread/threadlist.c.'>threadlist_remhead</a>(&amp;wc-&gt;wc_threads);
+<a id='L1027' name='L1027'></a>1027 
+<a id='L1028' name='L1028'></a>1028         <strong class='reserved'>if</strong> (target == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L1029' name='L1029'></a>1029                 <em class='comment'>/* Nobody was sleeping. */</em>
+<a id='L1030' name='L1030'></a>1030                 <strong class='reserved'>return</strong>;
+<a id='L1031' name='L1031'></a>1031         <em class='brace'>}</em>
+<a id='L1032' name='L1032'></a>1032 
+<a id='L1033' name='L1033'></a>1033         <em class='comment'>/*</em>
+<a id='L1034' name='L1034'></a>1034 <em class='comment'>         * Note that thread_make_runnable acquires a runqueue lock</em>
+<a id='L1035' name='L1035'></a>1035 <em class='comment'>         * while we're holding LK. This is ok; all spinlocks</em>
+<a id='L1036' name='L1036'></a>1036 <em class='comment'>         * associated with wchans must come before the runqueue locks,</em>
+<a id='L1037' name='L1037'></a>1037 <em class='comment'>         * as we also bridge from the wchan lock to the runqueue lock</em>
+<a id='L1038' name='L1038'></a>1038 <em class='comment'>         * in thread_switch.</em>
+<a id='L1039' name='L1039'></a>1039 <em class='comment'>         */</em>
+<a id='L1040' name='L1040'></a>1040 
+<a id='L1041' name='L1041'></a>1041         <a href='../S/227.html#L452' title='Defined at 452 in kern/thread/thread.c.'>thread_make_runnable</a>(target, <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>);
+<a id='L1042' name='L1042'></a>1042 <em class='brace'>}</em>
+<a id='L1043' name='L1043'></a>1043 
+<a id='L1044' name='L1044'></a>1044 <em class='comment'>/*</em>
+<a id='L1045' name='L1045'></a>1045 <em class='comment'> * Wake up all threads sleeping on a wait channel.</em>
+<a id='L1046' name='L1046'></a>1046 <em class='comment'> */</em>
+<a id='L1047' name='L1047'></a>1047 <strong class='reserved'>void</strong>
+<a id='L1048' name='L1048'></a>1048 <a href='../R/2377.html' title='Multiple referred from 3 places.'>wchan_wakeall</a>(<strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *wc, <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> *lk)
+<a id='L1049' name='L1049'></a>1049 <em class='brace'>{</em>
+<a id='L1050' name='L1050'></a>1050         <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *target;
+<a id='L1051' name='L1051'></a>1051         <strong class='reserved'>struct</strong> <a href='../S/188.html#L63' title='Defined at 63 in kern/include/threadlist.h.'>threadlist</a> list;
+<a id='L1052' name='L1052'></a>1052 
+<a id='L1053' name='L1053'></a>1053         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/224.html#L148' title='Defined at 148 in kern/thread/spinlock.c.'>spinlock_do_i_hold</a>(lk));
+<a id='L1054' name='L1054'></a>1054 
+<a id='L1055' name='L1055'></a>1055         <a href='../S/228.html#L61' title='Defined at 61 in kern/thread/threadlist.c.'>threadlist_init</a>(&amp;list);
+<a id='L1056' name='L1056'></a>1056 
+<a id='L1057' name='L1057'></a>1057         <em class='comment'>/*</em>
+<a id='L1058' name='L1058'></a>1058 <em class='comment'>         * Grab all the threads from the channel, moving them to a</em>
+<a id='L1059' name='L1059'></a>1059 <em class='comment'>         * private list.</em>
+<a id='L1060' name='L1060'></a>1060 <em class='comment'>         */</em>
+<a id='L1061' name='L1061'></a>1061         <strong class='reserved'>while</strong> ((target = <a href='../S/228.html#L183' title='Defined at 183 in kern/thread/threadlist.c.'>threadlist_remhead</a>(&amp;wc-&gt;wc_threads)) != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L1062' name='L1062'></a>1062                 <a href='../S/228.html#L173' title='Defined at 173 in kern/thread/threadlist.c.'>threadlist_addtail</a>(&amp;list, target);
+<a id='L1063' name='L1063'></a>1063         <em class='brace'>}</em>
+<a id='L1064' name='L1064'></a>1064 
+<a id='L1065' name='L1065'></a>1065         <em class='comment'>/*</em>
+<a id='L1066' name='L1066'></a>1066 <em class='comment'>         * We could conceivably sort by cpu first to cause fewer lock</em>
+<a id='L1067' name='L1067'></a>1067 <em class='comment'>         * ops and fewer IPIs, but for now at least don't bother. Just</em>
+<a id='L1068' name='L1068'></a>1068 <em class='comment'>         * make each thread runnable.</em>
+<a id='L1069' name='L1069'></a>1069 <em class='comment'>         */</em>
+<a id='L1070' name='L1070'></a>1070         <strong class='reserved'>while</strong> ((target = <a href='../S/228.html#L183' title='Defined at 183 in kern/thread/threadlist.c.'>threadlist_remhead</a>(&amp;list)) != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L1071' name='L1071'></a>1071                 <a href='../S/227.html#L452' title='Defined at 452 in kern/thread/thread.c.'>thread_make_runnable</a>(target, <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>);
+<a id='L1072' name='L1072'></a>1072         <em class='brace'>}</em>
+<a id='L1073' name='L1073'></a>1073 
+<a id='L1074' name='L1074'></a>1074         <a href='../S/228.html#L75' title='Defined at 75 in kern/thread/threadlist.c.'>threadlist_cleanup</a>(&amp;list);
+<a id='L1075' name='L1075'></a>1075 <em class='brace'>}</em>
+<a id='L1076' name='L1076'></a>1076 
+<a id='L1077' name='L1077'></a>1077 <em class='comment'>/*</em>
+<a id='L1078' name='L1078'></a>1078 <em class='comment'> * Return nonzero if there are no threads sleeping on the channel.</em>
+<a id='L1079' name='L1079'></a>1079 <em class='comment'> * This is meant to be used only for diagnostic purposes.</em>
+<a id='L1080' name='L1080'></a>1080 <em class='comment'> */</em>
+<a id='L1081' name='L1081'></a>1081 <a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a>
+<a id='L1082' name='L1082'></a>1082 <a href='../S/196.html#L57' title='Referred from 57 in kern/include/wchan.h.'>wchan_isempty</a>(<strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *wc, <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> *lk)
+<a id='L1083' name='L1083'></a>1083 <em class='brace'>{</em>
+<a id='L1084' name='L1084'></a>1084         <a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a> ret;
+<a id='L1085' name='L1085'></a>1085 
+<a id='L1086' name='L1086'></a>1086         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/224.html#L148' title='Defined at 148 in kern/thread/spinlock.c.'>spinlock_do_i_hold</a>(lk));
+<a id='L1087' name='L1087'></a>1087         ret = <a href='../S/228.html#L92' title='Defined at 92 in kern/thread/threadlist.c.'>threadlist_isempty</a>(&amp;wc-&gt;wc_threads);
+<a id='L1088' name='L1088'></a>1088 
+<a id='L1089' name='L1089'></a>1089         <strong class='reserved'>return</strong> ret;
+<a id='L1090' name='L1090'></a>1090 <em class='brace'>}</em>
+<a id='L1091' name='L1091'></a>1091 
+<a id='L1092' name='L1092'></a>1092 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L1093' name='L1093'></a>1093 
+<a id='L1094' name='L1094'></a>1094 <em class='comment'>/*</em>
+<a id='L1095' name='L1095'></a>1095 <em class='comment'> * Machine-independent IPI handling</em>
+<a id='L1096' name='L1096'></a>1096 <em class='comment'> */</em>
+<a id='L1097' name='L1097'></a>1097 
+<a id='L1098' name='L1098'></a>1098 <em class='comment'>/*</em>
+<a id='L1099' name='L1099'></a>1099 <em class='comment'> * Send an IPI (inter-processor interrupt) to the specified CPU.</em>
+<a id='L1100' name='L1100'></a>1100 <em class='comment'> */</em>
+<a id='L1101' name='L1101'></a>1101 <strong class='reserved'>void</strong>
+<a id='L1102' name='L1102'></a>1102 <a href='../R/1514.html' title='Multiple referred from 4 places.'>ipi_send</a>(<strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *target, <strong class='reserved'>int</strong> code)
+<a id='L1103' name='L1103'></a>1103 <em class='brace'>{</em>
+<a id='L1104' name='L1104'></a>1104         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(code &gt;= 0 &amp;&amp; code &lt; 32);
+<a id='L1105' name='L1105'></a>1105 
+<a id='L1106' name='L1106'></a>1106         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;target-&gt;c_ipi_lock);
+<a id='L1107' name='L1107'></a>1107         target-&gt;c_ipi_pending |= (<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>)1 &lt;&lt; code;
+<a id='L1108' name='L1108'></a>1108         <a href='../S/73.html#L274' title='Defined at 274 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_send_ipi</a>(target);
+<a id='L1109' name='L1109'></a>1109         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;target-&gt;c_ipi_lock);
+<a id='L1110' name='L1110'></a>1110 <em class='brace'>}</em>
+<a id='L1111' name='L1111'></a>1111 
+<a id='L1112' name='L1112'></a>1112 <em class='comment'>/*</em>
+<a id='L1113' name='L1113'></a>1113 <em class='comment'> * Send an IPI to all CPUs.</em>
+<a id='L1114' name='L1114'></a>1114 <em class='comment'> */</em>
+<a id='L1115' name='L1115'></a>1115 <strong class='reserved'>void</strong>
+<a id='L1116' name='L1116'></a>1116 <a href='../R/1513.html' title='Multiple referred from 3 places.'>ipi_broadcast</a>(<strong class='reserved'>int</strong> code)
+<a id='L1117' name='L1117'></a>1117 <em class='brace'>{</em>
+<a id='L1118' name='L1118'></a>1118         <strong class='reserved'>unsigned</strong> i;
+<a id='L1119' name='L1119'></a>1119         <strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *c;
+<a id='L1120' name='L1120'></a>1120 
+<a id='L1121' name='L1121'></a>1121         <strong class='reserved'>for</strong> (i=0; i &lt; cpuarray_num(&amp;allcpus); i++) <em class='brace'>{</em>
+<a id='L1122' name='L1122'></a>1122                 c = cpuarray_get(&amp;allcpus, i);
+<a id='L1123' name='L1123'></a>1123                 <strong class='reserved'>if</strong> (c != <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_self) <em class='brace'>{</em>
+<a id='L1124' name='L1124'></a>1124                         <a href='../S/227.html#L1102' title='Defined at 1102 in kern/thread/thread.c.'>ipi_send</a>(c, code);
+<a id='L1125' name='L1125'></a>1125                 <em class='brace'>}</em>
+<a id='L1126' name='L1126'></a>1126         <em class='brace'>}</em>
+<a id='L1127' name='L1127'></a>1127 <em class='brace'>}</em>
+<a id='L1128' name='L1128'></a>1128 
+<a id='L1129' name='L1129'></a>1129 <em class='comment'>/*</em>
+<a id='L1130' name='L1130'></a>1130 <em class='comment'> * Send a TLB shootdown IPI to the specified CPU.</em>
+<a id='L1131' name='L1131'></a>1131 <em class='comment'> */</em>
+<a id='L1132' name='L1132'></a>1132 <strong class='reserved'>void</strong>
+<a id='L1133' name='L1133'></a>1133 <a href='../S/144.html#L171' title='Referred from 171 in kern/include/cpu.h.'>ipi_tlbshootdown</a>(<strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *target, <strong class='reserved'>const</strong> <strong class='reserved'>struct</strong> <a href='../S/58.html#L119' title='Defined at 119 in kern/arch/mips/include/vm.h.'>tlbshootdown</a> *mapping)
+<a id='L1134' name='L1134'></a>1134 <em class='brace'>{</em>
+<a id='L1135' name='L1135'></a>1135         <strong class='reserved'>unsigned</strong> n;
+<a id='L1136' name='L1136'></a>1136 
+<a id='L1137' name='L1137'></a>1137         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;target-&gt;c_ipi_lock);
+<a id='L1138' name='L1138'></a>1138 
+<a id='L1139' name='L1139'></a>1139         n = target-&gt;c_numshootdown;
+<a id='L1140' name='L1140'></a>1140         <strong class='reserved'>if</strong> (n == <a href='../S/58.html#L126' title='Defined at 126 in kern/arch/mips/include/vm.h.'>TLBSHOOTDOWN_MAX</a>) <em class='brace'>{</em>
+<a id='L1141' name='L1141'></a>1141                 <em class='comment'>/*</em>
+<a id='L1142' name='L1142'></a>1142 <em class='comment'>                 * If you have problems with this panic going off,</em>
+<a id='L1143' name='L1143'></a>1143 <em class='comment'>                 * consider: (1) increasing the maximum, (2) putting</em>
+<a id='L1144' name='L1144'></a>1144 <em class='comment'>                 * logic here to sleep until space appears (may</em>
+<a id='L1145' name='L1145'></a>1145 <em class='comment'>                 * interact awkwardly with VM system locking), (3)</em>
+<a id='L1146' name='L1146'></a>1146 <em class='comment'>                 * putting logic here to coalesce requests together,</em>
+<a id='L1147' name='L1147'></a>1147 <em class='comment'>                 * and/or (4) improving VM system state tracking to</em>
+<a id='L1148' name='L1148'></a>1148 <em class='comment'>                 * reduce the number of unnecessary shootdowns.</em>
+<a id='L1149' name='L1149'></a>1149 <em class='comment'>                 */</em>
+<a id='L1150' name='L1150'></a>1150                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("ipi_tlbshootdown: Too many shootdowns queued\n");
+<a id='L1151' name='L1151'></a>1151         <em class='brace'>}</em>
+<a id='L1152' name='L1152'></a>1152         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L1153' name='L1153'></a>1153                 target-&gt;c_shootdown[n] = *mapping;
+<a id='L1154' name='L1154'></a>1154                 target-&gt;c_numshootdown = n+1;
+<a id='L1155' name='L1155'></a>1155         <em class='brace'>}</em>
+<a id='L1156' name='L1156'></a>1156 
+<a id='L1157' name='L1157'></a>1157         target-&gt;c_ipi_pending |= (<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>)1 &lt;&lt; <a href='../S/144.html#L167' title='Defined at 167 in kern/include/cpu.h.'>IPI_TLBSHOOTDOWN</a>;
+<a id='L1158' name='L1158'></a>1158         <a href='../S/73.html#L274' title='Defined at 274 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_send_ipi</a>(target);
+<a id='L1159' name='L1159'></a>1159 
+<a id='L1160' name='L1160'></a>1160         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;target-&gt;c_ipi_lock);
+<a id='L1161' name='L1161'></a>1161 <em class='brace'>}</em>
+<a id='L1162' name='L1162'></a>1162 
+<a id='L1163' name='L1163'></a>1163 <em class='comment'>/*</em>
+<a id='L1164' name='L1164'></a>1164 <em class='comment'> * Handle an incoming interprocessor interrupt.</em>
+<a id='L1165' name='L1165'></a>1165 <em class='comment'> */</em>
+<a id='L1166' name='L1166'></a>1166 <strong class='reserved'>void</strong>
+<a id='L1167' name='L1167'></a>1167 <a href='../R/1508.html' title='Multiple referred from 2 places.'>interprocessor_interrupt</a>(<strong class='reserved'>void</strong>)
+<a id='L1168' name='L1168'></a>1168 <em class='brace'>{</em>
+<a id='L1169' name='L1169'></a>1169         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> bits;
+<a id='L1170' name='L1170'></a>1170         <strong class='reserved'>unsigned</strong> i;
+<a id='L1171' name='L1171'></a>1171 
+<a id='L1172' name='L1172'></a>1172         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_ipi_lock);
+<a id='L1173' name='L1173'></a>1173         bits = <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_ipi_pending;
+<a id='L1174' name='L1174'></a>1174 
+<a id='L1175' name='L1175'></a>1175         <strong class='reserved'>if</strong> (bits &amp; (1U &lt;&lt; <a href='../S/144.html#L164' title='Defined at 164 in kern/include/cpu.h.'>IPI_PANIC</a>)) <em class='brace'>{</em>
+<a id='L1176' name='L1176'></a>1176                 <em class='comment'>/* panic on another cpu - just stop dead */</em>
+<a id='L1177' name='L1177'></a>1177                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_ipi_lock);
+<a id='L1178' name='L1178'></a>1178                 <a href='../S/63.html#L303' title='Defined at 303 in kern/arch/mips/thread/cpu.c.'>cpu_halt</a>();
+<a id='L1179' name='L1179'></a>1179         <em class='brace'>}</em>
+<a id='L1180' name='L1180'></a>1180         <strong class='reserved'>if</strong> (bits &amp; (1U &lt;&lt; <a href='../S/144.html#L165' title='Defined at 165 in kern/include/cpu.h.'>IPI_OFFLINE</a>)) <em class='brace'>{</em>
+<a id='L1181' name='L1181'></a>1181                 <em class='comment'>/* offline request */</em>
+<a id='L1182' name='L1182'></a>1182                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_ipi_lock);
+<a id='L1183' name='L1183'></a>1183                 <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L1184' name='L1184'></a>1184                 <strong class='reserved'>if</strong> (!<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_isidle) <em class='brace'>{</em>
+<a id='L1185' name='L1185'></a>1185                         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("cpu%d: offline: warning: not idle\n",
+<a id='L1186' name='L1186'></a>1186                                 <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number);
+<a id='L1187' name='L1187'></a>1187                 <em class='brace'>}</em>
+<a id='L1188' name='L1188'></a>1188                 <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_runqueue_lock);
+<a id='L1189' name='L1189'></a>1189                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("cpu%d: offline.\n", <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number);
+<a id='L1190' name='L1190'></a>1190                 <a href='../S/63.html#L303' title='Defined at 303 in kern/arch/mips/thread/cpu.c.'>cpu_halt</a>();
+<a id='L1191' name='L1191'></a>1191         <em class='brace'>}</em>
+<a id='L1192' name='L1192'></a>1192         <strong class='reserved'>if</strong> (bits &amp; (1U &lt;&lt; <a href='../S/144.html#L166' title='Defined at 166 in kern/include/cpu.h.'>IPI_UNIDLE</a>)) <em class='brace'>{</em>
+<a id='L1193' name='L1193'></a>1193                 <em class='comment'>/*</em>
+<a id='L1194' name='L1194'></a>1194 <em class='comment'>                 * The cpu has already unidled itself to take the</em>
+<a id='L1195' name='L1195'></a>1195 <em class='comment'>                 * interrupt; don't need to do anything else.</em>
+<a id='L1196' name='L1196'></a>1196 <em class='comment'>                 */</em>
+<a id='L1197' name='L1197'></a>1197         <em class='brace'>}</em>
+<a id='L1198' name='L1198'></a>1198         <strong class='reserved'>if</strong> (bits &amp; (1U &lt;&lt; <a href='../S/144.html#L167' title='Defined at 167 in kern/include/cpu.h.'>IPI_TLBSHOOTDOWN</a>)) <em class='brace'>{</em>
+<a id='L1199' name='L1199'></a>1199                 <em class='comment'>/*</em>
+<a id='L1200' name='L1200'></a>1200 <em class='comment'>                 * Note: depending on your VM system locking you might</em>
+<a id='L1201' name='L1201'></a>1201 <em class='comment'>                 * need to release the ipi lock while calling</em>
+<a id='L1202' name='L1202'></a>1202 <em class='comment'>                 * vm_tlbshootdown.</em>
+<a id='L1203' name='L1203'></a>1203 <em class='comment'>                 */</em>
+<a id='L1204' name='L1204'></a>1204                 <strong class='reserved'>for</strong> (i=0; i&lt;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_numshootdown; i++) <em class='brace'>{</em>
+<a id='L1205' name='L1205'></a>1205                         <a href='../S/69.html#L130' title='Defined at 130 in kern/arch/mips/vm/dumbvm.c.'>vm_tlbshootdown</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_shootdown[i]);
+<a id='L1206' name='L1206'></a>1206                 <em class='brace'>}</em>
+<a id='L1207' name='L1207'></a>1207                 <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_numshootdown = 0;
+<a id='L1208' name='L1208'></a>1208         <em class='brace'>}</em>
+<a id='L1209' name='L1209'></a>1209 
+<a id='L1210' name='L1210'></a>1210         <a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_ipi_pending = 0;
+<a id='L1211' name='L1211'></a>1211         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_ipi_lock);
+<a id='L1212' name='L1212'></a>1212 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L81'>[^]</a><a href='#L1167'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

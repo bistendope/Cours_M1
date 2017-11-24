@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>ARRAY</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/139.html#L168'>ARRAY</a>             168 kern/include/array.h #define DECLARRAY_BYTYPE(ARRAY, T, INLINE) \</span>
+<span class='curline'><a href='../S/139.html#L173'>ARRAY</a>             173 kern/include/array.h 	INLINE struct ARRAY *ARRAY##_create(void);		\</span>
+<span class='curline'><a href='../S/139.html#L174'>ARRAY</a>             174 kern/include/array.h 	INLINE void ARRAY##_destroy(struct ARRAY *a);		\</span>
+<span class='curline'><a href='../S/139.html#L175'>ARRAY</a>             175 kern/include/array.h 	INLINE void ARRAY##_init(struct ARRAY *a);		\</span>
+<span class='curline'><a href='../S/139.html#L176'>ARRAY</a>             176 kern/include/array.h 	INLINE void ARRAY##_cleanup(struct ARRAY *a);		\</span>
+<span class='curline'><a href='../S/139.html#L177'>ARRAY</a>             177 kern/include/array.h 	INLINE unsigned ARRAY##_num(const struct ARRAY *a);	\</span>
+<span class='curline'><a href='../S/139.html#L178'>ARRAY</a>             178 kern/include/array.h 	INLINE T *ARRAY##_get(const struct ARRAY *a, unsigned index); \</span>
+<span class='curline'><a href='../S/139.html#L179'>ARRAY</a>             179 kern/include/array.h 	INLINE void ARRAY##_set(struct ARRAY *a, unsigned index, T *val); \</span>
+<span class='curline'><a href='../S/139.html#L180'>ARRAY</a>             180 kern/include/array.h 	INLINE int ARRAY##_preallocate(struct ARRAY *a, unsigned num);	\</span>
+<span class='curline'><a href='../S/139.html#L181'>ARRAY</a>             181 kern/include/array.h 	INLINE int ARRAY##_setsize(struct ARRAY *a, unsigned num);	\</span>
+<span class='curline'><a href='../S/139.html#L182'>ARRAY</a>             182 kern/include/array.h 	INLINE int ARRAY##_add(struct ARRAY *a, T *val, unsigned *index_ret); \</span>
+<span class='curline'><a href='../S/139.html#L183'>ARRAY</a>             183 kern/include/array.h 	INLINE void ARRAY##_remove(struct ARRAY *a, unsigned index)</span>
+<span class='curline'><a href='../S/139.html#L185'>ARRAY</a>             185 kern/include/array.h #define DEFARRAY_BYTYPE(ARRAY, T, INLINE) \</span>
+<span class='curline'><a href='../S/139.html#L186'>ARRAY</a>             186 kern/include/array.h 	INLINE struct ARRAY *					\</span>
+<span class='curline'><a href='../S/139.html#L187'>ARRAY</a>             187 kern/include/array.h 	ARRAY##_create(void)					\</span>
+<span class='curline'><a href='../S/139.html#L189'>ARRAY</a>             189 kern/include/array.h 		struct ARRAY *a = kmalloc(sizeof(*a));		\</span>
+<span class='curline'><a href='../S/139.html#L198'>ARRAY</a>             198 kern/include/array.h 	ARRAY##_destroy(struct ARRAY *a)			\</span>
+<span class='curline'><a href='../S/139.html#L205'>ARRAY</a>             205 kern/include/array.h 	ARRAY##_init(struct ARRAY *a)				\</span>
+<span class='curline'><a href='../S/139.html#L211'>ARRAY</a>             211 kern/include/array.h 	ARRAY##_cleanup(struct ARRAY *a)			\</span>
+<span class='curline'><a href='../S/139.html#L217'>ARRAY</a>             217 kern/include/array.h 	ARRAY##_num(const struct ARRAY *a)			\</span>
+<span class='curline'><a href='../S/139.html#L223'>ARRAY</a>             223 kern/include/array.h 	ARRAY##_get(const struct ARRAY *a, unsigned index)	\</span>
+<span class='curline'><a href='../S/139.html#L229'>ARRAY</a>             229 kern/include/array.h 	ARRAY##_set(struct ARRAY *a, unsigned index, T *val)	\</span>
+<span class='curline'><a href='../S/139.html#L235'>ARRAY</a>             235 kern/include/array.h 	ARRAY##_preallocate(struct ARRAY *a, unsigned num)	\</span>
+<span class='curline'><a href='../S/139.html#L241'>ARRAY</a>             241 kern/include/array.h 	ARRAY##_setsize(struct ARRAY *a, unsigned num)		\</span>
+<span class='curline'><a href='../S/139.html#L247'>ARRAY</a>             247 kern/include/array.h 	ARRAY##_add(struct ARRAY *a, T *val, unsigned *index_ret) \</span>
+<span class='curline'><a href='../S/139.html#L253'>ARRAY</a>             253 kern/include/array.h 	ARRAY##_remove(struct ARRAY *a, unsigned index)		\</span>
+</pre>
+</body>
+</html>

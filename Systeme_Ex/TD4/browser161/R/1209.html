@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>device</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/86.html#L236'>device</a>            236 kern/dev/generic/console.c con_eachopen(struct device *dev, int openflags)</span>
+<span class='curline'><a href='../S/86.html#L245'>device</a>            245 kern/dev/generic/console.c con_io(struct device *dev, struct uio *uio)</span>
+<span class='curline'><a href='../S/86.html#L296'>device</a>            296 kern/dev/generic/console.c con_ioctl(struct device *dev, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/86.html#L315'>device</a>            315 kern/dev/generic/console.c 	struct device *dev;</span>
+<span class='curline'><a href='../S/88.html#L58'>device</a>             58 kern/dev/generic/random.c randeachopen(struct device *dev, int openflags)</span>
+<span class='curline'><a href='../S/88.html#L74'>device</a>             74 kern/dev/generic/random.c randio(struct device *dev, struct uio *uio)</span>
+<span class='curline'><a href='../S/88.html#L90'>device</a>             90 kern/dev/generic/random.c randioctl(struct device *dev, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/89.html#L43'>device</a>             43 kern/dev/generic/random.h 	struct device rs_dev;</span>
+<span class='curline'><a href='../S/101.html#L141'>device</a>            141 kern/dev/lamebus/lhd.c lhd_eachopen(struct device *d, int openflags)</span>
+<span class='curline'><a href='../S/101.html#L157'>device</a>            157 kern/dev/lamebus/lhd.c lhd_ioctl(struct device *d, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/101.html#L187'>device</a>            187 kern/dev/lamebus/lhd.c lhd_io(struct device *d, struct uio *uio)</span>
+<span class='curline'><a href='../S/102.html#L58'>device</a>             58 kern/dev/lamebus/lhd.h 	struct device lh_dev;		/* VFS device structure */</span>
+<span class='curline'><a href='../S/130.html#L386'>device</a>            386 kern/fs/sfs/sfs_fsops.c sfs_domount(void *options, struct device *dev, struct fs **ret)</span>
+<span class='curline'><a href='../S/130.html#L478'>device</a>            478 kern/fs/sfs/sfs_fsops.c sfs_mount(const char *device)</span>
+<span class='curline'><a href='../S/130.html#L480'>device</a>            480 kern/fs/sfs/sfs_fsops.c 	return vfs_mount(device, NULL, sfs_domount);</span>
+<span class='curline'><a href='../S/146.html#L61'>device</a>             61 kern/include/device.h 	int (*devop_eachopen)(struct device *, int flags_from_open);</span>
+<span class='curline'><a href='../S/146.html#L62'>device</a>             62 kern/include/device.h 	int (*devop_io)(struct device *, struct uio *);</span>
+<span class='curline'><a href='../S/146.html#L63'>device</a>             63 kern/include/device.h 	int (*devop_ioctl)(struct device *, int op, userptr_t data);</span>
+<span class='curline'><a href='../S/146.html#L75'>device</a>             75 kern/include/device.h struct vnode *dev_create_vnode(struct device *dev);</span>
+<span class='curline'><a href='../S/178.html#L68'>device</a>             68 kern/include/sfs.h 	struct device *sfs_device;      /* device mounted on */</span>
+<span class='curline'><a href='../S/178.html#L77'>device</a>             77 kern/include/sfs.h int sfs_mount(const char *device);</span>
+<span class='curline'><a href='../S/193.html#L45'>device</a>             45 kern/include/vfs.h struct device; /* abstract structure for a device (dev.h) */</span>
+<span class='curline'><a href='../S/193.html#L174'>device</a>            174 kern/include/vfs.h int vfs_adddev(const char *devname, struct device *dev, int mountable);</span>
+<span class='curline'><a href='../S/193.html#L179'>device</a>            179 kern/include/vfs.h 			       struct device *dev,</span>
+<span class='curline'><a href='../S/206.html#L369'>device</a>            369 kern/main/menu.c 	int (*func)(const char *device);</span>
+<span class='curline'><a href='../S/206.html#L381'>device</a>            381 kern/main/menu.c 	char *device;</span>
+<span class='curline'><a href='../S/206.html#L390'>device</a>            390 kern/main/menu.c 	device = args[2];</span>
+<span class='curline'><a href='../S/206.html#L393'>device</a>            393 kern/main/menu.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/206.html#L394'>device</a>            394 kern/main/menu.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/206.html#L399'>device</a>            399 kern/main/menu.c 			return mounttable[i].func(device);</span>
+<span class='curline'><a href='../S/206.html#L410'>device</a>            410 kern/main/menu.c 	char *device;</span>
+<span class='curline'><a href='../S/206.html#L417'>device</a>            417 kern/main/menu.c 	device = args[1];</span>
+<span class='curline'><a href='../S/206.html#L420'>device</a>            420 kern/main/menu.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/206.html#L421'>device</a>            421 kern/main/menu.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/206.html#L424'>device</a>            424 kern/main/menu.c 	return vfs_unmount(device);</span>
+<span class='curline'><a href='../S/206.html#L439'>device</a>            439 kern/main/menu.c 	char *device;</span>
+<span class='curline'><a href='../S/206.html#L446'>device</a>            446 kern/main/menu.c 	device = args[1];</span>
+<span class='curline'><a href='../S/206.html#L449'>device</a>            449 kern/main/menu.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/206.html#L450'>device</a>            450 kern/main/menu.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/206.html#L453'>device</a>            453 kern/main/menu.c 	return vfs_setbootfs(device);</span>
+<span class='curline'><a href='../S/214.html#L681'>device</a>            681 kern/test/fstest.c 	char *device;</span>
+<span class='curline'><a href='../S/214.html#L688'>device</a>            688 kern/test/fstest.c 	device = args[1];</span>
+<span class='curline'><a href='../S/214.html#L691'>device</a>            691 kern/test/fstest.c 	if (device[strlen(device)-1]==':') {</span>
+<span class='curline'><a href='../S/214.html#L692'>device</a>            692 kern/test/fstest.c 		device[strlen(device)-1] = 0;</span>
+<span class='curline'><a href='../S/229.html#L55'>device</a>             55 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L86'>device</a>             86 kern/vfs/device.c dev_tryseek(struct device *d, off_t pos)</span>
+<span class='curline'><a href='../S/229.html#L111'>device</a>            111 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L130'>device</a>            130 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L149'>device</a>            149 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L162'>device</a>            162 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L203'>device</a>            203 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L220'>device</a>            220 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L258'>device</a>            258 kern/vfs/device.c 	struct device *d = v-&gt;vn_data;</span>
+<span class='curline'><a href='../S/229.html#L357'>device</a>            357 kern/vfs/device.c dev_create_vnode(struct device *dev)</span>
+<span class='curline'><a href='../S/230.html#L44'>device</a>             44 kern/vfs/devnull.c nullopen(struct device *dev, int openflags)</span>
+<span class='curline'><a href='../S/230.html#L55'>device</a>             55 kern/vfs/devnull.c nullio(struct device *dev, struct uio *uio)</span>
+<span class='curline'><a href='../S/230.html#L78'>device</a>             78 kern/vfs/devnull.c nullioctl(struct device *dev, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/230.html#L104'>device</a>            104 kern/vfs/devnull.c 	struct device *dev;</span>
+<span class='curline'><a href='../S/233.html#L80'>device</a>             80 kern/vfs/vfslist.c 	struct device *kd_device;</span>
+<span class='curline'><a href='../S/233.html#L392'>device</a>            392 kern/vfs/vfslist.c vfs_doadd(const char *dname, int mountable, struct device *dev, struct fs *fs)</span>
+<span class='curline'><a href='../S/233.html#L482'>device</a>            482 kern/vfs/vfslist.c vfs_adddev(const char *devname, struct device *dev, int mountable)</span>
+<span class='curline'><a href='../S/233.html#L539'>device</a>            539 kern/vfs/vfslist.c 	  int (*mountfunc)(void *data, struct device *, struct fs **ret))</span>
+</pre>
+</body>
+</html>

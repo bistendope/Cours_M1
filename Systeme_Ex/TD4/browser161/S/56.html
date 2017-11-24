@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/arch/mips/include/trapframe.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/733.html'>arch</a>/<a href='../files/734.html'>mips</a>/<a href='../files/735.html'>include</a>/trapframe.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/48.html' title='Multiple included from 4 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#ifndef</em> <a href='../S/56.html#L31' title='Defined at 31 in kern/arch/mips/include/trapframe.h.'>_MIPS_TRAPFRAME_H_</a>
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#define</em> <a href='../S/56.html#L30' title='Referred from 30 in kern/arch/mips/include/trapframe.h.'>_MIPS_TRAPFRAME_H_</a>
+<a id='L32' name='L32'></a>  32 
+<a id='L33' name='L33'></a>  33 <em class='comment'>/*</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * Structure describing what is saved on the stack during entry to</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> * the exception handler.</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> *</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * This must agree with the code in exception-*.S.</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> */</em>
+<a id='L39' name='L39'></a>  39 
+<a id='L40' name='L40'></a>  40 <strong class='reserved'>struct</strong> <a href='../R/2236.html' title='Multiple referred from 15 places.'>trapframe</a> <em class='brace'>{</em>
+<a id='L41' name='L41'></a>  41         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_vaddr;      <em class='comment'>/* coprocessor 0 vaddr register */</em>
+<a id='L42' name='L42'></a>  42         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_status;     <em class='comment'>/* coprocessor 0 status register */</em>
+<a id='L43' name='L43'></a>  43         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_cause;      <em class='comment'>/* coprocessor 0 cause register */</em>
+<a id='L44' name='L44'></a>  44         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_lo;
+<a id='L45' name='L45'></a>  45         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_hi;
+<a id='L46' name='L46'></a>  46         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_ra;         <em class='comment'>/* Saved register 31 */</em>
+<a id='L47' name='L47'></a>  47         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_at;         <em class='comment'>/* Saved register 1 (AT) */</em>
+<a id='L48' name='L48'></a>  48         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_v0;         <em class='comment'>/* Saved register 2 (v0) */</em>
+<a id='L49' name='L49'></a>  49         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_v1;         <em class='comment'>/* etc. */</em>
+<a id='L50' name='L50'></a>  50         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_a0;
+<a id='L51' name='L51'></a>  51         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_a1;
+<a id='L52' name='L52'></a>  52         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_a2;
+<a id='L53' name='L53'></a>  53         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_a3;
+<a id='L54' name='L54'></a>  54         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t0;
+<a id='L55' name='L55'></a>  55         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t1;
+<a id='L56' name='L56'></a>  56         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t2;
+<a id='L57' name='L57'></a>  57         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t3;
+<a id='L58' name='L58'></a>  58         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t4;
+<a id='L59' name='L59'></a>  59         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t5;
+<a id='L60' name='L60'></a>  60         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t6;
+<a id='L61' name='L61'></a>  61         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t7;
+<a id='L62' name='L62'></a>  62         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s0;
+<a id='L63' name='L63'></a>  63         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s1;
+<a id='L64' name='L64'></a>  64         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s2;
+<a id='L65' name='L65'></a>  65         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s3;
+<a id='L66' name='L66'></a>  66         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s4;
+<a id='L67' name='L67'></a>  67         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s5;
+<a id='L68' name='L68'></a>  68         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s6;
+<a id='L69' name='L69'></a>  69         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s7;
+<a id='L70' name='L70'></a>  70         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t8;
+<a id='L71' name='L71'></a>  71         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_t9;
+<a id='L72' name='L72'></a>  72         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_gp;
+<a id='L73' name='L73'></a>  73         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_sp;
+<a id='L74' name='L74'></a>  74         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_s8;
+<a id='L75' name='L75'></a>  75         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> tf_epc;        <em class='comment'>/* coprocessor 0 epc register */</em>
+<a id='L76' name='L76'></a>  76 <em class='brace'>}</em>;
+<a id='L77' name='L77'></a>  77 
+<a id='L78' name='L78'></a>  78 <em class='comment'>/*</em>
+<a id='L79' name='L79'></a>  79 <em class='comment'> * MIPS exception codes.</em>
+<a id='L80' name='L80'></a>  80 <em class='comment'> */</em>
+<a id='L81' name='L81'></a>  81 <em class='sharp'>#define</em> <a href='../R/185.html' title='Multiple referred from 2 places.'>EX_IRQ</a>    0    <em class='comment'>/* Interrupt */</em>
+<a id='L82' name='L82'></a>  82 <em class='sharp'>#define</em> <a href='../R/186.html' title='Multiple referred from 2 places.'>EX_MOD</a>    1    <em class='comment'>/* TLB Modify (write to read-only page) */</em>
+<a id='L83' name='L83'></a>  83 <em class='sharp'>#define</em> <a href='../R/190.html' title='Multiple referred from 2 places.'>EX_TLBL</a>   2    <em class='comment'>/* TLB miss on load */</em>
+<a id='L84' name='L84'></a>  84 <em class='sharp'>#define</em> <a href='../R/191.html' title='Multiple referred from 2 places.'>EX_TLBS</a>   3    <em class='comment'>/* TLB miss on store */</em>
+<a id='L85' name='L85'></a>  85 <em class='sharp'>#define</em> <a href='../S/61.html#L93' title='Referred from 93 in kern/arch/mips/locore/trap.c.'>EX_ADEL</a>   4    <em class='comment'>/* Address error on load */</em>
+<a id='L86' name='L86'></a>  86 <em class='sharp'>#define</em> <a href='../S/61.html#L94' title='Referred from 94 in kern/arch/mips/locore/trap.c.'>EX_ADES</a>   5    <em class='comment'>/* Address error on store */</em>
+<a id='L87' name='L87'></a>  87 <em class='sharp'>#define</em> <a href='../R/184.html' title='Multiple referred from 2 places.'>EX_IBE</a>    6    <em class='comment'>/* Bus error on instruction fetch */</em>
+<a id='L88' name='L88'></a>  88 <em class='sharp'>#define</em> <a href='../R/183.html' title='Multiple referred from 2 places.'>EX_DBE</a>    7    <em class='comment'>/* Bus error on data load *or* store */</em>
+<a id='L89' name='L89'></a>  89 <em class='sharp'>#define</em> <a href='../R/189.html' title='Multiple referred from 2 places.'>EX_SYS</a>    8    <em class='comment'>/* Syscall */</em>
+<a id='L90' name='L90'></a>  90 <em class='sharp'>#define</em> <a href='../S/61.html#L97' title='Referred from 97 in kern/arch/mips/locore/trap.c.'>EX_BP</a>     9    <em class='comment'>/* Breakpoint */</em>
+<a id='L91' name='L91'></a>  91 <em class='sharp'>#define</em> <a href='../S/61.html#L100' title='Referred from 100 in kern/arch/mips/locore/trap.c.'>EX_RI</a>     10   <em class='comment'>/* Reserved (illegal) instruction */</em>
+<a id='L92' name='L92'></a>  92 <em class='sharp'>#define</em> <a href='../S/61.html#L103' title='Referred from 103 in kern/arch/mips/locore/trap.c.'>EX_CPU</a>    11   <em class='comment'>/* Coprocessor unusable */</em>
+<a id='L93' name='L93'></a>  93 <em class='sharp'>#define</em> <a href='../S/61.html#L106' title='Referred from 106 in kern/arch/mips/locore/trap.c.'>EX_OVF</a>    12   <em class='comment'>/* Arithmetic overflow */</em>
+<a id='L94' name='L94'></a>  94 
+<a id='L95' name='L95'></a>  95 <em class='comment'>/*</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'> * Function to enter user mode. Does not return. The trapframe must</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'> * be on the thread's own stack or bad things will happen.</em>
+<a id='L98' name='L98'></a>  98 <em class='comment'> */</em>
+<a id='L99' name='L99'></a>  99 <a href='../D/1160.html' title='Multiple defined in 4 places.'>__DEAD</a> <strong class='reserved'>void</strong> <a href='../S/61.html#L368' title='Defined at 368 in kern/arch/mips/locore/trap.c.'>mips_usermode</a>(<strong class='reserved'>struct</strong> <a href='../S/56.html#L40' title='Defined at 40 in kern/arch/mips/include/trapframe.h.'>trapframe</a> *tf);
+<a id='L100' name='L100'></a> 100 
+<a id='L101' name='L101'></a> 101 <em class='comment'>/*</em>
+<a id='L102' name='L102'></a> 102 <em class='comment'> * Arrays used to load the kernel stack and curthread on trap entry.</em>
+<a id='L103' name='L103'></a> 103 <em class='comment'> */</em>
+<a id='L104' name='L104'></a> 104 <strong class='reserved'>extern</strong> <a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a> cpustacks[];
+<a id='L105' name='L105'></a> 105 <strong class='reserved'>extern</strong> <a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a> cputhreads[];
+<a id='L106' name='L106'></a> 106 
+<a id='L107' name='L107'></a> 107 
+<a id='L108' name='L108'></a> 108 <em class='sharp'>#endif</em> <em class='comment'>/* _MIPS_TRAPFRAME_H_ */</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>PAGE_SIZE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L194'>PAGE_SIZE</a>         194 kern/arch/mips/vm/dumbvm.c 	vtop1 = vbase1 + as-&gt;as_npages1 * PAGE_SIZE;</span>
+<span class='curline'><a href='../S/69.html#L196'>PAGE_SIZE</a>         196 kern/arch/mips/vm/dumbvm.c 	vtop2 = vbase2 + as-&gt;as_npages2 * PAGE_SIZE;</span>
+<span class='curline'><a href='../S/69.html#L197'>PAGE_SIZE</a>         197 kern/arch/mips/vm/dumbvm.c 	stackbase = USERSTACK - DUMBVM_STACKPAGES * PAGE_SIZE;</span>
+<span class='curline'><a href='../S/69.html#L303'>PAGE_SIZE</a>         303 kern/arch/mips/vm/dumbvm.c 	sz = (sz + PAGE_SIZE - 1) &amp; PAGE_FRAME;</span>
+<span class='curline'><a href='../S/69.html#L305'>PAGE_SIZE</a>         305 kern/arch/mips/vm/dumbvm.c 	npages = sz / PAGE_SIZE;</span>
+<span class='curline'><a href='../S/69.html#L335'>PAGE_SIZE</a>         335 kern/arch/mips/vm/dumbvm.c 	bzero((void *)PADDR_TO_KVADDR(paddr), npages * PAGE_SIZE);</span>
+<span class='curline'><a href='../S/69.html#L415'>PAGE_SIZE</a>         415 kern/arch/mips/vm/dumbvm.c 		old-&gt;as_npages1*PAGE_SIZE);</span>
+<span class='curline'><a href='../S/69.html#L419'>PAGE_SIZE</a>         419 kern/arch/mips/vm/dumbvm.c 		old-&gt;as_npages2*PAGE_SIZE);</span>
+<span class='curline'><a href='../S/69.html#L423'>PAGE_SIZE</a>         423 kern/arch/mips/vm/dumbvm.c 		DUMBVM_STACKPAGES*PAGE_SIZE);</span>
+<span class='curline'><a href='../S/70.html#L100'>PAGE_SIZE</a>         100 kern/arch/mips/vm/ram.c 	size = npages * PAGE_SIZE;</span>
+<span class='curline'><a href='../S/215.html#L197'>PAGE_SIZE</a>         197 kern/test/kmalloctest.c 	blocksize = PAGE_SIZE / 4;</span>
+<span class='curline'><a href='../S/215.html#L321'>PAGE_SIZE</a>         321 kern/test/kmalloctest.c 		ptrs[p] = kmalloc(sizes[p] * PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L126'>PAGE_SIZE</a>         126 kern/vm/kmalloc.c #if PAGE_SIZE == 4096</span>
+<span class='curline'><a href='../S/239.html#L134'>PAGE_SIZE</a>         134 kern/vm/kmalloc.c #elif PAGE_SIZE == 8192</span>
+<span class='curline'><a href='../S/239.html#L181'>PAGE_SIZE</a>         181 kern/vm/kmalloc.c #define NPAGEREFS_PER_PAGE (PAGE_SIZE / sizeof(struct pageref))</span>
+<span class='curline'><a href='../S/239.html#L238'>PAGE_SIZE</a>         238 kern/vm/kmalloc.c 	KASSERT(va % PAGE_SIZE == 0);</span>
+<span class='curline'><a href='../S/239.html#L503'>PAGE_SIZE</a>         503 kern/vm/kmalloc.c 	const unsigned maxblocks = PAGE_SIZE / SMALLEST_SUBPAGE_SIZE;</span>
+<span class='curline'><a href='../S/239.html#L534'>PAGE_SIZE</a>         534 kern/vm/kmalloc.c 	KASSERT(pr-&gt;freelist_offset &lt; PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L542'>PAGE_SIZE</a>         542 kern/vm/kmalloc.c 		KASSERT(fla &gt;= prpage &amp;&amp; fla &lt; prpage + PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L559'>PAGE_SIZE</a>         559 kern/vm/kmalloc.c 	numblocks = PAGE_SIZE / blocksize;</span>
+<span class='curline'><a href='../S/239.html#L643'>PAGE_SIZE</a>         643 kern/vm/kmalloc.c 	unsigned numblocks = PAGE_SIZE / blocksize;</span>
+<span class='curline'><a href='../S/239.html#L753'>PAGE_SIZE</a>         753 kern/vm/kmalloc.c 	uint32_t freemap[PAGE_SIZE / (SMALLEST_SUBPAGE_SIZE*32)];</span>
+<span class='curline'><a href='../S/239.html#L768'>PAGE_SIZE</a>         768 kern/vm/kmalloc.c 	n = PAGE_SIZE / sizes[blktype];</span>
+<span class='curline'><a href='../S/239.html#L924'>PAGE_SIZE</a>         924 kern/vm/kmalloc.c 			KASSERT(pr-&gt;freelist_offset &lt; PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L936'>PAGE_SIZE</a>         936 kern/vm/kmalloc.c 				KASSERT(fla - prpage &lt; PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L973'>PAGE_SIZE</a>         973 kern/vm/kmalloc.c 	KASSERT(prpage % PAGE_SIZE == 0);</span>
+<span class='curline'><a href='../S/239.html#L976'>PAGE_SIZE</a>         976 kern/vm/kmalloc.c 	fill_deadbeef((void *)prpage, PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L990'>PAGE_SIZE</a>         990 kern/vm/kmalloc.c 	pr-&gt;nfree = PAGE_SIZE / sizes[blktype];</span>
+<span class='curline'><a href='../S/239.html#L1041'>PAGE_SIZE</a>        1041 kern/vm/kmalloc.c 	if (ptraddr % PAGE_SIZE == 0) {</span>
+<span class='curline'><a href='../S/239.html#L1057'>PAGE_SIZE</a>        1057 kern/vm/kmalloc.c 	if (ptraddr % PAGE_SIZE == 0) {</span>
+<span class='curline'><a href='../S/239.html#L1081'>PAGE_SIZE</a>        1081 kern/vm/kmalloc.c 		if (ptraddr &gt;= prpage &amp;&amp; ptraddr &lt; prpage + PAGE_SIZE) {</span>
+<span class='curline'><a href='../S/239.html#L1095'>PAGE_SIZE</a>        1095 kern/vm/kmalloc.c 	if (offset &gt;= PAGE_SIZE || offset % sizes[blktype] != 0) {</span>
+<span class='curline'><a href='../S/239.html#L1140'>PAGE_SIZE</a>        1140 kern/vm/kmalloc.c 	KASSERT(pr-&gt;nfree &lt;= PAGE_SIZE / sizes[blktype]);</span>
+<span class='curline'><a href='../S/239.html#L1141'>PAGE_SIZE</a>        1141 kern/vm/kmalloc.c 	if (pr-&gt;nfree == PAGE_SIZE / sizes[blktype]) {</span>
+<span class='curline'><a href='../S/239.html#L1191'>PAGE_SIZE</a>        1191 kern/vm/kmalloc.c 		npages = (sz + PAGE_SIZE - 1)/PAGE_SIZE;</span>
+<span class='curline'><a href='../S/239.html#L1196'>PAGE_SIZE</a>        1196 kern/vm/kmalloc.c 		KASSERT(address % PAGE_SIZE == 0);</span>
+<span class='curline'><a href='../S/239.html#L1220'>PAGE_SIZE</a>        1220 kern/vm/kmalloc.c 		KASSERT((vaddr_t)ptr%PAGE_SIZE==0);</span>
+<span class='curline'><a href='../S/514.html#L445'>PAGE_SIZE</a>         445 userland/lib/libc/stdlib/malloc.c 	morespace = PAGE_SIZE * ((morespace + PAGE_SIZE - 1) / PAGE_SIZE);</span>
+<span class='curline'><a href='../S/611.html#L46'>PAGE_SIZE</a>          46 userland/testbin/bloat/bloat.c 		ptr = sbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/611.html#L64'>PAGE_SIZE</a>          64 userland/testbin/bloat/bloat.c 	ptr = (void *)((uintptr_t)firstpage + PAGE_SIZE * pagenum);</span>
+<span class='curline'><a href='../S/611.html#L109'>PAGE_SIZE</a>         109 userland/testbin/bloat/bloat.c 	num = (((uintptr_t)lastpage - (uintptr_t)firstpage) / PAGE_SIZE) + 1;</span>
+<span class='curline'><a href='../S/611.html#L134'>PAGE_SIZE</a>         134 userland/testbin/bloat/bloat.c 	printf("Page size: %u\n", PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L164'>PAGE_SIZE</a>         164 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L167'>PAGE_SIZE</a>         167 userland/testbin/sbrktest/sbrktest.c 	n = PAGE_SIZE / sizeof(unsigned long);</span>
+<span class='curline'><a href='../S/693.html#L188'>PAGE_SIZE</a>         188 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L191'>PAGE_SIZE</a>         191 userland/testbin/sbrktest/sbrktest.c 	n = PAGE_SIZE / sizeof(unsigned long);</span>
+<span class='curline'><a href='../S/693.html#L222'>PAGE_SIZE</a>         222 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L239'>PAGE_SIZE</a>         239 userland/testbin/sbrktest/sbrktest.c 	pageptr += (size_t)PAGE_SIZE * pageoffset;</span>
+<span class='curline'><a href='../S/693.html#L289'>PAGE_SIZE</a>         289 userland/testbin/sbrktest/sbrktest.c 	if (opx % PAGE_SIZE) {</span>
+<span class='curline'><a href='../S/693.html#L290'>PAGE_SIZE</a>         290 userland/testbin/sbrktest/sbrktest.c 		amount = PAGE_SIZE - (opx % PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L302'>PAGE_SIZE</a>         302 userland/testbin/sbrktest/sbrktest.c 	if (opx % PAGE_SIZE) {</span>
+<span class='curline'><a href='../S/693.html#L321'>PAGE_SIZE</a>         321 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L342'>PAGE_SIZE</a>         342 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L355'>PAGE_SIZE</a>         355 userland/testbin/sbrktest/sbrktest.c 	q = dosbrk(-PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L386'>PAGE_SIZE</a>         386 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/693.html#L407'>PAGE_SIZE</a>         407 userland/testbin/sbrktest/sbrktest.c 	q = dosbrk(-PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/693.html#L439'>PAGE_SIZE</a>         439 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/693.html#L459'>PAGE_SIZE</a>         459 userland/testbin/sbrktest/sbrktest.c 		(void)dosbrk(-PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L510'>PAGE_SIZE</a>         510 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L527'>PAGE_SIZE</a>         527 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L528'>PAGE_SIZE</a>         528 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(-PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L546'>PAGE_SIZE</a>         546 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(PAGE_SIZE * 12);</span>
+<span class='curline'><a href='../S/693.html#L547'>PAGE_SIZE</a>         547 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(-PAGE_SIZE * 6);</span>
+<span class='curline'><a href='../S/693.html#L599'>PAGE_SIZE</a>         599 userland/testbin/sbrktest/sbrktest.c 	pages = size / PAGE_SIZE;</span>
+<span class='curline'><a href='../S/693.html#L661'>PAGE_SIZE</a>         661 userland/testbin/sbrktest/sbrktest.c 	while ((p = sbrk(PAGE_SIZE)) != (void *)-1) {</span>
+<span class='curline'><a href='../S/693.html#L665'>PAGE_SIZE</a>         665 userland/testbin/sbrktest/sbrktest.c 	printf("Got %u pages (%zu bytes).\n", n, (size_t)PAGE_SIZE * n);</span>
+<span class='curline'><a href='../S/693.html#L674'>PAGE_SIZE</a>         674 userland/testbin/sbrktest/sbrktest.c 		(void)dosbrk(-PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L687'>PAGE_SIZE</a>         687 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L692'>PAGE_SIZE</a>         692 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(-PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L711'>PAGE_SIZE</a>         711 userland/testbin/sbrktest/sbrktest.c 	       (size_t)PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/693.html#L712'>PAGE_SIZE</a>         712 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(num * PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L764'>PAGE_SIZE</a>         764 userland/testbin/sbrktest/sbrktest.c 		p = dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L774'>PAGE_SIZE</a>         774 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L795'>PAGE_SIZE</a>         795 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L828'>PAGE_SIZE</a>         828 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L842'>PAGE_SIZE</a>         842 userland/testbin/sbrktest/sbrktest.c 		dosbrk(-PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L867'>PAGE_SIZE</a>         867 userland/testbin/sbrktest/sbrktest.c 	p = dosbrk(PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/693.html#L878'>PAGE_SIZE</a>         878 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(-PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L887'>PAGE_SIZE</a>         887 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(PAGE_SIZE * 2);</span>
+<span class='curline'><a href='../S/693.html#L907'>PAGE_SIZE</a>         907 userland/testbin/sbrktest/sbrktest.c 		dosbrk(-PAGE_SIZE * 3);</span>
+<span class='curline'><a href='../S/693.html#L916'>PAGE_SIZE</a>         916 userland/testbin/sbrktest/sbrktest.c 		dosbrk(PAGE_SIZE * 2);</span>
+<span class='curline'><a href='../S/693.html#L926'>PAGE_SIZE</a>         926 userland/testbin/sbrktest/sbrktest.c 		dosbrk(-PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/693.html#L930'>PAGE_SIZE</a>         930 userland/testbin/sbrktest/sbrktest.c 	dosbrk(PAGE_SIZE * 4);</span>
+<span class='curline'><a href='../S/693.html#L949'>PAGE_SIZE</a>         949 userland/testbin/sbrktest/sbrktest.c 	(void)dosbrk(-PAGE_SIZE * num);</span>
+<span class='curline'><a href='../S/693.html#L990'>PAGE_SIZE</a>         990 userland/testbin/sbrktest/sbrktest.c 			dosbrk(-(pages * PAGE_SIZE));</span>
+<span class='curline'><a href='../S/693.html#L994'>PAGE_SIZE</a>         994 userland/testbin/sbrktest/sbrktest.c 			dosbrk(pages * PAGE_SIZE);</span>
+<span class='curline'><a href='../S/693.html#L1017'>PAGE_SIZE</a>        1017 userland/testbin/sbrktest/sbrktest.c 	dosbrk(-(num * PAGE_SIZE));</span>
+</pre>
+</body>
+</html>

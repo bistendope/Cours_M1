@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>addrspace</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L143'>addrspace</a>         143 kern/arch/mips/vm/dumbvm.c 	struct addrspace *as;</span>
+<span class='curline'><a href='../S/69.html#L237'>addrspace</a>         237 kern/arch/mips/vm/dumbvm.c struct addrspace *</span>
+<span class='curline'><a href='../S/69.html#L240'>addrspace</a>         240 kern/arch/mips/vm/dumbvm.c 	struct addrspace *as = kmalloc(sizeof(struct addrspace));</span>
+<span class='curline'><a href='../S/69.html#L257'>addrspace</a>         257 kern/arch/mips/vm/dumbvm.c as_destroy(struct addrspace *as)</span>
+<span class='curline'><a href='../S/69.html#L267'>addrspace</a>         267 kern/arch/mips/vm/dumbvm.c 	struct addrspace *as;</span>
+<span class='curline'><a href='../S/69.html#L291'>addrspace</a>         291 kern/arch/mips/vm/dumbvm.c as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,</span>
+<span class='curline'><a href='../S/69.html#L339'>addrspace</a>         339 kern/arch/mips/vm/dumbvm.c as_prepare_load(struct addrspace *as)</span>
+<span class='curline'><a href='../S/69.html#L370'>addrspace</a>         370 kern/arch/mips/vm/dumbvm.c as_complete_load(struct addrspace *as)</span>
+<span class='curline'><a href='../S/69.html#L378'>addrspace</a>         378 kern/arch/mips/vm/dumbvm.c as_define_stack(struct addrspace *as, vaddr_t *stackptr)</span>
+<span class='curline'><a href='../S/69.html#L387'>addrspace</a>         387 kern/arch/mips/vm/dumbvm.c as_copy(struct addrspace *old, struct addrspace **ret)</span>
+<span class='curline'><a href='../S/69.html#L389'>addrspace</a>         389 kern/arch/mips/vm/dumbvm.c 	struct addrspace *new;</span>
+<span class='curline'><a href='../S/138.html#L106'>addrspace</a>         106 kern/include/addrspace.h struct addrspace *as_create(void);</span>
+<span class='curline'><a href='../S/138.html#L107'>addrspace</a>         107 kern/include/addrspace.h int               as_copy(struct addrspace *src, struct addrspace **ret);</span>
+<span class='curline'><a href='../S/138.html#L110'>addrspace</a>         110 kern/include/addrspace.h void              as_destroy(struct addrspace *);</span>
+<span class='curline'><a href='../S/138.html#L112'>addrspace</a>         112 kern/include/addrspace.h int               as_define_region(struct addrspace *as,</span>
+<span class='curline'><a href='../S/138.html#L117'>addrspace</a>         117 kern/include/addrspace.h int               as_prepare_load(struct addrspace *as);</span>
+<span class='curline'><a href='../S/138.html#L118'>addrspace</a>         118 kern/include/addrspace.h int               as_complete_load(struct addrspace *as);</span>
+<span class='curline'><a href='../S/138.html#L119'>addrspace</a>         119 kern/include/addrspace.h int               as_define_stack(struct addrspace *as, vaddr_t *initstackptr);</span>
+<span class='curline'><a href='../S/176.html#L41'>addrspace</a>          41 kern/include/proc.h struct addrspace;</span>
+<span class='curline'><a href='../S/176.html#L68'>addrspace</a>          68 kern/include/proc.h 	struct addrspace *p_addrspace;	/* virtual address space */</span>
+<span class='curline'><a href='../S/176.html#L95'>addrspace</a>          95 kern/include/proc.h struct addrspace *proc_getas(void);</span>
+<span class='curline'><a href='../S/176.html#L98'>addrspace</a>          98 kern/include/proc.h struct addrspace *proc_setas(struct addrspace *);</span>
+<span class='curline'><a href='../S/191.html#L80'>addrspace</a>          80 kern/include/uio.h 	struct addrspace *uio_space;	/* Address space for user pointer */</span>
+<span class='curline'><a href='../S/208.html#L155'>addrspace</a>         155 kern/proc/proc.c 		struct addrspace *as;</span>
+<span class='curline'><a href='../S/208.html#L287'>addrspace</a>         287 kern/proc/proc.c struct addrspace *</span>
+<span class='curline'><a href='../S/208.html#L290'>addrspace</a>         290 kern/proc/proc.c 	struct addrspace *as;</span>
+<span class='curline'><a href='../S/208.html#L307'>addrspace</a>         307 kern/proc/proc.c struct addrspace *</span>
+<span class='curline'><a href='../S/208.html#L308'>addrspace</a>         308 kern/proc/proc.c proc_setas(struct addrspace *newas)</span>
+<span class='curline'><a href='../S/208.html#L310'>addrspace</a>         310 kern/proc/proc.c 	struct addrspace *oldas;</span>
+<span class='curline'><a href='../S/209.html#L79'>addrspace</a>          79 kern/syscall/loadelf.c load_segment(struct addrspace *as, struct vnode *v,</span>
+<span class='curline'><a href='../S/209.html#L161'>addrspace</a>         161 kern/syscall/loadelf.c 	struct addrspace *as;</span>
+<span class='curline'><a href='../S/210.html#L57'>addrspace</a>          57 kern/syscall/runprogram.c 	struct addrspace *as;</span>
+<span class='curline'><a href='../S/237.html#L43'>addrspace</a>          43 kern/vm/addrspace.c struct addrspace *</span>
+<span class='curline'><a href='../S/237.html#L46'>addrspace</a>          46 kern/vm/addrspace.c 	struct addrspace *as;</span>
+<span class='curline'><a href='../S/237.html#L48'>addrspace</a>          48 kern/vm/addrspace.c 	as = kmalloc(sizeof(struct addrspace));</span>
+<span class='curline'><a href='../S/237.html#L61'>addrspace</a>          61 kern/vm/addrspace.c as_copy(struct addrspace *old, struct addrspace **ret)</span>
+<span class='curline'><a href='../S/237.html#L63'>addrspace</a>          63 kern/vm/addrspace.c 	struct addrspace *newas;</span>
+<span class='curline'><a href='../S/237.html#L81'>addrspace</a>          81 kern/vm/addrspace.c as_destroy(struct addrspace *as)</span>
+<span class='curline'><a href='../S/237.html#L93'>addrspace</a>          93 kern/vm/addrspace.c 	struct addrspace *as;</span>
+<span class='curline'><a href='../S/237.html#L130'>addrspace</a>         130 kern/vm/addrspace.c as_define_region(struct addrspace *as, vaddr_t vaddr, size_t memsize,</span>
+<span class='curline'><a href='../S/237.html#L147'>addrspace</a>         147 kern/vm/addrspace.c as_prepare_load(struct addrspace *as)</span>
+<span class='curline'><a href='../S/237.html#L158'>addrspace</a>         158 kern/vm/addrspace.c as_complete_load(struct addrspace *as)</span>
+<span class='curline'><a href='../S/237.html#L169'>addrspace</a>         169 kern/vm/addrspace.c as_define_stack(struct addrspace *as, vaddr_t *stackptr)</span>
+</pre>
+</body>
+</html>

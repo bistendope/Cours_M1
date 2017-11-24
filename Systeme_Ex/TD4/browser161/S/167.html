@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/include/kern/syscall.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/751.html'>include</a>/<a href='../files/752.html'>kern</a>/syscall.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/147.html' title='Multiple included from 9 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#ifndef</em> <a href='../S/167.html#L31' title='Defined at 31 in kern/include/kern/syscall.h.'>_KERN_SYSCALL_H_</a>
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#define</em> <a href='../S/167.html#L30' title='Referred from 30 in kern/include/kern/syscall.h.'>_KERN_SYSCALL_H_</a>
+<a id='L32' name='L32'></a>  32 
+<a id='L33' name='L33'></a>  33 <em class='comment'>/*</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * System call numbers.</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> *</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> * To foster compatibility, this file contains a number for every</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * more-or-less standard Unix system call that someone might</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> * conceivably implement on OS/161. The commented-out ones are ones</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * we're pretty sure you won't be implementing. The others, you might</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> * or might not. Check your own course materials to find out what's</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> * specifically required of you.</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> *</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> * Caution: this file is parsed by a shell script to generate the assembly</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> * language system call stubs. Don't add weird stuff between the markers.</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> */</em>
+<a id='L46' name='L46'></a>  46 
+<a id='L47' name='L47'></a>  47 <em class='comment'>/*CALLBEGIN*/</em>
+<a id='L48' name='L48'></a>  48 
+<a id='L49' name='L49'></a>  49 <em class='comment'>//                              -- Process-related --</em>
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#define</em> SYS_fork         0
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#define</em> SYS_vfork        1
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#define</em> SYS_execv        2
+<a id='L53' name='L53'></a>  53 <em class='sharp'>#define</em> SYS__exit        3
+<a id='L54' name='L54'></a>  54 <em class='sharp'>#define</em> SYS_waitpid      4
+<a id='L55' name='L55'></a>  55 <em class='sharp'>#define</em> SYS_getpid       5
+<a id='L56' name='L56'></a>  56 <em class='sharp'>#define</em> SYS_getppid      6
+<a id='L57' name='L57'></a>  57 <em class='comment'>//                              (virtual memory)</em>
+<a id='L58' name='L58'></a>  58 <em class='sharp'>#define</em> SYS_sbrk         7
+<a id='L59' name='L59'></a>  59 <em class='sharp'>#define</em> SYS_mmap         8
+<a id='L60' name='L60'></a>  60 <em class='sharp'>#define</em> SYS_munmap       9
+<a id='L61' name='L61'></a>  61 <em class='sharp'>#define</em> SYS_mprotect     10
+<a id='L62' name='L62'></a>  62 <em class='comment'>//#define SYS_madvise    11</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'>//#define SYS_mincore    12</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'>//#define SYS_mlock      13</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'>//#define SYS_munlock    14</em>
+<a id='L66' name='L66'></a>  66 <em class='comment'>//#define SYS_munlockall 15</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'>//#define SYS_minherit   16</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'>//                              (security/credentials)</em>
+<a id='L69' name='L69'></a>  69 <em class='sharp'>#define</em> SYS_umask        17
+<a id='L70' name='L70'></a>  70 <em class='sharp'>#define</em> SYS_issetugid    18
+<a id='L71' name='L71'></a>  71 <em class='sharp'>#define</em> SYS_getresuid    19
+<a id='L72' name='L72'></a>  72 <em class='sharp'>#define</em> SYS_setresuid    20
+<a id='L73' name='L73'></a>  73 <em class='sharp'>#define</em> SYS_getresgid    21
+<a id='L74' name='L74'></a>  74 <em class='sharp'>#define</em> SYS_setresgid    22
+<a id='L75' name='L75'></a>  75 <em class='sharp'>#define</em> SYS_getgroups    23
+<a id='L76' name='L76'></a>  76 <em class='sharp'>#define</em> SYS_setgroups    24
+<a id='L77' name='L77'></a>  77 <em class='sharp'>#define</em> SYS___getlogin   25
+<a id='L78' name='L78'></a>  78 <em class='sharp'>#define</em> SYS___setlogin   26
+<a id='L79' name='L79'></a>  79 <em class='comment'>//                              (signals)</em>
+<a id='L80' name='L80'></a>  80 <em class='sharp'>#define</em> SYS_kill         27
+<a id='L81' name='L81'></a>  81 <em class='sharp'>#define</em> SYS_sigaction    28
+<a id='L82' name='L82'></a>  82 <em class='sharp'>#define</em> SYS_sigpending   29
+<a id='L83' name='L83'></a>  83 <em class='sharp'>#define</em> SYS_sigprocmask  30
+<a id='L84' name='L84'></a>  84 <em class='sharp'>#define</em> SYS_sigsuspend   31
+<a id='L85' name='L85'></a>  85 <em class='sharp'>#define</em> SYS_sigreturn    32
+<a id='L86' name='L86'></a>  86 <em class='comment'>//#define SYS_sigaltstack 33</em>
+<a id='L87' name='L87'></a>  87 <em class='comment'>//                              (resource tracking and usage)</em>
+<a id='L88' name='L88'></a>  88 <em class='comment'>//#define SYS_wait4      34</em>
+<a id='L89' name='L89'></a>  89 <em class='comment'>//#define SYS_getrusage  35</em>
+<a id='L90' name='L90'></a>  90 <em class='comment'>//                              (resource limits)</em>
+<a id='L91' name='L91'></a>  91 <em class='comment'>//#define SYS_getrlimit  36</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'>//#define SYS_setrlimit  37</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'>//                              (process priority control)</em>
+<a id='L94' name='L94'></a>  94 <em class='comment'>//#define SYS_getpriority 38</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'>//#define SYS_setpriority 39</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'>//                              (process groups, sessions, and job control)</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'>//#define SYS_getpgid    40</em>
+<a id='L98' name='L98'></a>  98 <em class='comment'>//#define SYS_setpgid    41</em>
+<a id='L99' name='L99'></a>  99 <em class='comment'>//#define SYS_getsid     42</em>
+<a id='L100' name='L100'></a> 100 <em class='comment'>//#define SYS_setsid     43</em>
+<a id='L101' name='L101'></a> 101 <em class='comment'>//                              (userlevel debugging)</em>
+<a id='L102' name='L102'></a> 102 <em class='comment'>//#define SYS_ptrace     44</em>
+<a id='L103' name='L103'></a> 103 
+<a id='L104' name='L104'></a> 104 <em class='comment'>//                              -- File-handle-related --</em>
+<a id='L105' name='L105'></a> 105 <em class='sharp'>#define</em> SYS_open         45
+<a id='L106' name='L106'></a> 106 <em class='sharp'>#define</em> SYS_pipe         46
+<a id='L107' name='L107'></a> 107 <em class='sharp'>#define</em> SYS_dup          47
+<a id='L108' name='L108'></a> 108 <em class='sharp'>#define</em> SYS_dup2         48
+<a id='L109' name='L109'></a> 109 <em class='sharp'>#define</em> SYS_close        49
+<a id='L110' name='L110'></a> 110 <em class='sharp'>#define</em> SYS_read         50
+<a id='L111' name='L111'></a> 111 <em class='sharp'>#define</em> SYS_pread        51
+<a id='L112' name='L112'></a> 112 <em class='comment'>//#define SYS_readv      52</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'>//#define SYS_preadv     53</em>
+<a id='L114' name='L114'></a> 114 <em class='sharp'>#define</em> SYS_getdirentry  54
+<a id='L115' name='L115'></a> 115 <em class='sharp'>#define</em> SYS_write        55
+<a id='L116' name='L116'></a> 116 <em class='sharp'>#define</em> SYS_pwrite       56
+<a id='L117' name='L117'></a> 117 <em class='comment'>//#define SYS_writev     57</em>
+<a id='L118' name='L118'></a> 118 <em class='comment'>//#define SYS_pwritev    58</em>
+<a id='L119' name='L119'></a> 119 <em class='sharp'>#define</em> SYS_lseek        59
+<a id='L120' name='L120'></a> 120 <em class='sharp'>#define</em> SYS_flock        60
+<a id='L121' name='L121'></a> 121 <em class='sharp'>#define</em> SYS_ftruncate    61
+<a id='L122' name='L122'></a> 122 <em class='sharp'>#define</em> SYS_fsync        62
+<a id='L123' name='L123'></a> 123 <em class='sharp'>#define</em> SYS_fcntl        63
+<a id='L124' name='L124'></a> 124 <em class='sharp'>#define</em> SYS_ioctl        64
+<a id='L125' name='L125'></a> 125 <em class='sharp'>#define</em> SYS_select       65
+<a id='L126' name='L126'></a> 126 <em class='sharp'>#define</em> SYS_poll         66
+<a id='L127' name='L127'></a> 127 
+<a id='L128' name='L128'></a> 128 <em class='comment'>//                              -- Pathname-related --</em>
+<a id='L129' name='L129'></a> 129 <em class='sharp'>#define</em> SYS_link         67
+<a id='L130' name='L130'></a> 130 <em class='sharp'>#define</em> SYS_remove       68
+<a id='L131' name='L131'></a> 131 <em class='sharp'>#define</em> SYS_mkdir        69
+<a id='L132' name='L132'></a> 132 <em class='sharp'>#define</em> SYS_rmdir        70
+<a id='L133' name='L133'></a> 133 <em class='sharp'>#define</em> SYS_mkfifo       71
+<a id='L134' name='L134'></a> 134 <em class='sharp'>#define</em> SYS_rename       72
+<a id='L135' name='L135'></a> 135 <em class='sharp'>#define</em> SYS_access       73
+<a id='L136' name='L136'></a> 136 <em class='comment'>//                              (current directory)</em>
+<a id='L137' name='L137'></a> 137 <em class='sharp'>#define</em> SYS_chdir        74
+<a id='L138' name='L138'></a> 138 <em class='sharp'>#define</em> SYS_fchdir       75
+<a id='L139' name='L139'></a> 139 <em class='sharp'>#define</em> SYS___getcwd     76
+<a id='L140' name='L140'></a> 140 <em class='comment'>//                              (symbolic links)</em>
+<a id='L141' name='L141'></a> 141 <em class='sharp'>#define</em> SYS_symlink      77
+<a id='L142' name='L142'></a> 142 <em class='sharp'>#define</em> SYS_readlink     78
+<a id='L143' name='L143'></a> 143 <em class='comment'>//                              (mount)</em>
+<a id='L144' name='L144'></a> 144 <em class='sharp'>#define</em> SYS_mount        79
+<a id='L145' name='L145'></a> 145 <em class='sharp'>#define</em> SYS_unmount      80
+<a id='L146' name='L146'></a> 146 
+<a id='L147' name='L147'></a> 147 
+<a id='L148' name='L148'></a> 148 <em class='comment'>//                              -- Any-file-related --</em>
+<a id='L149' name='L149'></a> 149 <em class='sharp'>#define</em> SYS_stat         81
+<a id='L150' name='L150'></a> 150 <em class='sharp'>#define</em> SYS_fstat        82
+<a id='L151' name='L151'></a> 151 <em class='sharp'>#define</em> SYS_lstat        83
+<a id='L152' name='L152'></a> 152 <em class='comment'>//                              (timestamps)</em>
+<a id='L153' name='L153'></a> 153 <em class='sharp'>#define</em> SYS_utimes       84
+<a id='L154' name='L154'></a> 154 <em class='sharp'>#define</em> SYS_futimes      85
+<a id='L155' name='L155'></a> 155 <em class='sharp'>#define</em> SYS_lutimes      86
+<a id='L156' name='L156'></a> 156 <em class='comment'>//                              (security/permissions)</em>
+<a id='L157' name='L157'></a> 157 <em class='sharp'>#define</em> SYS_chmod        87
+<a id='L158' name='L158'></a> 158 <em class='sharp'>#define</em> SYS_chown        88
+<a id='L159' name='L159'></a> 159 <em class='sharp'>#define</em> SYS_fchmod       89
+<a id='L160' name='L160'></a> 160 <em class='sharp'>#define</em> SYS_fchown       90
+<a id='L161' name='L161'></a> 161 <em class='sharp'>#define</em> SYS_lchmod       91
+<a id='L162' name='L162'></a> 162 <em class='sharp'>#define</em> SYS_lchown       92
+<a id='L163' name='L163'></a> 163 <em class='comment'>//                              (file system info)</em>
+<a id='L164' name='L164'></a> 164 <em class='comment'>//#define SYS_statfs     93</em>
+<a id='L165' name='L165'></a> 165 <em class='comment'>//#define SYS_fstatfs    94</em>
+<a id='L166' name='L166'></a> 166 <em class='comment'>//#define SYS_getfsstat  95</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'>//                              (POSIX dynamic system limits stuff)</em>
+<a id='L168' name='L168'></a> 168 <em class='comment'>//#define SYS_pathconf   96</em>
+<a id='L169' name='L169'></a> 169 <em class='comment'>//#define SYS_fpathconf  97</em>
+<a id='L170' name='L170'></a> 170 
+<a id='L171' name='L171'></a> 171 <em class='comment'>//                              -- Sockets and networking --</em>
+<a id='L172' name='L172'></a> 172 <em class='sharp'>#define</em> SYS_socket       98
+<a id='L173' name='L173'></a> 173 <em class='sharp'>#define</em> SYS_bind         99
+<a id='L174' name='L174'></a> 174 <em class='sharp'>#define</em> SYS_connect      100
+<a id='L175' name='L175'></a> 175 <em class='sharp'>#define</em> SYS_listen       101
+<a id='L176' name='L176'></a> 176 <em class='sharp'>#define</em> SYS_accept       102
+<a id='L177' name='L177'></a> 177 <em class='comment'>//#define SYS_socketpair 103</em>
+<a id='L178' name='L178'></a> 178 <em class='sharp'>#define</em> SYS_shutdown     104
+<a id='L179' name='L179'></a> 179 <em class='sharp'>#define</em> SYS_getsockname  105
+<a id='L180' name='L180'></a> 180 <em class='sharp'>#define</em> SYS_getpeername  106
+<a id='L181' name='L181'></a> 181 <em class='sharp'>#define</em> SYS_getsockopt   107
+<a id='L182' name='L182'></a> 182 <em class='sharp'>#define</em> SYS_setsockopt   108
+<a id='L183' name='L183'></a> 183 <em class='comment'>//#define SYS_recvfrom   109</em>
+<a id='L184' name='L184'></a> 184 <em class='comment'>//#define SYS_sendto     110</em>
+<a id='L185' name='L185'></a> 185 <em class='comment'>//#define SYS_recvmsg    111</em>
+<a id='L186' name='L186'></a> 186 <em class='comment'>//#define SYS_sendmsg    112</em>
+<a id='L187' name='L187'></a> 187 
+<a id='L188' name='L188'></a> 188 <em class='comment'>//                              -- Time-related --</em>
+<a id='L189' name='L189'></a> 189 <em class='sharp'>#define</em> <a href='../S/62.html#L107' title='Referred from 107 in kern/arch/mips/syscall/syscall.c.'>SYS___time</a>       113
+<a id='L190' name='L190'></a> 190 <em class='sharp'>#define</em> SYS___settime    114
+<a id='L191' name='L191'></a> 191 <em class='sharp'>#define</em> SYS_nanosleep    115
+<a id='L192' name='L192'></a> 192 <em class='comment'>//#define SYS_getitimer  116</em>
+<a id='L193' name='L193'></a> 193 <em class='comment'>//#define SYS_setitimer  117</em>
+<a id='L194' name='L194'></a> 194 
+<a id='L195' name='L195'></a> 195 <em class='comment'>//                              -- Other --</em>
+<a id='L196' name='L196'></a> 196 <em class='sharp'>#define</em> SYS_sync         118
+<a id='L197' name='L197'></a> 197 <em class='sharp'>#define</em> <a href='../S/62.html#L103' title='Referred from 103 in kern/arch/mips/syscall/syscall.c.'>SYS_reboot</a>       119
+<a id='L198' name='L198'></a> 198 <em class='comment'>//#define SYS___sysctl   120</em>
+<a id='L199' name='L199'></a> 199 
+<a id='L200' name='L200'></a> 200 <em class='comment'>/*CALLEND*/</em>
+<a id='L201' name='L201'></a> 201 
+<a id='L202' name='L202'></a> 202 
+<a id='L203' name='L203'></a> 203 <em class='sharp'>#endif</em> <em class='comment'>/* _KERN_SYSCALL_H_ */</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

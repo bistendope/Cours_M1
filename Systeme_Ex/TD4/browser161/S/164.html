@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/include/kern/socket.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/751.html'>include</a>/<a href='../files/752.html'>kern</a>/socket.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2004, 2008</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#ifndef</em> <a href='../S/164.html#L31' title='Defined at 31 in kern/include/kern/socket.h.'>_KERN_SOCKET_H_</a>
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#define</em> <a href='../S/164.html#L30' title='Referred from 30 in kern/include/kern/socket.h.'>_KERN_SOCKET_H_</a>
+<a id='L32' name='L32'></a>  32 
+<a id='L33' name='L33'></a>  33 <em class='comment'>/*</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * Socket-related definitions, for &lt;sys/socket.h&gt;.</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> */</em>
+<a id='L36' name='L36'></a>  36 
+<a id='L37' name='L37'></a>  37 
+<a id='L38' name='L38'></a>  38 <em class='comment'>/*</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * Important</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> */</em>
+<a id='L41' name='L41'></a>  41 
+<a id='L42' name='L42'></a>  42 <em class='comment'>/* Socket types that we (might) support. */</em>
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#define</em> SOCK_STREAM     1       <em class='comment'>/* stream */</em>
+<a id='L44' name='L44'></a>  44 <em class='sharp'>#define</em> SOCK_DGRAM      2       <em class='comment'>/* packet */</em>
+<a id='L45' name='L45'></a>  45 <em class='sharp'>#define</em> SOCK_RAW        3       <em class='comment'>/* raw packet */</em>
+<a id='L46' name='L46'></a>  46 
+<a id='L47' name='L47'></a>  47 <em class='comment'>/* Address families that we (might) support. */</em>
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#define</em> <a href='../S/164.html#L54' title='Referred from 54 in kern/include/kern/socket.h.'>AF_UNSPEC</a>       0
+<a id='L49' name='L49'></a>  49 <em class='sharp'>#define</em> <a href='../S/164.html#L55' title='Referred from 55 in kern/include/kern/socket.h.'>AF_UNIX</a>         1
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#define</em> <a href='../S/164.html#L56' title='Referred from 56 in kern/include/kern/socket.h.'>AF_INET</a>         2
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#define</em> <a href='../S/164.html#L57' title='Referred from 57 in kern/include/kern/socket.h.'>AF_INET6</a>        3
+<a id='L52' name='L52'></a>  52 
+<a id='L53' name='L53'></a>  53 <em class='comment'>/* Protocol families. Pointless layer of indirection in the standard API. */</em>
+<a id='L54' name='L54'></a>  54 <em class='sharp'>#define</em> PF_UNSPEC       <a href='../S/164.html#L48' title='Defined at 48 in kern/include/kern/socket.h.'>AF_UNSPEC</a>
+<a id='L55' name='L55'></a>  55 <em class='sharp'>#define</em> PF_UNIX         <a href='../S/164.html#L49' title='Defined at 49 in kern/include/kern/socket.h.'>AF_UNIX</a>
+<a id='L56' name='L56'></a>  56 <em class='sharp'>#define</em> PF_INET         <a href='../S/164.html#L50' title='Defined at 50 in kern/include/kern/socket.h.'>AF_INET</a>
+<a id='L57' name='L57'></a>  57 <em class='sharp'>#define</em> PF_INET6        <a href='../S/164.html#L51' title='Defined at 51 in kern/include/kern/socket.h.'>AF_INET6</a>
+<a id='L58' name='L58'></a>  58 
+<a id='L59' name='L59'></a>  59 <em class='comment'>/*</em>
+<a id='L60' name='L60'></a>  60 <em class='comment'> * Socket address structures. Socket addresses are polymorphic, and</em>
+<a id='L61' name='L61'></a>  61 <em class='comment'> * the polymorphism is handled by casting pointers. It's fairly gross,</em>
+<a id='L62' name='L62'></a>  62 <em class='comment'> * but way too deeply standardized to ever change.</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'> *</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'> * Each address family defines a sockaddr type (sockaddr_un,</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'> * sockaddr_in, etc.) struct sockaddr is the common prefix of all</em>
+<a id='L66' name='L66'></a>  66 <em class='comment'> * these, and struct sockaddr_storage is defined to be large enough to</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'> * hold any of them.</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'> *</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> * The complex padding in sockaddr_storage forces it to be aligned,</em>
+<a id='L70' name='L70'></a>  70 <em class='comment'> * which wouldn't happen if it were just a char array.</em>
+<a id='L71' name='L71'></a>  71 <em class='comment'> */</em>
+<a id='L72' name='L72'></a>  72 
+<a id='L73' name='L73'></a>  73 <strong class='reserved'>struct</strong> sockaddr <em class='brace'>{</em>
+<a id='L74' name='L74'></a>  74    <a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a> sa_len;
+<a id='L75' name='L75'></a>  75    <a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a> sa_family;
+<a id='L76' name='L76'></a>  76 <em class='brace'>}</em>;
+<a id='L77' name='L77'></a>  77 
+<a id='L78' name='L78'></a>  78 <em class='sharp'>#define</em> <a href='../S/164.html#L86' title='Referred from 86 in kern/include/kern/socket.h.'>_SS_SIZE</a>        128
+<a id='L79' name='L79'></a>  79 <strong class='reserved'>struct</strong> sockaddr_storage <em class='brace'>{</em>
+<a id='L80' name='L80'></a>  80    <a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a> ss_len;
+<a id='L81' name='L81'></a>  81    <a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a> ss_family;
+<a id='L82' name='L82'></a>  82    <a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a> __ss_pad1;
+<a id='L83' name='L83'></a>  83    <a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a> __ss_pad2;
+<a id='L84' name='L84'></a>  84    <a href='../S/50.html#L50' title='Defined at 50 in kern/arch/mips/include/kern/types.h.'>__u32</a> __ss_pad3;
+<a id='L85' name='L85'></a>  85    <a href='../S/50.html#L51' title='Defined at 51 in kern/arch/mips/include/kern/types.h.'>__u64</a> __ss_pad4;
+<a id='L86' name='L86'></a>  86    <strong class='reserved'>char</strong> __ss_pad5[<a href='../S/164.html#L78' title='Defined at 78 in kern/include/kern/socket.h.'>_SS_SIZE</a> - <strong class='reserved'>sizeof</strong>(<a href='../S/50.html#L51' title='Defined at 51 in kern/arch/mips/include/kern/types.h.'>__u64</a>) - <strong class='reserved'>sizeof</strong>(<a href='../S/50.html#L50' title='Defined at 50 in kern/arch/mips/include/kern/types.h.'>__u32</a>) - 4*<strong class='reserved'>sizeof</strong>(<a href='../S/50.html#L48' title='Defined at 48 in kern/arch/mips/include/kern/types.h.'>__u8</a>)];
+<a id='L87' name='L87'></a>  87 <em class='brace'>}</em>;
+<a id='L88' name='L88'></a>  88 
+<a id='L89' name='L89'></a>  89 
+<a id='L90' name='L90'></a>  90 <em class='comment'>/*</em>
+<a id='L91' name='L91'></a>  91 <em class='comment'> * Not very important.</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'> */</em>
+<a id='L93' name='L93'></a>  93 
+<a id='L94' name='L94'></a>  94 <em class='comment'>/*</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'> * msghdr structures for sendmsg() and recvmsg().</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'> */</em>
+<a id='L97' name='L97'></a>  97 
+<a id='L98' name='L98'></a>  98 <strong class='reserved'>struct</strong> msghdr <em class='brace'>{</em>
+<a id='L99' name='L99'></a>  99         <strong class='reserved'>void</strong> *msg_name;         <em class='comment'>/* really sockaddr; address, or null */</em>
+<a id='L100' name='L100'></a> 100         <a href='../D/2501.html' title='Multiple defined in 2 places.'>socklen_t</a> msg_namelen;  <em class='comment'>/* size of msg_name object, or 0 */</em>
+<a id='L101' name='L101'></a> 101         <strong class='reserved'>struct</strong> <a href='../S/157.html#L38' title='Defined at 38 in kern/include/kern/iovec.h.'>iovec</a> *msg_iov;  <em class='comment'>/* I/O buffers */</em>
+<a id='L102' name='L102'></a> 102         <strong class='reserved'>int</strong> msg_iovlen;         <em class='comment'>/* number of iovecs */</em>
+<a id='L103' name='L103'></a> 103         <strong class='reserved'>void</strong> *msg_control;      <em class='comment'>/* auxiliary data area, or null */</em>
+<a id='L104' name='L104'></a> 104         <a href='../D/2501.html' title='Multiple defined in 2 places.'>socklen_t</a> msg_controllen; <em class='comment'>/* size of msg_control area */</em>
+<a id='L105' name='L105'></a> 105         <strong class='reserved'>int</strong> msg_flags;          <em class='comment'>/* flags */</em>
+<a id='L106' name='L106'></a> 106 <em class='brace'>}</em>;
+<a id='L107' name='L107'></a> 107 
+<a id='L108' name='L108'></a> 108 <strong class='reserved'>struct</strong> cmsghdr <em class='brace'>{</em>
+<a id='L109' name='L109'></a> 109         <a href='../D/2501.html' title='Multiple defined in 2 places.'>socklen_t</a> cmsg_len;     <em class='comment'>/* length of control data, including header */</em>
+<a id='L110' name='L110'></a> 110         <strong class='reserved'>int</strong> cmsg_level;         <em class='comment'>/* protocol layer item originates from */</em>
+<a id='L111' name='L111'></a> 111         <strong class='reserved'>int</strong> cmsg_type;          <em class='comment'>/* protocol-specific message type */</em>
+<a id='L112' name='L112'></a> 112         <em class='comment'>/* char cmsg_data[];*/</em>  <em class='comment'>/* data follows the header */</em>
+<a id='L113' name='L113'></a> 113 <em class='brace'>}</em>;
+<a id='L114' name='L114'></a> 114 
+<a id='L115' name='L115'></a> 115 
+<a id='L116' name='L116'></a> 116 <em class='sharp'>#endif</em> <em class='comment'>/* _KERN_SOCKET_H_ */</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

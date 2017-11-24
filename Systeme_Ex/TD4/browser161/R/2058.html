@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>snprintf</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/63.html#L160'>snprintf</a>          160 kern/arch/mips/thread/cpu.c 		snprintf(buf, max, "MIPS/161 (System/161 1.x and pre-2.x)");</span>
+<span class='curline'><a href='../S/63.html#L164'>snprintf</a>          164 kern/arch/mips/thread/cpu.c 		snprintf(buf, max, "MIPS/161 (System/161 2.x) features 0x%x",</span>
+<span class='curline'><a href='../S/63.html#L173'>snprintf</a>          173 kern/arch/mips/thread/cpu.c 		snprintf(buf, max, "32-bit MIPS (unknown type, CPU ID 0x%x)",</span>
+<span class='curline'><a href='../S/96.html#L1354'>snprintf</a>         1354 kern/dev/lamebus/emu.c 	snprintf(name, sizeof(name), "emu%d", emuno);</span>
+<span class='curline'><a href='../S/101.html#L282'>snprintf</a>          282 kern/dev/lamebus/lhd.c 	snprintf(name, sizeof(name), "lhd%d", lhdno);</span>
+<span class='curline'><a href='../S/125.html#L50'>snprintf</a>           50 kern/fs/semfs/semfs_obj.c 	snprintf(lockname, sizeof(lockname), "sem:l.%s", name);</span>
+<span class='curline'><a href='../S/125.html#L51'>snprintf</a>           51 kern/fs/semfs/semfs_obj.c 	snprintf(cvname, sizeof(cvname), "sem:%s", name);</span>
+<span class='curline'><a href='../S/172.html#L157'>snprintf</a>          157 kern/include/lib.h int snprintf(char *buf, size_t maxlen, const char *fmt, ...) __PF(3,4);</span>
+<span class='curline'><a href='../S/214.html#L107'>snprintf</a>          107 kern/test/fstest.c 	snprintf(buf, buflen, "%s:%s%s", fs, FILENAME, namesuffix);</span>
+<span class='curline'><a href='../S/214.html#L357'>snprintf</a>          357 kern/test/fstest.c 	snprintf(numstr, sizeof(numstr), "%lu", num);</span>
+<span class='curline'><a href='../S/214.html#L482'>snprintf</a>          482 kern/test/fstest.c 		snprintf(numstr, sizeof(numstr), "%lu-%d", num, i);</span>
+<span class='curline'><a href='../S/214.html#L551'>snprintf</a>          551 kern/test/fstest.c 		snprintf(namesuffix, sizeof(namesuffix), "%lu-%d", num, i);</span>
+<span class='curline'><a href='../S/214.html#L591'>snprintf</a>          591 kern/test/fstest.c 		snprintf(namesuffix, sizeof(namesuffix), "%lu-%d", num, i);</span>
+<span class='curline'><a href='../S/214.html#L638'>snprintf</a>          638 kern/test/fstest.c 		snprintf(namesuffix, sizeof(namesuffix), "%lu-%d", num, i);</span>
+<span class='curline'><a href='../S/220.html#L104'>snprintf</a>          104 kern/test/threadtest.c 		snprintf(name, sizeof(name), "threadtest%d", i);</span>
+<span class='curline'><a href='../S/221.html#L73'>snprintf</a>           73 kern/test/tt3.c 			snprintf(tmp, sizeof(tmp), "wc%d", i);</span>
+<span class='curline'><a href='../S/221.html#L149'>snprintf</a>          149 kern/test/tt3.c 		snprintf(name, sizeof(name), "sleepalot%d", i);</span>
+<span class='curline'><a href='../S/221.html#L226'>snprintf</a>          226 kern/test/tt3.c 		snprintf(name, sizeof(name), "compute%d", i);</span>
+<span class='curline'><a href='../S/227.html#L196'>snprintf</a>          196 kern/thread/thread.c 	snprintf(namebuf, sizeof(namebuf), "&lt;boot #%d&gt;", c-&gt;c_number);</span>
+<span class='curline'><a href='../S/234.html#L80'>snprintf</a>           80 kern/vfs/vfslookup.c 	snprintf(tmp, sizeof(tmp)-1, "%s", fsname);</span>
+<span class='curline'><a href='../S/448.html#L219'>snprintf</a>          219 userland/bin/ls/ls.c 		snprintf(newpath, sizeof(newpath), "%s/%s", path, buf);</span>
+<span class='curline'><a href='../S/448.html#L258'>snprintf</a>          258 userland/bin/ls/ls.c 		snprintf(newpath, sizeof(newpath), "%s/%s", path, buf);</span>
+<span class='curline'><a href='../S/466.html#L256'>snprintf</a>          256 userland/bin/tac/tac.c 	snprintf(dataname, sizeof(dataname), ".tmp.tacdata.%d", (int)pid);</span>
+<span class='curline'><a href='../S/466.html#L259'>snprintf</a>          259 userland/bin/tac/tac.c 	snprintf(indexname, sizeof(indexname), ".tmp.tacindex.%d", (int)pid);</span>
+<span class='curline'><a href='../S/479.html#L56'>snprintf</a>           56 userland/include/stdio.h int snprintf(char *buf, size_t len, const char *fmt, ...);</span>
+<span class='curline'><a href='../S/523.html#L45'>snprintf</a>           45 userland/lib/libc/unix/__assert.c 	snprintf(buf, sizeof(buf), "Assertion failed: %s (%s line %d)\n",</span>
+<span class='curline'><a href='../S/526.html#L76'>snprintf</a>           76 userland/lib/libc/unix/execvp.c 		snprintf(progpath + len, sizeof(progpath) - len, "/%s", prog);</span>
+<span class='curline'><a href='../S/532.html#L196'>snprintf</a>          196 userland/sbin/dumpsfs/dumpsfs.c 				snprintf(tmp, sizeof(tmp), "0x%x",</span>
+<span class='curline'><a href='../S/532.html#L249'>snprintf</a>          249 userland/sbin/dumpsfs/dumpsfs.c 		snprintf(tmp, sizeof(tmp), "%u (0x%x)",</span>
+<span class='curline'><a href='../S/532.html#L392'>snprintf</a>          392 userland/sbin/dumpsfs/dumpsfs.c 			snprintf(tmp, sizeof(tmp), "0x%x",</span>
+<span class='curline'><a href='../S/532.html#L467'>snprintf</a>          467 userland/sbin/dumpsfs/dumpsfs.c 		snprintf(tmp, sizeof(tmp), "%u (0x%x)",</span>
+<span class='curline'><a href='../S/548.html#L95'>snprintf</a>           95 userland/sbin/sfsck/freemap.c 		snprintf(rv, sizeof(rv), "freemap block %lu",</span>
+<span class='curline'><a href='../S/548.html#L99'>snprintf</a>           99 userland/sbin/sfsck/freemap.c 		snprintf(rv, sizeof(rv), "inode %lu",</span>
+<span class='curline'><a href='../S/548.html#L103'>snprintf</a>          103 userland/sbin/sfsck/freemap.c 		snprintf(rv, sizeof(rv), "indirect block of inode %lu",</span>
+<span class='curline'><a href='../S/548.html#L107'>snprintf</a>          107 userland/sbin/sfsck/freemap.c 		snprintf(rv, sizeof(rv), "directory data from inode %lu",</span>
+<span class='curline'><a href='../S/548.html#L111'>snprintf</a>          111 userland/sbin/sfsck/freemap.c 		snprintf(rv, sizeof(rv), "file data from inode %lu",</span>
+<span class='curline'><a href='../S/556.html#L324'>snprintf</a>          324 userland/sbin/sfsck/pass1.c 			snprintf(sfd-&gt;sfd_name, sizeof(sfd-&gt;sfd_name),</span>
+<span class='curline'><a href='../S/556.html#L412'>snprintf</a>          412 userland/sbin/sfsck/pass1.c 			snprintf(path, sizeof(path), "%s/%s",</span>
+<span class='curline'><a href='../S/556.html#L473'>snprintf</a>          473 userland/sbin/sfsck/pass1.c 	snprintf(path, sizeof(path), "%s:", sb_volname());</span>
+<span class='curline'><a href='../S/557.html#L127'>snprintf</a>          127 userland/sbin/sfsck/pass2.c 				snprintf(d1-&gt;sfd_name, sizeof(d1-&gt;sfd_name),</span>
+<span class='curline'><a href='../S/557.html#L252'>snprintf</a>          252 userland/sbin/sfsck/pass2.c 			snprintf(path, sizeof(path), "%s/%s",</span>
+<span class='curline'><a href='../S/557.html#L323'>snprintf</a>          323 userland/sbin/sfsck/pass2.c 	snprintf(path, sizeof(path), "%s:", sb_volname());</span>
+<span class='curline'><a href='../S/593.html#L302'>snprintf</a>          302 userland/testbin/badcall/bad_waitpid.c 	snprintf(semname, sizeof(semname), "sem:badcall.%d", (int)getpid());</span>
+<span class='curline'><a href='../S/605.html#L91'>snprintf</a>           91 userland/testbin/bigfile/bigfile.c 		snprintf(buffer, sizeof(buffer), "%d\n", i);</span>
+<span class='curline'><a href='../S/607.html#L210'>snprintf</a>          210 userland/testbin/bigfork/bigfork.c 			snprintf(msg, sizeof(msg),</span>
+<span class='curline'><a href='../S/607.html#L214'>snprintf</a>          214 userland/testbin/bigfork/bigfork.c 			snprintf(msg, sizeof(msg),</span>
+<span class='curline'><a href='../S/619.html#L71'>snprintf</a>           71 userland/testbin/dirconc/dirconc.c 		snprintf(buf, len, "%s", a);</span>
+<span class='curline'><a href='../S/619.html#L76'>snprintf</a>           76 userland/testbin/dirconc/dirconc.c 		snprintf(buf, len, "%s/%s", a, b);</span>
+<span class='curline'><a href='../S/619.html#L80'>snprintf</a>           80 userland/testbin/dirconc/dirconc.c 	snprintf(buf, len, "%s/%s/%s", a, b, c);</span>
+<span class='curline'><a href='../S/619.html#L301'>snprintf</a>          301 userland/testbin/dirconc/dirconc.c 		snprintf(buf, sizeof(buf), "%s/%s", sofar, names[i]);</span>
+<span class='curline'><a href='../S/644.html#L54'>snprintf</a>           54 userland/testbin/frack/data.c 	snprintf(smallbuf, sizeof(smallbuf), "%u@%u\n", seq, code);</span>
+<span class='curline'><a href='../S/672.html#L94'>snprintf</a>           94 userland/testbin/multiexec/multiexec.c 	snprintf(sem-&gt;name, sizeof(sem-&gt;name), "sem:multiexec.%s.%d",</span>
+<span class='curline'><a href='../S/676.html#L248'>snprintf</a>          248 userland/testbin/parallelvm/parallelvm.c 	snprintf(sem-&gt;name, sizeof(sem-&gt;name), "sem:parallelvm.%s.%d",</span>
+<span class='curline'><a href='../S/680.html#L207'>snprintf</a>          207 userland/testbin/psort/psort.c 		snprintf(buf, len, "%s: proc %d: ", progname, me);</span>
+<span class='curline'><a href='../S/680.html#L210'>snprintf</a>          210 userland/testbin/psort/psort.c 		snprintf(buf, len, "%s: ", progname);</span>
+<span class='curline'><a href='../S/680.html#L218'>snprintf</a>          218 userland/testbin/psort/psort.c 		snprintf(buf+pos, len-pos, ": %s\n", strerror(err));</span>
+<span class='curline'><a href='../S/680.html#L221'>snprintf</a>          221 userland/testbin/psort/psort.c 		snprintf(buf+pos, len-pos, "\n");</span>
+<span class='curline'><a href='../S/680.html#L657'>snprintf</a>          657 userland/testbin/psort/psort.c 	snprintf(rv, sizeof(rv), "bin-%d-%d", a, b);</span>
+<span class='curline'><a href='../S/680.html#L666'>snprintf</a>          666 userland/testbin/psort/psort.c 	snprintf(rv, sizeof(rv), "merged-%d", a);</span>
+<span class='curline'><a href='../S/680.html#L973'>snprintf</a>          973 userland/testbin/psort/psort.c 	snprintf(rv, sizeof(rv), "valid-%d", a);</span>
+<span class='curline'><a href='../S/689.html#L89'>snprintf</a>           89 userland/testbin/rmdirtest/rmdirtest.c 	snprintf(tmp, sizeof(tmp), "%s/%s", startpoint, testdir);</span>
+<span class='curline'><a href='../S/689.html#L202'>snprintf</a>          202 userland/testbin/rmdirtest/rmdirtest.c 	snprintf(buf, sizeof(buf), "../%s", testdir);</span>
+<span class='curline'><a href='../S/695.html#L204'>snprintf</a>          204 userland/testbin/schedpong/main.c 	snprintf(buf, bufmax, "%lld.%09lu", (long long)secs, nsecs);</span>
+<span class='curline'><a href='../S/719.html#L125'>snprintf</a>          125 userland/testbin/usemtest/usemtest.c 	snprintf(sem-&gt;name, sizeof(sem-&gt;name), "sem:usemtest.%s%u", tag, num);</span>
+</pre>
+</body>
+</html>

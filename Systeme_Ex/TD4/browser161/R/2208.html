@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>threadlistnode</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/187.html#L81'>threadlistnode</a>     81 kern/include/thread.h 	struct threadlistnode t_listnode; /* Link for run/sleep/zombie lists */</span>
+<span class='curline'><a href='../S/188.html#L58'>threadlistnode</a>     58 kern/include/threadlist.h 	struct threadlistnode *tln_prev;</span>
+<span class='curline'><a href='../S/188.html#L59'>threadlistnode</a>     59 kern/include/threadlist.h 	struct threadlistnode *tln_next;</span>
+<span class='curline'><a href='../S/188.html#L64'>threadlistnode</a>     64 kern/include/threadlist.h 	struct threadlistnode tl_head;</span>
+<span class='curline'><a href='../S/188.html#L65'>threadlistnode</a>     65 kern/include/threadlist.h 	struct threadlistnode tl_tail;</span>
+<span class='curline'><a href='../S/188.html#L70'>threadlistnode</a>     70 kern/include/threadlist.h void threadlistnode_init(struct threadlistnode *tln, struct thread *self);</span>
+<span class='curline'><a href='../S/188.html#L71'>threadlistnode</a>     71 kern/include/threadlist.h void threadlistnode_cleanup(struct threadlistnode *tln);</span>
+<span class='curline'><a href='../S/228.html#L40'>threadlistnode</a>     40 kern/thread/threadlist.c threadlistnode_init(struct threadlistnode *tln, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L51'>threadlistnode</a>     51 kern/thread/threadlist.c threadlistnode_cleanup(struct threadlistnode *tln)</span>
+<span class='curline'><a href='../S/228.html#L107'>threadlistnode</a>    107 kern/thread/threadlist.c threadlist_insertafternode(struct threadlistnode *onlist, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L109'>threadlistnode</a>    109 kern/thread/threadlist.c 	struct threadlistnode *addee;</span>
+<span class='curline'><a href='../S/228.html#L127'>threadlistnode</a>    127 kern/thread/threadlist.c threadlist_insertbeforenode(struct thread *t, struct threadlistnode *onlist)</span>
+<span class='curline'><a href='../S/228.html#L129'>threadlistnode</a>    129 kern/thread/threadlist.c 	struct threadlistnode *addee;</span>
+<span class='curline'><a href='../S/228.html#L147'>threadlistnode</a>    147 kern/thread/threadlist.c threadlist_removenode(struct threadlistnode *tln)</span>
+<span class='curline'><a href='../S/228.html#L185'>threadlistnode</a>    185 kern/thread/threadlist.c 	struct threadlistnode *tln;</span>
+<span class='curline'><a href='../S/228.html#L203'>threadlistnode</a>    203 kern/thread/threadlist.c 	struct threadlistnode *tln;</span>
+</pre>
+</body>
+</html>

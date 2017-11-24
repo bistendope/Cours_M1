@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>uio</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/86.html#L245'>uio</a>               245 kern/dev/generic/console.c con_io(struct device *dev, struct uio *uio)</span>
+<span class='curline'><a href='../S/86.html#L253'>uio</a>               253 kern/dev/generic/console.c 	if (uio-&gt;uio_rw==UIO_READ) {</span>
+<span class='curline'><a href='../S/86.html#L263'>uio</a>               263 kern/dev/generic/console.c 	while (uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/86.html#L264'>uio</a>               264 kern/dev/generic/console.c 		if (uio-&gt;uio_rw==UIO_READ) {</span>
+<span class='curline'><a href='../S/86.html#L269'>uio</a>               269 kern/dev/generic/console.c 			result = uiomove(&amp;ch, 1, uio);</span>
+<span class='curline'><a href='../S/86.html#L279'>uio</a>               279 kern/dev/generic/console.c 			result = uiomove(&amp;ch, 1, uio);</span>
+<span class='curline'><a href='../S/88.html#L74'>uio</a>                74 kern/dev/generic/random.c randio(struct device *dev, struct uio *uio)</span>
+<span class='curline'><a href='../S/88.html#L78'>uio</a>                78 kern/dev/generic/random.c 	if (uio-&gt;uio_rw != UIO_READ) {</span>
+<span class='curline'><a href='../S/88.html#L82'>uio</a>                82 kern/dev/generic/random.c 	return rs-&gt;rs_read(rs-&gt;rs_devdata, uio);</span>
+<span class='curline'><a href='../S/89.html#L34'>uio</a>                34 kern/dev/generic/random.h struct uio;</span>
+<span class='curline'><a href='../S/89.html#L41'>uio</a>                41 kern/dev/generic/random.h 	int (*rs_read)(void *devdata, struct uio *uio);</span>
+<span class='curline'><a href='../S/96.html#L270'>uio</a>               270 kern/dev/lamebus/emu.c 	   uint32_t op, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L274'>uio</a>               274 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L276'>uio</a>               276 kern/dev/lamebus/emu.c 	if (uio-&gt;uio_offset &gt; (off_t)0xffffffff) {</span>
+<span class='curline'><a href='../S/96.html#L285'>uio</a>               285 kern/dev/lamebus/emu.c 	emu_wreg(sc, REG_OFFSET, uio-&gt;uio_offset);</span>
+<span class='curline'><a href='../S/96.html#L293'>uio</a>               293 kern/dev/lamebus/emu.c 	result = uiomove(sc-&gt;e_iobuf, emu_rreg(sc, REG_IOLEN), uio);</span>
+<span class='curline'><a href='../S/96.html#L295'>uio</a>               295 kern/dev/lamebus/emu.c 	uio-&gt;uio_offset = emu_rreg(sc, REG_OFFSET);</span>
+<span class='curline'><a href='../S/96.html#L308'>uio</a>               308 kern/dev/lamebus/emu.c 	 struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L310'>uio</a>               310 kern/dev/lamebus/emu.c 	return emu_doread(sc, handle, len, EMU_OP_READ, uio);</span>
+<span class='curline'><a href='../S/96.html#L319'>uio</a>               319 kern/dev/lamebus/emu.c 	    struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L321'>uio</a>               321 kern/dev/lamebus/emu.c 	return emu_doread(sc, handle, len, EMU_OP_READDIR, uio);</span>
+<span class='curline'><a href='../S/96.html#L330'>uio</a>               330 kern/dev/lamebus/emu.c 	  struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L334'>uio</a>               334 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw == UIO_WRITE);</span>
+<span class='curline'><a href='../S/96.html#L336'>uio</a>               336 kern/dev/lamebus/emu.c 	if (uio-&gt;uio_offset &gt; (off_t)0xffffffff) {</span>
+<span class='curline'><a href='../S/96.html#L344'>uio</a>               344 kern/dev/lamebus/emu.c 	emu_wreg(sc, REG_OFFSET, uio-&gt;uio_offset);</span>
+<span class='curline'><a href='../S/96.html#L346'>uio</a>               346 kern/dev/lamebus/emu.c 	result = uiomove(sc-&gt;e_iobuf, len, uio);</span>
+<span class='curline'><a href='../S/96.html#L541'>uio</a>               541 kern/dev/lamebus/emu.c emufs_read(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L548'>uio</a>               548 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L550'>uio</a>               550 kern/dev/lamebus/emu.c 	while (uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/96.html#L551'>uio</a>               551 kern/dev/lamebus/emu.c 		amt = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/96.html#L556'>uio</a>               556 kern/dev/lamebus/emu.c 		oldresid = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/96.html#L558'>uio</a>               558 kern/dev/lamebus/emu.c 		result = emu_read(ev-&gt;ev_emu, ev-&gt;ev_handle, amt, uio);</span>
+<span class='curline'><a href='../S/96.html#L563'>uio</a>               563 kern/dev/lamebus/emu.c 		if (uio-&gt;uio_resid == oldresid) {</span>
+<span class='curline'><a href='../S/96.html#L577'>uio</a>               577 kern/dev/lamebus/emu.c emufs_getdirentry(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L582'>uio</a>               582 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L584'>uio</a>               584 kern/dev/lamebus/emu.c 	amt = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/96.html#L589'>uio</a>               589 kern/dev/lamebus/emu.c 	return emu_readdir(ev-&gt;ev_emu, ev-&gt;ev_handle, amt, uio);</span>
+<span class='curline'><a href='../S/96.html#L597'>uio</a>               597 kern/dev/lamebus/emu.c emufs_write(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L604'>uio</a>               604 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/96.html#L606'>uio</a>               606 kern/dev/lamebus/emu.c 	while (uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/96.html#L607'>uio</a>               607 kern/dev/lamebus/emu.c 		amt = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/96.html#L612'>uio</a>               612 kern/dev/lamebus/emu.c 		oldresid = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/96.html#L614'>uio</a>               614 kern/dev/lamebus/emu.c 		result = emu_write(ev-&gt;ev_emu, ev-&gt;ev_handle, amt, uio);</span>
+<span class='curline'><a href='../S/96.html#L619'>uio</a>               619 kern/dev/lamebus/emu.c 		if (uio-&gt;uio_resid == oldresid) {</span>
+<span class='curline'><a href='../S/96.html#L829'>uio</a>               829 kern/dev/lamebus/emu.c emufs_namefile(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L841'>uio</a>               841 kern/dev/lamebus/emu.c 	(void)uio;</span>
+<span class='curline'><a href='../S/96.html#L948'>uio</a>               948 kern/dev/lamebus/emu.c emufs_uio_op_isdir(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L951'>uio</a>               951 kern/dev/lamebus/emu.c 	(void)uio;</span>
+<span class='curline'><a href='../S/96.html#L957'>uio</a>               957 kern/dev/lamebus/emu.c emufs_uio_op_notdir(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L960'>uio</a>               960 kern/dev/lamebus/emu.c 	(void)uio;</span>
+<span class='curline'><a href='../S/96.html#L975'>uio</a>               975 kern/dev/lamebus/emu.c emufs_readlink_notlink(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L978'>uio</a>               978 kern/dev/lamebus/emu.c 	(void)uio;</span>
+<span class='curline'><a href='../S/101.html#L187'>uio</a>               187 kern/dev/lamebus/lhd.c lhd_io(struct device *d, struct uio *uio)</span>
+<span class='curline'><a href='../S/101.html#L191'>uio</a>               191 kern/dev/lamebus/lhd.c 	uint32_t sector = uio-&gt;uio_offset / LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L192'>uio</a>               192 kern/dev/lamebus/lhd.c 	uint32_t sectoff = uio-&gt;uio_offset % LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L193'>uio</a>               193 kern/dev/lamebus/lhd.c 	uint32_t len = uio-&gt;uio_resid / LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L194'>uio</a>               194 kern/dev/lamebus/lhd.c 	uint32_t lenoff = uio-&gt;uio_resid % LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L211'>uio</a>               211 kern/dev/lamebus/lhd.c 	if (uio-&gt;uio_rw==UIO_WRITE) {</span>
+<span class='curline'><a href='../S/101.html#L225'>uio</a>               225 kern/dev/lamebus/lhd.c 		if (uio-&gt;uio_rw == UIO_WRITE) {</span>
+<span class='curline'><a href='../S/101.html#L226'>uio</a>               226 kern/dev/lamebus/lhd.c 			result = uiomove(lh-&gt;lh_buf, LHD_SECTSIZE, uio);</span>
+<span class='curline'><a href='../S/101.html#L250'>uio</a>               250 kern/dev/lamebus/lhd.c 		if (result==0 &amp;&amp; uio-&gt;uio_rw==UIO_READ) {</span>
+<span class='curline'><a href='../S/101.html#L252'>uio</a>               252 kern/dev/lamebus/lhd.c 			result = uiomove(lh-&gt;lh_buf, LHD_SECTSIZE, uio);</span>
+<span class='curline'><a href='../S/106.html#L69'>uio</a>                69 kern/dev/lamebus/lrandom.c lrandom_read(void *devdata, struct uio *uio)</span>
+<span class='curline'><a href='../S/106.html#L75'>uio</a>                75 kern/dev/lamebus/lrandom.c 	while (uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/106.html#L78'>uio</a>                78 kern/dev/lamebus/lrandom.c 		result = uiomove(&amp;val, sizeof(val), uio);</span>
+<span class='curline'><a href='../S/107.html#L33'>uio</a>                33 kern/dev/lamebus/lrandom.h struct uio;</span>
+<span class='curline'><a href='../S/107.html#L44'>uio</a>                44 kern/dev/lamebus/lrandom.h int lrandom_read(/*struct lrandom_softc*/ void *, struct uio *);</span>
+<span class='curline'><a href='../S/126.html#L189'>uio</a>               189 kern/fs/semfs/semfs_vnops.c semfs_read(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L198'>uio</a>               198 kern/fs/semfs/semfs_vnops.c 	while (uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/126.html#L200'>uio</a>               200 kern/fs/semfs/semfs_vnops.c 			consume = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/126.html#L209'>uio</a>               209 kern/fs/semfs/semfs_vnops.c 			uio-&gt;uio_offset += consume;</span>
+<span class='curline'><a href='../S/126.html#L210'>uio</a>               210 kern/fs/semfs/semfs_vnops.c 			uio-&gt;uio_resid -= consume;</span>
+<span class='curline'><a href='../S/126.html#L212'>uio</a>               212 kern/fs/semfs/semfs_vnops.c 		if (uio-&gt;uio_resid == 0) {</span>
+<span class='curline'><a href='../S/126.html#L231'>uio</a>               231 kern/fs/semfs/semfs_vnops.c semfs_write(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L240'>uio</a>               240 kern/fs/semfs/semfs_vnops.c 	while (uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/126.html#L241'>uio</a>               241 kern/fs/semfs/semfs_vnops.c 		newcount = sem-&gt;sems_count + uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/126.html#L251'>uio</a>               251 kern/fs/semfs/semfs_vnops.c 		uio-&gt;uio_offset += uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/126.html#L252'>uio</a>               252 kern/fs/semfs/semfs_vnops.c 		uio-&gt;uio_resid = 0;</span>
+<span class='curline'><a href='../S/126.html#L303'>uio</a>               303 kern/fs/semfs/semfs_vnops.c semfs_getdirentry(struct vnode *dirvn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L311'>uio</a>               311 kern/fs/semfs/semfs_vnops.c 	KASSERT(uio-&gt;uio_offset &gt;= 0);</span>
+<span class='curline'><a href='../S/126.html#L312'>uio</a>               312 kern/fs/semfs/semfs_vnops.c 	pos = uio-&gt;uio_offset;</span>
+<span class='curline'><a href='../S/126.html#L324'>uio</a>               324 kern/fs/semfs/semfs_vnops.c 				 uio);</span>
+<span class='curline'><a href='../S/126.html#L362'>uio</a>               362 kern/fs/semfs/semfs_vnops.c semfs_namefile(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L365'>uio</a>               365 kern/fs/semfs/semfs_vnops.c 	(void)uio;</span>
+<span class='curline'><a href='../S/132.html#L60'>uio</a>                60 kern/fs/sfs/sfs_io.c sfs_rwblock(struct sfs_fs *sfs, struct uio *uio)</span>
+<span class='curline'><a href='../S/132.html#L68'>uio</a>                68 kern/fs/sfs/sfs_io.c 	      uio-&gt;uio_rw == UIO_READ ? "read" : "write",</span>
+<span class='curline'><a href='../S/132.html#L69'>uio</a>                69 kern/fs/sfs/sfs_io.c 	      uio-&gt;uio_offset / SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L72'>uio</a>                72 kern/fs/sfs/sfs_io.c 	result = DEVOP_IO(sfs-&gt;sfs_device, uio);</span>
+<span class='curline'><a href='../S/132.html#L87'>uio</a>                87 kern/fs/sfs/sfs_io.c 				uio-&gt;uio_offset / SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L98'>uio</a>                98 kern/fs/sfs/sfs_io.c 				uio-&gt;uio_offset / SFS_BLOCKSIZE, tries);</span>
+<span class='curline'><a href='../S/132.html#L111'>uio</a>               111 kern/fs/sfs/sfs_io.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/132.html#L126'>uio</a>               126 kern/fs/sfs/sfs_io.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/132.html#L150'>uio</a>               150 kern/fs/sfs/sfs_io.c sfs_partialio(struct sfs_vnode *sv, struct uio *uio,</span>
+<span class='curline'><a href='../S/132.html#L168'>uio</a>               168 kern/fs/sfs/sfs_io.c 	bool doalloc = (uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/132.html#L176'>uio</a>               176 kern/fs/sfs/sfs_io.c 	fileblock = uio-&gt;uio_offset / SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L189'>uio</a>               189 kern/fs/sfs/sfs_io.c 		KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/132.html#L205'>uio</a>               205 kern/fs/sfs/sfs_io.c 	result = uiomove(iobuf+skipstart, len, uio);</span>
+<span class='curline'><a href='../S/132.html#L213'>uio</a>               213 kern/fs/sfs/sfs_io.c 	if (uio-&gt;uio_rw == UIO_WRITE) {</span>
+<span class='curline'><a href='../S/132.html#L228'>uio</a>               228 kern/fs/sfs/sfs_io.c sfs_blockio(struct sfs_vnode *sv, struct uio *uio)</span>
+<span class='curline'><a href='../S/132.html#L234'>uio</a>               234 kern/fs/sfs/sfs_io.c 	bool doalloc = (uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/132.html#L241'>uio</a>               241 kern/fs/sfs/sfs_io.c 	fileblock = uio-&gt;uio_offset / SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L256'>uio</a>               256 kern/fs/sfs/sfs_io.c 		KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/132.html#L257'>uio</a>               257 kern/fs/sfs/sfs_io.c 		return uiomovezeros(SFS_BLOCKSIZE, uio);</span>
+<span class='curline'><a href='../S/132.html#L264'>uio</a>               264 kern/fs/sfs/sfs_io.c 	saveoff = uio-&gt;uio_offset;</span>
+<span class='curline'><a href='../S/132.html#L266'>uio</a>               266 kern/fs/sfs/sfs_io.c 	uio-&gt;uio_offset = diskoff;</span>
+<span class='curline'><a href='../S/132.html#L271'>uio</a>               271 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_resid &gt;= SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L272'>uio</a>               272 kern/fs/sfs/sfs_io.c 	saveres = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/132.html#L274'>uio</a>               274 kern/fs/sfs/sfs_io.c 	uio-&gt;uio_resid = diskres;</span>
+<span class='curline'><a href='../S/132.html#L276'>uio</a>               276 kern/fs/sfs/sfs_io.c 	result = sfs_rwblock(sfs, uio);</span>
+<span class='curline'><a href='../S/132.html#L282'>uio</a>               282 kern/fs/sfs/sfs_io.c 	uio-&gt;uio_offset = (uio-&gt;uio_offset - diskoff) + saveoff;</span>
+<span class='curline'><a href='../S/132.html#L283'>uio</a>               283 kern/fs/sfs/sfs_io.c 	uio-&gt;uio_resid = (uio-&gt;uio_resid - diskres) + saveres;</span>
+<span class='curline'><a href='../S/132.html#L292'>uio</a>               292 kern/fs/sfs/sfs_io.c sfs_io(struct sfs_vnode *sv, struct uio *uio)</span>
+<span class='curline'><a href='../S/132.html#L299'>uio</a>               299 kern/fs/sfs/sfs_io.c 	origresid = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/132.html#L306'>uio</a>               306 kern/fs/sfs/sfs_io.c 	if (uio-&gt;uio_rw == UIO_READ) {</span>
+<span class='curline'><a href='../S/132.html#L308'>uio</a>               308 kern/fs/sfs/sfs_io.c 		off_t endpos = uio-&gt;uio_offset + uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/132.html#L310'>uio</a>               310 kern/fs/sfs/sfs_io.c 		if (uio-&gt;uio_offset &gt;= size) {</span>
+<span class='curline'><a href='../S/132.html#L317'>uio</a>               317 kern/fs/sfs/sfs_io.c 			KASSERT(uio-&gt;uio_resid &gt; extraresid);</span>
+<span class='curline'><a href='../S/132.html#L318'>uio</a>               318 kern/fs/sfs/sfs_io.c 			uio-&gt;uio_resid -= extraresid;</span>
+<span class='curline'><a href='../S/132.html#L325'>uio</a>               325 kern/fs/sfs/sfs_io.c 	blkoff = uio-&gt;uio_offset % SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L334'>uio</a>               334 kern/fs/sfs/sfs_io.c 		if (len &gt; uio-&gt;uio_resid) {</span>
+<span class='curline'><a href='../S/132.html#L335'>uio</a>               335 kern/fs/sfs/sfs_io.c 			len = uio-&gt;uio_resid;</span>
+<span class='curline'><a href='../S/132.html#L339'>uio</a>               339 kern/fs/sfs/sfs_io.c 		result = sfs_partialio(sv, uio, skip, len);</span>
+<span class='curline'><a href='../S/132.html#L346'>uio</a>               346 kern/fs/sfs/sfs_io.c 	if (uio-&gt;uio_resid==0) {</span>
+<span class='curline'><a href='../S/132.html#L353'>uio</a>               353 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_offset % SFS_BLOCKSIZE == 0);</span>
+<span class='curline'><a href='../S/132.html#L354'>uio</a>               354 kern/fs/sfs/sfs_io.c 	nblocks = uio-&gt;uio_resid / SFS_BLOCKSIZE;</span>
+<span class='curline'><a href='../S/132.html#L356'>uio</a>               356 kern/fs/sfs/sfs_io.c 		result = sfs_blockio(sv, uio);</span>
+<span class='curline'><a href='../S/132.html#L365'>uio</a>               365 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_resid &lt; SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L367'>uio</a>               367 kern/fs/sfs/sfs_io.c 	if (uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/132.html#L368'>uio</a>               368 kern/fs/sfs/sfs_io.c 		result = sfs_partialio(sv, uio, 0, uio-&gt;uio_resid);</span>
+<span class='curline'><a href='../S/132.html#L377'>uio</a>               377 kern/fs/sfs/sfs_io.c 	if (uio-&gt;uio_resid != origresid &amp;&amp;</span>
+<span class='curline'><a href='../S/132.html#L378'>uio</a>               378 kern/fs/sfs/sfs_io.c 	    uio-&gt;uio_rw == UIO_WRITE &amp;&amp;</span>
+<span class='curline'><a href='../S/132.html#L379'>uio</a>               379 kern/fs/sfs/sfs_io.c 	    uio-&gt;uio_offset &gt; (off_t)sv-&gt;sv_i.sfi_size) {</span>
+<span class='curline'><a href='../S/132.html#L380'>uio</a>               380 kern/fs/sfs/sfs_io.c 		sv-&gt;sv_i.sfi_size = uio-&gt;uio_offset;</span>
+<span class='curline'><a href='../S/132.html#L385'>uio</a>               385 kern/fs/sfs/sfs_io.c 	uio-&gt;uio_resid += extraresid;</span>
+<span class='curline'><a href='../S/133.html#L98'>uio</a>                98 kern/fs/sfs/sfs_vnops.c sfs_read(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/133.html#L103'>uio</a>               103 kern/fs/sfs/sfs_vnops.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/133.html#L106'>uio</a>               106 kern/fs/sfs/sfs_vnops.c 	result = sfs_io(sv, uio);</span>
+<span class='curline'><a href='../S/133.html#L117'>uio</a>               117 kern/fs/sfs/sfs_vnops.c sfs_write(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/133.html#L122'>uio</a>               122 kern/fs/sfs/sfs_vnops.c 	KASSERT(uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/133.html#L125'>uio</a>               125 kern/fs/sfs/sfs_vnops.c 	result = sfs_io(sv, uio);</span>
+<span class='curline'><a href='../S/133.html#L265'>uio</a>               265 kern/fs/sfs/sfs_vnops.c sfs_namefile(struct vnode *vv, struct uio *uio)</span>
+<span class='curline'><a href='../S/133.html#L272'>uio</a>               272 kern/fs/sfs/sfs_vnops.c 	(void)uio;</span>
+<span class='curline'><a href='../S/134.html#L41'>uio</a>                41 kern/fs/sfs/sfsprivate.h #define SFSUIO(iov, uio, ptr, block, rw) \</span>
+<span class='curline'><a href='../S/134.html#L42'>uio</a>                42 kern/fs/sfs/sfsprivate.h     uio_kinit(iov, uio, ptr, SFS_BLOCKSIZE, ((off_t)(block))*SFS_BLOCKSIZE, rw)</span>
+<span class='curline'><a href='../S/134.html#L76'>uio</a>                76 kern/fs/sfs/sfsprivate.h int sfs_io(struct sfs_vnode *sv, struct uio *uio);</span>
+<span class='curline'><a href='../S/146.html#L38'>uio</a>                38 kern/include/device.h struct uio;  /* in &lt;uio.h&gt; */</span>
+<span class='curline'><a href='../S/146.html#L62'>uio</a>                62 kern/include/device.h 	int (*devop_io)(struct device *, struct uio *);</span>
+<span class='curline'><a href='../S/191.html#L119'>uio</a>               119 kern/include/uio.h int uiomove(void *kbuffer, size_t len, struct uio *uio);</span>
+<span class='curline'><a href='../S/191.html#L124'>uio</a>               124 kern/include/uio.h int uiomovezeros(size_t len, struct uio *uio);</span>
+<span class='curline'><a href='../S/191.html#L138'>uio</a>               138 kern/include/uio.h void uio_kinit(struct iovec *, struct uio *,</span>
+<span class='curline'><a href='../S/193.html#L44'>uio</a>                44 kern/include/vfs.h struct uio;    /* kernel or userspace I/O buffer (uio.h) */</span>
+<span class='curline'><a href='../S/193.html#L106'>uio</a>               106 kern/include/vfs.h int vfs_readlink(char *path, struct uio *data);</span>
+<span class='curline'><a href='../S/193.html#L115'>uio</a>               115 kern/include/vfs.h int vfs_getcwd(struct uio *buf);</span>
+<span class='curline'><a href='../S/195.html#L34'>uio</a>                34 kern/include/vnode.h struct uio;</span>
+<span class='curline'><a href='../S/195.html#L187'>uio</a>               187 kern/include/vnode.h 	int (*vop_read)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L188'>uio</a>               188 kern/include/vnode.h 	int (*vop_readlink)(struct vnode *link, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L189'>uio</a>               189 kern/include/vnode.h 	int (*vop_getdirentry)(struct vnode *dir, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L190'>uio</a>               190 kern/include/vnode.h 	int (*vop_write)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L198'>uio</a>               198 kern/include/vnode.h 	int (*vop_namefile)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L231'>uio</a>               231 kern/include/vnode.h #define VOP_READ(vn, uio)               (__VOP(vn, read)(vn, uio))</span>
+<span class='curline'><a href='../S/195.html#L232'>uio</a>               232 kern/include/vnode.h #define VOP_READLINK(vn, uio)           (__VOP(vn, readlink)(vn, uio))</span>
+<span class='curline'><a href='../S/195.html#L233'>uio</a>               233 kern/include/vnode.h #define VOP_GETDIRENTRY(vn, uio)        (__VOP(vn,getdirentry)(vn, uio))</span>
+<span class='curline'><a href='../S/195.html#L234'>uio</a>               234 kern/include/vnode.h #define VOP_WRITE(vn, uio)              (__VOP(vn, write)(vn, uio))</span>
+<span class='curline'><a href='../S/195.html#L242'>uio</a>               242 kern/include/vnode.h #define VOP_NAMEFILE(vn, uio)           (__VOP(vn, namefile)(vn, uio))</span>
+<span class='curline'><a href='../S/195.html#L285'>uio</a>               285 kern/include/vnode.h int vopfail_uio_notdir(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L286'>uio</a>               286 kern/include/vnode.h int vopfail_uio_isdir(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L287'>uio</a>               287 kern/include/vnode.h int vopfail_uio_inval(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L288'>uio</a>               288 kern/include/vnode.h int vopfail_uio_nosys(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/204.html#L42'>uio</a>                42 kern/lib/uio.c uiomove(void *ptr, size_t n, struct uio *uio)</span>
+<span class='curline'><a href='../S/204.html#L48'>uio</a>                48 kern/lib/uio.c 	if (uio-&gt;uio_rw != UIO_READ &amp;&amp; uio-&gt;uio_rw != UIO_WRITE) {</span>
+<span class='curline'><a href='../S/204.html#L49'>uio</a>                49 kern/lib/uio.c 		panic("uiomove: Invalid uio_rw %d\n", (int) uio-&gt;uio_rw);</span>
+<span class='curline'><a href='../S/204.html#L51'>uio</a>                51 kern/lib/uio.c 	if (uio-&gt;uio_segflg==UIO_SYSSPACE) {</span>
+<span class='curline'><a href='../S/204.html#L52'>uio</a>                52 kern/lib/uio.c 		KASSERT(uio-&gt;uio_space == NULL);</span>
+<span class='curline'><a href='../S/204.html#L55'>uio</a>                55 kern/lib/uio.c 		KASSERT(uio-&gt;uio_space == proc_getas());</span>
+<span class='curline'><a href='../S/204.html#L58'>uio</a>                58 kern/lib/uio.c 	while (n &gt; 0 &amp;&amp; uio-&gt;uio_resid &gt; 0) {</span>
+<span class='curline'><a href='../S/204.html#L60'>uio</a>                60 kern/lib/uio.c 		iov = uio-&gt;uio_iov;</span>
+<span class='curline'><a href='../S/204.html#L69'>uio</a>                69 kern/lib/uio.c 			uio-&gt;uio_iov++;</span>
+<span class='curline'><a href='../S/204.html#L70'>uio</a>                70 kern/lib/uio.c 			uio-&gt;uio_iovcnt--;</span>
+<span class='curline'><a href='../S/204.html#L71'>uio</a>                71 kern/lib/uio.c 			if (uio-&gt;uio_iovcnt == 0) {</span>
+<span class='curline'><a href='../S/204.html#L83'>uio</a>                83 kern/lib/uio.c 		switch (uio-&gt;uio_segflg) {</span>
+<span class='curline'><a href='../S/204.html#L85'>uio</a>                85 kern/lib/uio.c 			    if (uio-&gt;uio_rw == UIO_READ) {</span>
+<span class='curline'><a href='../S/204.html#L95'>uio</a>                95 kern/lib/uio.c 			    if (uio-&gt;uio_rw == UIO_READ) {</span>
+<span class='curline'><a href='../S/204.html#L108'>uio</a>               108 kern/lib/uio.c 				  (int)uio-&gt;uio_segflg);</span>
+<span class='curline'><a href='../S/204.html#L112'>uio</a>               112 kern/lib/uio.c 		uio-&gt;uio_resid -= size;</span>
+<span class='curline'><a href='../S/204.html#L113'>uio</a>               113 kern/lib/uio.c 		uio-&gt;uio_offset += size;</span>
+<span class='curline'><a href='../S/204.html#L122'>uio</a>               122 kern/lib/uio.c uiomovezeros(size_t n, struct uio *uio)</span>
+<span class='curline'><a href='../S/204.html#L130'>uio</a>               130 kern/lib/uio.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/204.html#L137'>uio</a>               137 kern/lib/uio.c 		result = uiomove(zeros, amt, uio);</span>
+<span class='curline'><a href='../S/204.html#L152'>uio</a>               152 kern/lib/uio.c uio_kinit(struct iovec *iov, struct uio *u,</span>
+<span class='curline'><a href='../S/206.html#L206'>uio</a>               206 kern/main/menu.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/209.html#L85'>uio</a>                85 kern/syscall/loadelf.c 	struct uio u;</span>
+<span class='curline'><a href='../S/209.html#L160'>uio</a>               160 kern/syscall/loadelf.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/214.html#L147'>uio</a>               147 kern/test/fstest.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/214.html#L222'>uio</a>               222 kern/test/fstest.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/214.html#L546'>uio</a>               546 kern/test/fstest.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/214.html#L725'>uio</a>               725 kern/test/fstest.c 	struct uio ku;</span>
+<span class='curline'><a href='../S/229.html#L109'>uio</a>               109 kern/vfs/device.c dev_read(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/229.html#L114'>uio</a>               114 kern/vfs/device.c 	result = dev_tryseek(d, uio-&gt;uio_offset);</span>
+<span class='curline'><a href='../S/229.html#L119'>uio</a>               119 kern/vfs/device.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/229.html#L120'>uio</a>               120 kern/vfs/device.c 	return DEVOP_IO(d, uio);</span>
+<span class='curline'><a href='../S/229.html#L128'>uio</a>               128 kern/vfs/device.c dev_write(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/229.html#L133'>uio</a>               133 kern/vfs/device.c 	result = dev_tryseek(d, uio-&gt;uio_offset);</span>
+<span class='curline'><a href='../S/229.html#L138'>uio</a>               138 kern/vfs/device.c 	KASSERT(uio-&gt;uio_rw == UIO_WRITE);</span>
+<span class='curline'><a href='../S/229.html#L139'>uio</a>               139 kern/vfs/device.c 	return DEVOP_IO(d, uio);</span>
+<span class='curline'><a href='../S/229.html#L278'>uio</a>               278 kern/vfs/device.c dev_namefile(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/229.html#L287'>uio</a>               287 kern/vfs/device.c 	(void)uio;</span>
+<span class='curline'><a href='../S/230.html#L55'>uio</a>                55 kern/vfs/devnull.c nullio(struct device *dev, struct uio *uio)</span>
+<span class='curline'><a href='../S/230.html#L68'>uio</a>                68 kern/vfs/devnull.c 	if (uio-&gt;uio_rw == UIO_WRITE) {</span>
+<span class='curline'><a href='../S/230.html#L69'>uio</a>                69 kern/vfs/devnull.c 		uio-&gt;uio_resid = 0;</span>
+<span class='curline'><a href='../S/231.html#L144'>uio</a>               144 kern/vfs/vfscwd.c vfs_getcwd(struct uio *uio)</span>
+<span class='curline'><a href='../S/231.html#L151'>uio</a>               151 kern/vfs/vfscwd.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/231.html#L169'>uio</a>               169 kern/vfs/vfscwd.c 	result = uiomove((char *)name, strlen(name), uio);</span>
+<span class='curline'><a href='../S/231.html#L173'>uio</a>               173 kern/vfs/vfscwd.c 	result = uiomove(&amp;colon, 1, uio);</span>
+<span class='curline'><a href='../S/231.html#L178'>uio</a>               178 kern/vfs/vfscwd.c 	result = VOP_NAMEFILE(cwd, uio);</span>
+<span class='curline'><a href='../S/232.html#L51'>uio</a>                51 kern/vfs/vfsfail.c vopfail_uio_notdir(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L54'>uio</a>                54 kern/vfs/vfsfail.c 	(void)uio;</span>
+<span class='curline'><a href='../S/232.html#L59'>uio</a>                59 kern/vfs/vfsfail.c vopfail_uio_isdir(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L62'>uio</a>                62 kern/vfs/vfsfail.c 	(void)uio;</span>
+<span class='curline'><a href='../S/232.html#L67'>uio</a>                67 kern/vfs/vfsfail.c vopfail_uio_inval(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L70'>uio</a>                70 kern/vfs/vfsfail.c 	(void)uio;</span>
+<span class='curline'><a href='../S/232.html#L75'>uio</a>                75 kern/vfs/vfsfail.c vopfail_uio_nosys(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L78'>uio</a>                78 kern/vfs/vfsfail.c 	(void)uio;</span>
+<span class='curline'><a href='../S/235.html#L256'>uio</a>               256 kern/vfs/vfspath.c vfs_readlink(char *path, struct uio *uio)</span>
+<span class='curline'><a href='../S/235.html#L266'>uio</a>               266 kern/vfs/vfspath.c 	result = VOP_READLINK(vn, uio);</span>
+</pre>
+</body>
+</html>

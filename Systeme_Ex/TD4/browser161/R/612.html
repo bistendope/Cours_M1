@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>SWAP32</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/532.html#L142'>SWAP32</a>            142 userland/sbin/dumpsfs/dumpsfs.c 	if (SWAP32(sb.sb_magic) != SFS_MAGIC) {</span>
+<span class='curline'><a href='../S/532.html#L145'>SWAP32</a>            145 userland/sbin/dumpsfs/dumpsfs.c 	return SWAP32(sb.sb_nblocks);</span>
+<span class='curline'><a href='../S/532.html#L160'>SWAP32</a>            160 userland/sbin/dumpsfs/dumpsfs.c 	dumpvalf("Magic", "0x%8x", SWAP32(sb.sb_magic));</span>
+<span class='curline'><a href='../S/532.html#L161'>SWAP32</a>            161 userland/sbin/dumpsfs/dumpsfs.c 	dumpvalf("Size", "%u blocks", SWAP32(sb.sb_nblocks));</span>
+<span class='curline'><a href='../S/532.html#L163'>SWAP32</a>            163 userland/sbin/dumpsfs/dumpsfs.c 		 SFS_FREEMAPBLOCKS(SWAP32(sb.sb_nblocks)));</span>
+<span class='curline'><a href='../S/532.html#L170'>SWAP32</a>            170 userland/sbin/dumpsfs/dumpsfs.c 			       i, SWAP32(sb.reserved[i]));</span>
+<span class='curline'><a href='../S/532.html#L250'>SWAP32</a>            250 userland/sbin/dumpsfs/dumpsfs.c 			 SWAP32(ib[i]), SWAP32(ib[i]));</span>
+<span class='curline'><a href='../S/532.html#L273'>SWAP32</a>            273 userland/sbin/dumpsfs/dumpsfs.c 		doblock(fileblock++, SWAP32(ib[i]));</span>
+<span class='curline'><a href='../S/532.html#L286'>SWAP32</a>            286 userland/sbin/dumpsfs/dumpsfs.c 	numblocks = DIVROUNDUP(SWAP32(sfi-&gt;sfi_size), SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/532.html#L290'>SWAP32</a>            290 userland/sbin/dumpsfs/dumpsfs.c 		doblock(fileblock++, SWAP32(sfi-&gt;sfi_direct[i]));</span>
+<span class='curline'><a href='../S/532.html#L294'>SWAP32</a>            294 userland/sbin/dumpsfs/dumpsfs.c 					SWAP32(sfi-&gt;sfi_indirect), doblock);</span>
+<span class='curline'><a href='../S/532.html#L316'>SWAP32</a>            316 userland/sbin/dumpsfs/dumpsfs.c 		uint32_t ino = SWAP32(sds[i].sfd_ino);</span>
+<span class='curline'><a href='../S/532.html#L333'>SWAP32</a>            333 userland/sbin/dumpsfs/dumpsfs.c 	nentries = SWAP32(sfi-&gt;sfi_size) / sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/532.html#L334'>SWAP32</a>            334 userland/sbin/dumpsfs/dumpsfs.c 	if (SWAP32(sfi-&gt;sfi_size) % sizeof(struct sfs_direntry) != 0) {</span>
+<span class='curline'><a href='../S/532.html#L356'>SWAP32</a>            356 userland/sbin/dumpsfs/dumpsfs.c 		uint32_t ino = SWAP32(sds[i].sfd_ino);</span>
+<span class='curline'><a href='../S/532.html#L371'>SWAP32</a>            371 userland/sbin/dumpsfs/dumpsfs.c 	nentries = SWAP32(sfi-&gt;sfi_size) / sizeof(struct sfs_direntry);</span>
+<span class='curline'><a href='../S/532.html#L450'>SWAP32</a>            450 userland/sbin/dumpsfs/dumpsfs.c 	dumpvalf("Size", "%u", SWAP32(sfi.sfi_size));</span>
+<span class='curline'><a href='../S/532.html#L468'>SWAP32</a>            468 userland/sbin/dumpsfs/dumpsfs.c 			 SWAP32(sfi.sfi_direct[i]), SWAP32(sfi.sfi_direct[i]));</span>
+<span class='curline'><a href='../S/532.html#L478'>SWAP32</a>            478 userland/sbin/dumpsfs/dumpsfs.c 	       SWAP32(sfi.sfi_indirect), SWAP32(sfi.sfi_indirect));</span>
+<span class='curline'><a href='../S/532.html#L482'>SWAP32</a>            482 userland/sbin/dumpsfs/dumpsfs.c 			       i, SWAP32(sfi.sfi_waste[i]));</span>
+<span class='curline'><a href='../S/532.html#L487'>SWAP32</a>            487 userland/sbin/dumpsfs/dumpsfs.c 		dumpindirect(SWAP32(sfi.sfi_indirect));</span>
+<span class='curline'><a href='../S/540.html#L140'>SWAP32</a>            140 userland/sbin/mksfs/mksfs.c 	sb.sb_magic = SWAP32(SFS_MAGIC);</span>
+<span class='curline'><a href='../S/540.html#L141'>SWAP32</a>            141 userland/sbin/mksfs/mksfs.c 	sb.sb_nblocks = SWAP32(nblocks);</span>
+<span class='curline'><a href='../S/540.html#L178'>SWAP32</a>            178 userland/sbin/mksfs/mksfs.c 	sfi.sfi_size = SWAP32(0);</span>
+<span class='curline'><a href='../S/561.html#L63'>SWAP32</a>             63 userland/sbin/sfsck/sfs.c 	sb-&gt;sb_magic = SWAP32(sb-&gt;sb_magic);</span>
+<span class='curline'><a href='../S/561.html#L64'>SWAP32</a>             64 userland/sbin/sfsck/sfs.c 	sb-&gt;sb_nblocks = SWAP32(sb-&gt;sb_nblocks);</span>
+<span class='curline'><a href='../S/561.html#L81'>SWAP32</a>             81 userland/sbin/sfsck/sfs.c 	sfi-&gt;sfi_size = SWAP32(sfi-&gt;sfi_size);</span>
+<span class='curline'><a href='../S/561.html#L86'>SWAP32</a>             86 userland/sbin/sfsck/sfs.c 		SET_D(sfi, i) = SWAP32(GET_D(sfi, i));</span>
+<span class='curline'><a href='../S/561.html#L90'>SWAP32</a>             90 userland/sbin/sfsck/sfs.c 		SET_I(sfi, i) = SWAP32(GET_I(sfi, i));</span>
+<span class='curline'><a href='../S/561.html#L94'>SWAP32</a>             94 userland/sbin/sfsck/sfs.c 		SET_II(sfi, i) = SWAP32(GET_II(sfi, i));</span>
+<span class='curline'><a href='../S/561.html#L98'>SWAP32</a>             98 userland/sbin/sfsck/sfs.c 		SET_III(sfi, i) = SWAP32(GET_III(sfi, i));</span>
+<span class='curline'><a href='../S/561.html#L106'>SWAP32</a>            106 userland/sbin/sfsck/sfs.c 	sfd-&gt;sfd_ino = SWAP32(sfd-&gt;sfd_ino);</span>
+<span class='curline'><a href='../S/561.html#L115'>SWAP32</a>            115 userland/sbin/sfsck/sfs.c 		entries[i] = SWAP32(entries[i]);</span>
+</pre>
+</body>
+</html>

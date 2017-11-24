@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>threadlist</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/144.html#L61'>threadlist</a>         61 kern/include/cpu.h 	struct threadlist c_zombies;	/* List of exited threads */</span>
+<span class='curline'><a href='../S/144.html#L70'>threadlist</a>         70 kern/include/cpu.h 	struct threadlist c_runqueue;	/* Run queue for this cpu */</span>
+<span class='curline'><a href='../S/188.html#L74'>threadlist</a>         74 kern/include/threadlist.h void threadlist_init(struct threadlist *tl);</span>
+<span class='curline'><a href='../S/188.html#L75'>threadlist</a>         75 kern/include/threadlist.h void threadlist_cleanup(struct threadlist *tl);</span>
+<span class='curline'><a href='../S/188.html#L78'>threadlist</a>         78 kern/include/threadlist.h bool threadlist_isempty(struct threadlist *tl);</span>
+<span class='curline'><a href='../S/188.html#L81'>threadlist</a>         81 kern/include/threadlist.h void threadlist_addhead(struct threadlist *tl, struct thread *t);</span>
+<span class='curline'><a href='../S/188.html#L82'>threadlist</a>         82 kern/include/threadlist.h void threadlist_addtail(struct threadlist *tl, struct thread *t);</span>
+<span class='curline'><a href='../S/188.html#L83'>threadlist</a>         83 kern/include/threadlist.h struct thread *threadlist_remhead(struct threadlist *tl);</span>
+<span class='curline'><a href='../S/188.html#L84'>threadlist</a>         84 kern/include/threadlist.h struct thread *threadlist_remtail(struct threadlist *tl);</span>
+<span class='curline'><a href='../S/188.html#L87'>threadlist</a>         87 kern/include/threadlist.h void threadlist_insertafter(struct threadlist *tl,</span>
+<span class='curline'><a href='../S/188.html#L89'>threadlist</a>         89 kern/include/threadlist.h void threadlist_insertbefore(struct threadlist *tl,</span>
+<span class='curline'><a href='../S/188.html#L91'>threadlist</a>         91 kern/include/threadlist.h void threadlist_remove(struct threadlist *tl, struct thread *t);</span>
+<span class='curline'><a href='../S/219.html#L96'>threadlist</a>         96 kern/test/threadlisttest.c check_order(struct threadlist *tl, bool rev)</span>
+<span class='curline'><a href='../S/219.html#L124'>threadlist</a>        124 kern/test/threadlisttest.c 	struct threadlist tl;</span>
+<span class='curline'><a href='../S/219.html#L135'>threadlist</a>        135 kern/test/threadlisttest.c 	struct threadlist tl;</span>
+<span class='curline'><a href='../S/219.html#L163'>threadlist</a>        163 kern/test/threadlisttest.c 	struct threadlist tl;</span>
+<span class='curline'><a href='../S/219.html#L199'>threadlist</a>        199 kern/test/threadlisttest.c 	struct threadlist tl;</span>
+<span class='curline'><a href='../S/219.html#L235'>threadlist</a>        235 kern/test/threadlisttest.c 	struct threadlist tl;</span>
+<span class='curline'><a href='../S/219.html#L280'>threadlist</a>        280 kern/test/threadlisttest.c 	struct threadlist tl;</span>
+<span class='curline'><a href='../S/227.html#L61'>threadlist</a>         61 kern/thread/thread.c 	struct threadlist wc_threads;	/* list of waiting threads */</span>
+<span class='curline'><a href='../S/227.html#L853'>threadlist</a>        853 kern/thread/thread.c 	struct threadlist victims;</span>
+<span class='curline'><a href='../S/227.html#L1051'>threadlist</a>       1051 kern/thread/thread.c 	struct threadlist list;</span>
+<span class='curline'><a href='../S/228.html#L61'>threadlist</a>         61 kern/thread/threadlist.c threadlist_init(struct threadlist *tl)</span>
+<span class='curline'><a href='../S/228.html#L75'>threadlist</a>         75 kern/thread/threadlist.c threadlist_cleanup(struct threadlist *tl)</span>
+<span class='curline'><a href='../S/228.html#L92'>threadlist</a>         92 kern/thread/threadlist.c threadlist_isempty(struct threadlist *tl)</span>
+<span class='curline'><a href='../S/228.html#L163'>threadlist</a>        163 kern/thread/threadlist.c threadlist_addhead(struct threadlist *tl, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L173'>threadlist</a>        173 kern/thread/threadlist.c threadlist_addtail(struct threadlist *tl, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L183'>threadlist</a>        183 kern/thread/threadlist.c threadlist_remhead(struct threadlist *tl)</span>
+<span class='curline'><a href='../S/228.html#L201'>threadlist</a>        201 kern/thread/threadlist.c threadlist_remtail(struct threadlist *tl)</span>
+<span class='curline'><a href='../S/228.html#L219'>threadlist</a>        219 kern/thread/threadlist.c threadlist_insertafter(struct threadlist *tl,</span>
+<span class='curline'><a href='../S/228.html#L227'>threadlist</a>        227 kern/thread/threadlist.c threadlist_insertbefore(struct threadlist *tl,</span>
+<span class='curline'><a href='../S/228.html#L235'>threadlist</a>        235 kern/thread/threadlist.c threadlist_remove(struct threadlist *tl, struct thread *t)</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>OUTFILE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/687.html#L119'>OUTFILE</a>           119 userland/testbin/redirect/redirect.c 	fd = doopen(OUTFILE, O_RDONLY);</span>
+<span class='curline'><a href='../S/687.html#L123'>OUTFILE</a>           123 userland/testbin/redirect/redirect.c 		err(1, "%s: read", OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L126'>OUTFILE</a>           126 userland/testbin/redirect/redirect.c 		errx(1, "%s: read: Unexpected EOF", OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L130'>OUTFILE</a>           130 userland/testbin/redirect/redirect.c 		     OUTFILE, r, strlen(slogan));</span>
+<span class='curline'><a href='../S/687.html#L133'>OUTFILE</a>           133 userland/testbin/redirect/redirect.c 	doclose(fd, OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L145'>OUTFILE</a>           145 userland/testbin/redirect/redirect.c 	wfd = doopen(OUTFILE, O_WRONLY|O_CREAT|O_TRUNC);</span>
+<span class='curline'><a href='../S/687.html#L155'>OUTFILE</a>           155 userland/testbin/redirect/redirect.c 		dodup2(wfd, STDOUT_FILENO, OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L157'>OUTFILE</a>           157 userland/testbin/redirect/redirect.c 		doclose(wfd, OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L167'>OUTFILE</a>           167 userland/testbin/redirect/redirect.c 	doclose(wfd, OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L187'>OUTFILE</a>           187 userland/testbin/redirect/redirect.c 	printf("Running cat &lt; %s &gt; %s\n", INFILE, OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L190'>OUTFILE</a>           190 userland/testbin/redirect/redirect.c 	printf("Checking %s...\n", OUTFILE);</span>
+<span class='curline'><a href='../S/687.html#L195'>OUTFILE</a>           195 userland/testbin/redirect/redirect.c 	(void)remove(OUTFILE);</span>
+</pre>
+</body>
+</html>

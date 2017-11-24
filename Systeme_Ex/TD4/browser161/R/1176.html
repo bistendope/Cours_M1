@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>cv</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/123.html#L56'>cv</a>                 56 kern/fs/semfs/semfs.h 	struct cv *sems_cv;			/* CV to wait */</span>
+<span class='curline'><a href='../S/184.html#L121'>cv</a>                121 kern/include/synch.h struct cv *cv_create(const char *name);</span>
+<span class='curline'><a href='../S/184.html#L122'>cv</a>                122 kern/include/synch.h void cv_destroy(struct cv *);</span>
+<span class='curline'><a href='../S/184.html#L137'>cv</a>                137 kern/include/synch.h void cv_wait(struct cv *cv, struct lock *lock);</span>
+<span class='curline'><a href='../S/184.html#L138'>cv</a>                138 kern/include/synch.h void cv_signal(struct cv *cv, struct lock *lock);</span>
+<span class='curline'><a href='../S/184.html#L139'>cv</a>                139 kern/include/synch.h void cv_broadcast(struct cv *cv, struct lock *lock);</span>
+<span class='curline'><a href='../S/218.html#L51'>cv</a>                 51 kern/test/synchtest.c static struct cv *testcv;</span>
+<span class='curline'><a href='../S/218.html#L312'>cv</a>                312 kern/test/synchtest.c static struct cv *testcvs[NCVS];</span>
+<span class='curline'><a href='../S/226.html#L215'>cv</a>                215 kern/thread/synch.c struct cv *</span>
+<span class='curline'><a href='../S/226.html#L218'>cv</a>                218 kern/thread/synch.c         struct cv *cv;</span>
+<span class='curline'><a href='../S/226.html#L220'>cv</a>                220 kern/thread/synch.c         cv = kmalloc(sizeof(*cv));</span>
+<span class='curline'><a href='../S/226.html#L221'>cv</a>                221 kern/thread/synch.c         if (cv == NULL) {</span>
+<span class='curline'><a href='../S/226.html#L225'>cv</a>                225 kern/thread/synch.c         cv-&gt;cv_name = kstrdup(name);</span>
+<span class='curline'><a href='../S/226.html#L226'>cv</a>                226 kern/thread/synch.c         if (cv-&gt;cv_name==NULL) {</span>
+<span class='curline'><a href='../S/226.html#L227'>cv</a>                227 kern/thread/synch.c                 kfree(cv);</span>
+<span class='curline'><a href='../S/226.html#L233'>cv</a>                233 kern/thread/synch.c         return cv;</span>
+<span class='curline'><a href='../S/226.html#L237'>cv</a>                237 kern/thread/synch.c cv_destroy(struct cv *cv)</span>
+<span class='curline'><a href='../S/226.html#L239'>cv</a>                239 kern/thread/synch.c         KASSERT(cv != NULL);</span>
+<span class='curline'><a href='../S/226.html#L243'>cv</a>                243 kern/thread/synch.c         kfree(cv-&gt;cv_name);</span>
+<span class='curline'><a href='../S/226.html#L244'>cv</a>                244 kern/thread/synch.c         kfree(cv);</span>
+<span class='curline'><a href='../S/226.html#L248'>cv</a>                248 kern/thread/synch.c cv_wait(struct cv *cv, struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L251'>cv</a>                251 kern/thread/synch.c         (void)cv;    // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/226.html#L256'>cv</a>                256 kern/thread/synch.c cv_signal(struct cv *cv, struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L259'>cv</a>                259 kern/thread/synch.c 	(void)cv;    // suppress warning until code gets written</span>
+<span class='curline'><a href='../S/226.html#L264'>cv</a>                264 kern/thread/synch.c cv_broadcast(struct cv *cv, struct lock *lock)</span>
+<span class='curline'><a href='../S/226.html#L267'>cv</a>                267 kern/thread/synch.c 	(void)cv;    // suppress warning until code gets written</span>
+</pre>
+</body>
+</html>

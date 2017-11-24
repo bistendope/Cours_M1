@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>fsobject</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/642.html#L203'>fsobject</a>          203 userland/testbin/frack/check.c 	struct fsobject *obj;</span>
+<span class='curline'><a href='../S/642.html#L218'>fsobject</a>          218 userland/testbin/frack/check.c 			struct fsobject *parent;</span>
+<span class='curline'><a href='../S/642.html#L236'>fsobject</a>          236 userland/testbin/frack/check.c DECLPOOL(fsobject, MAXOBJECTS);</span>
+<span class='curline'><a href='../S/642.html#L247'>fsobject</a>          247 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L250'>fsobject</a>          250 userland/testbin/frack/check.c 	return POOLALLOC(fsobject);</span>
+<span class='curline'><a href='../S/642.html#L271'>fsobject</a>          271 userland/testbin/frack/check.c putobject(struct fsobject *obj)</span>
+<span class='curline'><a href='../S/642.html#L273'>fsobject</a>          273 userland/testbin/frack/check.c 	POOLFREE(fsobject, obj);</span>
+<span class='curline'><a href='../S/642.html#L479'>fsobject</a>          479 userland/testbin/frack/check.c fsdirent_create(unsigned name, struct fsobject *obj)</span>
+<span class='curline'><a href='../S/642.html#L500'>fsobject</a>          500 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L503'>fsobject</a>          503 userland/testbin/frack/check.c 	struct fsobject *ret;</span>
+<span class='curline'><a href='../S/642.html#L514'>fsobject</a>          514 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L515'>fsobject</a>          515 userland/testbin/frack/check.c fsobject_create_dir(unsigned id, struct fsobject *parent)</span>
+<span class='curline'><a href='../S/642.html#L517'>fsobject</a>          517 userland/testbin/frack/check.c 	struct fsobject *ret;</span>
+<span class='curline'><a href='../S/642.html#L530'>fsobject</a>          530 userland/testbin/frack/check.c fsobject_incref(struct fsobject *obj)</span>
+<span class='curline'><a href='../S/642.html#L539'>fsobject</a>          539 userland/testbin/frack/check.c fsobject_decref(struct fsobject *obj)</span>
+<span class='curline'><a href='../S/642.html#L555'>fsobject</a>          555 userland/testbin/frack/check.c fsobject_destroytree(struct fsobject *obj)</span>
+<span class='curline'><a href='../S/642.html#L611'>fsobject</a>          611 userland/testbin/frack/check.c fsdir_add_entry(struct fsobject *dir, struct fsdirent *nde)</span>
+<span class='curline'><a href='../S/642.html#L632'>fsobject</a>          632 userland/testbin/frack/check.c fsdir_find_entry(struct fsobject *dir, unsigned name, int croak)</span>
+<span class='curline'><a href='../S/642.html#L654'>fsobject</a>          654 userland/testbin/frack/check.c fsdir_remove_entry(struct fsobject *dir, unsigned name)</span>
+<span class='curline'><a href='../S/642.html#L676'>fsobject</a>          676 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L677'>fsobject</a>          677 userland/testbin/frack/check.c findsub(struct fsobject *obj, unsigned isdir, unsigned id)</span>
+<span class='curline'><a href='../S/642.html#L679'>fsobject</a>          679 userland/testbin/frack/check.c 	struct fsobject *ret;</span>
+<span class='curline'><a href='../S/642.html#L705'>fsobject</a>          705 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L706'>fsobject</a>          706 userland/testbin/frack/check.c findfile(struct fsobject *rootdir, unsigned id)</span>
+<span class='curline'><a href='../S/642.html#L708'>fsobject</a>          708 userland/testbin/frack/check.c 	struct fsobject *ret;</span>
+<span class='curline'><a href='../S/642.html#L719'>fsobject</a>          719 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L720'>fsobject</a>          720 userland/testbin/frack/check.c findfile_maybe(struct fsobject *rootdir, unsigned id)</span>
+<span class='curline'><a href='../S/642.html#L726'>fsobject</a>          726 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L727'>fsobject</a>          727 userland/testbin/frack/check.c finddir(struct fsobject *rootdir, unsigned id)</span>
+<span class='curline'><a href='../S/642.html#L729'>fsobject</a>          729 userland/testbin/frack/check.c 	struct fsobject *ret;</span>
+<span class='curline'><a href='../S/642.html#L743'>fsobject</a>          743 userland/testbin/frack/check.c apply_change(struct fsobject *rootdir, struct fschange *change)</span>
+<span class='curline'><a href='../S/642.html#L745'>fsobject</a>          745 userland/testbin/frack/check.c 	struct fsobject *obj1, *obj2;</span>
+<span class='curline'><a href='../S/642.html#L922'>fsobject</a>          922 userland/testbin/frack/check.c static struct fsobject *state;</span>
+<span class='curline'><a href='../S/642.html#L1475'>fsobject</a>         1475 userland/testbin/frack/check.c 	struct fsobject *obj;</span>
+<span class='curline'><a href='../S/642.html#L1495'>fsobject</a>         1495 userland/testbin/frack/check.c 	struct fsobject *obj;</span>
+<span class='curline'><a href='../S/642.html#L1515'>fsobject</a>         1515 userland/testbin/frack/check.c 	struct fsobject *obj;</span>
+<span class='curline'><a href='../S/642.html#L1531'>fsobject</a>         1531 userland/testbin/frack/check.c 	struct fsobject *obj;</span>
+<span class='curline'><a href='../S/642.html#L1547'>fsobject</a>         1547 userland/testbin/frack/check.c 	struct fsobject *obj;</span>
+<span class='curline'><a href='../S/642.html#L1562'>fsobject</a>         1562 userland/testbin/frack/check.c 	struct fsobject *obj;</span>
+<span class='curline'><a href='../S/642.html#L1860'>fsobject</a>         1860 userland/testbin/frack/check.c static struct fsobject *found;</span>
+<span class='curline'><a href='../S/642.html#L1895'>fsobject</a>         1895 userland/testbin/frack/check.c struct fsobject *</span>
+<span class='curline'><a href='../S/642.html#L1896'>fsobject</a>         1896 userland/testbin/frack/check.c inspectdir(struct fsobject *parentobj, ino_t parentino, const char *dirnamestr)</span>
+<span class='curline'><a href='../S/642.html#L1902'>fsobject</a>         1902 userland/testbin/frack/check.c 	struct fsobject *subobj, *ret;</span>
+<span class='curline'><a href='../S/642.html#L2034'>fsobject</a>         2034 userland/testbin/frack/check.c count_subtree(struct fsobject *obj)</span>
+<span class='curline'><a href='../S/642.html#L2053'>fsobject</a>         2053 userland/testbin/frack/check.c compare_objects(struct fsobject *obja, struct fsobject *objb)</span>
+<span class='curline'><a href='../S/642.html#L2163'>fsobject</a>         2163 userland/testbin/frack/check.c printdiffs(unsigned indent, struct fsobject *obja, struct fsobject *objb)</span>
+<span class='curline'><a href='../S/642.html#L2636'>fsobject</a>         2636 userland/testbin/frack/check.c checkonefilecontents(const char *namestr, struct fsobject *file,</span>
+<span class='curline'><a href='../S/642.html#L2775'>fsobject</a>         2775 userland/testbin/frack/check.c checkallfilecontents(struct fsobject *dir, struct fschange *change)</span>
+</pre>
+</body>
+</html>

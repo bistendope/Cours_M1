@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>stat</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/96.html#L651'>stat</a>              651 kern/dev/lamebus/emu.c emufs_stat(struct vnode *v, struct stat *statbuf)</span>
+<span class='curline'><a href='../S/96.html#L656'>stat</a>              656 kern/dev/lamebus/emu.c 	bzero(statbuf, sizeof(struct stat));</span>
+<span class='curline'><a href='../S/126.html#L161'>stat</a>              161 kern/fs/semfs/semfs_vnops.c semfs_semstat(struct vnode *vn, struct stat *buf)</span>
+<span class='curline'><a href='../S/126.html#L336'>stat</a>              336 kern/fs/semfs/semfs_vnops.c semfs_dirstat(struct vnode *vn, struct stat *buf)</span>
+<span class='curline'><a href='../S/133.html#L154'>stat</a>              154 kern/fs/sfs/sfs_vnops.c sfs_stat(struct vnode *v, struct stat *statbuf)</span>
+<span class='curline'><a href='../S/133.html#L160'>stat</a>              160 kern/fs/sfs/sfs_vnops.c 	bzero(statbuf, sizeof(struct stat));</span>
+<span class='curline'><a href='../S/195.html#L35'>stat</a>               35 kern/include/vnode.h struct stat;</span>
+<span class='curline'><a href='../S/195.html#L192'>stat</a>              192 kern/include/vnode.h 	int (*vop_stat)(struct vnode *object, struct stat *statbuf);</span>
+<span class='curline'><a href='../S/195.html#L236'>stat</a>              236 kern/include/vnode.h #define VOP_STAT(vn, ptr) 	        (__VOP(vn, stat)(vn, ptr))</span>
+<span class='curline'><a href='../S/229.html#L160'>stat</a>              160 kern/vfs/device.c dev_stat(struct vnode *v, struct stat *statbuf)</span>
+<span class='curline'><a href='../S/229.html#L165'>stat</a>              165 kern/vfs/device.c 	bzero(statbuf, sizeof(struct stat));</span>
+<span class='curline'><a href='../S/448.html#L94'>stat</a>               94 userland/bin/ls/ls.c 	struct stat buf;</span>
+<span class='curline'><a href='../S/448.html#L137'>stat</a>              137 userland/bin/ls/ls.c 	struct stat statbuf;</span>
+<span class='curline'><a href='../S/487.html#L71'>stat</a>               71 userland/include/sys/stat.h int fstat(int filehandle, struct stat *buf);</span>
+<span class='curline'><a href='../S/487.html#L72'>stat</a>               72 userland/include/sys/stat.h int stat(const char *path, struct stat *buf);</span>
+<span class='curline'><a href='../S/487.html#L73'>stat</a>               73 userland/include/sys/stat.h int lstat(const char *path, struct stat *buf);</span>
+<span class='curline'><a href='../S/537.html#L60'>stat</a>               60 userland/sbin/mksfs/disk.c 	struct stat statbuf;</span>
+<span class='curline'><a href='../S/571.html#L66'>stat</a>               66 userland/testbin/badcall/bad_dup2.c 	struct stat sb;</span>
+<span class='curline'><a href='../S/590.html#L50'>stat</a>               50 userland/testbin/badcall/bad_stat.c badbuf_fstat(struct stat *sb)</span>
+<span class='curline'><a href='../S/590.html#L57'>stat</a>               57 userland/testbin/badcall/bad_stat.c badbuf_lstat(struct stat *sb)</span>
+<span class='curline'><a href='../S/590.html#L64'>stat</a>               64 userland/testbin/badcall/bad_stat.c badbuf_stat(struct stat *sb)</span>
+<span class='curline'><a href='../S/590.html#L66'>stat</a>               66 userland/testbin/badcall/bad_stat.c 	return stat("null:", sb);</span>
+<span class='curline'><a href='../S/590.html#L71'>stat</a>               71 userland/testbin/badcall/bad_stat.c common_badbuf(int (*statfunc)(struct stat *), void *ptr,</span>
+<span class='curline'><a href='../S/590.html#L83'>stat</a>               83 userland/testbin/badcall/bad_stat.c any_badbuf(int (*statfunc)(struct stat *), const char *call)</span>
+<span class='curline'><a href='../S/590.html#L94'>stat</a>               94 userland/testbin/badcall/bad_stat.c any_empty(int (*statfunc)(const char *, struct stat *), const char *call)</span>
+<span class='curline'><a href='../S/590.html#L96'>stat</a>               96 userland/testbin/badcall/bad_stat.c 	struct stat sb;</span>
+<span class='curline'><a href='../S/590.html#L125'>stat</a>              125 userland/testbin/badcall/bad_stat.c 	any_empty(stat, "stat");</span>
+<span class='curline'><a href='../S/596.html#L111'>stat</a>              111 userland/testbin/badcall/common_fds.c 	struct stat sb;</span>
+<span class='curline'><a href='../S/597.html#L136'>stat</a>              136 userland/testbin/badcall/common_path.c 	struct stat sb;</span>
+<span class='curline'><a href='../S/597.html#L144'>stat</a>              144 userland/testbin/badcall/common_path.c 	struct stat sb;</span>
+<span class='curline'><a href='../S/597.html#L145'>stat</a>              145 userland/testbin/badcall/common_path.c 	return stat(name, &amp;sb);</span>
+<span class='curline'><a href='../S/597.html#L199'>stat</a>              199 userland/testbin/badcall/common_path.c T(stat);</span>
+<span class='curline'><a href='../S/642.html#L1871'>stat</a>             1871 userland/testbin/frack/check.c xstat(const char *path, struct stat *buf)</span>
+<span class='curline'><a href='../S/642.html#L1900'>stat</a>             1900 userland/testbin/frack/check.c 	struct stat dirstat, dotstat, substat;</span>
+<span class='curline'><a href='../S/642.html#L2018'>stat</a>             2018 userland/testbin/frack/check.c 	struct stat st;</span>
+<span class='curline'><a href='../S/680.html#L329'>stat</a>              329 userland/testbin/psort/psort.c 	struct stat buf;</span>
+<span class='curline'><a href='../S/680.html#L334'>stat</a>              334 userland/testbin/psort/psort.c 		if (stat(path, &amp;buf) == 0) {</span>
+</pre>
+</body>
+</html>

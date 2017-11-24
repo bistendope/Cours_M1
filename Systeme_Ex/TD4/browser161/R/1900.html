@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>semaphore</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/86.html#L346'>semaphore</a>         346 kern/dev/generic/console.c 	struct semaphore *rsem, *wsem;</span>
+<span class='curline'><a href='../S/87.html#L49'>semaphore</a>          49 kern/dev/generic/console.h 	struct semaphore *cs_rsem;</span>
+<span class='curline'><a href='../S/87.html#L50'>semaphore</a>          50 kern/dev/generic/console.h 	struct semaphore *cs_wsem;</span>
+<span class='curline'><a href='../S/97.html#L51'>semaphore</a>          51 kern/dev/lamebus/emu.h 	struct semaphore *e_sem;</span>
+<span class='curline'><a href='../S/102.html#L55'>semaphore</a>          55 kern/dev/lamebus/lhd.h 	struct semaphore *lh_clear;	/* Synchronization */</span>
+<span class='curline'><a href='../S/102.html#L56'>semaphore</a>          56 kern/dev/lamebus/lhd.h 	struct semaphore *lh_done;</span>
+<span class='curline'><a href='../S/184.html#L53'>semaphore</a>          53 kern/include/synch.h struct semaphore *sem_create(const char *name, unsigned initial_count);</span>
+<span class='curline'><a href='../S/184.html#L54'>semaphore</a>          54 kern/include/synch.h void sem_destroy(struct semaphore *);</span>
+<span class='curline'><a href='../S/184.html#L62'>semaphore</a>          62 kern/include/synch.h void P(struct semaphore *);</span>
+<span class='curline'><a href='../S/184.html#L63'>semaphore</a>          63 kern/include/synch.h void V(struct semaphore *);</span>
+<span class='curline'><a href='../S/214.html#L60'>semaphore</a>          60 kern/test/fstest.c static struct semaphore *threadsem = NULL;</span>
+<span class='curline'><a href='../S/215.html#L65'>semaphore</a>          65 kern/test/kmalloctest.c 	struct semaphore *sem = sm;</span>
+<span class='curline'><a href='../S/215.html#L116'>semaphore</a>         116 kern/test/kmalloctest.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/215.html#L305'>semaphore</a>         305 kern/test/kmalloctest.c 	struct semaphore *sem = sm;</span>
+<span class='curline'><a href='../S/215.html#L343'>semaphore</a>         343 kern/test/kmalloctest.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L75'>semaphore</a>          75 kern/test/semunit.c struct semaphore *</span>
+<span class='curline'><a href='../S/217.html#L78'>semaphore</a>          78 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L94'>semaphore</a>          94 kern/test/semunit.c 	struct semaphore *sem = vsem;</span>
+<span class='curline'><a href='../S/217.html#L110'>semaphore</a>         110 kern/test/semunit.c makewaiter(struct semaphore *sem)</span>
+<span class='curline'><a href='../S/217.html#L157'>semaphore</a>         157 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L184'>semaphore</a>         184 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L215'>semaphore</a>         215 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L239'>semaphore</a>         239 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L263'>semaphore</a>         263 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L282'>semaphore</a>         282 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L322'>semaphore</a>         322 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L399'>semaphore</a>         399 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L481'>semaphore</a>         481 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L560'>semaphore</a>         560 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L598'>semaphore</a>         598 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L628'>semaphore</a>         628 kern/test/semunit.c 	struct semaphore *sem = semv;</span>
+<span class='curline'><a href='../S/217.html#L643'>semaphore</a>         643 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L681'>semaphore</a>         681 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L721'>semaphore</a>         721 kern/test/semunit.c 	struct semaphore *sem = semv;</span>
+<span class='curline'><a href='../S/217.html#L738'>semaphore</a>         738 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L777'>semaphore</a>         777 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/217.html#L794'>semaphore</a>         794 kern/test/semunit.c 	struct semaphore *sem;</span>
+<span class='curline'><a href='../S/218.html#L49'>semaphore</a>          49 kern/test/synchtest.c static struct semaphore *testsem;</span>
+<span class='curline'><a href='../S/218.html#L52'>semaphore</a>          52 kern/test/synchtest.c static struct semaphore *donesem;</span>
+<span class='curline'><a href='../S/218.html#L314'>semaphore</a>         314 kern/test/synchtest.c static struct semaphore *gatesem;</span>
+<span class='curline'><a href='../S/218.html#L315'>semaphore</a>         315 kern/test/synchtest.c static struct semaphore *exitsem;</span>
+<span class='curline'><a href='../S/220.html#L41'>semaphore</a>          41 kern/test/threadtest.c static struct semaphore *tsem = NULL;</span>
+<span class='curline'><a href='../S/221.html#L58'>semaphore</a>          58 kern/test/tt3.c static struct semaphore *wakersem;</span>
+<span class='curline'><a href='../S/221.html#L59'>semaphore</a>          59 kern/test/tt3.c static struct semaphore *donesem;</span>
+<span class='curline'><a href='../S/226.html#L47'>semaphore</a>          47 kern/thread/synch.c struct semaphore *</span>
+<span class='curline'><a href='../S/226.html#L50'>semaphore</a>          50 kern/thread/synch.c         struct semaphore *sem;</span>
+<span class='curline'><a href='../S/226.html#L77'>semaphore</a>          77 kern/thread/synch.c sem_destroy(struct semaphore *sem)</span>
+<span class='curline'><a href='../S/226.html#L89'>semaphore</a>          89 kern/thread/synch.c P(struct semaphore *sem)</span>
+<span class='curline'><a href='../S/226.html#L124'>semaphore</a>         124 kern/thread/synch.c V(struct semaphore *sem)</span>
+<span class='curline'><a href='../S/227.html#L70'>semaphore</a>          70 kern/thread/thread.c static struct semaphore *cpu_startup_sem;</span>
+</pre>
+</body>
+</html>

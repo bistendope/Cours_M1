@@ -1,0 +1,877 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/test/semunit.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/757.html'>test</a>/semunit.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L66'>[^]</a><a href='#L812'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L66' title='Defined at 66.'>ok</a></li>
+<li><a href='#L76' title='Defined at 76.'>makesem</a></li>
+<li><a href='#L92' title='Defined at 92.'>waiter</a></li>
+<li><a href='#L110' title='Defined at 110.'>makewaiter</a></li>
+<li><a href='#L138' title='Defined at 138.'>spinlock_not_held</a></li>
+<li><a href='#L155' title='Defined at 155.'>semu1</a></li>
+<li><a href='#L182' title='Defined at 182.'>semu2</a></li>
+<li><a href='#L199' title='Defined at 199.'>semu3</a></li>
+<li><a href='#L213' title='Defined at 213.'>semu4</a></li>
+<li><a href='#L237' title='Defined at 237.'>semu5</a></li>
+<li><a href='#L261' title='Defined at 261.'>semu6</a></li>
+<li><a href='#L280' title='Defined at 280.'>semu7</a></li>
+<li><a href='#L320' title='Defined at 320.'>do_semu89</a></li>
+<li><a href='#L367' title='Defined at 367.'>semu8</a></li>
+<li><a href='#L376' title='Defined at 376.'>semu9</a></li>
+<li><a href='#L397' title='Defined at 397.'>do_semu1011</a></li>
+<li><a href='#L449' title='Defined at 449.'>semu10</a></li>
+<li><a href='#L458' title='Defined at 458.'>semu11</a></li>
+<li><a href='#L479' title='Defined at 479.'>semu1213</a></li>
+<li><a href='#L536' title='Defined at 536.'>semu12</a></li>
+<li><a href='#L545' title='Defined at 545.'>semu13</a></li>
+<li><a href='#L558' title='Defined at 558.'>semu14</a></li>
+<li><a href='#L582' title='Defined at 582.'>semu15</a></li>
+<li><a href='#L596' title='Defined at 596.'>semu16</a></li>
+<li><a href='#L626' title='Defined at 626.'>semu17_sub</a></li>
+<li><a href='#L641' title='Defined at 641.'>semu17</a></li>
+<li><a href='#L679' title='Defined at 679.'>semu18</a></li>
+<li><a href='#L719' title='Defined at 719.'>semu19_sub</a></li>
+<li><a href='#L736' title='Defined at 736.'>semu19</a></li>
+<li><a href='#L775' title='Defined at 775.'>semu20</a></li>
+<li><a href='#L792' title='Defined at 792.'>semu21</a></li>
+<li><a href='#L812' title='Defined at 812.'>semu22</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2015</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L32' name='L32'></a>  32 <em class='sharp'>#include</em> &lt;<a href='../I/45.html'>spinlock.h</a>&gt;
+<a id='L33' name='L33'></a>  33 <em class='sharp'>#include</em> &lt;<a href='184.html'>synch.h</a>&gt;
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='../I/46.html'>thread.h</a>&gt;
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='../I/36.html'>current.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='142.html'>clock.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='../I/166.html'>test.h</a>&gt;
+<a id='L38' name='L38'></a>  38 
+<a id='L39' name='L39'></a>  39 <em class='comment'>/*</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> * Unit tests for semaphores.</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> *</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> * We test 21 correctness criteria, each stated in a comment at the</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> * top of each test.</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> *</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> * Note that these tests go inside the semaphore abstraction to</em>
+<a id='L46' name='L46'></a>  46 <em class='comment'> * validate the internal state.</em>
+<a id='L47' name='L47'></a>  47 <em class='comment'> *</em>
+<a id='L48' name='L48'></a>  48 <em class='comment'> * All tests (apart from those that crash) attempt to clean up after</em>
+<a id='L49' name='L49'></a>  49 <em class='comment'> * running, to avoid leaking memory and leaving extra threads lying</em>
+<a id='L50' name='L50'></a>  50 <em class='comment'> * around. Tests with a cleanup phase call ok() before going to it in</em>
+<a id='L51' name='L51'></a>  51 <em class='comment'> * case the cleanup crashes -- this should not happen of course but if</em>
+<a id='L52' name='L52'></a>  52 <em class='comment'> * it does it should be distinguished from the main part of the test</em>
+<a id='L53' name='L53'></a>  53 <em class='comment'> * itself dying.</em>
+<a id='L54' name='L54'></a>  54 <em class='comment'> */</em>
+<a id='L55' name='L55'></a>  55 
+<a id='L56' name='L56'></a>  56 <em class='sharp'>#define</em> <a href='../R/399.html' title='Multiple referred from 13 places.'>NAMESTRING</a> "some-silly-name"
+<a id='L57' name='L57'></a>  57 
+<a id='L58' name='L58'></a>  58 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L59' name='L59'></a>  59 <em class='comment'>// support code</em>
+<a id='L60' name='L60'></a>  60 
+<a id='L61' name='L61'></a>  61 <strong class='reserved'>static</strong> <strong class='reserved'>unsigned</strong> waiters_running = 0;
+<a id='L62' name='L62'></a>  62 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> waiters_lock = <a href='../D/806.html' title='Multiple defined in 2 places.'>SPINLOCK_INITIALIZER</a>;
+<a id='L63' name='L63'></a>  63 
+<a id='L64' name='L64'></a>  64 <strong class='reserved'>static</strong>
+<a id='L65' name='L65'></a>  65 <strong class='reserved'>void</strong>
+<a id='L66' name='L66'></a>  66 <a href='../R/1696.html' title='Multiple referred from 23 places.'>ok</a>(<strong class='reserved'>void</strong>)
+<a id='L67' name='L67'></a>  67 <em class='brace'>{</em>
+<a id='L68' name='L68'></a>  68         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Test passed; now cleaning up.\n");
+<a id='L69' name='L69'></a>  69 <em class='brace'>}</em>
+<a id='L70' name='L70'></a>  70 
+<a id='L71' name='L71'></a>  71 <em class='comment'>/*</em>
+<a id='L72' name='L72'></a>  72 <em class='comment'> * Wrapper for sem_create when we aren't explicitly tweaking it.</em>
+<a id='L73' name='L73'></a>  73 <em class='comment'> */</em>
+<a id='L74' name='L74'></a>  74 <strong class='reserved'>static</strong>
+<a id='L75' name='L75'></a>  75 <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *
+<a id='L76' name='L76'></a>  76 <a href='../R/1631.html' title='Multiple referred from 13 places.'>makesem</a>(<strong class='reserved'>unsigned</strong> count)
+<a id='L77' name='L77'></a>  77 <em class='brace'>{</em>
+<a id='L78' name='L78'></a>  78         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L79' name='L79'></a>  79 
+<a id='L80' name='L80'></a>  80         sem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>(<a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>, count);
+<a id='L81' name='L81'></a>  81         <strong class='reserved'>if</strong> (sem == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L82' name='L82'></a>  82                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semunit: whoops: sem_create failed\n");
+<a id='L83' name='L83'></a>  83         <em class='brace'>}</em>
+<a id='L84' name='L84'></a>  84         <strong class='reserved'>return</strong> sem;
+<a id='L85' name='L85'></a>  85 <em class='brace'>}</em>
+<a id='L86' name='L86'></a>  86 
+<a id='L87' name='L87'></a>  87 <em class='comment'>/*</em>
+<a id='L88' name='L88'></a>  88 <em class='comment'> * A thread that just waits on a semaphore.</em>
+<a id='L89' name='L89'></a>  89 <em class='comment'> */</em>
+<a id='L90' name='L90'></a>  90 <strong class='reserved'>static</strong>
+<a id='L91' name='L91'></a>  91 <strong class='reserved'>void</strong>
+<a id='L92' name='L92'></a>  92 <a href='../S/217.html#L118' title='Referred from 118 in kern/test/semunit.c.'>waiter</a>(<strong class='reserved'>void</strong> *vsem, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> junk)
+<a id='L93' name='L93'></a>  93 <em class='brace'>{</em>
+<a id='L94' name='L94'></a>  94         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem = vsem;
+<a id='L95' name='L95'></a>  95         (<strong class='reserved'>void</strong>)junk;
+<a id='L96' name='L96'></a>  96 
+<a id='L97' name='L97'></a>  97         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(sem);
+<a id='L98' name='L98'></a>  98 
+<a id='L99' name='L99'></a>  99         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;waiters_lock);
+<a id='L100' name='L100'></a> 100         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(waiters_running &gt; 0);
+<a id='L101' name='L101'></a> 101         waiters_running--;
+<a id='L102' name='L102'></a> 102         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;waiters_lock);
+<a id='L103' name='L103'></a> 103 <em class='brace'>}</em>
+<a id='L104' name='L104'></a> 104 
+<a id='L105' name='L105'></a> 105 <em class='comment'>/*</em>
+<a id='L106' name='L106'></a> 106 <em class='comment'> * Set up a waiter.</em>
+<a id='L107' name='L107'></a> 107 <em class='comment'> */</em>
+<a id='L108' name='L108'></a> 108 <strong class='reserved'>static</strong>
+<a id='L109' name='L109'></a> 109 <strong class='reserved'>void</strong>
+<a id='L110' name='L110'></a> 110 <a href='../R/1633.html' title='Multiple referred from 4 places.'>makewaiter</a>(<strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem)
+<a id='L111' name='L111'></a> 111 <em class='brace'>{</em>
+<a id='L112' name='L112'></a> 112         <strong class='reserved'>int</strong> result;
+<a id='L113' name='L113'></a> 113 
+<a id='L114' name='L114'></a> 114         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;waiters_lock);
+<a id='L115' name='L115'></a> 115         waiters_running++;
+<a id='L116' name='L116'></a> 116         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;waiters_lock);
+<a id='L117' name='L117'></a> 117 
+<a id='L118' name='L118'></a> 118         result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("semunit waiter", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/217.html#L92' title='Defined at 92 in kern/test/semunit.c.'>waiter</a>, sem, 0);
+<a id='L119' name='L119'></a> 119         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L120' name='L120'></a> 120                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semunit: thread_fork failed\n");
+<a id='L121' name='L121'></a> 121         <em class='brace'>}</em>
+<a id='L122' name='L122'></a> 122         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Sleeping for waiter to run\n");
+<a id='L123' name='L123'></a> 123         <a href='../S/222.html#L113' title='Defined at 113 in kern/thread/clock.c.'>clocksleep</a>(1);
+<a id='L124' name='L124'></a> 124 <em class='brace'>}</em>
+<a id='L125' name='L125'></a> 125 
+<a id='L126' name='L126'></a> 126 <em class='comment'>/*</em>
+<a id='L127' name='L127'></a> 127 <em class='comment'> * Spinlocks don't natively provide this, because it only makes sense</em>
+<a id='L128' name='L128'></a> 128 <em class='comment'> * under controlled conditions.</em>
+<a id='L129' name='L129'></a> 129 <em class='comment'> *</em>
+<a id='L130' name='L130'></a> 130 <em class='comment'> * Note that we should really read the holder atomically; but because</em>
+<a id='L131' name='L131'></a> 131 <em class='comment'> * we're using this under controlled conditions, it doesn't actually</em>
+<a id='L132' name='L132'></a> 132 <em class='comment'> * matter -- nobody is supposed to be able to touch the holder while</em>
+<a id='L133' name='L133'></a> 133 <em class='comment'> * we're checking it, or the check wouldn't be reliable; and, provided</em>
+<a id='L134' name='L134'></a> 134 <em class='comment'> * clocksleep works, nobody can.</em>
+<a id='L135' name='L135'></a> 135 <em class='comment'> */</em>
+<a id='L136' name='L136'></a> 136 <strong class='reserved'>static</strong>
+<a id='L137' name='L137'></a> 137 <a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a>
+<a id='L138' name='L138'></a> 138 <a href='../R/2074.html' title='Multiple referred from 11 places.'>spinlock_not_held</a>(<strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> *splk)
+<a id='L139' name='L139'></a> 139 <em class='brace'>{</em>
+<a id='L140' name='L140'></a> 140         <strong class='reserved'>return</strong> splk-&gt;splk_holder == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L141' name='L141'></a> 141 <em class='brace'>}</em>
+<a id='L142' name='L142'></a> 142 
+<a id='L143' name='L143'></a> 143 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L144' name='L144'></a> 144 <em class='comment'>// tests</em>
+<a id='L145' name='L145'></a> 145 
+<a id='L146' name='L146'></a> 146 <em class='comment'>/*</em>
+<a id='L147' name='L147'></a> 147 <em class='comment'> * 1. After a successful sem_create:</em>
+<a id='L148' name='L148'></a> 148 <em class='comment'> *     - sem_name compares equal to the passed-in name</em>
+<a id='L149' name='L149'></a> 149 <em class='comment'> *     - sem_name is not the same pointer as the passed-in name</em>
+<a id='L150' name='L150'></a> 150 <em class='comment'> *     - sem_wchan is not null</em>
+<a id='L151' name='L151'></a> 151 <em class='comment'> *     - sem_lock is not held and has no owner</em>
+<a id='L152' name='L152'></a> 152 <em class='comment'> *     - sem_count is the passed-in count</em>
+<a id='L153' name='L153'></a> 153 <em class='comment'> */</em>
+<a id='L154' name='L154'></a> 154 <strong class='reserved'>int</strong>
+<a id='L155' name='L155'></a> 155 <a href='../R/1946.html' title='Multiple referred from 2 places.'>semu1</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L156' name='L156'></a> 156 <em class='brace'>{</em>
+<a id='L157' name='L157'></a> 157         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L158' name='L158'></a> 158         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name = <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>;
+<a id='L159' name='L159'></a> 159 
+<a id='L160' name='L160'></a> 160         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L161' name='L161'></a> 161 
+<a id='L162' name='L162'></a> 162         sem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>(name, 56);
+<a id='L163' name='L163'></a> 163         <strong class='reserved'>if</strong> (sem == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L164' name='L164'></a> 164                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu1: whoops: sem_create failed\n");
+<a id='L165' name='L165'></a> 165         <em class='brace'>}</em>
+<a id='L166' name='L166'></a> 166         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(sem-&gt;sem_name, name));
+<a id='L167' name='L167'></a> 167         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_name != name);
+<a id='L168' name='L168'></a> 168         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_wchan != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L169' name='L169'></a> 169         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L170' name='L170'></a> 170         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 56);
+<a id='L171' name='L171'></a> 171 
+<a id='L172' name='L172'></a> 172         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L173' name='L173'></a> 173         <em class='comment'>/* clean up */</em>
+<a id='L174' name='L174'></a> 174         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L175' name='L175'></a> 175         <strong class='reserved'>return</strong> 0;
+<a id='L176' name='L176'></a> 176 <em class='brace'>}</em>
+<a id='L177' name='L177'></a> 177 
+<a id='L178' name='L178'></a> 178 <em class='comment'>/*</em>
+<a id='L179' name='L179'></a> 179 <em class='comment'> * 2. Passing a null name to sem_create asserts or crashes.</em>
+<a id='L180' name='L180'></a> 180 <em class='comment'> */</em>
+<a id='L181' name='L181'></a> 181 <strong class='reserved'>int</strong>
+<a id='L182' name='L182'></a> 182 <a href='../R/1960.html' title='Multiple referred from 2 places.'>semu2</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L183' name='L183'></a> 183 <em class='brace'>{</em>
+<a id='L184' name='L184'></a> 184         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L185' name='L185'></a> 185 
+<a id='L186' name='L186'></a> 186         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L187' name='L187'></a> 187 
+<a id='L188' name='L188'></a> 188         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should crash with a kernel null dereference\n");
+<a id='L189' name='L189'></a> 189         sem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>(<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, 44);
+<a id='L190' name='L190'></a> 190         (<strong class='reserved'>void</strong>)sem;
+<a id='L191' name='L191'></a> 191         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu2: sem_create accepted a null name\n");
+<a id='L192' name='L192'></a> 192         <strong class='reserved'>return</strong> 0;
+<a id='L193' name='L193'></a> 193 <em class='brace'>}</em>
+<a id='L194' name='L194'></a> 194 
+<a id='L195' name='L195'></a> 195 <em class='comment'>/*</em>
+<a id='L196' name='L196'></a> 196 <em class='comment'> * 3. Passing a null semaphore to sem_destroy asserts or crashes.</em>
+<a id='L197' name='L197'></a> 197 <em class='comment'> */</em>
+<a id='L198' name='L198'></a> 198 <strong class='reserved'>int</strong>
+<a id='L199' name='L199'></a> 199 <a href='../R/1964.html' title='Multiple referred from 2 places.'>semu3</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L200' name='L200'></a> 200 <em class='brace'>{</em>
+<a id='L201' name='L201'></a> 201         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L202' name='L202'></a> 202 
+<a id='L203' name='L203'></a> 203         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should assert that sem != NULL\n");
+<a id='L204' name='L204'></a> 204         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L205' name='L205'></a> 205         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu3: sem_destroy accepted a null semaphore\n");
+<a id='L206' name='L206'></a> 206 <em class='brace'>}</em>
+<a id='L207' name='L207'></a> 207 
+<a id='L208' name='L208'></a> 208 
+<a id='L209' name='L209'></a> 209 <em class='comment'>/*</em>
+<a id='L210' name='L210'></a> 210 <em class='comment'> * 4. sem_count is an unsigned type.</em>
+<a id='L211' name='L211'></a> 211 <em class='comment'> */</em>
+<a id='L212' name='L212'></a> 212 <strong class='reserved'>int</strong>
+<a id='L213' name='L213'></a> 213 <a href='../R/1965.html' title='Multiple referred from 2 places.'>semu4</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L214' name='L214'></a> 214 <em class='brace'>{</em>
+<a id='L215' name='L215'></a> 215         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L216' name='L216'></a> 216 
+<a id='L217' name='L217'></a> 217         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L218' name='L218'></a> 218 
+<a id='L219' name='L219'></a> 219         <em class='comment'>/* Create a semaphore with count 0. */</em>
+<a id='L220' name='L220'></a> 220         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L221' name='L221'></a> 221         <em class='comment'>/* Decrement the count. */</em>
+<a id='L222' name='L222'></a> 222         sem-&gt;sem_count--;
+<a id='L223' name='L223'></a> 223         <em class='comment'>/* This value should be positive. */</em>
+<a id='L224' name='L224'></a> 224         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count &gt; 0);
+<a id='L225' name='L225'></a> 225 
+<a id='L226' name='L226'></a> 226         <em class='comment'>/* Clean up. */</em>
+<a id='L227' name='L227'></a> 227         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L228' name='L228'></a> 228         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L229' name='L229'></a> 229         <strong class='reserved'>return</strong> 0;
+<a id='L230' name='L230'></a> 230 <em class='brace'>}</em>
+<a id='L231' name='L231'></a> 231 
+<a id='L232' name='L232'></a> 232 <em class='comment'>/*</em>
+<a id='L233' name='L233'></a> 233 <em class='comment'> * 5. A semaphore can be successfully initialized with a count of at</em>
+<a id='L234' name='L234'></a> 234 <em class='comment'> * least 0xf0000000.</em>
+<a id='L235' name='L235'></a> 235 <em class='comment'> */</em>
+<a id='L236' name='L236'></a> 236 <strong class='reserved'>int</strong>
+<a id='L237' name='L237'></a> 237 <a href='../R/1966.html' title='Multiple referred from 2 places.'>semu5</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L238' name='L238'></a> 238 <em class='brace'>{</em>
+<a id='L239' name='L239'></a> 239         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L240' name='L240'></a> 240 
+<a id='L241' name='L241'></a> 241         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L242' name='L242'></a> 242 
+<a id='L243' name='L243'></a> 243         sem = <a href='../S/226.html#L48' title='Defined at 48 in kern/thread/synch.c.'>sem_create</a>(<a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>, 0xf0000000U);
+<a id='L244' name='L244'></a> 244         <strong class='reserved'>if</strong> (sem == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L245' name='L245'></a> 245                 <em class='comment'>/* This might not be an innocuous malloc shortage. */</em>
+<a id='L246' name='L246'></a> 246                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu5: sem_create failed\n");
+<a id='L247' name='L247'></a> 247         <em class='brace'>}</em>
+<a id='L248' name='L248'></a> 248         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0xf0000000U);
+<a id='L249' name='L249'></a> 249 
+<a id='L250' name='L250'></a> 250         <em class='comment'>/* Clean up. */</em>
+<a id='L251' name='L251'></a> 251         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L252' name='L252'></a> 252         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L253' name='L253'></a> 253         <strong class='reserved'>return</strong> 0;
+<a id='L254' name='L254'></a> 254 <em class='brace'>}</em>
+<a id='L255' name='L255'></a> 255 
+<a id='L256' name='L256'></a> 256 <em class='comment'>/*</em>
+<a id='L257' name='L257'></a> 257 <em class='comment'> * 6. Passing a semaphore with a waiting thread to sem_destroy asserts</em>
+<a id='L258' name='L258'></a> 258 <em class='comment'> * (in the wchan code).</em>
+<a id='L259' name='L259'></a> 259 <em class='comment'> */</em>
+<a id='L260' name='L260'></a> 260 <strong class='reserved'>int</strong>
+<a id='L261' name='L261'></a> 261 <a href='../R/1967.html' title='Multiple referred from 2 places.'>semu6</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L262' name='L262'></a> 262 <em class='brace'>{</em>
+<a id='L263' name='L263'></a> 263         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L264' name='L264'></a> 264 
+<a id='L265' name='L265'></a> 265         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L266' name='L266'></a> 266 
+<a id='L267' name='L267'></a> 267         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L268' name='L268'></a> 268         <a href='../S/217.html#L110' title='Defined at 110 in kern/test/semunit.c.'>makewaiter</a>(sem);
+<a id='L269' name='L269'></a> 269         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should assert that the wchan's threadlist is empty\n");
+<a id='L270' name='L270'></a> 270         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L271' name='L271'></a> 271         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu6: wchan_destroy with waiters succeeded\n");
+<a id='L272' name='L272'></a> 272         <strong class='reserved'>return</strong> 0;
+<a id='L273' name='L273'></a> 273 <em class='brace'>}</em>
+<a id='L274' name='L274'></a> 274 
+<a id='L275' name='L275'></a> 275 <em class='comment'>/*</em>
+<a id='L276' name='L276'></a> 276 <em class='comment'> * 7. Calling V on a semaphore does not block the caller, regardless</em>
+<a id='L277' name='L277'></a> 277 <em class='comment'> * of the semaphore count.</em>
+<a id='L278' name='L278'></a> 278 <em class='comment'> */</em>
+<a id='L279' name='L279'></a> 279 <strong class='reserved'>int</strong>
+<a id='L280' name='L280'></a> 280 <a href='../R/1968.html' title='Multiple referred from 2 places.'>semu7</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L281' name='L281'></a> 281 <em class='brace'>{</em>
+<a id='L282' name='L282'></a> 282         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L283' name='L283'></a> 283         <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> lk;
+<a id='L284' name='L284'></a> 284 
+<a id='L285' name='L285'></a> 285         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L286' name='L286'></a> 286 
+<a id='L287' name='L287'></a> 287         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L288' name='L288'></a> 288 
+<a id='L289' name='L289'></a> 289         <em class='comment'>/*</em>
+<a id='L290' name='L290'></a> 290 <em class='comment'>         * Check for blocking by taking a spinlock; if we block while</em>
+<a id='L291' name='L291'></a> 291 <em class='comment'>         * holding a spinlock, wchan_sleep will assert.</em>
+<a id='L292' name='L292'></a> 292 <em class='comment'>         */</em>
+<a id='L293' name='L293'></a> 293         <a href='../S/224.html#L51' title='Defined at 51 in kern/thread/spinlock.c.'>spinlock_init</a>(&amp;lk);
+<a id='L294' name='L294'></a> 294         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;lk);
+<a id='L295' name='L295'></a> 295 
+<a id='L296' name='L296'></a> 296         <em class='comment'>/* try with count 0, count 1, and count 2, just for completeness */</em>
+<a id='L297' name='L297'></a> 297         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L298' name='L298'></a> 298         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L299' name='L299'></a> 299         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L300' name='L300'></a> 300 
+<a id='L301' name='L301'></a> 301         <em class='comment'>/* Clean up. */</em>
+<a id='L302' name='L302'></a> 302         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L303' name='L303'></a> 303         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;lk);
+<a id='L304' name='L304'></a> 304         <a href='../S/224.html#L62' title='Defined at 62 in kern/thread/spinlock.c.'>spinlock_cleanup</a>(&amp;lk);
+<a id='L305' name='L305'></a> 305         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L306' name='L306'></a> 306         <strong class='reserved'>return</strong> 0;
+<a id='L307' name='L307'></a> 307 <em class='brace'>}</em>
+<a id='L308' name='L308'></a> 308 
+<a id='L309' name='L309'></a> 309 <em class='comment'>/*</em>
+<a id='L310' name='L310'></a> 310 <em class='comment'> * 8/9. After calling V on a semaphore with no threads waiting:</em>
+<a id='L311' name='L311'></a> 311 <em class='comment'> *    - sem_name is unchanged</em>
+<a id='L312' name='L312'></a> 312 <em class='comment'> *    - sem_wchan is unchanged</em>
+<a id='L313' name='L313'></a> 313 <em class='comment'> *    - sem_lock is (still) unheld and has no owner</em>
+<a id='L314' name='L314'></a> 314 <em class='comment'> *    - sem_count is increased by one</em>
+<a id='L315' name='L315'></a> 315 <em class='comment'> *</em>
+<a id='L316' name='L316'></a> 316 <em class='comment'> * This is true even if we are in an interrupt handler.</em>
+<a id='L317' name='L317'></a> 317 <em class='comment'> */</em>
+<a id='L318' name='L318'></a> 318 <strong class='reserved'>static</strong>
+<a id='L319' name='L319'></a> 319 <strong class='reserved'>void</strong>
+<a id='L320' name='L320'></a> 320 <a href='../R/1237.html' title='Multiple referred from 2 places.'>do_semu89</a>(<a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a> interrupthandler)
+<a id='L321' name='L321'></a> 321 <em class='brace'>{</em>
+<a id='L322' name='L322'></a> 322         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L323' name='L323'></a> 323         <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a>;
+<a id='L324' name='L324'></a> 324         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name;
+<a id='L325' name='L325'></a> 325 
+<a id='L326' name='L326'></a> 326         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L327' name='L327'></a> 327 
+<a id='L328' name='L328'></a> 328         <em class='comment'>/* check preconditions */</em>
+<a id='L329' name='L329'></a> 329         name = sem-&gt;sem_name;
+<a id='L330' name='L330'></a> 330         <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> = sem-&gt;sem_wchan;
+<a id='L331' name='L331'></a> 331         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L332' name='L332'></a> 332         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L333' name='L333'></a> 333 
+<a id='L334' name='L334'></a> 334         <em class='comment'>/*</em>
+<a id='L335' name='L335'></a> 335 <em class='comment'>         * The right way to this is to set up an actual interrupt,</em>
+<a id='L336' name='L336'></a> 336 <em class='comment'>         * e.g. an interprocessor interrupt, and hook onto it to run</em>
+<a id='L337' name='L337'></a> 337 <em class='comment'>         * the V() in the actual interrupt handler. However, that</em>
+<a id='L338' name='L338'></a> 338 <em class='comment'>         * requires a good bit of infrastructure that we don't</em>
+<a id='L339' name='L339'></a> 339 <em class='comment'>         * have. Instead we'll fake it by explicitly setting</em>
+<a id='L340' name='L340'></a> 340 <em class='comment'>         * curthread-&gt;t_in_interrupt.</em>
+<a id='L341' name='L341'></a> 341 <em class='comment'>         */</em>
+<a id='L342' name='L342'></a> 342         <strong class='reserved'>if</strong> (interrupthandler) <em class='brace'>{</em>
+<a id='L343' name='L343'></a> 343                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt == <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>);
+<a id='L344' name='L344'></a> 344                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L345' name='L345'></a> 345         <em class='brace'>}</em>
+<a id='L346' name='L346'></a> 346 
+<a id='L347' name='L347'></a> 347         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L348' name='L348'></a> 348 
+<a id='L349' name='L349'></a> 349         <strong class='reserved'>if</strong> (interrupthandler) <em class='brace'>{</em>
+<a id='L350' name='L350'></a> 350                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt == <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>);
+<a id='L351' name='L351'></a> 351                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L352' name='L352'></a> 352         <em class='brace'>}</em>
+<a id='L353' name='L353'></a> 353 
+<a id='L354' name='L354'></a> 354         <em class='comment'>/* check postconditions */</em>
+<a id='L355' name='L355'></a> 355         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(name == sem-&gt;sem_name);
+<a id='L356' name='L356'></a> 356         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L357' name='L357'></a> 357         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> == sem-&gt;sem_wchan);
+<a id='L358' name='L358'></a> 358         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L359' name='L359'></a> 359         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 1);
+<a id='L360' name='L360'></a> 360 
+<a id='L361' name='L361'></a> 361         <em class='comment'>/* clean up */</em>
+<a id='L362' name='L362'></a> 362         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L363' name='L363'></a> 363         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L364' name='L364'></a> 364 <em class='brace'>}</em>
+<a id='L365' name='L365'></a> 365 
+<a id='L366' name='L366'></a> 366 <strong class='reserved'>int</strong>
+<a id='L367' name='L367'></a> 367 <a href='../R/1969.html' title='Multiple referred from 2 places.'>semu8</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L368' name='L368'></a> 368 <em class='brace'>{</em>
+<a id='L369' name='L369'></a> 369         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L370' name='L370'></a> 370 
+<a id='L371' name='L371'></a> 371         <a href='../S/217.html#L320' title='Defined at 320 in kern/test/semunit.c.'>do_semu89</a>(<a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a> <em class='comment'>/*interrupthandler*/</em>);
+<a id='L372' name='L372'></a> 372         <strong class='reserved'>return</strong> 0;
+<a id='L373' name='L373'></a> 373 <em class='brace'>}</em>
+<a id='L374' name='L374'></a> 374 
+<a id='L375' name='L375'></a> 375 <strong class='reserved'>int</strong>
+<a id='L376' name='L376'></a> 376 <a href='../R/1970.html' title='Multiple referred from 2 places.'>semu9</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L377' name='L377'></a> 377 <em class='brace'>{</em>
+<a id='L378' name='L378'></a> 378         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L379' name='L379'></a> 379 
+<a id='L380' name='L380'></a> 380         <a href='../S/217.html#L320' title='Defined at 320 in kern/test/semunit.c.'>do_semu89</a>(<a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a> <em class='comment'>/*interrupthandler*/</em>);
+<a id='L381' name='L381'></a> 381         <strong class='reserved'>return</strong> 0;
+<a id='L382' name='L382'></a> 382 <em class='brace'>}</em>
+<a id='L383' name='L383'></a> 383 
+<a id='L384' name='L384'></a> 384 <em class='comment'>/*</em>
+<a id='L385' name='L385'></a> 385 <em class='comment'> * 10/11. After calling V on a semaphore with one thread waiting, and giving</em>
+<a id='L386' name='L386'></a> 386 <em class='comment'> * it time to run:</em>
+<a id='L387' name='L387'></a> 387 <em class='comment'> *    - sem_name is unchanged</em>
+<a id='L388' name='L388'></a> 388 <em class='comment'> *    - sem_wchan is unchanged</em>
+<a id='L389' name='L389'></a> 389 <em class='comment'> *    - sem_lock is (still) unheld and has no owner</em>
+<a id='L390' name='L390'></a> 390 <em class='comment'> *    - sem_count is still 0</em>
+<a id='L391' name='L391'></a> 391 <em class='comment'> *    - the other thread does in fact run</em>
+<a id='L392' name='L392'></a> 392 <em class='comment'> *</em>
+<a id='L393' name='L393'></a> 393 <em class='comment'> * This is true even if we are in an interrupt handler.</em>
+<a id='L394' name='L394'></a> 394 <em class='comment'> */</em>
+<a id='L395' name='L395'></a> 395 <strong class='reserved'>static</strong>
+<a id='L396' name='L396'></a> 396 <strong class='reserved'>int</strong>
+<a id='L397' name='L397'></a> 397 <a href='../R/1236.html' title='Multiple referred from 2 places.'>do_semu1011</a>(<a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a> interrupthandler)
+<a id='L398' name='L398'></a> 398 <em class='brace'>{</em>
+<a id='L399' name='L399'></a> 399         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L400' name='L400'></a> 400         <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a>;
+<a id='L401' name='L401'></a> 401         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name;
+<a id='L402' name='L402'></a> 402 
+<a id='L403' name='L403'></a> 403         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L404' name='L404'></a> 404         <a href='../S/217.html#L110' title='Defined at 110 in kern/test/semunit.c.'>makewaiter</a>(sem);
+<a id='L405' name='L405'></a> 405 
+<a id='L406' name='L406'></a> 406         <em class='comment'>/* check preconditions */</em>
+<a id='L407' name='L407'></a> 407         name = sem-&gt;sem_name;
+<a id='L408' name='L408'></a> 408         <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> = sem-&gt;sem_wchan;
+<a id='L409' name='L409'></a> 409         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L410' name='L410'></a> 410         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L411' name='L411'></a> 411         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;waiters_lock);
+<a id='L412' name='L412'></a> 412         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(waiters_running == 1);
+<a id='L413' name='L413'></a> 413         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;waiters_lock);
+<a id='L414' name='L414'></a> 414 
+<a id='L415' name='L415'></a> 415         <em class='comment'>/* see above */</em>
+<a id='L416' name='L416'></a> 416         <strong class='reserved'>if</strong> (interrupthandler) <em class='brace'>{</em>
+<a id='L417' name='L417'></a> 417                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt == <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>);
+<a id='L418' name='L418'></a> 418                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L419' name='L419'></a> 419         <em class='brace'>}</em>
+<a id='L420' name='L420'></a> 420 
+<a id='L421' name='L421'></a> 421         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L422' name='L422'></a> 422 
+<a id='L423' name='L423'></a> 423         <strong class='reserved'>if</strong> (interrupthandler) <em class='brace'>{</em>
+<a id='L424' name='L424'></a> 424                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt == <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>);
+<a id='L425' name='L425'></a> 425                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L426' name='L426'></a> 426         <em class='brace'>}</em>
+<a id='L427' name='L427'></a> 427 
+<a id='L428' name='L428'></a> 428         <em class='comment'>/* give the waiter time to exit */</em>
+<a id='L429' name='L429'></a> 429         <a href='../S/222.html#L113' title='Defined at 113 in kern/thread/clock.c.'>clocksleep</a>(1);
+<a id='L430' name='L430'></a> 430 
+<a id='L431' name='L431'></a> 431         <em class='comment'>/* check postconditions */</em>
+<a id='L432' name='L432'></a> 432         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(name == sem-&gt;sem_name);
+<a id='L433' name='L433'></a> 433         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L434' name='L434'></a> 434         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> == sem-&gt;sem_wchan);
+<a id='L435' name='L435'></a> 435         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L436' name='L436'></a> 436         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0);
+<a id='L437' name='L437'></a> 437         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;waiters_lock);
+<a id='L438' name='L438'></a> 438         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(waiters_running == 0);
+<a id='L439' name='L439'></a> 439         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;waiters_lock);
+<a id='L440' name='L440'></a> 440 
+<a id='L441' name='L441'></a> 441         <em class='comment'>/* clean up */</em>
+<a id='L442' name='L442'></a> 442         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L443' name='L443'></a> 443         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L444' name='L444'></a> 444         <strong class='reserved'>return</strong> 0;
+<a id='L445' name='L445'></a> 445 
+<a id='L446' name='L446'></a> 446 <em class='brace'>}</em>
+<a id='L447' name='L447'></a> 447 
+<a id='L448' name='L448'></a> 448 <strong class='reserved'>int</strong>
+<a id='L449' name='L449'></a> 449 <a href='../R/1947.html' title='Multiple referred from 2 places.'>semu10</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L450' name='L450'></a> 450 <em class='brace'>{</em>
+<a id='L451' name='L451'></a> 451         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L452' name='L452'></a> 452 
+<a id='L453' name='L453'></a> 453         <a href='../S/217.html#L397' title='Defined at 397 in kern/test/semunit.c.'>do_semu1011</a>(<a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a> <em class='comment'>/*interrupthandler*/</em>);
+<a id='L454' name='L454'></a> 454         <strong class='reserved'>return</strong> 0;
+<a id='L455' name='L455'></a> 455 <em class='brace'>}</em>
+<a id='L456' name='L456'></a> 456 
+<a id='L457' name='L457'></a> 457 <strong class='reserved'>int</strong>
+<a id='L458' name='L458'></a> 458 <a href='../R/1948.html' title='Multiple referred from 2 places.'>semu11</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L459' name='L459'></a> 459 <em class='brace'>{</em>
+<a id='L460' name='L460'></a> 460         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L461' name='L461'></a> 461 
+<a id='L462' name='L462'></a> 462         <a href='../S/217.html#L397' title='Defined at 397 in kern/test/semunit.c.'>do_semu1011</a>(<a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a> <em class='comment'>/*interrupthandler*/</em>);
+<a id='L463' name='L463'></a> 463         <strong class='reserved'>return</strong> 0;
+<a id='L464' name='L464'></a> 464 <em class='brace'>}</em>
+<a id='L465' name='L465'></a> 465 
+<a id='L466' name='L466'></a> 466 
+<a id='L467' name='L467'></a> 467 <em class='comment'>/*</em>
+<a id='L468' name='L468'></a> 468 <em class='comment'> * 12/13. After calling V on a semaphore with two threads waiting, and</em>
+<a id='L469' name='L469'></a> 469 <em class='comment'> * giving it time to run:</em>
+<a id='L470' name='L470'></a> 470 <em class='comment'> *    - sem_name is unchanged</em>
+<a id='L471' name='L471'></a> 471 <em class='comment'> *    - sem_wchan is unchanged</em>
+<a id='L472' name='L472'></a> 472 <em class='comment'> *    - sem_lock is (still) unheld and has no owner</em>
+<a id='L473' name='L473'></a> 473 <em class='comment'> *    - sem_count is still 0</em>
+<a id='L474' name='L474'></a> 474 <em class='comment'> *    - one of the other threads does in fact run</em>
+<a id='L475' name='L475'></a> 475 <em class='comment'> *    - the other one does not</em>
+<a id='L476' name='L476'></a> 476 <em class='comment'> */</em>
+<a id='L477' name='L477'></a> 477 <strong class='reserved'>static</strong>
+<a id='L478' name='L478'></a> 478 <strong class='reserved'>void</strong>
+<a id='L479' name='L479'></a> 479 <a href='../R/1950.html' title='Multiple referred from 2 places.'>semu1213</a>(<a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a> interrupthandler)
+<a id='L480' name='L480'></a> 480 <em class='brace'>{</em>
+<a id='L481' name='L481'></a> 481         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L482' name='L482'></a> 482         <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a>;
+<a id='L483' name='L483'></a> 483         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name;
+<a id='L484' name='L484'></a> 484 
+<a id='L485' name='L485'></a> 485         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L486' name='L486'></a> 486         <a href='../S/217.html#L110' title='Defined at 110 in kern/test/semunit.c.'>makewaiter</a>(sem);
+<a id='L487' name='L487'></a> 487         <a href='../S/217.html#L110' title='Defined at 110 in kern/test/semunit.c.'>makewaiter</a>(sem);
+<a id='L488' name='L488'></a> 488 
+<a id='L489' name='L489'></a> 489         <em class='comment'>/* check preconditions */</em>
+<a id='L490' name='L490'></a> 490         name = sem-&gt;sem_name;
+<a id='L491' name='L491'></a> 491         <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> = sem-&gt;sem_wchan;
+<a id='L492' name='L492'></a> 492         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L493' name='L493'></a> 493         <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> = sem-&gt;sem_wchan;
+<a id='L494' name='L494'></a> 494         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L495' name='L495'></a> 495         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;waiters_lock);
+<a id='L496' name='L496'></a> 496         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(waiters_running == 2);
+<a id='L497' name='L497'></a> 497         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;waiters_lock);
+<a id='L498' name='L498'></a> 498 
+<a id='L499' name='L499'></a> 499         <em class='comment'>/* see above */</em>
+<a id='L500' name='L500'></a> 500         <strong class='reserved'>if</strong> (interrupthandler) <em class='brace'>{</em>
+<a id='L501' name='L501'></a> 501                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt == <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>);
+<a id='L502' name='L502'></a> 502                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L503' name='L503'></a> 503         <em class='brace'>}</em>
+<a id='L504' name='L504'></a> 504 
+<a id='L505' name='L505'></a> 505         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L506' name='L506'></a> 506 
+<a id='L507' name='L507'></a> 507         <strong class='reserved'>if</strong> (interrupthandler) <em class='brace'>{</em>
+<a id='L508' name='L508'></a> 508                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt == <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>);
+<a id='L509' name='L509'></a> 509                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L510' name='L510'></a> 510         <em class='brace'>}</em>
+<a id='L511' name='L511'></a> 511 
+<a id='L512' name='L512'></a> 512         <em class='comment'>/* give the waiter time to exit */</em>
+<a id='L513' name='L513'></a> 513         <a href='../S/222.html#L113' title='Defined at 113 in kern/thread/clock.c.'>clocksleep</a>(1);
+<a id='L514' name='L514'></a> 514 
+<a id='L515' name='L515'></a> 515         <em class='comment'>/* check postconditions */</em>
+<a id='L516' name='L516'></a> 516         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(name == sem-&gt;sem_name);
+<a id='L517' name='L517'></a> 517         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L518' name='L518'></a> 518         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> == sem-&gt;sem_wchan);
+<a id='L519' name='L519'></a> 519         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L520' name='L520'></a> 520         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0);
+<a id='L521' name='L521'></a> 521         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;waiters_lock);
+<a id='L522' name='L522'></a> 522         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(waiters_running == 1);
+<a id='L523' name='L523'></a> 523         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;waiters_lock);
+<a id='L524' name='L524'></a> 524 
+<a id='L525' name='L525'></a> 525         <em class='comment'>/* clean up */</em>
+<a id='L526' name='L526'></a> 526         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L527' name='L527'></a> 527         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L528' name='L528'></a> 528         <a href='../S/222.html#L113' title='Defined at 113 in kern/thread/clock.c.'>clocksleep</a>(1);
+<a id='L529' name='L529'></a> 529         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;waiters_lock);
+<a id='L530' name='L530'></a> 530         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(waiters_running == 0);
+<a id='L531' name='L531'></a> 531         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;waiters_lock);
+<a id='L532' name='L532'></a> 532         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L533' name='L533'></a> 533 <em class='brace'>}</em>
+<a id='L534' name='L534'></a> 534 
+<a id='L535' name='L535'></a> 535 <strong class='reserved'>int</strong>
+<a id='L536' name='L536'></a> 536 <a href='../R/1949.html' title='Multiple referred from 2 places.'>semu12</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L537' name='L537'></a> 537 <em class='brace'>{</em>
+<a id='L538' name='L538'></a> 538         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L539' name='L539'></a> 539 
+<a id='L540' name='L540'></a> 540         <a href='../S/217.html#L479' title='Defined at 479 in kern/test/semunit.c.'>semu1213</a>(<a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a> <em class='comment'>/*interrupthandler*/</em>);
+<a id='L541' name='L541'></a> 541         <strong class='reserved'>return</strong> 0;
+<a id='L542' name='L542'></a> 542 <em class='brace'>}</em>
+<a id='L543' name='L543'></a> 543 
+<a id='L544' name='L544'></a> 544 <strong class='reserved'>int</strong>
+<a id='L545' name='L545'></a> 545 <a href='../R/1951.html' title='Multiple referred from 2 places.'>semu13</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L546' name='L546'></a> 546 <em class='brace'>{</em>
+<a id='L547' name='L547'></a> 547         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L548' name='L548'></a> 548 
+<a id='L549' name='L549'></a> 549         <a href='../S/217.html#L479' title='Defined at 479 in kern/test/semunit.c.'>semu1213</a>(<a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a> <em class='comment'>/*interrupthandler*/</em>);
+<a id='L550' name='L550'></a> 550         <strong class='reserved'>return</strong> 0;
+<a id='L551' name='L551'></a> 551 <em class='brace'>}</em>
+<a id='L552' name='L552'></a> 552 
+<a id='L553' name='L553'></a> 553 <em class='comment'>/*</em>
+<a id='L554' name='L554'></a> 554 <em class='comment'> * 14. Calling V on a semaphore whose count is the maximum allowed value</em>
+<a id='L555' name='L555'></a> 555 <em class='comment'> * asserts.</em>
+<a id='L556' name='L556'></a> 556 <em class='comment'> */</em>
+<a id='L557' name='L557'></a> 557 <strong class='reserved'>int</strong>
+<a id='L558' name='L558'></a> 558 <a href='../R/1952.html' title='Multiple referred from 2 places.'>semu14</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L559' name='L559'></a> 559 <em class='brace'>{</em>
+<a id='L560' name='L560'></a> 560         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L561' name='L561'></a> 561 
+<a id='L562' name='L562'></a> 562         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L563' name='L563'></a> 563 
+<a id='L564' name='L564'></a> 564         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should assert that sem_count is &gt; 0.\n");
+<a id='L565' name='L565'></a> 565         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L566' name='L566'></a> 566 
+<a id='L567' name='L567'></a> 567         <em class='comment'>/*</em>
+<a id='L568' name='L568'></a> 568 <em class='comment'>         * The maximum value is (unsigned)-1. Get this by decrementing</em>
+<a id='L569' name='L569'></a> 569 <em class='comment'>         * from 0.</em>
+<a id='L570' name='L570'></a> 570 <em class='comment'>         */</em>
+<a id='L571' name='L571'></a> 571         sem-&gt;sem_count--;
+<a id='L572' name='L572'></a> 572         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L573' name='L573'></a> 573         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0);
+<a id='L574' name='L574'></a> 574         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu14: V tolerated count wraparound\n");
+<a id='L575' name='L575'></a> 575         <strong class='reserved'>return</strong> 0;
+<a id='L576' name='L576'></a> 576 <em class='brace'>}</em>
+<a id='L577' name='L577'></a> 577 
+<a id='L578' name='L578'></a> 578 <em class='comment'>/*</em>
+<a id='L579' name='L579'></a> 579 <em class='comment'> * 15. Calling V on a null semaphore asserts.</em>
+<a id='L580' name='L580'></a> 580 <em class='comment'> */</em>
+<a id='L581' name='L581'></a> 581 <strong class='reserved'>int</strong>
+<a id='L582' name='L582'></a> 582 <a href='../R/1953.html' title='Multiple referred from 2 places.'>semu15</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L583' name='L583'></a> 583 <em class='brace'>{</em>
+<a id='L584' name='L584'></a> 584         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L585' name='L585'></a> 585 
+<a id='L586' name='L586'></a> 586         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should assert that the semaphore isn't null.\n");
+<a id='L587' name='L587'></a> 587         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L588' name='L588'></a> 588         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu15: V tolerated null semaphore\n");
+<a id='L589' name='L589'></a> 589         <strong class='reserved'>return</strong> 0;
+<a id='L590' name='L590'></a> 590 <em class='brace'>}</em>
+<a id='L591' name='L591'></a> 591 
+<a id='L592' name='L592'></a> 592 <em class='comment'>/*</em>
+<a id='L593' name='L593'></a> 593 <em class='comment'> * 16. Calling P on a semaphore with count &gt; 0 does not block the caller.</em>
+<a id='L594' name='L594'></a> 594 <em class='comment'> */</em>
+<a id='L595' name='L595'></a> 595 <strong class='reserved'>int</strong>
+<a id='L596' name='L596'></a> 596 <a href='../R/1954.html' title='Multiple referred from 2 places.'>semu16</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L597' name='L597'></a> 597 <em class='brace'>{</em>
+<a id='L598' name='L598'></a> 598         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L599' name='L599'></a> 599         <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> lk;
+<a id='L600' name='L600'></a> 600 
+<a id='L601' name='L601'></a> 601         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L602' name='L602'></a> 602 
+<a id='L603' name='L603'></a> 603         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(1);
+<a id='L604' name='L604'></a> 604 
+<a id='L605' name='L605'></a> 605         <em class='comment'>/* As above, check for improper blocking by taking a spinlock. */</em>
+<a id='L606' name='L606'></a> 606         <a href='../S/224.html#L51' title='Defined at 51 in kern/thread/spinlock.c.'>spinlock_init</a>(&amp;lk);
+<a id='L607' name='L607'></a> 607         <a href='../S/224.html#L76' title='Defined at 76 in kern/thread/spinlock.c.'>spinlock_acquire</a>(&amp;lk);
+<a id='L608' name='L608'></a> 608 
+<a id='L609' name='L609'></a> 609         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(sem);
+<a id='L610' name='L610'></a> 610 
+<a id='L611' name='L611'></a> 611         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L612' name='L612'></a> 612         <a href='../S/224.html#L128' title='Defined at 128 in kern/thread/spinlock.c.'>spinlock_release</a>(&amp;lk);
+<a id='L613' name='L613'></a> 613         <a href='../S/224.html#L62' title='Defined at 62 in kern/thread/spinlock.c.'>spinlock_cleanup</a>(&amp;lk);
+<a id='L614' name='L614'></a> 614         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L615' name='L615'></a> 615         <strong class='reserved'>return</strong> 0;
+<a id='L616' name='L616'></a> 616 <em class='brace'>}</em>
+<a id='L617' name='L617'></a> 617 
+<a id='L618' name='L618'></a> 618 <em class='comment'>/*</em>
+<a id='L619' name='L619'></a> 619 <em class='comment'> * 17. Calling P on a semaphore with count == 0 does block the caller.</em>
+<a id='L620' name='L620'></a> 620 <em class='comment'> */</em>
+<a id='L621' name='L621'></a> 621 
+<a id='L622' name='L622'></a> 622 <strong class='reserved'>static</strong> <strong class='reserved'>struct</strong> <a href='../S/187.html#L68' title='Defined at 68 in kern/include/thread.h.'>thread</a> *semu17_thread;
+<a id='L623' name='L623'></a> 623 
+<a id='L624' name='L624'></a> 624 <strong class='reserved'>static</strong>
+<a id='L625' name='L625'></a> 625 <strong class='reserved'>void</strong>
+<a id='L626' name='L626'></a> 626 <a href='../S/217.html#L651' title='Referred from 651 in kern/test/semunit.c.'>semu17_sub</a>(<strong class='reserved'>void</strong> *semv, <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> junk)
+<a id='L627' name='L627'></a> 627 <em class='brace'>{</em>
+<a id='L628' name='L628'></a> 628         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem = semv;
+<a id='L629' name='L629'></a> 629 
+<a id='L630' name='L630'></a> 630         (<strong class='reserved'>void</strong>)junk;
+<a id='L631' name='L631'></a> 631 
+<a id='L632' name='L632'></a> 632         semu17_thread = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>;
+<a id='L633' name='L633'></a> 633 
+<a id='L634' name='L634'></a> 634         <em class='comment'>/* precondition */</em>
+<a id='L635' name='L635'></a> 635         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0);
+<a id='L636' name='L636'></a> 636 
+<a id='L637' name='L637'></a> 637         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(sem);
+<a id='L638' name='L638'></a> 638 <em class='brace'>}</em>
+<a id='L639' name='L639'></a> 639 
+<a id='L640' name='L640'></a> 640 <strong class='reserved'>int</strong>
+<a id='L641' name='L641'></a> 641 <a href='../R/1955.html' title='Multiple referred from 2 places.'>semu17</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L642' name='L642'></a> 642 <em class='brace'>{</em>
+<a id='L643' name='L643'></a> 643         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L644' name='L644'></a> 644         <strong class='reserved'>int</strong> result;
+<a id='L645' name='L645'></a> 645 
+<a id='L646' name='L646'></a> 646         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L647' name='L647'></a> 647 
+<a id='L648' name='L648'></a> 648         semu17_thread = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L649' name='L649'></a> 649 
+<a id='L650' name='L650'></a> 650         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L651' name='L651'></a> 651         result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("semu17_sub", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/217.html#L626' title='Defined at 626 in kern/test/semunit.c.'>semu17_sub</a>, sem, 0);
+<a id='L652' name='L652'></a> 652         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L653' name='L653'></a> 653                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu17: whoops: thread_fork failed\n");
+<a id='L654' name='L654'></a> 654         <em class='brace'>}</em>
+<a id='L655' name='L655'></a> 655         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Waiting for subthread...\n");
+<a id='L656' name='L656'></a> 656         <a href='../S/222.html#L113' title='Defined at 113 in kern/thread/clock.c.'>clocksleep</a>(1);
+<a id='L657' name='L657'></a> 657 
+<a id='L658' name='L658'></a> 658         <em class='comment'>/* The subthread should be blocked. */</em>
+<a id='L659' name='L659'></a> 659         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(semu17_thread != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L660' name='L660'></a> 660         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(semu17_thread-&gt;t_state == <a href='../S/187.html#L63' title='Defined at 63 in kern/include/thread.h.'>S_SLEEP</a>);
+<a id='L661' name='L661'></a> 661 
+<a id='L662' name='L662'></a> 662         <em class='comment'>/* Clean up. */</em>
+<a id='L663' name='L663'></a> 663         <a href='../S/217.html#L66' title='Defined at 66 in kern/test/semunit.c.'>ok</a>();
+<a id='L664' name='L664'></a> 664         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L665' name='L665'></a> 665         <a href='../S/222.html#L113' title='Defined at 113 in kern/thread/clock.c.'>clocksleep</a>(1);
+<a id='L666' name='L666'></a> 666         <a href='../S/226.html#L77' title='Defined at 77 in kern/thread/synch.c.'>sem_destroy</a>(sem);
+<a id='L667' name='L667'></a> 667         semu17_thread = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L668' name='L668'></a> 668         <strong class='reserved'>return</strong> 0;
+<a id='L669' name='L669'></a> 669 <em class='brace'>}</em>
+<a id='L670' name='L670'></a> 670 
+<a id='L671' name='L671'></a> 671 <em class='comment'>/*</em>
+<a id='L672' name='L672'></a> 672 <em class='comment'> * 18. After calling P on a semaphore with count &gt; 0:</em>
+<a id='L673' name='L673'></a> 673 <em class='comment'> *    - sem_name is unchanged</em>
+<a id='L674' name='L674'></a> 674 <em class='comment'> *    - sem_wchan is unchanged</em>
+<a id='L675' name='L675'></a> 675 <em class='comment'> *    - sem_lock is unheld and has no owner</em>
+<a id='L676' name='L676'></a> 676 <em class='comment'> *    - sem_count is one less</em>
+<a id='L677' name='L677'></a> 677 <em class='comment'> */</em>
+<a id='L678' name='L678'></a> 678 <strong class='reserved'>int</strong>
+<a id='L679' name='L679'></a> 679 <a href='../R/1957.html' title='Multiple referred from 2 places.'>semu18</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L680' name='L680'></a> 680 <em class='brace'>{</em>
+<a id='L681' name='L681'></a> 681         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L682' name='L682'></a> 682         <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a>;
+<a id='L683' name='L683'></a> 683         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name;
+<a id='L684' name='L684'></a> 684 
+<a id='L685' name='L685'></a> 685         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L686' name='L686'></a> 686 
+<a id='L687' name='L687'></a> 687         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(1);
+<a id='L688' name='L688'></a> 688 
+<a id='L689' name='L689'></a> 689         <em class='comment'>/* preconditions */</em>
+<a id='L690' name='L690'></a> 690         name = sem-&gt;sem_name;
+<a id='L691' name='L691'></a> 691         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L692' name='L692'></a> 692         <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> = sem-&gt;sem_wchan;
+<a id='L693' name='L693'></a> 693         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L694' name='L694'></a> 694         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 1);
+<a id='L695' name='L695'></a> 695 
+<a id='L696' name='L696'></a> 696         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(sem);
+<a id='L697' name='L697'></a> 697         
+<a id='L698' name='L698'></a> 698         <em class='comment'>/* postconditions */</em>
+<a id='L699' name='L699'></a> 699         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(name == sem-&gt;sem_name);
+<a id='L700' name='L700'></a> 700         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L701' name='L701'></a> 701         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> == sem-&gt;sem_wchan);
+<a id='L702' name='L702'></a> 702         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L703' name='L703'></a> 703         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0);
+<a id='L704' name='L704'></a> 704 
+<a id='L705' name='L705'></a> 705         <strong class='reserved'>return</strong> 0;
+<a id='L706' name='L706'></a> 706 <em class='brace'>}</em>
+<a id='L707' name='L707'></a> 707 
+<a id='L708' name='L708'></a> 708 <em class='comment'>/*</em>
+<a id='L709' name='L709'></a> 709 <em class='comment'> * 19. After calling P on a semaphore with count == 0 and another</em>
+<a id='L710' name='L710'></a> 710 <em class='comment'> * thread uses V exactly once to cause a wakeup:</em>
+<a id='L711' name='L711'></a> 711 <em class='comment'> *    - sem_name is unchanged</em>
+<a id='L712' name='L712'></a> 712 <em class='comment'> *    - sem_wchan is unchanged</em>
+<a id='L713' name='L713'></a> 713 <em class='comment'> *    - sem_lock is unheld and has no owner</em>
+<a id='L714' name='L714'></a> 714 <em class='comment'> *    - sem_count is still 0</em>
+<a id='L715' name='L715'></a> 715 <em class='comment'> */</em>
+<a id='L716' name='L716'></a> 716 
+<a id='L717' name='L717'></a> 717 <strong class='reserved'>static</strong>
+<a id='L718' name='L718'></a> 718 <strong class='reserved'>void</strong>
+<a id='L719' name='L719'></a> 719 <a href='../S/217.html#L746' title='Referred from 746 in kern/test/semunit.c.'>semu19_sub</a>(<strong class='reserved'>void</strong> *semv,  <strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong> junk)
+<a id='L720' name='L720'></a> 720 <em class='brace'>{</em>
+<a id='L721' name='L721'></a> 721         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem = semv;
+<a id='L722' name='L722'></a> 722 
+<a id='L723' name='L723'></a> 723         (<strong class='reserved'>void</strong>)junk;
+<a id='L724' name='L724'></a> 724 
+<a id='L725' name='L725'></a> 725         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("semu19: waiting for parent to sleep\n");
+<a id='L726' name='L726'></a> 726         <a href='../S/222.html#L113' title='Defined at 113 in kern/thread/clock.c.'>clocksleep</a>(1);
+<a id='L727' name='L727'></a> 727         <em class='comment'>/*</em>
+<a id='L728' name='L728'></a> 728 <em class='comment'>         * We could assert here that the parent *is* sleeping; but for</em>
+<a id='L729' name='L729'></a> 729 <em class='comment'>         * that we'd need its thread pointer and it's not worth the</em>
+<a id='L730' name='L730'></a> 730 <em class='comment'>         * trouble.</em>
+<a id='L731' name='L731'></a> 731 <em class='comment'>         */</em>
+<a id='L732' name='L732'></a> 732         <a href='../D/977.html' title='Multiple defined in 3 places.'>V</a>(sem);
+<a id='L733' name='L733'></a> 733 <em class='brace'>}</em>
+<a id='L734' name='L734'></a> 734 
+<a id='L735' name='L735'></a> 735 <strong class='reserved'>int</strong>
+<a id='L736' name='L736'></a> 736 <a href='../R/1958.html' title='Multiple referred from 2 places.'>semu19</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L737' name='L737'></a> 737 <em class='brace'>{</em>
+<a id='L738' name='L738'></a> 738         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L739' name='L739'></a> 739         <strong class='reserved'>struct</strong> <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> *<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a>;
+<a id='L740' name='L740'></a> 740         <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *name;
+<a id='L741' name='L741'></a> 741         <strong class='reserved'>int</strong> result;
+<a id='L742' name='L742'></a> 742 
+<a id='L743' name='L743'></a> 743         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L744' name='L744'></a> 744 
+<a id='L745' name='L745'></a> 745         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L746' name='L746'></a> 746         result = <a href='../S/227.html#L495' title='Defined at 495 in kern/thread/thread.c.'>thread_fork</a>("semu19_sub", <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>, <a href='../S/217.html#L719' title='Defined at 719 in kern/test/semunit.c.'>semu19_sub</a>, sem, 0);
+<a id='L747' name='L747'></a> 747         <strong class='reserved'>if</strong> (result) <em class='brace'>{</em>
+<a id='L748' name='L748'></a> 748                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu19: whoops: thread_fork failed\n");
+<a id='L749' name='L749'></a> 749         <em class='brace'>}</em>
+<a id='L750' name='L750'></a> 750 
+<a id='L751' name='L751'></a> 751         <em class='comment'>/* preconditions */</em>
+<a id='L752' name='L752'></a> 752         name = sem-&gt;sem_name;
+<a id='L753' name='L753'></a> 753         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L754' name='L754'></a> 754         <a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> = sem-&gt;sem_wchan;
+<a id='L755' name='L755'></a> 755         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L756' name='L756'></a> 756         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0);
+<a id='L757' name='L757'></a> 757 
+<a id='L758' name='L758'></a> 758         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(sem);
+<a id='L759' name='L759'></a> 759 
+<a id='L760' name='L760'></a> 760         <em class='comment'>/* postconditions */</em>
+<a id='L761' name='L761'></a> 761         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(name == sem-&gt;sem_name);
+<a id='L762' name='L762'></a> 762         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(!<a href='../S/33.html#L48' title='Defined at 48 in common/libc/string/strcmp.c.'>strcmp</a>(name, <a href='../S/217.html#L56' title='Defined at 56 in kern/test/semunit.c.'>NAMESTRING</a>));
+<a id='L763' name='L763'></a> 763         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/227.html#L59' title='Defined at 59 in kern/thread/thread.c.'>wchan</a> == sem-&gt;sem_wchan);
+<a id='L764' name='L764'></a> 764         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/217.html#L138' title='Defined at 138 in kern/test/semunit.c.'>spinlock_not_held</a>(&amp;sem-&gt;sem_lock));
+<a id='L765' name='L765'></a> 765         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(sem-&gt;sem_count == 0);
+<a id='L766' name='L766'></a> 766 
+<a id='L767' name='L767'></a> 767         <strong class='reserved'>return</strong> 0;
+<a id='L768' name='L768'></a> 768 <em class='brace'>}</em>
+<a id='L769' name='L769'></a> 769 
+<a id='L770' name='L770'></a> 770 <em class='comment'>/*</em>
+<a id='L771' name='L771'></a> 771 <em class='comment'> * 20/21. Calling P in an interrupt handler asserts, regardless of the</em>
+<a id='L772' name='L772'></a> 772 <em class='comment'> * count.</em>
+<a id='L773' name='L773'></a> 773 <em class='comment'> */</em>
+<a id='L774' name='L774'></a> 774 <strong class='reserved'>int</strong>
+<a id='L775' name='L775'></a> 775 <a href='../R/1961.html' title='Multiple referred from 2 places.'>semu20</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L776' name='L776'></a> 776 <em class='brace'>{</em>
+<a id='L777' name='L777'></a> 777         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L778' name='L778'></a> 778 
+<a id='L779' name='L779'></a> 779         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L780' name='L780'></a> 780 
+<a id='L781' name='L781'></a> 781         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should assert that we aren't in an interrupt\n");
+<a id='L782' name='L782'></a> 782 
+<a id='L783' name='L783'></a> 783         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(0);
+<a id='L784' name='L784'></a> 784         <em class='comment'>/* as above */</em>
+<a id='L785' name='L785'></a> 785         <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L786' name='L786'></a> 786         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(sem);
+<a id='L787' name='L787'></a> 787         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu20: P tolerated being in an interrupt handler\n");
+<a id='L788' name='L788'></a> 788         <strong class='reserved'>return</strong> 0;
+<a id='L789' name='L789'></a> 789 <em class='brace'>}</em>
+<a id='L790' name='L790'></a> 790 
+<a id='L791' name='L791'></a> 791 <strong class='reserved'>int</strong>
+<a id='L792' name='L792'></a> 792 <a href='../R/1962.html' title='Multiple referred from 2 places.'>semu21</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L793' name='L793'></a> 793 <em class='brace'>{</em>
+<a id='L794' name='L794'></a> 794         <strong class='reserved'>struct</strong> <a href='../S/184.html#L46' title='Defined at 46 in kern/include/synch.h.'>semaphore</a> *sem;
+<a id='L795' name='L795'></a> 795 
+<a id='L796' name='L796'></a> 796         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L797' name='L797'></a> 797 
+<a id='L798' name='L798'></a> 798         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should assert that we aren't in an interrupt\n");
+<a id='L799' name='L799'></a> 799 
+<a id='L800' name='L800'></a> 800         sem = <a href='../S/217.html#L76' title='Defined at 76 in kern/test/semunit.c.'>makesem</a>(1);
+<a id='L801' name='L801'></a> 801         <em class='comment'>/* as above */</em>
+<a id='L802' name='L802'></a> 802         <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L803' name='L803'></a> 803         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(sem);
+<a id='L804' name='L804'></a> 804         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu21: P tolerated being in an interrupt handler\n");
+<a id='L805' name='L805'></a> 805         <strong class='reserved'>return</strong> 0;
+<a id='L806' name='L806'></a> 806 <em class='brace'>}</em>
+<a id='L807' name='L807'></a> 807 
+<a id='L808' name='L808'></a> 808 <em class='comment'>/*</em>
+<a id='L809' name='L809'></a> 809 <em class='comment'> * 22. Calling P on a null semaphore asserts.</em>
+<a id='L810' name='L810'></a> 810 <em class='comment'> */</em>
+<a id='L811' name='L811'></a> 811 <strong class='reserved'>int</strong>
+<a id='L812' name='L812'></a> 812 <a href='../R/1963.html' title='Multiple referred from 2 places.'>semu22</a>(<strong class='reserved'>int</strong> nargs, <strong class='reserved'>char</strong> **args)
+<a id='L813' name='L813'></a> 813 <em class='brace'>{</em>
+<a id='L814' name='L814'></a> 814         (<strong class='reserved'>void</strong>)nargs; (<strong class='reserved'>void</strong>)args;
+<a id='L815' name='L815'></a> 815 
+<a id='L816' name='L816'></a> 816         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("This should assert that the semaphore isn't null.\n");
+<a id='L817' name='L817'></a> 817         <a href='../D/600.html' title='Multiple defined in 3 places.'>P</a>(<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>);
+<a id='L818' name='L818'></a> 818         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("semu22: P tolerated null semaphore\n");
+<a id='L819' name='L819'></a> 819         <strong class='reserved'>return</strong> 0;
+<a id='L820' name='L820'></a> 820 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L66'>[^]</a><a href='#L812'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

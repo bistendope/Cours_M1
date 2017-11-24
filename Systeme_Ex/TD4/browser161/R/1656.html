@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>mheader</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/514.html#L127'>mheader</a>           127 userland/lib/libc/stdlib/malloc.c #define M_NEXT(mh)	((struct mheader *)(((char*)(mh))+M_NEXTOFF(mh)))</span>
+<span class='curline'><a href='../S/514.html#L128'>mheader</a>           128 userland/lib/libc/stdlib/malloc.c #define M_PREV(mh)	((struct mheader *)(((char*)(mh))-M_PREVOFF(mh)))</span>
+<span class='curline'><a href='../S/514.html#L169'>mheader</a>           169 userland/lib/libc/stdlib/malloc.c 	if (sizeof(struct mheader) != MBLOCKSIZE) {</span>
+<span class='curline'><a href='../S/514.html#L235'>mheader</a>           235 userland/lib/libc/stdlib/malloc.c 	struct mheader *mh;</span>
+<span class='curline'><a href='../S/514.html#L243'>mheader</a>           243 userland/lib/libc/stdlib/malloc.c 		mh = (struct mheader *) i;</span>
+<span class='curline'><a href='../S/514.html#L311'>mheader</a>           311 userland/lib/libc/stdlib/malloc.c __malloc_split(struct mheader *mh, size_t size)</span>
+<span class='curline'><a href='../S/514.html#L313'>mheader</a>           313 userland/lib/libc/stdlib/malloc.c 	struct mheader *mhnext, *mhnew;</span>
+<span class='curline'><a href='../S/514.html#L343'>mheader</a>           343 userland/lib/libc/stdlib/malloc.c 	if (mhnext != (struct mheader *) __heaptop) {</span>
+<span class='curline'><a href='../S/514.html#L354'>mheader</a>           354 userland/lib/libc/stdlib/malloc.c 	struct mheader *mh;</span>
+<span class='curline'><a href='../S/514.html#L385'>mheader</a>           385 userland/lib/libc/stdlib/malloc.c 		mh = (struct mheader *) i;</span>
+<span class='curline'><a href='../S/514.html#L504'>mheader</a>           504 userland/lib/libc/stdlib/malloc.c __malloc_trymerge(struct mheader *mh, struct mheader *mhnext)</span>
+<span class='curline'><a href='../S/514.html#L506'>mheader</a>           506 userland/lib/libc/stdlib/malloc.c 	struct mheader *mhnextnext;</span>
+<span class='curline'><a href='../S/514.html#L522'>mheader</a>           522 userland/lib/libc/stdlib/malloc.c 	if (mhnextnext != (struct mheader *)__heaptop) {</span>
+<span class='curline'><a href='../S/514.html#L527'>mheader</a>           527 userland/lib/libc/stdlib/malloc.c 	__malloc_deadbeef(mhnext, sizeof(struct mheader));</span>
+<span class='curline'><a href='../S/514.html#L536'>mheader</a>           536 userland/lib/libc/stdlib/malloc.c 	struct mheader *mh, *mhnext, *mhprev;</span>
+<span class='curline'><a href='../S/514.html#L560'>mheader</a>           560 userland/lib/libc/stdlib/malloc.c 	mh = ((struct mheader *)x)-1;</span>
+<span class='curline'><a href='../S/514.html#L577'>mheader</a>           577 userland/lib/libc/stdlib/malloc.c 	if (mhnext != (struct mheader *)__heaptop) {</span>
+<span class='curline'><a href='../S/514.html#L582'>mheader</a>           582 userland/lib/libc/stdlib/malloc.c 	if (mh != (struct mheader *)__heapbase) {</span>
+</pre>
+</body>
+</html>

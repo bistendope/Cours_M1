@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>INT_BITS</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/4.html#L52'>INT_BITS</a>           52 common/gcc-millicode/ashldi3.c 	if (shift &gt;= INT_BITS) {</span>
+<span class='curline'><a href='../S/4.html#L53'>INT_BITS</a>           53 common/gcc-millicode/ashldi3.c 		aa.ui[H] = aa.ui[L] &lt;&lt; (shift - INT_BITS);</span>
+<span class='curline'><a href='../S/4.html#L57'>INT_BITS</a>           57 common/gcc-millicode/ashldi3.c 		    (aa.ui[L] &gt;&gt; (INT_BITS - shift));</span>
+<span class='curline'><a href='../S/5.html#L51'>INT_BITS</a>           51 common/gcc-millicode/ashrdi3.c 	if (shift &gt;= INT_BITS) {</span>
+<span class='curline'><a href='../S/5.html#L62'>INT_BITS</a>           62 common/gcc-millicode/ashrdi3.c 		s = (aa.si[H] &gt;&gt; (INT_BITS - 1)) &gt;&gt; 1;</span>
+<span class='curline'><a href='../S/5.html#L64'>INT_BITS</a>           64 common/gcc-millicode/ashrdi3.c 		aa.ui[L] = aa.si[H] &gt;&gt; (shift - INT_BITS);</span>
+<span class='curline'><a href='../S/5.html#L68'>INT_BITS</a>           68 common/gcc-millicode/ashrdi3.c 		    (aa.ui[H] &lt;&lt; (INT_BITS - shift));</span>
+<span class='curline'><a href='../S/10.html#L52'>INT_BITS</a>           52 common/gcc-millicode/lshldi3.c 	if (shift &gt;= INT_BITS) {</span>
+<span class='curline'><a href='../S/10.html#L53'>INT_BITS</a>           53 common/gcc-millicode/lshldi3.c 		aa.ui[H] = aa.ui[L] &lt;&lt; (shift - INT_BITS);</span>
+<span class='curline'><a href='../S/10.html#L57'>INT_BITS</a>           57 common/gcc-millicode/lshldi3.c 		    (aa.ui[L] &gt;&gt; (INT_BITS - shift));</span>
+<span class='curline'><a href='../S/11.html#L51'>INT_BITS</a>           51 common/gcc-millicode/lshrdi3.c 	if (shift &gt;= INT_BITS) {</span>
+<span class='curline'><a href='../S/11.html#L52'>INT_BITS</a>           52 common/gcc-millicode/lshrdi3.c 		aa.ui[L] = aa.ui[H] &gt;&gt; (shift - INT_BITS);</span>
+<span class='curline'><a href='../S/11.html#L56'>INT_BITS</a>           56 common/gcc-millicode/lshrdi3.c 		    (aa.ui[H] &lt;&lt; (INT_BITS - shift));</span>
+</pre>
+</body>
+</html>

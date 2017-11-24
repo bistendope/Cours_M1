@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>uint32_t</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/48.html#L44'>uint32_t</a>           44 kern/arch/mips/include/kern/setjmp.h typedef uint32_t jmp_buf[__JB_REGS];</span>
+<span class='curline'><a href='../S/55.html#L58'>uint32_t</a>           58 kern/arch/mips/include/tlb.h void tlb_random(uint32_t entryhi, uint32_t entrylo);</span>
+<span class='curline'><a href='../S/55.html#L59'>uint32_t</a>           59 kern/arch/mips/include/tlb.h void tlb_write(uint32_t entryhi, uint32_t entrylo, uint32_t index);</span>
+<span class='curline'><a href='../S/55.html#L60'>uint32_t</a>           60 kern/arch/mips/include/tlb.h void tlb_read(uint32_t *entryhi, uint32_t *entrylo, uint32_t index);</span>
+<span class='curline'><a href='../S/55.html#L61'>uint32_t</a>           61 kern/arch/mips/include/tlb.h int tlb_probe(uint32_t entryhi, uint32_t entrylo);</span>
+<span class='curline'><a href='../S/56.html#L41'>uint32_t</a>           41 kern/arch/mips/include/trapframe.h 	uint32_t tf_vaddr;	/* coprocessor 0 vaddr register */</span>
+<span class='curline'><a href='../S/56.html#L42'>uint32_t</a>           42 kern/arch/mips/include/trapframe.h 	uint32_t tf_status;	/* coprocessor 0 status register */</span>
+<span class='curline'><a href='../S/56.html#L43'>uint32_t</a>           43 kern/arch/mips/include/trapframe.h 	uint32_t tf_cause;	/* coprocessor 0 cause register */</span>
+<span class='curline'><a href='../S/56.html#L44'>uint32_t</a>           44 kern/arch/mips/include/trapframe.h 	uint32_t tf_lo;</span>
+<span class='curline'><a href='../S/56.html#L45'>uint32_t</a>           45 kern/arch/mips/include/trapframe.h 	uint32_t tf_hi;</span>
+<span class='curline'><a href='../S/56.html#L46'>uint32_t</a>           46 kern/arch/mips/include/trapframe.h 	uint32_t tf_ra;		/* Saved register 31 */</span>
+<span class='curline'><a href='../S/56.html#L47'>uint32_t</a>           47 kern/arch/mips/include/trapframe.h 	uint32_t tf_at;		/* Saved register 1 (AT) */</span>
+<span class='curline'><a href='../S/56.html#L48'>uint32_t</a>           48 kern/arch/mips/include/trapframe.h 	uint32_t tf_v0;		/* Saved register 2 (v0) */</span>
+<span class='curline'><a href='../S/56.html#L49'>uint32_t</a>           49 kern/arch/mips/include/trapframe.h 	uint32_t tf_v1;		/* etc. */</span>
+<span class='curline'><a href='../S/56.html#L50'>uint32_t</a>           50 kern/arch/mips/include/trapframe.h 	uint32_t tf_a0;</span>
+<span class='curline'><a href='../S/56.html#L51'>uint32_t</a>           51 kern/arch/mips/include/trapframe.h 	uint32_t tf_a1;</span>
+<span class='curline'><a href='../S/56.html#L52'>uint32_t</a>           52 kern/arch/mips/include/trapframe.h 	uint32_t tf_a2;</span>
+<span class='curline'><a href='../S/56.html#L53'>uint32_t</a>           53 kern/arch/mips/include/trapframe.h 	uint32_t tf_a3;</span>
+<span class='curline'><a href='../S/56.html#L54'>uint32_t</a>           54 kern/arch/mips/include/trapframe.h 	uint32_t tf_t0;</span>
+<span class='curline'><a href='../S/56.html#L55'>uint32_t</a>           55 kern/arch/mips/include/trapframe.h 	uint32_t tf_t1;</span>
+<span class='curline'><a href='../S/56.html#L56'>uint32_t</a>           56 kern/arch/mips/include/trapframe.h 	uint32_t tf_t2;</span>
+<span class='curline'><a href='../S/56.html#L57'>uint32_t</a>           57 kern/arch/mips/include/trapframe.h 	uint32_t tf_t3;</span>
+<span class='curline'><a href='../S/56.html#L58'>uint32_t</a>           58 kern/arch/mips/include/trapframe.h 	uint32_t tf_t4;</span>
+<span class='curline'><a href='../S/56.html#L59'>uint32_t</a>           59 kern/arch/mips/include/trapframe.h 	uint32_t tf_t5;</span>
+<span class='curline'><a href='../S/56.html#L60'>uint32_t</a>           60 kern/arch/mips/include/trapframe.h 	uint32_t tf_t6;</span>
+<span class='curline'><a href='../S/56.html#L61'>uint32_t</a>           61 kern/arch/mips/include/trapframe.h 	uint32_t tf_t7;</span>
+<span class='curline'><a href='../S/56.html#L62'>uint32_t</a>           62 kern/arch/mips/include/trapframe.h 	uint32_t tf_s0;</span>
+<span class='curline'><a href='../S/56.html#L63'>uint32_t</a>           63 kern/arch/mips/include/trapframe.h 	uint32_t tf_s1;</span>
+<span class='curline'><a href='../S/56.html#L64'>uint32_t</a>           64 kern/arch/mips/include/trapframe.h 	uint32_t tf_s2;</span>
+<span class='curline'><a href='../S/56.html#L65'>uint32_t</a>           65 kern/arch/mips/include/trapframe.h 	uint32_t tf_s3;</span>
+<span class='curline'><a href='../S/56.html#L66'>uint32_t</a>           66 kern/arch/mips/include/trapframe.h 	uint32_t tf_s4;</span>
+<span class='curline'><a href='../S/56.html#L67'>uint32_t</a>           67 kern/arch/mips/include/trapframe.h 	uint32_t tf_s5;</span>
+<span class='curline'><a href='../S/56.html#L68'>uint32_t</a>           68 kern/arch/mips/include/trapframe.h 	uint32_t tf_s6;</span>
+<span class='curline'><a href='../S/56.html#L69'>uint32_t</a>           69 kern/arch/mips/include/trapframe.h 	uint32_t tf_s7;</span>
+<span class='curline'><a href='../S/56.html#L70'>uint32_t</a>           70 kern/arch/mips/include/trapframe.h 	uint32_t tf_t8;</span>
+<span class='curline'><a href='../S/56.html#L71'>uint32_t</a>           71 kern/arch/mips/include/trapframe.h 	uint32_t tf_t9;</span>
+<span class='curline'><a href='../S/56.html#L72'>uint32_t</a>           72 kern/arch/mips/include/trapframe.h 	uint32_t tf_gp;</span>
+<span class='curline'><a href='../S/56.html#L73'>uint32_t</a>           73 kern/arch/mips/include/trapframe.h 	uint32_t tf_sp;</span>
+<span class='curline'><a href='../S/56.html#L74'>uint32_t</a>           74 kern/arch/mips/include/trapframe.h 	uint32_t tf_s8;</span>
+<span class='curline'><a href='../S/56.html#L75'>uint32_t</a>           75 kern/arch/mips/include/trapframe.h 	uint32_t tf_epc;	/* coprocessor 0 epc register */</span>
+<span class='curline'><a href='../S/61.html#L128'>uint32_t</a>          128 kern/arch/mips/locore/trap.c 	uint32_t code;</span>
+<span class='curline'><a href='../S/63.html#L114'>uint32_t</a>          114 kern/arch/mips/thread/cpu.c uint32_t</span>
+<span class='curline'><a href='../S/63.html#L117'>uint32_t</a>          117 kern/arch/mips/thread/cpu.c 	uint32_t prid;</span>
+<span class='curline'><a href='../S/63.html#L124'>uint32_t</a>          124 kern/arch/mips/thread/cpu.c uint32_t</span>
+<span class='curline'><a href='../S/63.html#L127'>uint32_t</a>          127 kern/arch/mips/thread/cpu.c 	uint32_t features;</span>
+<span class='curline'><a href='../S/63.html#L138'>uint32_t</a>          138 kern/arch/mips/thread/cpu.c uint32_t</span>
+<span class='curline'><a href='../S/63.html#L141'>uint32_t</a>          141 kern/arch/mips/thread/cpu.c 	uint32_t features;</span>
+<span class='curline'><a href='../S/63.html#L154'>uint32_t</a>          154 kern/arch/mips/thread/cpu.c 	uint32_t prid;</span>
+<span class='curline'><a href='../S/63.html#L155'>uint32_t</a>          155 kern/arch/mips/thread/cpu.c 	uint32_t features;</span>
+<span class='curline'><a href='../S/63.html#L212'>uint32_t</a>          212 kern/arch/mips/thread/cpu.c         uint32_t x;</span>
+<span class='curline'><a href='../S/63.html#L225'>uint32_t</a>          225 kern/arch/mips/thread/cpu.c         uint32_t x;</span>
+<span class='curline'><a href='../S/63.html#L228'>uint32_t</a>          228 kern/arch/mips/thread/cpu.c         x &amp;= ~(uint32_t)CST_IEc;</span>
+<span class='curline'><a href='../S/63.html#L239'>uint32_t</a>          239 kern/arch/mips/thread/cpu.c         uint32_t x, xon, xoff;</span>
+<span class='curline'><a href='../S/63.html#L243'>uint32_t</a>          243 kern/arch/mips/thread/cpu.c         xoff = x &amp; ~(uint32_t)CST_IEc;</span>
+<span class='curline'><a href='../S/65.html#L91'>uint32_t</a>           91 kern/arch/mips/thread/switchframe.c         sf-&gt;sf_s0 = (uint32_t)entrypoint;</span>
+<span class='curline'><a href='../S/65.html#L92'>uint32_t</a>           92 kern/arch/mips/thread/switchframe.c         sf-&gt;sf_s1 = (uint32_t)data1;</span>
+<span class='curline'><a href='../S/65.html#L93'>uint32_t</a>           93 kern/arch/mips/thread/switchframe.c         sf-&gt;sf_s2 = (uint32_t)data2;</span>
+<span class='curline'><a href='../S/65.html#L94'>uint32_t</a>           94 kern/arch/mips/thread/switchframe.c         sf-&gt;sf_ra = (uint32_t)mips_threadstart;</span>
+<span class='curline'><a href='../S/66.html#L40'>uint32_t</a>           40 kern/arch/mips/thread/switchframe.h         uint32_t sf_s0;</span>
+<span class='curline'><a href='../S/66.html#L41'>uint32_t</a>           41 kern/arch/mips/thread/switchframe.h         uint32_t sf_s1;</span>
+<span class='curline'><a href='../S/66.html#L42'>uint32_t</a>           42 kern/arch/mips/thread/switchframe.h         uint32_t sf_s2;</span>
+<span class='curline'><a href='../S/66.html#L43'>uint32_t</a>           43 kern/arch/mips/thread/switchframe.h         uint32_t sf_s3;</span>
+<span class='curline'><a href='../S/66.html#L44'>uint32_t</a>           44 kern/arch/mips/thread/switchframe.h         uint32_t sf_s4;</span>
+<span class='curline'><a href='../S/66.html#L45'>uint32_t</a>           45 kern/arch/mips/thread/switchframe.h         uint32_t sf_s5;</span>
+<span class='curline'><a href='../S/66.html#L46'>uint32_t</a>           46 kern/arch/mips/thread/switchframe.h         uint32_t sf_s6;</span>
+<span class='curline'><a href='../S/66.html#L47'>uint32_t</a>           47 kern/arch/mips/thread/switchframe.h         uint32_t sf_s8;</span>
+<span class='curline'><a href='../S/66.html#L48'>uint32_t</a>           48 kern/arch/mips/thread/switchframe.h         uint32_t sf_gp;</span>
+<span class='curline'><a href='../S/66.html#L49'>uint32_t</a>           49 kern/arch/mips/thread/switchframe.h         uint32_t sf_ra;</span>
+<span class='curline'><a href='../S/69.html#L142'>uint32_t</a>          142 kern/arch/mips/vm/dumbvm.c 	uint32_t ehi, elo;</span>
+<span class='curline'><a href='../S/73.html#L65'>uint32_t</a>           65 kern/arch/sys161/dev/lamebus_machdep.c mips_timer_set(uint32_t count)</span>
+<span class='curline'><a href='../S/73.html#L137'>uint32_t</a>          137 kern/arch/sys161/dev/lamebus_machdep.c lamebus_map_area(struct lamebus_softc *bus, int slot, uint32_t offset)</span>
+<span class='curline'><a href='../S/73.html#L139'>uint32_t</a>          139 kern/arch/sys161/dev/lamebus_machdep.c 	uint32_t address;</span>
+<span class='curline'><a href='../S/73.html#L152'>uint32_t</a>          152 kern/arch/sys161/dev/lamebus_machdep.c uint32_t</span>
+<span class='curline'><a href='../S/73.html#L153'>uint32_t</a>          153 kern/arch/sys161/dev/lamebus_machdep.c lamebus_read_register(struct lamebus_softc *bus, int slot, uint32_t offset)</span>
+<span class='curline'><a href='../S/73.html#L155'>uint32_t</a>          155 kern/arch/sys161/dev/lamebus_machdep.c 	uint32_t *ptr;</span>
+<span class='curline'><a href='../S/73.html#L173'>uint32_t</a>          173 kern/arch/sys161/dev/lamebus_machdep.c 		       uint32_t offset, uint32_t val)</span>
+<span class='curline'><a href='../S/73.html#L175'>uint32_t</a>          175 kern/arch/sys161/dev/lamebus_machdep.c 	uint32_t *ptr;</span>
+<span class='curline'><a href='../S/73.html#L248'>uint32_t</a>          248 kern/arch/sys161/dev/lamebus_machdep.c uint32_t</span>
+<span class='curline'><a href='../S/73.html#L251'>uint32_t</a>          251 kern/arch/sys161/dev/lamebus_machdep.c 	uint32_t ramsize;</span>
+<span class='curline'><a href='../S/73.html#L300'>uint32_t</a>          300 kern/arch/sys161/dev/lamebus_machdep.c 	uint32_t cause;</span>
+<span class='curline'><a href='../S/88.html#L142'>uint32_t</a>          142 kern/dev/generic/random.c uint32_t</span>
+<span class='curline'><a href='../S/88.html#L151'>uint32_t</a>          151 kern/dev/generic/random.c uint32_t</span>
+<span class='curline'><a href='../S/89.html#L39'>uint32_t</a>           39 kern/dev/generic/random.h 	uint32_t (*rs_random)(void *devdata);</span>
+<span class='curline'><a href='../S/89.html#L40'>uint32_t</a>           40 kern/dev/generic/random.h 	uint32_t (*rs_randmax)(void *devdata);</span>
+<span class='curline'><a href='../S/96.html#L104'>uint32_t</a>          104 kern/dev/lamebus/emu.c uint32_t</span>
+<span class='curline'><a href='../S/96.html#L105'>uint32_t</a>          105 kern/dev/lamebus/emu.c emu_rreg(struct emu_softc *sc, uint32_t reg)</span>
+<span class='curline'><a href='../S/96.html#L116'>uint32_t</a>          116 kern/dev/lamebus/emu.c emu_wreg(struct emu_softc *sc, uint32_t reg, uint32_t val)</span>
+<span class='curline'><a href='../S/96.html#L140'>uint32_t</a>          140 kern/dev/lamebus/emu.c uint32_t</span>
+<span class='curline'><a href='../S/96.html#L141'>uint32_t</a>          141 kern/dev/lamebus/emu.c translate_err(struct emu_softc *sc, uint32_t code)</span>
+<span class='curline'><a href='../S/96.html#L182'>uint32_t</a>          182 kern/dev/lamebus/emu.c emu_open(struct emu_softc *sc, uint32_t handle, const char *name,</span>
+<span class='curline'><a href='../S/96.html#L184'>uint32_t</a>          184 kern/dev/lamebus/emu.c 	 uint32_t *newhandle, int *newisdir)</span>
+<span class='curline'><a href='../S/96.html#L186'>uint32_t</a>          186 kern/dev/lamebus/emu.c 	uint32_t op;</span>
+<span class='curline'><a href='../S/96.html#L231'>uint32_t</a>          231 kern/dev/lamebus/emu.c emu_close(struct emu_softc *sc, uint32_t handle)</span>
+<span class='curline'><a href='../S/96.html#L269'>uint32_t</a>          269 kern/dev/lamebus/emu.c emu_doread(struct emu_softc *sc, uint32_t handle, uint32_t len,</span>
+<span class='curline'><a href='../S/96.html#L270'>uint32_t</a>          270 kern/dev/lamebus/emu.c 	   uint32_t op, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L307'>uint32_t</a>          307 kern/dev/lamebus/emu.c emu_read(struct emu_softc *sc, uint32_t handle, uint32_t len,</span>
+<span class='curline'><a href='../S/96.html#L318'>uint32_t</a>          318 kern/dev/lamebus/emu.c emu_readdir(struct emu_softc *sc, uint32_t handle, uint32_t len,</span>
+<span class='curline'><a href='../S/96.html#L329'>uint32_t</a>          329 kern/dev/lamebus/emu.c emu_write(struct emu_softc *sc, uint32_t handle, uint32_t len,</span>
+<span class='curline'><a href='../S/96.html#L365'>uint32_t</a>          365 kern/dev/lamebus/emu.c emu_getsize(struct emu_softc *sc, uint32_t handle, off_t *retval)</span>
+<span class='curline'><a href='../S/96.html#L387'>uint32_t</a>          387 kern/dev/lamebus/emu.c emu_trunc(struct emu_softc *sc, uint32_t handle, off_t len)</span>
+<span class='curline'><a href='../S/96.html#L414'>uint32_t</a>          414 kern/dev/lamebus/emu.c static int emufs_loadvnode(struct emufs_fs *ef, uint32_t handle, int isdir,</span>
+<span class='curline'><a href='../S/96.html#L544'>uint32_t</a>          544 kern/dev/lamebus/emu.c 	uint32_t amt;</span>
+<span class='curline'><a href='../S/96.html#L580'>uint32_t</a>          580 kern/dev/lamebus/emu.c 	uint32_t amt;</span>
+<span class='curline'><a href='../S/96.html#L600'>uint32_t</a>          600 kern/dev/lamebus/emu.c 	uint32_t amt;</span>
+<span class='curline'><a href='../S/96.html#L679'>uint32_t</a>          679 kern/dev/lamebus/emu.c emufs_file_gettype(struct vnode *v, uint32_t *result)</span>
+<span class='curline'><a href='../S/96.html#L691'>uint32_t</a>          691 kern/dev/lamebus/emu.c emufs_dir_gettype(struct vnode *v, uint32_t *result)</span>
+<span class='curline'><a href='../S/96.html#L742'>uint32_t</a>          742 kern/dev/lamebus/emu.c 	uint32_t handle;</span>
+<span class='curline'><a href='../S/96.html#L772'>uint32_t</a>          772 kern/dev/lamebus/emu.c 	uint32_t handle;</span>
+<span class='curline'><a href='../S/96.html#L1145'>uint32_t</a>         1145 kern/dev/lamebus/emu.c emufs_loadvnode(struct emufs_fs *ef, uint32_t handle, int isdir,</span>
+<span class='curline'><a href='../S/97.html#L46'>uint32_t</a>           46 kern/dev/lamebus/emu.h 	uint32_t e_buspos;</span>
+<span class='curline'><a href='../S/97.html#L55'>uint32_t</a>           55 kern/dev/lamebus/emu.h 	uint32_t e_result;</span>
+<span class='curline'><a href='../S/99.html#L67'>uint32_t</a>           67 kern/dev/lamebus/lamebus.c uint32_t</span>
+<span class='curline'><a href='../S/99.html#L68'>uint32_t</a>           68 kern/dev/lamebus/lamebus.c read_cfg_register(struct lamebus_softc *lb, int slot, uint32_t offset)</span>
+<span class='curline'><a href='../S/99.html#L81'>uint32_t</a>           81 kern/dev/lamebus/lamebus.c write_cfg_register(struct lamebus_softc *lb, int slot, uint32_t offset,</span>
+<span class='curline'><a href='../S/99.html#L82'>uint32_t</a>           82 kern/dev/lamebus/lamebus.c 		   uint32_t val)</span>
+<span class='curline'><a href='../S/99.html#L93'>uint32_t</a>           93 kern/dev/lamebus/lamebus.c uint32_t</span>
+<span class='curline'><a href='../S/99.html#L94'>uint32_t</a>           94 kern/dev/lamebus/lamebus.c read_ctl_register(struct lamebus_softc *lb, uint32_t offset)</span>
+<span class='curline'><a href='../S/99.html#L106'>uint32_t</a>          106 kern/dev/lamebus/lamebus.c write_ctl_register(struct lamebus_softc *lb, uint32_t offset, uint32_t val)</span>
+<span class='curline'><a href='../S/99.html#L118'>uint32_t</a>          118 kern/dev/lamebus/lamebus.c 		      uint32_t offset, uint32_t val)</span>
+<span class='curline'><a href='../S/99.html#L130'>uint32_t</a>          130 kern/dev/lamebus/lamebus.c 	uint32_t mainboard_vid, mainboard_did;</span>
+<span class='curline'><a href='../S/99.html#L131'>uint32_t</a>          131 kern/dev/lamebus/lamebus.c 	uint32_t cpumask, self, bit, val;</span>
+<span class='curline'><a href='../S/99.html#L152'>uint32_t</a>          152 kern/dev/lamebus/lamebus.c 		bit = (uint32_t)1 &lt;&lt; i;</span>
+<span class='curline'><a href='../S/99.html#L199'>uint32_t</a>          199 kern/dev/lamebus/lamebus.c 	uint32_t cpumask, self, bit;</span>
+<span class='curline'><a href='../S/99.html#L200'>uint32_t</a>          200 kern/dev/lamebus/lamebus.c 	uint32_t ctlcpuoffset;</span>
+<span class='curline'><a href='../S/99.html#L201'>uint32_t</a>          201 kern/dev/lamebus/lamebus.c 	uint32_t *cram;</span>
+<span class='curline'><a href='../S/99.html#L215'>uint32_t</a>          215 kern/dev/lamebus/lamebus.c 		bit = (uint32_t)1 &lt;&lt; i;</span>
+<span class='curline'><a href='../S/99.html#L224'>uint32_t</a>          224 kern/dev/lamebus/lamebus.c 			cram[0] = (uint32_t)cpu_start_secondary;</span>
+<span class='curline'><a href='../S/99.html#L252'>uint32_t</a>          252 kern/dev/lamebus/lamebus.c 	      uint32_t vendorid, uint32_t deviceid,</span>
+<span class='curline'><a href='../S/99.html#L253'>uint32_t</a>          253 kern/dev/lamebus/lamebus.c 	      uint32_t lowver, uint32_t *version_ret)</span>
+<span class='curline'><a href='../S/99.html#L256'>uint32_t</a>          256 kern/dev/lamebus/lamebus.c 	uint32_t val;</span>
+<span class='curline'><a href='../S/99.html#L312'>uint32_t</a>          312 kern/dev/lamebus/lamebus.c 	uint32_t mask = ((uint32_t)1) &lt;&lt; slot;</span>
+<span class='curline'><a href='../S/99.html#L332'>uint32_t</a>          332 kern/dev/lamebus/lamebus.c 	uint32_t mask = ((uint32_t)1) &lt;&lt; slot;</span>
+<span class='curline'><a href='../S/99.html#L355'>uint32_t</a>          355 kern/dev/lamebus/lamebus.c 	uint32_t mask = ((uint32_t)1) &lt;&lt; slot;</span>
+<span class='curline'><a href='../S/99.html#L381'>uint32_t</a>          381 kern/dev/lamebus/lamebus.c 	uint32_t mask = ((uint32_t)1) &lt;&lt; slot;</span>
+<span class='curline'><a href='../S/99.html#L405'>uint32_t</a>          405 kern/dev/lamebus/lamebus.c 	uint32_t bits, mask = ((uint32_t)1) &lt;&lt; slot;</span>
+<span class='curline'><a href='../S/99.html#L418'>uint32_t</a>          418 kern/dev/lamebus/lamebus.c 	uint32_t bits, mask = ((uint32_t)1) &lt;&lt; slot;</span>
+<span class='curline'><a href='../S/99.html#L447'>uint32_t</a>          447 kern/dev/lamebus/lamebus.c 	uint32_t mask;</span>
+<span class='curline'><a href='../S/99.html#L448'>uint32_t</a>          448 kern/dev/lamebus/lamebus.c 	uint32_t irqs;</span>
+<span class='curline'><a href='../S/99.html#L598'>uint32_t</a>          598 kern/dev/lamebus/lamebus.c uint32_t</span>
+<span class='curline'><a href='../S/100.html#L86'>uint32_t</a>           86 kern/dev/lamebus/lamebus.h 	uint32_t     ls_slotsinuse;</span>
+<span class='curline'><a href='../S/100.html#L117'>uint32_t</a>          117 kern/dev/lamebus/lamebus.h 		  uint32_t vendorid, uint32_t deviceid,</span>
+<span class='curline'><a href='../S/100.html#L118'>uint32_t</a>          118 kern/dev/lamebus/lamebus.h 		  uint32_t lowver, uint32_t *version_ret);</span>
+<span class='curline'><a href='../S/100.html#L170'>uint32_t</a>          170 kern/dev/lamebus/lamebus.h uint32_t lamebus_read_register(struct lamebus_softc *, int slot,</span>
+<span class='curline'><a href='../S/100.html#L171'>uint32_t</a>          171 kern/dev/lamebus/lamebus.h 			       uint32_t offset);</span>
+<span class='curline'><a href='../S/100.html#L173'>uint32_t</a>          173 kern/dev/lamebus/lamebus.h 			    uint32_t offset, uint32_t val);</span>
+<span class='curline'><a href='../S/100.html#L179'>uint32_t</a>          179 kern/dev/lamebus/lamebus.h 		       uint32_t offset);</span>
+<span class='curline'><a href='../S/101.html#L68'>uint32_t</a>           68 kern/dev/lamebus/lhd.c uint32_t lhd_rdreg(struct lhd_softc *lh, uint32_t reg)</span>
+<span class='curline'><a href='../S/101.html#L78'>uint32_t</a>           78 kern/dev/lamebus/lhd.c void lhd_wreg(struct lhd_softc *lh, uint32_t reg, uint32_t val)</span>
+<span class='curline'><a href='../S/101.html#L119'>uint32_t</a>          119 kern/dev/lamebus/lhd.c 	uint32_t val;</span>
+<span class='curline'><a href='../S/101.html#L191'>uint32_t</a>          191 kern/dev/lamebus/lhd.c 	uint32_t sector = uio-&gt;uio_offset / LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L192'>uint32_t</a>          192 kern/dev/lamebus/lhd.c 	uint32_t sectoff = uio-&gt;uio_offset % LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L193'>uint32_t</a>          193 kern/dev/lamebus/lhd.c 	uint32_t len = uio-&gt;uio_resid / LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L194'>uint32_t</a>          194 kern/dev/lamebus/lhd.c 	uint32_t lenoff = uio-&gt;uio_resid % LHD_SECTSIZE;</span>
+<span class='curline'><a href='../S/101.html#L195'>uint32_t</a>          195 kern/dev/lamebus/lhd.c 	uint32_t i;</span>
+<span class='curline'><a href='../S/101.html#L196'>uint32_t</a>          196 kern/dev/lamebus/lhd.c 	uint32_t statval = LHD_WORKING;</span>
+<span class='curline'><a href='../S/102.html#L46'>uint32_t</a>           46 kern/dev/lamebus/lhd.h 	uint32_t lh_buspos;		/* Our slot on that bus */</span>
+<span class='curline'><a href='../S/106.html#L54'>uint32_t</a>           54 kern/dev/lamebus/lrandom.c uint32_t</span>
+<span class='curline'><a href='../S/106.html#L61'>uint32_t</a>           61 kern/dev/lamebus/lrandom.c uint32_t</span>
+<span class='curline'><a href='../S/106.html#L72'>uint32_t</a>           72 kern/dev/lamebus/lrandom.c 	uint32_t val;</span>
+<span class='curline'><a href='../S/107.html#L38'>uint32_t</a>           38 kern/dev/lamebus/lrandom.h 	uint32_t lr_buspos;</span>
+<span class='curline'><a href='../S/107.html#L42'>uint32_t</a>           42 kern/dev/lamebus/lrandom.h uint32_t lrandom_random(/*struct lrandom_softc*/ void *devdata);</span>
+<span class='curline'><a href='../S/107.html#L43'>uint32_t</a>           43 kern/dev/lamebus/lrandom.h uint32_t lrandom_randmax(/*struct lrandom_softc*/ void *devdata);</span>
+<span class='curline'><a href='../S/109.html#L60'>uint32_t</a>           60 kern/dev/lamebus/lscreen.c splitxy(uint32_t xy, unsigned *x, unsigned *y)</span>
+<span class='curline'><a href='../S/109.html#L69'>uint32_t</a>           69 kern/dev/lamebus/lscreen.c uint32_t</span>
+<span class='curline'><a href='../S/109.html#L72'>uint32_t</a>           72 kern/dev/lamebus/lscreen.c 	uint32_t val = x;</span>
+<span class='curline'><a href='../S/109.html#L86'>uint32_t</a>           86 kern/dev/lamebus/lscreen.c 	uint32_t ch, x;</span>
+<span class='curline'><a href='../S/109.html#L190'>uint32_t</a>          190 kern/dev/lamebus/lscreen.c 	uint32_t val;</span>
+<span class='curline'><a href='../S/110.html#L45'>uint32_t</a>           45 kern/dev/lamebus/lscreen.h 	uint32_t ls_buspos;		// position on that bus</span>
+<span class='curline'><a href='../S/112.html#L51'>uint32_t</a>           51 kern/dev/lamebus/lser.c 	uint32_t x;</span>
+<span class='curline'><a href='../S/112.html#L54'>uint32_t</a>           54 kern/dev/lamebus/lser.c 	uint32_t ch = 0;</span>
+<span class='curline'><a href='../S/112.html#L119'>uint32_t</a>          119 kern/dev/lamebus/lser.c 	uint32_t val;</span>
+<span class='curline'><a href='../S/113.html#L42'>uint32_t</a>           42 kern/dev/lamebus/lser.h 	uint32_t ls_buspos;</span>
+<span class='curline'><a href='../S/115.html#L110'>uint32_t</a>          110 kern/dev/lamebus/ltimer.c 	uint32_t val;</span>
+<span class='curline'><a href='../S/115.html#L152'>uint32_t</a>          152 kern/dev/lamebus/ltimer.c 	uint32_t secs1, secs2;</span>
+<span class='curline'><a href='../S/116.html#L45'>uint32_t</a>           45 kern/dev/lamebus/ltimer.h 	uint32_t lt_buspos;	/* position (slot) on that bus */</span>
+<span class='curline'><a href='../S/118.html#L48'>uint32_t</a>           48 kern/dev/lamebus/ltrace.c ltrace_on(uint32_t code)</span>
+<span class='curline'><a href='../S/118.html#L57'>uint32_t</a>           57 kern/dev/lamebus/ltrace.c ltrace_off(uint32_t code)</span>
+<span class='curline'><a href='../S/118.html#L66'>uint32_t</a>           66 kern/dev/lamebus/ltrace.c ltrace_debug(uint32_t code)</span>
+<span class='curline'><a href='../S/118.html#L75'>uint32_t</a>           75 kern/dev/lamebus/ltrace.c ltrace_dump(uint32_t code)</span>
+<span class='curline'><a href='../S/118.html#L84'>uint32_t</a>           84 kern/dev/lamebus/ltrace.c ltrace_stop(uint32_t code)</span>
+<span class='curline'><a href='../S/118.html#L93'>uint32_t</a>           93 kern/dev/lamebus/ltrace.c ltrace_setprof(uint32_t onoff)</span>
+<span class='curline'><a href='../S/119.html#L36'>uint32_t</a>           36 kern/dev/lamebus/ltrace.h 	uint32_t lt_buspos;</span>
+<span class='curline'><a href='../S/119.html#L82'>uint32_t</a>           82 kern/dev/lamebus/ltrace.h void ltrace_on(uint32_t code);</span>
+<span class='curline'><a href='../S/119.html#L83'>uint32_t</a>           83 kern/dev/lamebus/ltrace.h void ltrace_off(uint32_t code);</span>
+<span class='curline'><a href='../S/119.html#L84'>uint32_t</a>           84 kern/dev/lamebus/ltrace.h void ltrace_debug(uint32_t code);</span>
+<span class='curline'><a href='../S/119.html#L85'>uint32_t</a>           85 kern/dev/lamebus/ltrace.h void ltrace_dump(uint32_t code);</span>
+<span class='curline'><a href='../S/119.html#L86'>uint32_t</a>           86 kern/dev/lamebus/ltrace.h void ltrace_stop(uint32_t code);</span>
+<span class='curline'><a href='../S/119.html#L87'>uint32_t</a>           87 kern/dev/lamebus/ltrace.h void ltrace_setprof(uint32_t onoff);</span>
+<span class='curline'><a href='../S/120.html#L47'>uint32_t</a>           47 kern/dev/lamebus/ltrace_att.c 	uint32_t drl;</span>
+<span class='curline'><a href='../S/128.html#L49'>uint32_t</a>           49 kern/fs/sfs/sfs_bmap.c sfs_bmap(struct sfs_vnode *sv, uint32_t fileblock, bool doalloc,</span>
+<span class='curline'><a href='../S/128.html#L59'>uint32_t</a>           59 kern/fs/sfs/sfs_bmap.c 	static uint32_t idbuf[SFS_DBPERIDB];</span>
+<span class='curline'><a href='../S/128.html#L64'>uint32_t</a>           64 kern/fs/sfs/sfs_bmap.c 	uint32_t idnum, idoff;</span>
+<span class='curline'><a href='../S/128.html#L213'>uint32_t</a>          213 kern/fs/sfs/sfs_bmap.c 	static uint32_t idbuf[SFS_DBPERIDB];</span>
+<span class='curline'><a href='../S/128.html#L218'>uint32_t</a>          218 kern/fs/sfs/sfs_bmap.c 	uint32_t blocklen = DIVROUNDUP(len, SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/128.html#L220'>uint32_t</a>          220 kern/fs/sfs/sfs_bmap.c 	uint32_t i, j;</span>
+<span class='curline'><a href='../S/128.html#L222'>uint32_t</a>          222 kern/fs/sfs/sfs_bmap.c 	uint32_t baseblock, highblock;</span>
+<span class='curline'><a href='../S/129.html#L105'>uint32_t</a>          105 kern/fs/sfs/sfs_dir.c 		uint32_t *ino, int *slot, int *emptyslot)</span>
+<span class='curline'><a href='../S/129.html#L154'>uint32_t</a>          154 kern/fs/sfs/sfs_dir.c sfs_dir_link(struct sfs_vnode *sv, const char *name, uint32_t ino, int *slot)</span>
+<span class='curline'><a href='../S/129.html#L218'>uint32_t</a>          218 kern/fs/sfs/sfs_dir.c 	uint32_t ino;</span>
+<span class='curline'><a href='../S/130.html#L74'>uint32_t</a>           74 kern/fs/sfs/sfs_fsops.c 	uint32_t j, freemapblocks;</span>
+<span class='curline'><a href='../S/131.html#L150'>uint32_t</a>          150 kern/fs/sfs/sfs_inode.c sfs_loadvnode(struct sfs_fs *sfs, uint32_t ino, int forcetype,</span>
+<span class='curline'><a href='../S/131.html#L264'>uint32_t</a>          264 kern/fs/sfs/sfs_inode.c 	uint32_t ino;</span>
+<span class='curline'><a href='../S/132.html#L151'>uint32_t</a>          151 kern/fs/sfs/sfs_io.c 	      uint32_t skipstart, uint32_t len)</span>
+<span class='curline'><a href='../S/132.html#L164'>uint32_t</a>          164 kern/fs/sfs/sfs_io.c 	uint32_t fileblock;</span>
+<span class='curline'><a href='../S/132.html#L232'>uint32_t</a>          232 kern/fs/sfs/sfs_io.c 	uint32_t fileblock;</span>
+<span class='curline'><a href='../S/132.html#L294'>uint32_t</a>          294 kern/fs/sfs/sfs_io.c 	uint32_t blkoff;</span>
+<span class='curline'><a href='../S/132.html#L295'>uint32_t</a>          295 kern/fs/sfs/sfs_io.c 	uint32_t nblocks, i;</span>
+<span class='curline'><a href='../S/132.html#L297'>uint32_t</a>          297 kern/fs/sfs/sfs_io.c 	uint32_t origresid, extraresid = 0;</span>
+<span class='curline'><a href='../S/132.html#L328'>uint32_t</a>          328 kern/fs/sfs/sfs_io.c 		uint32_t skip = blkoff;</span>
+<span class='curline'><a href='../S/132.html#L331'>uint32_t</a>          331 kern/fs/sfs/sfs_io.c 		uint32_t len = SFS_BLOCKSIZE - blkoff;</span>
+<span class='curline'><a href='../S/132.html#L411'>uint32_t</a>          411 kern/fs/sfs/sfs_io.c 	uint32_t vnblock;</span>
+<span class='curline'><a href='../S/132.html#L412'>uint32_t</a>          412 kern/fs/sfs/sfs_io.c 	uint32_t blockoffset;</span>
+<span class='curline'><a href='../S/133.html#L183'>uint32_t</a>          183 kern/fs/sfs/sfs_vnops.c sfs_gettype(struct vnode *v, uint32_t *ret)</span>
+<span class='curline'><a href='../S/133.html#L289'>uint32_t</a>          289 kern/fs/sfs/sfs_vnops.c 	uint32_t ino;</span>
+<span class='curline'><a href='../S/134.html#L51'>uint32_t</a>           51 kern/fs/sfs/sfsprivate.h int sfs_bmap(struct sfs_vnode *sv, uint32_t fileblock, bool doalloc,</span>
+<span class='curline'><a href='../S/134.html#L57'>uint32_t</a>           57 kern/fs/sfs/sfsprivate.h 		uint32_t *ino, int *slot, int *emptyslot);</span>
+<span class='curline'><a href='../S/134.html#L58'>uint32_t</a>           58 kern/fs/sfs/sfsprivate.h int sfs_dir_link(struct sfs_vnode *sv, const char *name, uint32_t ino,</span>
+<span class='curline'><a href='../S/134.html#L68'>uint32_t</a>           68 kern/fs/sfs/sfsprivate.h int sfs_loadvnode(struct sfs_fs *sfs, uint32_t ino, int forcetype,</span>
+<span class='curline'><a href='../S/144.html#L86'>uint32_t</a>           86 kern/include/cpu.h 	uint32_t c_ipi_pending;		/* One bit for each IPI number */</span>
+<span class='curline'><a href='../S/147.html#L55'>uint32_t</a>           55 kern/include/elf.h 	uint32_t	e_version;             /* ELF version */</span>
+<span class='curline'><a href='../S/147.html#L56'>uint32_t</a>           56 kern/include/elf.h 	uint32_t	e_entry;           /* address of program entry point */</span>
+<span class='curline'><a href='../S/147.html#L57'>uint32_t</a>           57 kern/include/elf.h 	uint32_t	e_phoff;           /* location in file of phdrs */</span>
+<span class='curline'><a href='../S/147.html#L58'>uint32_t</a>           58 kern/include/elf.h 	uint32_t	e_shoff;           /* ignore */</span>
+<span class='curline'><a href='../S/147.html#L59'>uint32_t</a>           59 kern/include/elf.h 	uint32_t	e_flags;	   /* ignore */</span>
+<span class='curline'><a href='../S/147.html#L169'>uint32_t</a>          169 kern/include/elf.h 	uint32_t	p_type;      /* Type of segment */</span>
+<span class='curline'><a href='../S/147.html#L170'>uint32_t</a>          170 kern/include/elf.h 	uint32_t	p_offset;    /* Location of data within file */</span>
+<span class='curline'><a href='../S/147.html#L171'>uint32_t</a>          171 kern/include/elf.h 	uint32_t	p_vaddr;     /* Virtual address */</span>
+<span class='curline'><a href='../S/147.html#L172'>uint32_t</a>          172 kern/include/elf.h 	uint32_t	p_paddr;     /* Ignore */</span>
+<span class='curline'><a href='../S/147.html#L173'>uint32_t</a>          173 kern/include/elf.h 	uint32_t	p_filesz;    /* Size of data within file */</span>
+<span class='curline'><a href='../S/147.html#L174'>uint32_t</a>          174 kern/include/elf.h 	uint32_t	p_memsz;     /* Size of data to be loaded into memory*/</span>
+<span class='curline'><a href='../S/147.html#L175'>uint32_t</a>          175 kern/include/elf.h 	uint32_t	p_flags;     /* Flags */</span>
+<span class='curline'><a href='../S/147.html#L176'>uint32_t</a>          176 kern/include/elf.h 	uint32_t	p_align;     /* Required alignment - can ignore */</span>
+<span class='curline'><a href='../S/148.html#L47'>uint32_t</a>           47 kern/include/emufs.h 	uint32_t ev_handle;		/* file handle */</span>
+<span class='curline'><a href='../S/149.html#L40'>uint32_t</a>           40 kern/include/endian.h uint32_t bswap32(uint32_t);</span>
+<span class='curline'><a href='../S/149.html#L45'>uint32_t</a>           45 kern/include/endian.h uint32_t ntohl(uint32_t);</span>
+<span class='curline'><a href='../S/149.html#L46'>uint32_t</a>           46 kern/include/endian.h uint32_t htonl(uint32_t);</span>
+<span class='curline'><a href='../S/149.html#L51'>uint32_t</a>           51 kern/include/endian.h void join32to64(uint32_t x1, uint32_t x2, uint64_t *y2);</span>
+<span class='curline'><a href='../S/149.html#L52'>uint32_t</a>           52 kern/include/endian.h void split64to32(uint64_t x, uint32_t *y1, uint32_t *y2);</span>
+<span class='curline'><a href='../S/162.html#L74'>uint32_t</a>           74 kern/include/kern/sfs.h 	uint32_t sb_magic;		/* Magic number; should be SFS_MAGIC */</span>
+<span class='curline'><a href='../S/162.html#L75'>uint32_t</a>           75 kern/include/kern/sfs.h 	uint32_t sb_nblocks;			/* Number of blocks in fs */</span>
+<span class='curline'><a href='../S/162.html#L77'>uint32_t</a>           77 kern/include/kern/sfs.h 	uint32_t reserved[118];			/* unused, set to 0 */</span>
+<span class='curline'><a href='../S/162.html#L84'>uint32_t</a>           84 kern/include/kern/sfs.h 	uint32_t sfi_size;			/* Size of this file (bytes) */</span>
+<span class='curline'><a href='../S/162.html#L87'>uint32_t</a>           87 kern/include/kern/sfs.h 	uint32_t sfi_direct[SFS_NDIRECT];	/* Direct blocks */</span>
+<span class='curline'><a href='../S/162.html#L88'>uint32_t</a>           88 kern/include/kern/sfs.h 	uint32_t sfi_indirect;			/* Indirect block */</span>
+<span class='curline'><a href='../S/162.html#L89'>uint32_t</a>           89 kern/include/kern/sfs.h 	uint32_t sfi_waste[128-3-SFS_NDIRECT];	/* unused space, set to 0 */</span>
+<span class='curline'><a href='../S/162.html#L96'>uint32_t</a>           96 kern/include/kern/sfs.h 	uint32_t sfd_ino;			/* Inode number */</span>
+<span class='curline'><a href='../S/172.html#L93'>uint32_t</a>           93 kern/include/lib.h extern uint32_t dbflags;</span>
+<span class='curline'><a href='../S/172.html#L119'>uint32_t</a>          119 kern/include/lib.h uint32_t randmax(void);</span>
+<span class='curline'><a href='../S/172.html#L120'>uint32_t</a>          120 kern/include/lib.h uint32_t random(void);</span>
+<span class='curline'><a href='../S/178.html#L57'>uint32_t</a>           57 kern/include/sfs.h 	uint32_t sv_ino;                /* inode number */</span>
+<span class='curline'><a href='../S/199.html#L53'>uint32_t</a>           53 kern/lib/bswap.c uint32_t</span>
+<span class='curline'><a href='../S/199.html#L54'>uint32_t</a>           54 kern/lib/bswap.c bswap32(uint32_t val)</span>
+<span class='curline'><a href='../S/199.html#L120'>uint32_t</a>          120 kern/lib/bswap.c TO(l,  32, uint32_t)</span>
+<span class='curline'><a href='../S/199.html#L138'>uint32_t</a>          138 kern/lib/bswap.c join32to64(uint32_t x1, uint32_t x2, uint64_t *y2)</span>
+<span class='curline'><a href='../S/199.html#L150'>uint32_t</a>          150 kern/lib/bswap.c split64to32(uint64_t x, uint32_t *y1, uint32_t *y2)</span>
+<span class='curline'><a href='../S/201.html#L45'>uint32_t</a>           45 kern/lib/kprintf.c uint32_t dbflags = 0;</span>
+<span class='curline'><a href='../S/213.html#L42'>uint32_t</a>           42 kern/test/bitmaptest.c 	uint32_t x;</span>
+<span class='curline'><a href='../S/221.html#L171'>uint32_t</a>          171 kern/test/tt3.c 	uint32_t rand;</span>
+<span class='curline'><a href='../S/227.html#L83'>uint32_t</a>           83 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[0] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L84'>uint32_t</a>           84 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[1] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L85'>uint32_t</a>           85 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[2] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L86'>uint32_t</a>           86 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[3] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L104'>uint32_t</a>          104 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[0] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L105'>uint32_t</a>          105 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[1] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L106'>uint32_t</a>          106 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[2] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L107'>uint32_t</a>          107 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[3] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L1107'>uint32_t</a>         1107 kern/thread/thread.c 	target-&gt;c_ipi_pending |= (uint32_t)1 &lt;&lt; code;</span>
+<span class='curline'><a href='../S/227.html#L1157'>uint32_t</a>         1157 kern/thread/thread.c 	target-&gt;c_ipi_pending |= (uint32_t)1 &lt;&lt; IPI_TLBSHOOTDOWN;</span>
+<span class='curline'><a href='../S/227.html#L1169'>uint32_t</a>         1169 kern/thread/thread.c 	uint32_t bits;</span>
+<span class='curline'><a href='../S/239.html#L47'>uint32_t</a>           47 kern/vm/kmalloc.c 	uint32_t *ptr = vptr;</span>
+<span class='curline'><a href='../S/239.html#L50'>uint32_t</a>           50 kern/vm/kmalloc.c 	for (i=0; i&lt;len/sizeof(uint32_t); i++) {</span>
+<span class='curline'><a href='../S/239.html#L196'>uint32_t</a>          196 kern/vm/kmalloc.c 	uint32_t pagerefs_inuse[INUSE_WORDS];</span>
+<span class='curline'><a href='../S/239.html#L261'>uint32_t</a>          261 kern/vm/kmalloc.c 	uint32_t k;</span>
+<span class='curline'><a href='../S/239.html#L308'>uint32_t</a>          308 kern/vm/kmalloc.c 	uint32_t k;</span>
+<span class='curline'><a href='../S/239.html#L327'>uint32_t</a>          327 kern/vm/kmalloc.c 			k = ((uint32_t)1) &lt;&lt; (j%32);</span>
+<span class='curline'><a href='../S/239.html#L464'>uint32_t</a>          464 kern/vm/kmalloc.c 	uint32_t *ptr = block;</span>
+<span class='curline'><a href='../S/239.html#L467'>uint32_t</a>          467 kern/vm/kmalloc.c 	for (i=1; i &lt; blocksize/sizeof(uint32_t); i++) {</span>
+<span class='curline'><a href='../S/239.html#L505'>uint32_t</a>          505 kern/vm/kmalloc.c 	uint32_t isfree[numfreewords], mask;</span>
+<span class='curline'><a href='../S/239.html#L645'>uint32_t</a>          645 kern/vm/kmalloc.c 	uint32_t isfree[numfreewords], mask;</span>
+<span class='curline'><a href='../S/239.html#L753'>uint32_t</a>          753 kern/vm/kmalloc.c 	uint32_t freemap[PAGE_SIZE / (SMALLEST_SUBPAGE_SIZE*32)];</span>
+<span class='curline'><a href='../S/502.html#L40'>uint32_t</a>           40 userland/lib/hostcompat/ntohll.c 	uint32_t x0, x1, y0, y1;</span>
+<span class='curline'><a href='../S/514.html#L492'>uint32_t</a>          492 userland/lib/libc/stdlib/malloc.c 	uint32_t *x = ptr;</span>
+<span class='curline'><a href='../S/514.html#L493'>uint32_t</a>          493 userland/lib/libc/stdlib/malloc.c 	size_t i, n = size/sizeof(uint32_t);</span>
+<span class='curline'><a href='../S/532.html#L133'>uint32_t</a>          133 userland/sbin/dumpsfs/dumpsfs.c static void dumpinode(uint32_t ino, const char *name);</span>
+<span class='curline'><a href='../S/532.html#L136'>uint32_t</a>          136 userland/sbin/dumpsfs/dumpsfs.c uint32_t</span>
+<span class='curline'><a href='../S/532.html#L178'>uint32_t</a>          178 userland/sbin/dumpsfs/dumpsfs.c dumpfreemap(uint32_t fsblocks)</span>
+<span class='curline'><a href='../S/532.html#L180'>uint32_t</a>          180 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t freemapblocks = SFS_FREEMAPBLOCKS(fsblocks);</span>
+<span class='curline'><a href='../S/532.html#L181'>uint32_t</a>          181 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t i, j, k, bn;</span>
+<span class='curline'><a href='../S/532.html#L233'>uint32_t</a>          233 userland/sbin/dumpsfs/dumpsfs.c dumpindirect(uint32_t block)</span>
+<span class='curline'><a href='../S/532.html#L235'>uint32_t</a>          235 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t ib[SFS_BLOCKSIZE/sizeof(uint32_t)];</span>
+<span class='curline'><a href='../S/532.html#L259'>uint32_t</a>          259 userland/sbin/dumpsfs/dumpsfs.c uint32_t</span>
+<span class='curline'><a href='../S/532.html#L260'>uint32_t</a>          260 userland/sbin/dumpsfs/dumpsfs.c traverse_ib(uint32_t fileblock, uint32_t numblocks, uint32_t block,</span>
+<span class='curline'><a href='../S/532.html#L261'>uint32_t</a>          261 userland/sbin/dumpsfs/dumpsfs.c 	    void (*doblock)(uint32_t, uint32_t))</span>
+<span class='curline'><a href='../S/532.html#L263'>uint32_t</a>          263 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t ib[SFS_BLOCKSIZE/sizeof(uint32_t)];</span>
+<span class='curline'><a href='../S/532.html#L280'>uint32_t</a>          280 userland/sbin/dumpsfs/dumpsfs.c traverse(const struct sfs_dinode *sfi, void (*doblock)(uint32_t, uint32_t))</span>
+<span class='curline'><a href='../S/532.html#L282'>uint32_t</a>          282 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t fileblock;</span>
+<span class='curline'><a href='../S/532.html#L283'>uint32_t</a>          283 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t numblocks;</span>
+<span class='curline'><a href='../S/532.html#L301'>uint32_t</a>          301 userland/sbin/dumpsfs/dumpsfs.c dumpdirblock(uint32_t fileblock, uint32_t diskblock)</span>
+<span class='curline'><a href='../S/532.html#L316'>uint32_t</a>          316 userland/sbin/dumpsfs/dumpsfs.c 		uint32_t ino = SWAP32(sds[i].sfd_ino);</span>
+<span class='curline'><a href='../S/532.html#L329'>uint32_t</a>          329 userland/sbin/dumpsfs/dumpsfs.c dumpdir(uint32_t ino, const struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/532.html#L343'>uint32_t</a>          343 userland/sbin/dumpsfs/dumpsfs.c recursedirblock(uint32_t fileblock, uint32_t diskblock)</span>
+<span class='curline'><a href='../S/532.html#L356'>uint32_t</a>          356 userland/sbin/dumpsfs/dumpsfs.c 		uint32_t ino = SWAP32(sds[i].sfd_ino);</span>
+<span class='curline'><a href='../S/532.html#L367'>uint32_t</a>          367 userland/sbin/dumpsfs/dumpsfs.c recursedir(uint32_t ino, const struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/532.html#L378'>uint32_t</a>          378 userland/sbin/dumpsfs/dumpsfs.c void dumpfileblock(uint32_t fileblock, uint32_t diskblock)</span>
+<span class='curline'><a href='../S/532.html#L420'>uint32_t</a>          420 userland/sbin/dumpsfs/dumpsfs.c dumpfile(uint32_t ino, const struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/532.html#L428'>uint32_t</a>          428 userland/sbin/dumpsfs/dumpsfs.c dumpinode(uint32_t ino, const char *name)</span>
+<span class='curline'><a href='../S/532.html#L525'>uint32_t</a>          525 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t dumpino = 0;</span>
+<span class='curline'><a href='../S/532.html#L529'>uint32_t</a>          529 userland/sbin/dumpsfs/dumpsfs.c 	uint32_t nblocks;</span>
+<span class='curline'><a href='../S/537.html#L51'>uint32_t</a>           51 userland/sbin/mksfs/disk.c static uint32_t nblocks;</span>
+<span class='curline'><a href='../S/537.html#L100'>uint32_t</a>          100 userland/sbin/mksfs/disk.c uint32_t</span>
+<span class='curline'><a href='../S/537.html#L110'>uint32_t</a>          110 userland/sbin/mksfs/disk.c uint32_t</span>
+<span class='curline'><a href='../S/537.html#L121'>uint32_t</a>          121 userland/sbin/mksfs/disk.c diskwrite(const void *data, uint32_t block)</span>
+<span class='curline'><a href='../S/537.html#L124'>uint32_t</a>          124 userland/sbin/mksfs/disk.c 	uint32_t tot=0;</span>
+<span class='curline'><a href='../S/537.html#L157'>uint32_t</a>          157 userland/sbin/mksfs/disk.c diskread(void *data, uint32_t block)</span>
+<span class='curline'><a href='../S/537.html#L160'>uint32_t</a>          160 userland/sbin/mksfs/disk.c 	uint32_t tot=0;</span>
+<span class='curline'><a href='../S/538.html#L32'>uint32_t</a>           32 userland/sbin/mksfs/disk.h uint32_t diskblocksize(void);</span>
+<span class='curline'><a href='../S/538.html#L33'>uint32_t</a>           33 userland/sbin/mksfs/disk.h uint32_t diskblocks(void);</span>
+<span class='curline'><a href='../S/538.html#L35'>uint32_t</a>           35 userland/sbin/mksfs/disk.h void diskwrite(const void *data, uint32_t block);</span>
+<span class='curline'><a href='../S/538.html#L36'>uint32_t</a>           36 userland/sbin/mksfs/disk.h void diskread(void *data, uint32_t block);</span>
+<span class='curline'><a href='../S/540.html#L83'>uint32_t</a>           83 userland/sbin/mksfs/mksfs.c allocblock(uint32_t block)</span>
+<span class='curline'><a href='../S/540.html#L85'>uint32_t</a>           85 userland/sbin/mksfs/mksfs.c 	uint32_t mapbyte = block/CHAR_BIT;</span>
+<span class='curline'><a href='../S/540.html#L97'>uint32_t</a>           97 userland/sbin/mksfs/mksfs.c initfreemap(uint32_t fsblocks)</span>
+<span class='curline'><a href='../S/540.html#L99'>uint32_t</a>           99 userland/sbin/mksfs/mksfs.c 	uint32_t freemapbits = SFS_FREEMAPBITS(fsblocks);</span>
+<span class='curline'><a href='../S/540.html#L100'>uint32_t</a>          100 userland/sbin/mksfs/mksfs.c 	uint32_t freemapblocks = SFS_FREEMAPBLOCKS(fsblocks);</span>
+<span class='curline'><a href='../S/540.html#L101'>uint32_t</a>          101 userland/sbin/mksfs/mksfs.c 	uint32_t i;</span>
+<span class='curline'><a href='../S/540.html#L128'>uint32_t</a>          128 userland/sbin/mksfs/mksfs.c writesuper(const char *volname, uint32_t nblocks)</span>
+<span class='curline'><a href='../S/540.html#L153'>uint32_t</a>          153 userland/sbin/mksfs/mksfs.c writefreemap(uint32_t fsblocks)</span>
+<span class='curline'><a href='../S/540.html#L155'>uint32_t</a>          155 userland/sbin/mksfs/mksfs.c 	uint32_t freemapblocks;</span>
+<span class='curline'><a href='../S/540.html#L157'>uint32_t</a>          157 userland/sbin/mksfs/mksfs.c 	uint32_t i;</span>
+<span class='curline'><a href='../S/540.html#L192'>uint32_t</a>          192 userland/sbin/mksfs/mksfs.c 	uint32_t size, blocksize;</span>
+<span class='curline'><a href='../S/548.html#L59'>uint32_t</a>           59 userland/sbin/sfsck/freemap.c 	uint32_t fsblocks, mapblocks;</span>
+<span class='curline'><a href='../S/548.html#L88'>uint32_t</a>           88 userland/sbin/sfsck/freemap.c blockusagestr(blockusage_t how, uint32_t howdesc)</span>
+<span class='curline'><a href='../S/548.html#L127'>uint32_t</a>          127 userland/sbin/sfsck/freemap.c freemap_blockinuse(uint32_t block, blockusage_t how, uint32_t howdesc)</span>
+<span class='curline'><a href='../S/548.html#L162'>uint32_t</a>          162 userland/sbin/sfsck/freemap.c freemap_blockfree(uint32_t block)</span>
+<span class='curline'><a href='../S/548.html#L203'>uint32_t</a>          203 userland/sbin/sfsck/freemap.c reportfreemap(uint32_t mapblock, uint32_t byte, uint8_t val, const char *what)</span>
+<span class='curline'><a href='../S/548.html#L206'>uint32_t</a>          206 userland/sbin/sfsck/freemap.c 	uint32_t blocknum;</span>
+<span class='curline'><a href='../S/548.html#L228'>uint32_t</a>          228 userland/sbin/sfsck/freemap.c 	uint32_t alloccount=0, freecount=0, i, j;</span>
+<span class='curline'><a href='../S/548.html#L230'>uint32_t</a>          230 userland/sbin/sfsck/freemap.c 	uint32_t bitblocks;</span>
+<span class='curline'><a href='../S/549.html#L55'>uint32_t</a>           55 userland/sbin/sfsck/freemap.h void freemap_blockinuse(uint32_t block, blockusage_t how, uint32_t howdesc);</span>
+<span class='curline'><a href='../S/549.html#L58'>uint32_t</a>           58 userland/sbin/sfsck/freemap.h void freemap_blockfree(uint32_t block);</span>
+<span class='curline'><a href='../S/550.html#L140'>uint32_t</a>          140 userland/sbin/sfsck/ibmacros.h #define SET0_x(sfi, field, i)	(*((void)(i), (void)(sfi), (uint32_t *)NULL))</span>
+<span class='curline'><a href='../S/551.html#L50'>uint32_t</a>           50 userland/sbin/sfsck/inode.c 	uint32_t ino;</span>
+<span class='curline'><a href='../S/551.html#L51'>uint32_t</a>           51 userland/sbin/sfsck/inode.c 	uint32_t linkcount;	/* files only */</span>
+<span class='curline'><a href='../S/551.html#L71'>uint32_t</a>           71 userland/sbin/sfsck/inode.c inode_addtable(uint32_t ino, int type)</span>
+<span class='curline'><a href='../S/551.html#L137'>uint32_t</a>          137 userland/sbin/sfsck/inode.c inode_find(uint32_t ino)</span>
+<span class='curline'><a href='../S/551.html#L177'>uint32_t</a>          177 userland/sbin/sfsck/inode.c inode_add(uint32_t ino, int type)</span>
+<span class='curline'><a href='../S/551.html#L202'>uint32_t</a>          202 userland/sbin/sfsck/inode.c inode_visitdir(uint32_t ino)</span>
+<span class='curline'><a href='../S/551.html#L222'>uint32_t</a>          222 userland/sbin/sfsck/inode.c inode_addlink(uint32_t ino)</span>
+<span class='curline'><a href='../S/552.html#L40'>uint32_t</a>           40 userland/sbin/sfsck/inode.h int inode_add(uint32_t ino, int type);</span>
+<span class='curline'><a href='../S/552.html#L50'>uint32_t</a>           50 userland/sbin/sfsck/inode.h int inode_visitdir(uint32_t ino);</span>
+<span class='curline'><a href='../S/552.html#L56'>uint32_t</a>           56 userland/sbin/sfsck/inode.h void inode_addlink(uint32_t ino);</span>
+<span class='curline'><a href='../S/556.html#L56'>uint32_t</a>           56 userland/sbin/sfsck/pass1.c 	uint32_t ino;		/* inode we're doing (constant) */</span>
+<span class='curline'><a href='../S/556.html#L57'>uint32_t</a>           57 userland/sbin/sfsck/pass1.c 	uint32_t curfileblock;	/* current block offset in the file */</span>
+<span class='curline'><a href='../S/556.html#L58'>uint32_t</a>           58 userland/sbin/sfsck/pass1.c 	uint32_t fileblocks;	/* file size in blocks (constant) */</span>
+<span class='curline'><a href='../S/556.html#L59'>uint32_t</a>           59 userland/sbin/sfsck/pass1.c 	uint32_t volblocks;	/* volume size in blocks (constant) */</span>
+<span class='curline'><a href='../S/556.html#L81'>uint32_t</a>           81 userland/sbin/sfsck/pass1.c check_indirect_block(struct ibstate *ibs, uint32_t *ientry, int *iechangedp,</span>
+<span class='curline'><a href='../S/556.html#L84'>uint32_t</a>           84 userland/sbin/sfsck/pass1.c 	uint32_t entries[SFS_DBPERIDB];</span>
+<span class='curline'><a href='../S/556.html#L85'>uint32_t</a>           85 userland/sbin/sfsck/pass1.c 	uint32_t i, ct;</span>
+<span class='curline'><a href='../S/556.html#L86'>uint32_t</a>           86 userland/sbin/sfsck/pass1.c 	uint32_t coveredblocks;</span>
+<span class='curline'><a href='../S/556.html#L185'>uint32_t</a>          185 userland/sbin/sfsck/pass1.c check_inode_blocks(uint32_t ino, struct sfs_dinode *sfi, int isdir)</span>
+<span class='curline'><a href='../S/556.html#L188'>uint32_t</a>          188 userland/sbin/sfsck/pass1.c 	uint32_t size, datablock;</span>
+<span class='curline'><a href='../S/556.html#L260'>uint32_t</a>          260 userland/sbin/sfsck/pass1.c pass1_inode(uint32_t ino, struct sfs_dinode *sfi, int alreadychanged)</span>
+<span class='curline'><a href='../S/556.html#L296'>uint32_t</a>          296 userland/sbin/sfsck/pass1.c pass1_direntry(const char *path, uint32_t index, struct sfs_direntry *sfd)</span>
+<span class='curline'><a href='../S/556.html#L299'>uint32_t</a>          299 userland/sbin/sfsck/pass1.c 	uint32_t nblocks;</span>
+<span class='curline'><a href='../S/556.html#L360'>uint32_t</a>          360 userland/sbin/sfsck/pass1.c pass1_dir(uint32_t ino, const char *pathsofar)</span>
+<span class='curline'><a href='../S/556.html#L364'>uint32_t</a>          364 userland/sbin/sfsck/pass1.c 	uint32_t ndirentries, i;</span>
+<span class='curline'><a href='../S/556.html#L408'>uint32_t</a>          408 userland/sbin/sfsck/pass1.c 			uint32_t subino;</span>
+<span class='curline'><a href='../S/557.html#L63'>uint32_t</a>           63 userland/sbin/sfsck/pass2.c pass2_dir(uint32_t ino, uint32_t parentino, const char *pathsofar)</span>
+<span class='curline'><a href='../S/557.html#L68'>uint32_t</a>           68 userland/sbin/sfsck/pass2.c 	uint32_t dirsize, ndirentries, maxdirentries, subdircount, i;</span>
+<span class='curline'><a href='../S/559.html#L101'>uint32_t</a>          101 userland/sbin/sfsck/sb.c uint32_t</span>
+<span class='curline'><a href='../S/559.html#L111'>uint32_t</a>          111 userland/sbin/sfsck/sb.c uint32_t</span>
+<span class='curline'><a href='../S/560.html#L44'>uint32_t</a>           44 userland/sbin/sfsck/sb.h uint32_t sb_totalblocks(void);</span>
+<span class='curline'><a href='../S/560.html#L47'>uint32_t</a>           47 userland/sbin/sfsck/sb.h uint32_t sb_freemapblocks(void);</span>
+<span class='curline'><a href='../S/561.html#L111'>uint32_t</a>          111 userland/sbin/sfsck/sfs.c swapindir(uint32_t *entries)</span>
+<span class='curline'><a href='../S/561.html#L132'>uint32_t</a>          132 userland/sbin/sfsck/sfs.c uint32_t</span>
+<span class='curline'><a href='../S/561.html#L133'>uint32_t</a>          133 userland/sbin/sfsck/sfs.c ibmap(uint32_t iblock, uint32_t offset, uint32_t entrysize)</span>
+<span class='curline'><a href='../S/561.html#L135'>uint32_t</a>          135 userland/sbin/sfsck/sfs.c 	uint32_t entries[SFS_DBPERIDB];</span>
+<span class='curline'><a href='../S/561.html#L145'>uint32_t</a>          145 userland/sbin/sfsck/sfs.c 		uint32_t index = offset / entrysize;</span>
+<span class='curline'><a href='../S/561.html#L161'>uint32_t</a>          161 userland/sbin/sfsck/sfs.c uint32_t</span>
+<span class='curline'><a href='../S/561.html#L162'>uint32_t</a>          162 userland/sbin/sfsck/sfs.c bmap(const struct sfs_dinode *sfi, uint32_t fileblock)</span>
+<span class='curline'><a href='../S/561.html#L164'>uint32_t</a>          164 userland/sbin/sfsck/sfs.c 	uint32_t iblock, offset;</span>
+<span class='curline'><a href='../S/561.html#L195'>uint32_t</a>          195 userland/sbin/sfsck/sfs.c sfs_readsb(uint32_t blocknum, struct sfs_superblock *sb)</span>
+<span class='curline'><a href='../S/561.html#L202'>uint32_t</a>          202 userland/sbin/sfsck/sfs.c sfs_writesb(uint32_t blocknum, struct sfs_superblock *sb)</span>
+<span class='curline'><a href='../S/561.html#L215'>uint32_t</a>          215 userland/sbin/sfsck/sfs.c sfs_readfreemapblock(uint32_t whichblock, uint8_t *bits)</span>
+<span class='curline'><a href='../S/561.html#L222'>uint32_t</a>          222 userland/sbin/sfsck/sfs.c sfs_writefreemapblock(uint32_t whichblock, uint8_t *bits)</span>
+<span class='curline'><a href='../S/561.html#L234'>uint32_t</a>          234 userland/sbin/sfsck/sfs.c sfs_readinode(uint32_t ino, struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/561.html#L241'>uint32_t</a>          241 userland/sbin/sfsck/sfs.c sfs_writeinode(uint32_t ino, struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/561.html#L253'>uint32_t</a>          253 userland/sbin/sfsck/sfs.c sfs_readindirect(uint32_t blocknum, uint32_t *entries)</span>
+<span class='curline'><a href='../S/561.html#L260'>uint32_t</a>          260 userland/sbin/sfsck/sfs.c sfs_writeindirect(uint32_t blocknum, uint32_t *entries)</span>
+<span class='curline'><a href='../S/561.html#L275'>uint32_t</a>          275 userland/sbin/sfsck/sfs.c sfs_readdirblock(struct sfs_direntry *d, uint32_t diskblock)</span>
+<span class='curline'><a href='../S/561.html#L305'>uint32_t</a>          305 userland/sbin/sfsck/sfs.c 	uint32_t diskblock;</span>
+<span class='curline'><a href='../S/561.html#L331'>uint32_t</a>          331 userland/sbin/sfsck/sfs.c sfs_writedirblock(struct sfs_direntry *d, uint32_t diskblock)</span>
+<span class='curline'><a href='../S/561.html#L370'>uint32_t</a>          370 userland/sbin/sfsck/sfs.c 	uint32_t diskblock;</span>
+<span class='curline'><a href='../S/561.html#L452'>uint32_t</a>          452 userland/sbin/sfsck/sfs.c sfsdir_tryadd(struct sfs_direntry *d, int nd, const char *name, uint32_t ino)</span>
+<span class='curline'><a href='../S/562.html#L53'>uint32_t</a>           53 userland/sbin/sfsck/sfs.h void sfs_readsb(uint32_t blocknum, struct sfs_superblock *sb);</span>
+<span class='curline'><a href='../S/562.html#L54'>uint32_t</a>           54 userland/sbin/sfsck/sfs.h void sfs_writesb(uint32_t blocknum, struct sfs_superblock *sb);</span>
+<span class='curline'><a href='../S/562.html#L57'>uint32_t</a>           57 userland/sbin/sfsck/sfs.h void sfs_readfreemapblock(uint32_t whichblock, uint8_t *bits);</span>
+<span class='curline'><a href='../S/562.html#L58'>uint32_t</a>           58 userland/sbin/sfsck/sfs.h void sfs_writefreemapblock(uint32_t whichblock, uint8_t *bits);</span>
+<span class='curline'><a href='../S/562.html#L61'>uint32_t</a>           61 userland/sbin/sfsck/sfs.h void sfs_readinode(uint32_t inum, struct sfs_dinode *sfi);</span>
+<span class='curline'><a href='../S/562.html#L62'>uint32_t</a>           62 userland/sbin/sfsck/sfs.h void sfs_writeinode(uint32_t inum, struct sfs_dinode *sfi);</span>
+<span class='curline'><a href='../S/562.html#L65'>uint32_t</a>           65 userland/sbin/sfsck/sfs.h void sfs_readindirect(uint32_t blocknum, uint32_t *entries);</span>
+<span class='curline'><a href='../S/562.html#L66'>uint32_t</a>           66 userland/sbin/sfsck/sfs.h void sfs_writeindirect(uint32_t blocknum, uint32_t *entries);</span>
+<span class='curline'><a href='../S/562.html#L75'>uint32_t</a>           75 userland/sbin/sfsck/sfs.h 		  const char *name, uint32_t ino);</span>
+<span class='curline'><a href='../S/563.html#L83'>uint32_t</a>           83 userland/sbin/sfsck/utils.c uint32_t</span>
+<span class='curline'><a href='../S/563.html#L86'>uint32_t</a>           86 userland/sbin/sfsck/utils.c 	static uint32_t uniquecounter;</span>
+<span class='curline'><a href='../S/564.html#L41'>uint32_t</a>           41 userland/sbin/sfsck/utils.h uint32_t uniqueid(void);</span>
+<span class='curline'><a href='../S/615.html#L53'>uint32_t</a>           53 userland/testbin/crash/crash.c #define INSN_TYPE	uint32_t</span>
+<span class='curline'><a href='../S/655.html#L40'>uint32_t</a>           40 userland/testbin/frack/pool.c 	uint32_t mask;</span>
+<span class='curline'><a href='../S/655.html#L60'>uint32_t</a>           60 userland/testbin/frack/pool.c 	uint32_t mask;</span>
+<span class='curline'><a href='../S/655.html#L69'>uint32_t</a>           69 userland/testbin/frack/pool.c 	pool-&gt;inuse[pos] &amp;= ~(uint32_t)mask;</span>
+<span class='curline'><a href='../S/656.html#L32'>uint32_t</a>           32 userland/testbin/frack/pool.h 	uint32_t *inuse;</span>
+<span class='curline'><a href='../S/656.html#L44'>uint32_t</a>           44 userland/testbin/frack/pool.h 	static uint32_t pool_inuse_##T[DIVROUNDUP(MAX, 32)];	\</span>
+</pre>
+</body>
+</html>

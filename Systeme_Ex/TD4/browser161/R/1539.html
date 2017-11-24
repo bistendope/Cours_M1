@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kprintf</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/61.html#L115'>kprintf</a>           115 kern/arch/mips/locore/trap.c 	kprintf("Fatal user mode trap %u sig %d (%s, epc 0x%x, vaddr 0x%x)\n",</span>
+<span class='curline'><a href='../S/61.html#L310'>kprintf</a>           310 kern/arch/mips/locore/trap.c 	kprintf("panic: Fatal exception %u (%s) in kernel mode\n", code,</span>
+<span class='curline'><a href='../S/61.html#L312'>kprintf</a>           312 kern/arch/mips/locore/trap.c 	kprintf("panic: EPC 0x%x, exception vaddr 0x%x\n",</span>
+<span class='curline'><a href='../S/62.html#L115'>kprintf</a>           115 kern/arch/mips/syscall/syscall.c 		kprintf("Unknown syscall %d\n", callno);</span>
+<span class='curline'><a href='../S/63.html#L168'>kprintf</a>           168 kern/arch/mips/thread/cpu.c 			kprintf("WARNING: unknown CPU incompatible features "</span>
+<span class='curline'><a href='../S/69.html#L232'>kprintf</a>           232 kern/arch/mips/vm/dumbvm.c 	kprintf("dumbvm: Ran out of TLB entries - cannot handle page fault\n");</span>
+<span class='curline'><a href='../S/69.html#L327'>kprintf</a>           327 kern/arch/mips/vm/dumbvm.c 	kprintf("dumbvm: Warning: too many regions\n");</span>
+<span class='curline'><a href='../S/70.html#L72'>kprintf</a>            72 kern/arch/mips/vm/ram.c 	kprintf("%uk physical memory available\n",</span>
+<span class='curline'><a href='../S/73.html#L101'>kprintf</a>           101 kern/arch/sys161/dev/lamebus_machdep.c 	kprintf("lamebus0 (system main bus)\n");</span>
+<span class='curline'><a href='../S/73.html#L216'>kprintf</a>           216 kern/arch/sys161/dev/lamebus_machdep.c 	kprintf("Cannot reboot - powering off instead, sorry.\n");</span>
+<span class='curline'><a href='../S/84.html#L69'>kprintf</a>            69 kern/dev/generic/beep.c 		kprintf("beep: Warning: no beep device\n");</span>
+<span class='curline'><a href='../S/96.html#L159'>kprintf</a>           159 kern/dev/lamebus/emu.c 	kprintf("emu%d: Unknown result code %d\n", sc-&gt;e_unit, code);</span>
+<span class='curline'><a href='../S/96.html#L250'>kprintf</a>           250 kern/dev/lamebus/emu.c 			kprintf("emu%d: I/O error on close, retrying\n",</span>
+<span class='curline'><a href='../S/99.html#L472'>kprintf</a>           472 kern/dev/lamebus/lamebus.c 		kprintf("lamebus: stray interrupt on cpu %u\n",</span>
+<span class='curline'><a href='../S/99.html#L566'>kprintf</a>           566 kern/dev/lamebus/lamebus.c 		kprintf("lamebus: %d dud interrupts\n", duds);</span>
+<span class='curline'><a href='../S/101.html#L94'>kprintf</a>            94 kern/dev/lamebus/lhd.c 	kprintf("lhd%d: Unknown result code %d\n", lh-&gt;lh_unit, code);</span>
+<span class='curline'><a href='../S/104.html#L41'>kprintf</a>            41 kern/dev/lamebus/lnet.c 	kprintf("lnet%d: No network support in system\n", lnetno);</span>
+<span class='curline'><a href='../S/105.html#L49'>kprintf</a>            49 kern/dev/lamebus/lnet_att.c 	kprintf("lnet%d: No network support in system\n", lnetno);</span>
+<span class='curline'><a href='../S/124.html#L77'>kprintf</a>            77 kern/fs/semfs/semfs_fsops.c 		kprintf("semfs: couldn't load root vnode: %s\n",</span>
+<span class='curline'><a href='../S/130.html#L406'>kprintf</a>           406 kern/fs/sfs/sfs_fsops.c 		kprintf("sfs: Cannot mount on device with blocksize %zu\n",</span>
+<span class='curline'><a href='../S/130.html#L433'>kprintf</a>           433 kern/fs/sfs/sfs_fsops.c 		kprintf("sfs: Wrong magic number in superblock "</span>
+<span class='curline'><a href='../S/130.html#L444'>kprintf</a>           444 kern/fs/sfs/sfs_fsops.c 		kprintf("sfs: warning - fs has %u blocks, device has %u\n",</span>
+<span class='curline'><a href='../S/131.html#L303'>kprintf</a>           303 kern/fs/sfs/sfs_inode.c 		kprintf("sfs: %s: getroot: Cannot load root vnode\n",</span>
+<span class='curline'><a href='../S/131.html#L310'>kprintf</a>           310 kern/fs/sfs/sfs_inode.c 		kprintf("sfs: %s: getroot: not directory (type %u)\n",</span>
+<span class='curline'><a href='../S/132.html#L85'>kprintf</a>            85 kern/fs/sfs/sfs_io.c 			kprintf("sfs: %s: block %llu I/O error, retrying\n",</span>
+<span class='curline'><a href='../S/132.html#L95'>kprintf</a>            95 kern/fs/sfs/sfs_io.c 			kprintf("sfs: %s: block %llu I/O error, giving up "</span>
+<span class='curline'><a href='../S/133.html#L499'>kprintf</a>           499 kern/fs/sfs/sfs_vnops.c 		kprintf("sfs: %s: rename: %s\n",</span>
+<span class='curline'><a href='../S/133.html#L501'>kprintf</a>           501 kern/fs/sfs/sfs_vnops.c 		kprintf("sfs: %s: rename: while cleaning up: %s\n",</span>
+<span class='curline'><a href='../S/172.html#L111'>kprintf</a>           111 kern/include/lib.h #define DEBUG(d, ...) ((dbflags &amp; (d)) ? kprintf(__VA_ARGS__) : 0)</span>
+<span class='curline'><a href='../S/172.html#L181'>kprintf</a>           181 kern/include/lib.h int kprintf(const char *format, ...) __PF(1,2);</span>
+<span class='curline'><a href='../S/200.html#L87'>kprintf</a>            87 kern/lib/kgets.c 			kprintf("^R\n%s", buf);</span>
+<span class='curline'><a href='../S/201.html#L174'>kprintf</a>           174 kern/lib/kprintf.c 		kprintf("panic: ");</span>
+<span class='curline'><a href='../S/205.html#L99'>kprintf</a>            99 kern/main/main.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/205.html#L100'>kprintf</a>           100 kern/main/main.c 	kprintf("OS/161 base system version %s\n", BASE_VERSION);</span>
+<span class='curline'><a href='../S/205.html#L101'>kprintf</a>           101 kern/main/main.c 	kprintf("%s", harvard_copyright);</span>
+<span class='curline'><a href='../S/205.html#L102'>kprintf</a>           102 kern/main/main.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/205.html#L104'>kprintf</a>           104 kern/main/main.c 	kprintf("Put-your-group-name-here's system version %s (%s #%d)\n",</span>
+<span class='curline'><a href='../S/205.html#L106'>kprintf</a>           106 kern/main/main.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/205.html#L117'>kprintf</a>           117 kern/main/main.c 	kprintf("Device probe...\n");</span>
+<span class='curline'><a href='../S/205.html#L123'>kprintf</a>           123 kern/main/main.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/205.html#L151'>kprintf</a>           151 kern/main/main.c 	kprintf("Shutting down.\n");</span>
+<span class='curline'><a href='../S/205.html#L187'>kprintf</a>           187 kern/main/main.c 		kprintf("The system is halted.\n");</span>
+<span class='curline'><a href='../S/205.html#L191'>kprintf</a>           191 kern/main/main.c 		kprintf("Rebooting...\n");</span>
+<span class='curline'><a href='../S/205.html#L195'>kprintf</a>           195 kern/main/main.c 		kprintf("The system is halted.\n");</span>
+<span class='curline'><a href='../S/206.html#L83'>kprintf</a>            83 kern/main/menu.c 		kprintf("Warning: argument passing from menu not supported\n");</span>
+<span class='curline'><a href='../S/206.html#L93'>kprintf</a>            93 kern/main/menu.c 		kprintf("Running program %s failed: %s\n", args[0],</span>
+<span class='curline'><a href='../S/206.html#L131'>kprintf</a>           131 kern/main/menu.c 		kprintf("thread_fork failed: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/206.html#L152'>kprintf</a>           152 kern/main/menu.c 		kprintf("Usage: p program [arguments]\n");</span>
+<span class='curline'><a href='../S/206.html#L172'>kprintf</a>           172 kern/main/menu.c 		kprintf("Usage: s\n");</span>
+<span class='curline'><a href='../S/206.html#L189'>kprintf</a>           189 kern/main/menu.c 		kprintf("Usage: cd directory\n");</span>
+<span class='curline'><a href='../S/206.html#L214'>kprintf</a>           214 kern/main/menu.c 		kprintf("vfs_getcwd failed (%s)\n", strerror(result));</span>
+<span class='curline'><a href='../S/206.html#L222'>kprintf</a>           222 kern/main/menu.c 	kprintf("%s\n", buf);</span>
+<span class='curline'><a href='../S/206.html#L291'>kprintf</a>           291 kern/main/menu.c 		kprintf("+");</span>
+<span class='curline'><a href='../S/206.html#L312'>kprintf</a>           312 kern/main/menu.c 		kprintf("lock_create failed\n");</span>
+<span class='curline'><a href='../S/206.html#L318'>kprintf</a>           318 kern/main/menu.c 		kprintf("lock_create failed\n");</span>
+<span class='curline'><a href='../S/206.html#L327'>kprintf</a>           327 kern/main/menu.c 		kprintf("thread_fork failed: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/206.html#L338'>kprintf</a>           338 kern/main/menu.c 		kprintf(".");</span>
+<span class='curline'><a href='../S/206.html#L385'>kprintf</a>           385 kern/main/menu.c 		kprintf("Usage: mount fstype device:\n");</span>
+<span class='curline'><a href='../S/206.html#L402'>kprintf</a>           402 kern/main/menu.c 	kprintf("Unknown filesystem type %s\n", fstype);</span>
+<span class='curline'><a href='../S/206.html#L413'>kprintf</a>           413 kern/main/menu.c 		kprintf("Usage: unmount device:\n");</span>
+<span class='curline'><a href='../S/206.html#L442'>kprintf</a>           442 kern/main/menu.c 		kprintf("Usage: bootfs device\n");</span>
+<span class='curline'><a href='../S/206.html#L491'>kprintf</a>           491 kern/main/menu.c 		kprintf("Usage: khdump [all]\n");</span>
+<span class='curline'><a href='../S/206.html#L507'>kprintf</a>           507 kern/main/menu.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/206.html#L508'>kprintf</a>           508 kern/main/menu.c 	kprintf("%s\n", name);</span>
+<span class='curline'><a href='../S/206.html#L516'>kprintf</a>           516 kern/main/menu.c 		kprintf("    %-36s", x[i]);</span>
+<span class='curline'><a href='../S/206.html#L518'>kprintf</a>           518 kern/main/menu.c 			kprintf("%s", x[i+half]);</span>
+<span class='curline'><a href='../S/206.html#L520'>kprintf</a>           520 kern/main/menu.c 		kprintf("\n");</span>
+<span class='curline'><a href='../S/206.html#L523'>kprintf</a>           523 kern/main/menu.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/206.html#L591'>kprintf</a>           591 kern/main/menu.c 	kprintf("    (1) These tests will fail until you finish the "</span>
+<span class='curline'><a href='../S/206.html#L593'>kprintf</a>           593 kern/main/menu.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/206.html#L732'>kprintf</a>           732 kern/main/menu.c 			kprintf("Command line has too many words\n");</span>
+<span class='curline'><a href='../S/206.html#L753'>kprintf</a>           753 kern/main/menu.c 			kprintf("Operation took %llu.%09lu seconds\n",</span>
+<span class='curline'><a href='../S/206.html#L761'>kprintf</a>           761 kern/main/menu.c 	kprintf("%s: Command not found\n", args[0]);</span>
+<span class='curline'><a href='../S/206.html#L785'>kprintf</a>           785 kern/main/menu.c 			kprintf("OS/161 kernel: %s\n", command);</span>
+<span class='curline'><a href='../S/206.html#L790'>kprintf</a>           790 kern/main/menu.c 			kprintf("Menu command failed: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/206.html#L823'>kprintf</a>           823 kern/main/menu.c 		kprintf("OS/161 kernel [? for menu]: ");</span>
+<span class='curline'><a href='../S/209.html#L89'>kprintf</a>            89 kern/syscall/loadelf.c 		kprintf("ELF: warning: segment filesize &gt; segment memsize\n");</span>
+<span class='curline'><a href='../S/209.html#L113'>kprintf</a>           113 kern/syscall/loadelf.c 		kprintf("ELF: short read on segment - file truncated?\n");</span>
+<span class='curline'><a href='../S/209.html#L177'>kprintf</a>           177 kern/syscall/loadelf.c 		kprintf("ELF: short read on header - file truncated?\n");</span>
+<span class='curline'><a href='../S/209.html#L231'>kprintf</a>           231 kern/syscall/loadelf.c 			kprintf("ELF: short read on phdr - file truncated?\n");</span>
+<span class='curline'><a href='../S/209.html#L241'>kprintf</a>           241 kern/syscall/loadelf.c 			kprintf("loadelf: unknown segment type %d\n",</span>
+<span class='curline'><a href='../S/209.html#L276'>kprintf</a>           276 kern/syscall/loadelf.c 			kprintf("ELF: short read on phdr - file truncated?\n");</span>
+<span class='curline'><a href='../S/209.html#L286'>kprintf</a>           286 kern/syscall/loadelf.c 			kprintf("loadelf: unknown segment type %d\n",</span>
+<span class='curline'><a href='../S/212.html#L131'>kprintf</a>           131 kern/test/arraytest.c 	kprintf("Beginning array test...\n");</span>
+<span class='curline'><a href='../S/212.html#L144'>kprintf</a>           144 kern/test/arraytest.c 	kprintf("Array test complete\n");</span>
+<span class='curline'><a href='../S/212.html#L162'>kprintf</a>           162 kern/test/arraytest.c 	kprintf("Beginning large array test...\n");</span>
+<span class='curline'><a href='../S/212.html#L217'>kprintf</a>           217 kern/test/arraytest.c 	kprintf("Done.\n");</span>
+<span class='curline'><a href='../S/213.html#L48'>kprintf</a>            48 kern/test/bitmaptest.c 	kprintf("Starting bitmap test...\n");</span>
+<span class='curline'><a href='../S/213.html#L104'>kprintf</a>           104 kern/test/bitmaptest.c 	kprintf("Bitmap test complete\n");</span>
+<span class='curline'><a href='../S/214.html#L126'>kprintf</a>           126 kern/test/fstest.c 		kprintf("Could not remove %s: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L163'>kprintf</a>           163 kern/test/fstest.c 		kprintf("Could not open %s for write: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L178'>kprintf</a>           178 kern/test/fstest.c 			kprintf("%s: Write error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L185'>kprintf</a>           185 kern/test/fstest.c 			kprintf("%s: Short write: %lu bytes left over\n",</span>
+<span class='curline'><a href='../S/214.html#L200'>kprintf</a>           200 kern/test/fstest.c 		kprintf("%s: %lu bytes written, should have been %lu!\n",</span>
+<span class='curline'><a href='../S/214.html#L206'>kprintf</a>           206 kern/test/fstest.c 	kprintf("%s: %lu bytes written\n", name, (unsigned long) bytes);</span>
+<span class='curline'><a href='../S/214.html#L230'>kprintf</a>           230 kern/test/fstest.c 		kprintf("Could not open test file for read: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L239'>kprintf</a>           239 kern/test/fstest.c 			kprintf("%s: Read error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L245'>kprintf</a>           245 kern/test/fstest.c 			kprintf("%s: Short read: %lu bytes left over\n", name,</span>
+<span class='curline'><a href='../S/214.html#L253'>kprintf</a>           253 kern/test/fstest.c 			kprintf("%s: Test failed: line %d mismatched: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L265'>kprintf</a>           265 kern/test/fstest.c 		kprintf("%s: %lu bytes read, should have been %lu!\n",</span>
+<span class='curline'><a href='../S/214.html#L270'>kprintf</a>           270 kern/test/fstest.c 	kprintf("%s: %lu bytes read\n", name, (unsigned long) bytes);</span>
+<span class='curline'><a href='../S/214.html#L280'>kprintf</a>           280 kern/test/fstest.c 	kprintf("*** Starting filesystem test on %s:\n", filesys);</span>
+<span class='curline'><a href='../S/214.html#L283'>kprintf</a>           283 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L288'>kprintf</a>           288 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L293'>kprintf</a>           293 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L297'>kprintf</a>           297 kern/test/fstest.c 	kprintf("*** Filesystem test done\n");</span>
+<span class='curline'><a href='../S/214.html#L308'>kprintf</a>           308 kern/test/fstest.c 		kprintf("*** Thread %lu: failed\n", num);</span>
+<span class='curline'><a href='../S/214.html#L321'>kprintf</a>           321 kern/test/fstest.c 	kprintf("*** Starting fs read stress test on %s:\n", filesys);</span>
+<span class='curline'><a href='../S/214.html#L324'>kprintf</a>           324 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L342'>kprintf</a>           342 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L346'>kprintf</a>           346 kern/test/fstest.c 	kprintf("*** fs read stress test done\n");</span>
+<span class='curline'><a href='../S/214.html#L360'>kprintf</a>           360 kern/test/fstest.c 		kprintf("*** Thread %lu: failed\n", num);</span>
+<span class='curline'><a href='../S/214.html#L366'>kprintf</a>           366 kern/test/fstest.c 		kprintf("*** Thread %lu: failed\n", num);</span>
+<span class='curline'><a href='../S/214.html#L372'>kprintf</a>           372 kern/test/fstest.c 		kprintf("*** Thread %lu: failed\n", num);</span>
+<span class='curline'><a href='../S/214.html#L375'>kprintf</a>           375 kern/test/fstest.c 	kprintf("*** Thread %lu: done\n", num);</span>
+<span class='curline'><a href='../S/214.html#L388'>kprintf</a>           388 kern/test/fstest.c 	kprintf("*** Starting fs write stress test on %s:\n", filesys);</span>
+<span class='curline'><a href='../S/214.html#L402'>kprintf</a>           402 kern/test/fstest.c 	kprintf("*** fs write stress test done\n");</span>
+<span class='curline'><a href='../S/214.html#L414'>kprintf</a>           414 kern/test/fstest.c 		kprintf("*** Thread %lu: failed\n", num);</span>
+<span class='curline'><a href='../S/214.html#L432'>kprintf</a>           432 kern/test/fstest.c 	kprintf("*** Starting fs write stress test 2 on %s:\n", filesys);</span>
+<span class='curline'><a href='../S/214.html#L438'>kprintf</a>           438 kern/test/fstest.c 		kprintf("Could not create test file: %s\n", strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L439'>kprintf</a>           439 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L458'>kprintf</a>           458 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L463'>kprintf</a>           463 kern/test/fstest.c 		kprintf("*** Test failed\n");</span>
+<span class='curline'><a href='../S/214.html#L467'>kprintf</a>           467 kern/test/fstest.c 	kprintf("*** fs write stress test 2 done\n");</span>
+<span class='curline'><a href='../S/214.html#L485'>kprintf</a>           485 kern/test/fstest.c 			kprintf("*** Thread %lu: file %d: failed\n", num, i);</span>
+<span class='curline'><a href='../S/214.html#L491'>kprintf</a>           491 kern/test/fstest.c 			kprintf("*** Thread %lu: file %d: failed\n", num, i);</span>
+<span class='curline'><a href='../S/214.html#L497'>kprintf</a>           497 kern/test/fstest.c 			kprintf("*** Thread %lu: file %d: failed\n", num, i);</span>
+<span class='curline'><a href='../S/214.html#L515'>kprintf</a>           515 kern/test/fstest.c 	kprintf("*** Starting fs long stress test on %s:\n", filesys);</span>
+<span class='curline'><a href='../S/214.html#L530'>kprintf</a>           530 kern/test/fstest.c 	kprintf("*** fs long stress test done\n");</span>
+<span class='curline'><a href='../S/214.html#L558'>kprintf</a>           558 kern/test/fstest.c 			kprintf("Could not open %s for write: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L570'>kprintf</a>           570 kern/test/fstest.c 			kprintf("%s: Write error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L574'>kprintf</a>           574 kern/test/fstest.c 			kprintf("%s: Short write: %lu bytes left over\n",</span>
+<span class='curline'><a href='../S/214.html#L581'>kprintf</a>           581 kern/test/fstest.c 			kprintf("%s: %lu bytes written, expected %lu!\n",</span>
+<span class='curline'><a href='../S/214.html#L588'>kprintf</a>           588 kern/test/fstest.c 	kprintf("Thread %lu: %u files written\n", num, numwritten);</span>
+<span class='curline'><a href='../S/214.html#L598'>kprintf</a>           598 kern/test/fstest.c 			kprintf("Could not open %s for read: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L607'>kprintf</a>           607 kern/test/fstest.c 			kprintf("%s: Read error: %s\n", name, strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L611'>kprintf</a>           611 kern/test/fstest.c 			kprintf("%s: Short read: %lu bytes left over\n",</span>
+<span class='curline'><a href='../S/214.html#L620'>kprintf</a>           620 kern/test/fstest.c 			kprintf("%s: Test failed: file mismatched: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L627'>kprintf</a>           627 kern/test/fstest.c 			kprintf("%s: %lu bytes read, expected %lu!\n",</span>
+<span class='curline'><a href='../S/214.html#L635'>kprintf</a>           635 kern/test/fstest.c 	kprintf("Thread %lu: %u files read\n", num, numread);</span>
+<span class='curline'><a href='../S/214.html#L644'>kprintf</a>           644 kern/test/fstest.c 	kprintf("Thread %lu: %u files removed\n", num, numremoved);</span>
+<span class='curline'><a href='../S/214.html#L657'>kprintf</a>           657 kern/test/fstest.c 	kprintf("*** Starting fs create stress test on %s:\n", filesys);</span>
+<span class='curline'><a href='../S/214.html#L672'>kprintf</a>           672 kern/test/fstest.c 	kprintf("*** fs create stress test done\n");</span>
+<span class='curline'><a href='../S/214.html#L684'>kprintf</a>           684 kern/test/fstest.c 		kprintf("Usage: fs[123456] filesystem:\n");</span>
+<span class='curline'><a href='../S/214.html#L733'>kprintf</a>           733 kern/test/fstest.c 		kprintf("Usage: pf filename\n");</span>
+<span class='curline'><a href='../S/214.html#L742'>kprintf</a>           742 kern/test/fstest.c 		kprintf("printfile: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/214.html#L748'>kprintf</a>           748 kern/test/fstest.c 		kprintf("printfile: output: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/214.html#L757'>kprintf</a>           757 kern/test/fstest.c 			kprintf("Read error: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/214.html#L770'>kprintf</a>           770 kern/test/fstest.c 			kprintf("Write error: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/214.html#L776'>kprintf</a>           776 kern/test/fstest.c 			kprintf("Warning: short write\n");</span>
+<span class='curline'><a href='../S/215.html#L75'>kprintf</a>            75 kern/test/kmalloctest.c 				kprintf("thread %lu: kmalloc returned NULL\n",</span>
+<span class='curline'><a href='../S/215.html#L79'>kprintf</a>            79 kern/test/kmalloctest.c 			kprintf("kmalloc returned null; test failed.\n");</span>
+<span class='curline'><a href='../S/215.html#L106'>kprintf</a>           106 kern/test/kmalloctest.c 	kprintf("Starting kmalloc test...\n");</span>
+<span class='curline'><a href='../S/215.html#L108'>kprintf</a>           108 kern/test/kmalloctest.c 	kprintf("kmalloc test done\n");</span>
+<span class='curline'><a href='../S/215.html#L127'>kprintf</a>           127 kern/test/kmalloctest.c 	kprintf("Starting kmalloc stress test...\n");</span>
+<span class='curline'><a href='../S/215.html#L143'>kprintf</a>           143 kern/test/kmalloctest.c 	kprintf("kmalloc stress test done\n");</span>
+<span class='curline'><a href='../S/215.html#L188'>kprintf</a>           188 kern/test/kmalloctest.c 		kprintf("kmalloctest3: usage: km3 numobjects\n");</span>
+<span class='curline'><a href='../S/215.html#L200'>kprintf</a>           200 kern/test/kmalloctest.c 	kprintf("kmalloctest3: %u objects, %u pointer blocks\n",</span>
+<span class='curline'><a href='../S/215.html#L225'>kprintf</a>           225 kern/test/kmalloctest.c 			kprintf("kmalloctest3: failed on object %u size %u\n",</span>
+<span class='curline'><a href='../S/215.html#L227'>kprintf</a>           227 kern/test/kmalloctest.c 			kprintf("kmalloctest3: pos %u in pointer block %u\n",</span>
+<span class='curline'><a href='../S/215.html#L229'>kprintf</a>           229 kern/test/kmalloctest.c 			kprintf("kmalloctest3: total so far %zu\n", totalsize);</span>
+<span class='curline'><a href='../S/215.html#L248'>kprintf</a>           248 kern/test/kmalloctest.c 	kprintf("kmalloctest3: %zu bytes allocated\n", totalsize);</span>
+<span class='curline'><a href='../S/215.html#L262'>kprintf</a>           262 kern/test/kmalloctest.c 			kprintf("kmalloctest3: failed on object %u size %u\n",</span>
+<span class='curline'><a href='../S/215.html#L264'>kprintf</a>           264 kern/test/kmalloctest.c 			kprintf("kmalloctest3: pos %u in pointer block %u\n",</span>
+<span class='curline'><a href='../S/215.html#L266'>kprintf</a>           266 kern/test/kmalloctest.c 			kprintf("kmalloctest3: at object offset %u\n", j);</span>
+<span class='curline'><a href='../S/215.html#L267'>kprintf</a>           267 kern/test/kmalloctest.c 			kprintf("kmalloctest3: expected 0x%x, found 0x%x\n",</span>
+<span class='curline'><a href='../S/215.html#L291'>kprintf</a>           291 kern/test/kmalloctest.c 	kprintf("kmalloctest3: passed\n");</span>
+<span class='curline'><a href='../S/215.html#L351'>kprintf</a>           351 kern/test/kmalloctest.c 	kprintf("Starting multipage kmalloc test...\n");</span>
+<span class='curline'><a href='../S/215.html#L353'>kprintf</a>           353 kern/test/kmalloctest.c 	kprintf("(This test will not work with dumbvm)\n");</span>
+<span class='curline'><a href='../S/215.html#L378'>kprintf</a>           378 kern/test/kmalloctest.c 	kprintf("Multipage kmalloc test done\n");</span>
+<span class='curline'><a href='../S/216.html#L42'>kprintf</a>            42 kern/test/nettest.c 	kprintf("No network support available\n");</span>
+<span class='curline'><a href='../S/217.html#L68'>kprintf</a>            68 kern/test/semunit.c 	kprintf("Test passed; now cleaning up.\n");</span>
+<span class='curline'><a href='../S/217.html#L122'>kprintf</a>           122 kern/test/semunit.c 	kprintf("Sleeping for waiter to run\n");</span>
+<span class='curline'><a href='../S/217.html#L188'>kprintf</a>           188 kern/test/semunit.c 	kprintf("This should crash with a kernel null dereference\n");</span>
+<span class='curline'><a href='../S/217.html#L203'>kprintf</a>           203 kern/test/semunit.c 	kprintf("This should assert that sem != NULL\n");</span>
+<span class='curline'><a href='../S/217.html#L269'>kprintf</a>           269 kern/test/semunit.c 	kprintf("This should assert that the wchan's threadlist is empty\n");</span>
+<span class='curline'><a href='../S/217.html#L564'>kprintf</a>           564 kern/test/semunit.c 	kprintf("This should assert that sem_count is &gt; 0.\n");</span>
+<span class='curline'><a href='../S/217.html#L586'>kprintf</a>           586 kern/test/semunit.c 	kprintf("This should assert that the semaphore isn't null.\n");</span>
+<span class='curline'><a href='../S/217.html#L655'>kprintf</a>           655 kern/test/semunit.c 	kprintf("Waiting for subthread...\n");</span>
+<span class='curline'><a href='../S/217.html#L725'>kprintf</a>           725 kern/test/semunit.c 	kprintf("semu19: waiting for parent to sleep\n");</span>
+<span class='curline'><a href='../S/217.html#L781'>kprintf</a>           781 kern/test/semunit.c 	kprintf("This should assert that we aren't in an interrupt\n");</span>
+<span class='curline'><a href='../S/217.html#L798'>kprintf</a>           798 kern/test/semunit.c 	kprintf("This should assert that we aren't in an interrupt\n");</span>
+<span class='curline'><a href='../S/217.html#L816'>kprintf</a>           816 kern/test/semunit.c 	kprintf("This should assert that the semaphore isn't null.\n");</span>
+<span class='curline'><a href='../S/218.html#L95'>kprintf</a>            95 kern/test/synchtest.c 	kprintf("Thread %2lu: ", num);</span>
+<span class='curline'><a href='../S/218.html#L97'>kprintf</a>            97 kern/test/synchtest.c 		kprintf("%c", (int)num+64);</span>
+<span class='curline'><a href='../S/218.html#L99'>kprintf</a>            99 kern/test/synchtest.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/218.html#L112'>kprintf</a>           112 kern/test/synchtest.c 	kprintf("Starting semaphore test...\n");</span>
+<span class='curline'><a href='../S/218.html#L113'>kprintf</a>           113 kern/test/synchtest.c 	kprintf("If this hangs, it's broken: ");</span>
+<span class='curline'><a href='../S/218.html#L116'>kprintf</a>           116 kern/test/synchtest.c 	kprintf("ok\n");</span>
+<span class='curline'><a href='../S/218.html#L135'>kprintf</a>           135 kern/test/synchtest.c 	kprintf("Semaphore test done.\n");</span>
+<span class='curline'><a href='../S/218.html#L143'>kprintf</a>           143 kern/test/synchtest.c 	kprintf("thread %lu: Mismatch on %s\n", num, msg);</span>
+<span class='curline'><a href='../S/218.html#L144'>kprintf</a>           144 kern/test/synchtest.c 	kprintf("Test failed\n");</span>
+<span class='curline'><a href='../S/218.html#L204'>kprintf</a>           204 kern/test/synchtest.c 	kprintf("Starting lock test...\n");</span>
+<span class='curline'><a href='../S/218.html#L218'>kprintf</a>           218 kern/test/synchtest.c 	kprintf("Lock test done.\n");</span>
+<span class='curline'><a href='../S/218.html#L245'>kprintf</a>           245 kern/test/synchtest.c 				kprintf("cv_wait took only %u ns\n",</span>
+<span class='curline'><a href='../S/218.html#L247'>kprintf</a>           247 kern/test/synchtest.c 				kprintf("That's too fast... you must be "</span>
+<span class='curline'><a href='../S/218.html#L254'>kprintf</a>           254 kern/test/synchtest.c 		kprintf("Thread %lu\n", num);</span>
+<span class='curline'><a href='../S/218.html#L279'>kprintf</a>           279 kern/test/synchtest.c 	kprintf("Starting CV test...\n");</span>
+<span class='curline'><a href='../S/218.html#L280'>kprintf</a>           280 kern/test/synchtest.c 	kprintf("Threads should print out in reverse order.\n");</span>
+<span class='curline'><a href='../S/218.html#L295'>kprintf</a>           295 kern/test/synchtest.c 	kprintf("CV test done\n");</span>
+<span class='curline'><a href='../S/218.html#L333'>kprintf</a>           333 kern/test/synchtest.c 		kprintf("sleepthread: %u\n", j);</span>
+<span class='curline'><a href='../S/218.html#L354'>kprintf</a>           354 kern/test/synchtest.c 		kprintf("wakethread: %u\n", j);</span>
+<span class='curline'><a href='../S/218.html#L375'>kprintf</a>           375 kern/test/synchtest.c 	kprintf("cvtest2...\n");</span>
+<span class='curline'><a href='../S/218.html#L399'>kprintf</a>           399 kern/test/synchtest.c 	kprintf("cvtest2 done\n");</span>
+<span class='curline'><a href='../S/219.html#L323'>kprintf</a>           323 kern/test/threadlisttest.c 	kprintf("Testing threadlists...\n");</span>
+<span class='curline'><a href='../S/219.html#L341'>kprintf</a>           341 kern/test/threadlisttest.c 	kprintf("Done.\n");</span>
+<span class='curline'><a href='../S/220.html#L127'>kprintf</a>           127 kern/test/threadtest.c 	kprintf("Starting thread test...\n");</span>
+<span class='curline'><a href='../S/220.html#L129'>kprintf</a>           129 kern/test/threadtest.c 	kprintf("\nThread test done.\n");</span>
+<span class='curline'><a href='../S/220.html#L141'>kprintf</a>           141 kern/test/threadtest.c 	kprintf("Starting thread test 2...\n");</span>
+<span class='curline'><a href='../S/220.html#L143'>kprintf</a>           143 kern/test/threadtest.c 	kprintf("\nThread test 2 done.\n");</span>
+<span class='curline'><a href='../S/221.html#L101'>kprintf</a>           101 kern/test/tt3.c 		kprintf("[%lu]", num);</span>
+<span class='curline'><a href='../S/221.html#L207'>kprintf</a>           207 kern/test/tt3.c 		kprintf("{%lu: %u}", num, (unsigned) tot);</span>
+<span class='curline'><a href='../S/221.html#L253'>kprintf</a>           253 kern/test/tt3.c 	kprintf("Starting thread test 3 (%d [sleepalots], %d {computes}, "</span>
+<span class='curline'><a href='../S/221.html#L259'>kprintf</a>           259 kern/test/tt3.c 	kprintf("\nThread test 3 done\n");</span>
+<span class='curline'><a href='../S/221.html#L272'>kprintf</a>           272 kern/test/tt3.c 		kprintf("Usage: tt3 [sleepthreads computethreads]\n");</span>
+<span class='curline'><a href='../S/223.html#L81'>kprintf</a>            81 kern/thread/hangman.c 	kprintf("hangman: Detected lock cycle!\n");</span>
+<span class='curline'><a href='../S/223.html#L82'>kprintf</a>            82 kern/thread/hangman.c 	kprintf("hangman: in %s (%p);\n", target-&gt;a_name, target);</span>
+<span class='curline'><a href='../S/223.html#L83'>kprintf</a>            83 kern/thread/hangman.c 	kprintf("hangman: waiting for %s (%p), but:\n", start-&gt;l_name, start);</span>
+<span class='curline'><a href='../S/223.html#L84'>kprintf</a>            84 kern/thread/hangman.c 	kprintf("   lockable %s (%p)\n", start-&gt;l_name, start);</span>
+<span class='curline'><a href='../S/223.html#L87'>kprintf</a>            87 kern/thread/hangman.c 		kprintf("   held by actor %s (%p)\n", cur-&gt;a_name, cur);</span>
+<span class='curline'><a href='../S/223.html#L88'>kprintf</a>            88 kern/thread/hangman.c 		kprintf("   waiting for lockable %s (%p)\n",</span>
+<span class='curline'><a href='../S/223.html#L92'>kprintf</a>            92 kern/thread/hangman.c 	kprintf("   held by actor %s (%p)\n", cur-&gt;a_name, cur);</span>
+<span class='curline'><a href='../S/227.html#L417'>kprintf</a>           417 kern/thread/thread.c 	kprintf("cpu%u: %s\n", software_number, buf);</span>
+<span class='curline'><a href='../S/227.html#L433'>kprintf</a>           433 kern/thread/thread.c 	kprintf("cpu0: %s\n", buf);</span>
+<span class='curline'><a href='../S/227.html#L1185'>kprintf</a>          1185 kern/thread/thread.c 			kprintf("cpu%d: offline: warning: not idle\n",</span>
+<span class='curline'><a href='../S/227.html#L1189'>kprintf</a>          1189 kern/thread/thread.c 		kprintf("cpu%d: offline.\n", curcpu-&gt;c_number);</span>
+<span class='curline'><a href='../S/233.html#L573'>kprintf</a>           573 kern/vfs/vfslist.c 	kprintf("vfs: Mounted %s: on %s\n",</span>
+<span class='curline'><a href='../S/233.html#L618'>kprintf</a>           618 kern/vfs/vfslist.c 	kprintf("vfs: Swap attached to %s\n", kd-&gt;kd_name);</span>
+<span class='curline'><a href='../S/233.html#L668'>kprintf</a>           668 kern/vfs/vfslist.c 	kprintf("vfs: Unmounted %s:\n", kd-&gt;kd_name);</span>
+<span class='curline'><a href='../S/233.html#L705'>kprintf</a>           705 kern/vfs/vfslist.c 	kprintf("vfs: Swap detached from %s:\n", kd-&gt;kd_name);</span>
+<span class='curline'><a href='../S/233.html#L746'>kprintf</a>           746 kern/vfs/vfslist.c 		kprintf("vfs: Unmounting %s:\n", dev-&gt;kd_name);</span>
+<span class='curline'><a href='../S/233.html#L750'>kprintf</a>           750 kern/vfs/vfslist.c 			kprintf("vfs: Warning: sync failed for %s: %s, trying "</span>
+<span class='curline'><a href='../S/233.html#L755'>kprintf</a>           755 kern/vfs/vfslist.c 				kprintf("vfs: Warning: sync failed second time"</span>
+<span class='curline'><a href='../S/233.html#L768'>kprintf</a>           768 kern/vfs/vfslist.c 			kprintf("vfs: Cannot unmount %s: (busy)\n",</span>
+<span class='curline'><a href='../S/233.html#L773'>kprintf</a>           773 kern/vfs/vfslist.c 			kprintf("vfs: Warning: unmount failed for %s:"</span>
+<span class='curline'><a href='../S/236.html#L119'>kprintf</a>           119 kern/vfs/vnode.c 			kprintf("vfs: Warning: VOP_RECLAIM: %s\n",</span>
+<span class='curline'><a href='../S/236.html#L172'>kprintf</a>           172 kern/vfs/vnode.c 		kprintf("vnode_check: vop_%s: warning: large refcount %d\n",</span>
+<span class='curline'><a href='../S/239.html#L235'>kprintf</a>           235 kern/vm/kmalloc.c 		kprintf("kmalloc: Couldn't get a pageref page\n");</span>
+<span class='curline'><a href='../S/239.html#L674'>kprintf</a>           674 kern/vm/kmalloc.c 		kprintf("%5zu bytes at %p, allocated at %p\n",</span>
+<span class='curline'><a href='../S/239.html#L686'>kprintf</a>           686 kern/vm/kmalloc.c 	kprintf("Remaining allocations from generation %u:\n", generation);</span>
+<span class='curline'><a href='../S/239.html#L719'>kprintf</a>           719 kern/vm/kmalloc.c 	kprintf("Enable LABELS in kmalloc.c to use this functionality.\n");</span>
+<span class='curline'><a href='../S/239.html#L736'>kprintf</a>           736 kern/vm/kmalloc.c 	kprintf("Enable LABELS in kmalloc.c to use this functionality.\n");</span>
+<span class='curline'><a href='../S/239.html#L783'>kprintf</a>           783 kern/vm/kmalloc.c 	kprintf("at 0x%08lx: size %-4lu  %u/%u free\n",</span>
+<span class='curline'><a href='../S/239.html#L786'>kprintf</a>           786 kern/vm/kmalloc.c 	kprintf("   ");</span>
+<span class='curline'><a href='../S/239.html#L789'>kprintf</a>           789 kern/vm/kmalloc.c 		kprintf("%c", val ? '.' : '*');</span>
+<span class='curline'><a href='../S/239.html#L791'>kprintf</a>           791 kern/vm/kmalloc.c 			kprintf("\n   ");</span>
+<span class='curline'><a href='../S/239.html#L794'>kprintf</a>           794 kern/vm/kmalloc.c 	kprintf("\n");</span>
+<span class='curline'><a href='../S/239.html#L808'>kprintf</a>           808 kern/vm/kmalloc.c 	kprintf("Subpage allocator status:\n");</span>
+<span class='curline'><a href='../S/239.html#L970'>kprintf</a>           970 kern/vm/kmalloc.c 		kprintf("kmalloc: Subpage allocator couldn't get a page\n");</span>
+<span class='curline'><a href='../S/239.html#L985'>kprintf</a>           985 kern/vm/kmalloc.c 		kprintf("kmalloc: Subpage allocator couldn't get pageref\n");</span>
+</pre>
+</body>
+</html>

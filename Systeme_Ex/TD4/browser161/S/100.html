@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/dev/lamebus/lamebus.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/745.html'>dev</a>/<a href='../files/747.html'>lamebus</a>/lamebus.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/83.html' title='Multiple included from 11 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#ifndef</em> <a href='../S/100.html#L31' title='Defined at 31 in kern/dev/lamebus/lamebus.h.'>_LAMEBUS_H_</a>
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#define</em> <a href='../S/100.html#L30' title='Referred from 30 in kern/dev/lamebus/lamebus.h.'>_LAMEBUS_H_</a>
+<a id='L32' name='L32'></a>  32 
+<a id='L33' name='L33'></a>  33 <em class='sharp'>#include</em> &lt;<a href='144.html'>cpu.h</a>&gt;
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='../I/45.html'>spinlock.h</a>&gt;
+<a id='L35' name='L35'></a>  35 
+<a id='L36' name='L36'></a>  36 <em class='comment'>/*</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> * Linear Always Mapped Extents</em>
+<a id='L38' name='L38'></a>  38 <em class='comment'> *</em>
+<a id='L39' name='L39'></a>  39 <em class='comment'> * Machine-independent definitions.</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> */</em>
+<a id='L41' name='L41'></a>  41 
+<a id='L42' name='L42'></a>  42 
+<a id='L43' name='L43'></a>  43 <em class='comment'>/* Vendors */</em>
+<a id='L44' name='L44'></a>  44 <em class='sharp'>#define</em> <a href='../R/305.html' title='Multiple referred from 9 places.'>LB_VENDOR_CS161</a>      1
+<a id='L45' name='L45'></a>  45 
+<a id='L46' name='L46'></a>  46 <em class='comment'>/* CS161 devices */</em>
+<a id='L47' name='L47'></a>  47 <em class='sharp'>#define</em> <a href='../S/99.html#L140' title='Referred from 140 in kern/dev/lamebus/lamebus.c.'>LBCS161_UPBUSCTL</a>     1
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#define</em> <a href='../S/117.html#L46' title='Referred from 46 in kern/dev/lamebus/ltimer_att.c.'>LBCS161_TIMER</a>        2
+<a id='L49' name='L49'></a>  49 <em class='sharp'>#define</em> <a href='../S/103.html#L46' title='Referred from 46 in kern/dev/lamebus/lhd_att.c.'>LBCS161_DISK</a>         3
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#define</em> <a href='../S/114.html#L43' title='Referred from 43 in kern/dev/lamebus/lser_att.c.'>LBCS161_SERIAL</a>       4
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#define</em> <a href='../S/111.html#L48' title='Referred from 48 in kern/dev/lamebus/lscreen_att.c.'>LBCS161_SCREEN</a>       5
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#define</em> <a href='../S/105.html#L43' title='Referred from 43 in kern/dev/lamebus/lnet_att.c.'>LBCS161_NET</a>          6
+<a id='L53' name='L53'></a>  53 <em class='sharp'>#define</em> <a href='../S/98.html#L47' title='Referred from 47 in kern/dev/lamebus/emu_att.c.'>LBCS161_EMUFS</a>        7
+<a id='L54' name='L54'></a>  54 <em class='sharp'>#define</em> <a href='../S/120.html#L48' title='Referred from 48 in kern/dev/lamebus/ltrace_att.c.'>LBCS161_TRACE</a>        8
+<a id='L55' name='L55'></a>  55 <em class='sharp'>#define</em> <a href='../S/108.html#L43' title='Referred from 43 in kern/dev/lamebus/lrandom_att.c.'>LBCS161_RANDOM</a>       9
+<a id='L56' name='L56'></a>  56 <em class='sharp'>#define</em> LBCS161_MPBUSCTL     10
+<a id='L57' name='L57'></a>  57 
+<a id='L58' name='L58'></a>  58 <em class='comment'>/* LAMEbus controller always goes in slot 31 */</em>
+<a id='L59' name='L59'></a>  59 <em class='sharp'>#define</em> <a href='../R/300.html' title='Multiple referred from 9 places.'>LB_CONTROLLER_SLOT</a>   31
+<a id='L60' name='L60'></a>  60 
+<a id='L61' name='L61'></a>  61 <em class='comment'>/* Number of slots */</em>
+<a id='L62' name='L62'></a>  62 <em class='sharp'>#define</em> <a href='../R/303.html' title='Multiple referred from 12 places.'>LB_NSLOTS</a>            32
+<a id='L63' name='L63'></a>  63 
+<a id='L64' name='L64'></a>  64 <em class='comment'>/* LAMEbus controller per-slot config space */</em>
+<a id='L65' name='L65'></a>  65 <em class='sharp'>#define</em> <a href='../R/299.html' title='Multiple referred from 2 places.'>LB_CONFIG_SIZE</a>       1024
+<a id='L66' name='L66'></a>  66 
+<a id='L67' name='L67'></a>  67 <em class='comment'>/* LAMEbus controller per-cpu control space */</em>
+<a id='L68' name='L68'></a>  68 <em class='sharp'>#define</em> <a href='../R/302.html' title='Multiple referred from 2 places.'>LB_CTLCPU_SIZE</a>       1024
+<a id='L69' name='L69'></a>  69 
+<a id='L70' name='L70'></a>  70 <em class='comment'>/* LAMEbus controller slot offset to per-cpu control space */</em>
+<a id='L71' name='L71'></a>  71 <em class='sharp'>#define</em> <a href='../R/301.html' title='Multiple referred from 2 places.'>LB_CTLCPU_OFFSET</a>     32768
+<a id='L72' name='L72'></a>  72 
+<a id='L73' name='L73'></a>  73 <em class='comment'>/* LAMEbus mapping size per slot */</em>
+<a id='L74' name='L74'></a>  74 <em class='sharp'>#define</em> <a href='../S/73.html#L145' title='Referred from 145 in kern/arch/sys161/dev/lamebus_machdep.c.'>LB_SLOT_SIZE</a>         65536
+<a id='L75' name='L75'></a>  75 
+<a id='L76' name='L76'></a>  76 <em class='comment'>/* Pointer to kind of function called on interrupt */</em>
+<a id='L77' name='L77'></a>  77 <strong class='reserved'>typedef</strong> <strong class='reserved'>void</strong> (*lb_irqfunc)(<strong class='reserved'>void</strong> *devdata);
+<a id='L78' name='L78'></a>  78 
+<a id='L79' name='L79'></a>  79 <em class='comment'>/*</em>
+<a id='L80' name='L80'></a>  80 <em class='comment'> * Driver data</em>
+<a id='L81' name='L81'></a>  81 <em class='comment'> */</em>
+<a id='L82' name='L82'></a>  82 <strong class='reserved'>struct</strong> <a href='../R/1556.html' title='Multiple referred from 50 places.'>lamebus_softc</a> <em class='brace'>{</em>
+<a id='L83' name='L83'></a>  83         <strong class='reserved'>struct</strong> <a href='../S/180.html#L58' title='Defined at 58 in kern/include/spinlock.h.'>spinlock</a> ls_lock;
+<a id='L84' name='L84'></a>  84 
+<a id='L85' name='L85'></a>  85         <em class='comment'>/* Accessed from interrupts; synchronized with ls_lock */</em>
+<a id='L86' name='L86'></a>  86         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>     ls_slotsinuse;
+<a id='L87' name='L87'></a>  87         <strong class='reserved'>void</strong>        *ls_devdata[<a href='../S/100.html#L62' title='Defined at 62 in kern/dev/lamebus/lamebus.h.'>LB_NSLOTS</a>];
+<a id='L88' name='L88'></a>  88         lb_irqfunc   ls_irqfuncs[<a href='../S/100.html#L62' title='Defined at 62 in kern/dev/lamebus/lamebus.h.'>LB_NSLOTS</a>];
+<a id='L89' name='L89'></a>  89 
+<a id='L90' name='L90'></a>  90         <em class='comment'>/* Read-only once set early in boot */</em>
+<a id='L91' name='L91'></a>  91         <strong class='reserved'>unsigned</strong>     ls_uniprocessor;
+<a id='L92' name='L92'></a>  92 <em class='brace'>}</em>;
+<a id='L93' name='L93'></a>  93 
+<a id='L94' name='L94'></a>  94 <em class='comment'>/*</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'> * Allocate and set up a lamebus_softc for the system.</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'> */</em>
+<a id='L97' name='L97'></a>  97 <strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *<a href='../S/99.html#L639' title='Defined at 639 in kern/dev/lamebus/lamebus.c.'>lamebus_init</a>(<strong class='reserved'>void</strong>);
+<a id='L98' name='L98'></a>  98 
+<a id='L99' name='L99'></a>  99 <em class='comment'>/*</em>
+<a id='L100' name='L100'></a> 100 <em class='comment'> * Search for and create cpu structures for the CPUs on the mainboard.</em>
+<a id='L101' name='L101'></a> 101 <em class='comment'> */</em>
+<a id='L102' name='L102'></a> 102 <strong class='reserved'>void</strong> <a href='../S/99.html#L128' title='Defined at 128 in kern/dev/lamebus/lamebus.c.'>lamebus_find_cpus</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *lamebus);
+<a id='L103' name='L103'></a> 103 
+<a id='L104' name='L104'></a> 104 <em class='comment'>/*</em>
+<a id='L105' name='L105'></a> 105 <em class='comment'> * Start up secondary CPUs.</em>
+<a id='L106' name='L106'></a> 106 <em class='comment'> */</em>
+<a id='L107' name='L107'></a> 107 <strong class='reserved'>void</strong> <a href='../S/99.html#L197' title='Defined at 197 in kern/dev/lamebus/lamebus.c.'>lamebus_start_cpus</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *lamebus);
+<a id='L108' name='L108'></a> 108 
+<a id='L109' name='L109'></a> 109 <em class='comment'>/*</em>
+<a id='L110' name='L110'></a> 110 <em class='comment'> * Look for a not-in-use slot containing a device whose vendor and device</em>
+<a id='L111' name='L111'></a> 111 <em class='comment'> * ids match those provided, and whose version is in the range between</em>
+<a id='L112' name='L112'></a> 112 <em class='comment'> * lowver and highver, inclusive.</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'> *</em>
+<a id='L114' name='L114'></a> 114 <em class='comment'> * Returns a slot number (0-31) or -1 if no such device is found.</em>
+<a id='L115' name='L115'></a> 115 <em class='comment'> */</em>
+<a id='L116' name='L116'></a> 116 <strong class='reserved'>int</strong> <a href='../S/99.html#L251' title='Defined at 251 in kern/dev/lamebus/lamebus.c.'>lamebus_probe</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *,
+<a id='L117' name='L117'></a> 117                   <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> vendorid, <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> deviceid,
+<a id='L118' name='L118'></a> 118                   <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> lowver, <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> *version_ret);
+<a id='L119' name='L119'></a> 119 
+<a id='L120' name='L120'></a> 120 <em class='comment'>/*</em>
+<a id='L121' name='L121'></a> 121 <em class='comment'> * Mark a slot in-use (that is, has a device driver attached to it),</em>
+<a id='L122' name='L122'></a> 122 <em class='comment'> * or unmark it. It is a fatal error to mark a slot that is already</em>
+<a id='L123' name='L123'></a> 123 <em class='comment'> * in use, or unmark a slot that is not in use.</em>
+<a id='L124' name='L124'></a> 124 <em class='comment'> */</em>
+<a id='L125' name='L125'></a> 125 <strong class='reserved'>void</strong> <a href='../S/99.html#L310' title='Defined at 310 in kern/dev/lamebus/lamebus.c.'>lamebus_mark</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot);
+<a id='L126' name='L126'></a> 126 <strong class='reserved'>void</strong> <a href='../S/99.html#L330' title='Defined at 330 in kern/dev/lamebus/lamebus.c.'>lamebus_unmark</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot);
+<a id='L127' name='L127'></a> 127 
+<a id='L128' name='L128'></a> 128 <em class='comment'>/*</em>
+<a id='L129' name='L129'></a> 129 <em class='comment'> * Attach to an interrupt.</em>
+<a id='L130' name='L130'></a> 130 <em class='comment'> */</em>
+<a id='L131' name='L131'></a> 131 <strong class='reserved'>void</strong> <a href='../S/99.html#L351' title='Defined at 351 in kern/dev/lamebus/lamebus.c.'>lamebus_attach_interrupt</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot,
+<a id='L132' name='L132'></a> 132                               <strong class='reserved'>void</strong> *devdata,
+<a id='L133' name='L133'></a> 133                               <strong class='reserved'>void</strong> (*irqfunc)(<strong class='reserved'>void</strong> *devdata));
+<a id='L134' name='L134'></a> 134 <em class='comment'>/*</em>
+<a id='L135' name='L135'></a> 135 <em class='comment'> * Detach from interrupt.</em>
+<a id='L136' name='L136'></a> 136 <em class='comment'> */</em>
+<a id='L137' name='L137'></a> 137 <strong class='reserved'>void</strong> <a href='../S/99.html#L379' title='Defined at 379 in kern/dev/lamebus/lamebus.c.'>lamebus_detach_interrupt</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot);
+<a id='L138' name='L138'></a> 138 
+<a id='L139' name='L139'></a> 139 <em class='comment'>/*</em>
+<a id='L140' name='L140'></a> 140 <em class='comment'> * Mask/unmask an interrupt.</em>
+<a id='L141' name='L141'></a> 141 <em class='comment'> */</em>
+<a id='L142' name='L142'></a> 142 <strong class='reserved'>void</strong> <a href='../S/99.html#L403' title='Defined at 403 in kern/dev/lamebus/lamebus.c.'>lamebus_mask_interrupt</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot);
+<a id='L143' name='L143'></a> 143 <strong class='reserved'>void</strong> <a href='../S/99.html#L416' title='Defined at 416 in kern/dev/lamebus/lamebus.c.'>lamebus_unmask_interrupt</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot);
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145 <em class='comment'>/*</em>
+<a id='L146' name='L146'></a> 146 <em class='comment'> * Function to call to handle a LAMEbus interrupt.</em>
+<a id='L147' name='L147'></a> 147 <em class='comment'> */</em>
+<a id='L148' name='L148'></a> 148 <strong class='reserved'>void</strong> <a href='../S/99.html#L433' title='Defined at 433 in kern/dev/lamebus/lamebus.c.'>lamebus_interrupt</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *);
+<a id='L149' name='L149'></a> 149 
+<a id='L150' name='L150'></a> 150 <em class='comment'>/*</em>
+<a id='L151' name='L151'></a> 151 <em class='comment'> * Have the LAMEbus controller power the system off.</em>
+<a id='L152' name='L152'></a> 152 <em class='comment'> */</em>
+<a id='L153' name='L153'></a> 153 <strong class='reserved'>void</strong> <a href='../S/99.html#L582' title='Defined at 582 in kern/dev/lamebus/lamebus.c.'>lamebus_poweroff</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *);
+<a id='L154' name='L154'></a> 154 
+<a id='L155' name='L155'></a> 155 <em class='comment'>/*</em>
+<a id='L156' name='L156'></a> 156 <em class='comment'> * Ask the bus controller how much memory we have.</em>
+<a id='L157' name='L157'></a> 157 <em class='comment'> */</em>
+<a id='L158' name='L158'></a> 158 <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> <a href='../S/99.html#L599' title='Defined at 599 in kern/dev/lamebus/lamebus.c.'>lamebus_ramsize</a>(<strong class='reserved'>void</strong>);
+<a id='L159' name='L159'></a> 159 
+<a id='L160' name='L160'></a> 160 <em class='comment'>/*</em>
+<a id='L161' name='L161'></a> 161 <em class='comment'> * Turn on or off the inter-processor interrupt line to a CPU.</em>
+<a id='L162' name='L162'></a> 162 <em class='comment'> */</em>
+<a id='L163' name='L163'></a> 163 <strong class='reserved'>void</strong> <a href='../S/99.html#L615' title='Defined at 615 in kern/dev/lamebus/lamebus.c.'>lamebus_assert_ipi</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *targetcpu);
+<a id='L164' name='L164'></a> 164 <strong class='reserved'>void</strong> <a href='../S/99.html#L625' title='Defined at 625 in kern/dev/lamebus/lamebus.c.'>lamebus_clear_ipi</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>struct</strong> <a href='../S/144.html#L49' title='Defined at 49 in kern/include/cpu.h.'>cpu</a> *targetcpu);
+<a id='L165' name='L165'></a> 165 
+<a id='L166' name='L166'></a> 166 <em class='comment'>/*</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'> * Read/write 32-bit register at offset OFFSET within slot SLOT.</em>
+<a id='L168' name='L168'></a> 168 <em class='comment'> * (Machine dependent.)</em>
+<a id='L169' name='L169'></a> 169 <em class='comment'> */</em>
+<a id='L170' name='L170'></a> 170 <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> <a href='../S/73.html#L153' title='Defined at 153 in kern/arch/sys161/dev/lamebus_machdep.c.'>lamebus_read_register</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot,
+<a id='L171' name='L171'></a> 171                                <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> offset);
+<a id='L172' name='L172'></a> 172 <strong class='reserved'>void</strong> <a href='../S/73.html#L172' title='Defined at 172 in kern/arch/sys161/dev/lamebus_machdep.c.'>lamebus_write_register</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot,
+<a id='L173' name='L173'></a> 173                             <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> offset, <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> val);
+<a id='L174' name='L174'></a> 174 
+<a id='L175' name='L175'></a> 175 <em class='comment'>/*</em>
+<a id='L176' name='L176'></a> 176 <em class='comment'> * Map a buffer that starts at offset OFFSET within slot SLOT.</em>
+<a id='L177' name='L177'></a> 177 <em class='comment'> */</em>
+<a id='L178' name='L178'></a> 178 <strong class='reserved'>void</strong> *<a href='../S/73.html#L137' title='Defined at 137 in kern/arch/sys161/dev/lamebus_machdep.c.'>lamebus_map_area</a>(<strong class='reserved'>struct</strong> <a href='../S/100.html#L82' title='Defined at 82 in kern/dev/lamebus/lamebus.h.'>lamebus_softc</a> *, <strong class='reserved'>int</strong> slot,
+<a id='L179' name='L179'></a> 179                        <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> offset);
+<a id='L180' name='L180'></a> 180 
+<a id='L181' name='L181'></a> 181 
+<a id='L182' name='L182'></a> 182 <em class='sharp'>#endif</em> <em class='comment'>/* _LAMEBUS_H_ */</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

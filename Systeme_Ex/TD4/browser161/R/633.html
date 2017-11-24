@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>T</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/139.html#L168'>T</a>                 168 kern/include/array.h #define DECLARRAY_BYTYPE(ARRAY, T, INLINE) \</span>
+<span class='curline'><a href='../S/139.html#L178'>T</a>                 178 kern/include/array.h 	INLINE T *ARRAY##_get(const struct ARRAY *a, unsigned index); \</span>
+<span class='curline'><a href='../S/139.html#L179'>T</a>                 179 kern/include/array.h 	INLINE void ARRAY##_set(struct ARRAY *a, unsigned index, T *val); \</span>
+<span class='curline'><a href='../S/139.html#L182'>T</a>                 182 kern/include/array.h 	INLINE int ARRAY##_add(struct ARRAY *a, T *val, unsigned *index_ret); \</span>
+<span class='curline'><a href='../S/139.html#L185'>T</a>                 185 kern/include/array.h #define DEFARRAY_BYTYPE(ARRAY, T, INLINE) \</span>
+<span class='curline'><a href='../S/139.html#L222'>T</a>                 222 kern/include/array.h 	INLINE T *						\</span>
+<span class='curline'><a href='../S/139.html#L225'>T</a>                 225 kern/include/array.h 		return (T *)array_get(&amp;a-&gt;arr, index);		\</span>
+<span class='curline'><a href='../S/139.html#L229'>T</a>                 229 kern/include/array.h 	ARRAY##_set(struct ARRAY *a, unsigned index, T *val)	\</span>
+<span class='curline'><a href='../S/139.html#L247'>T</a>                 247 kern/include/array.h 	ARRAY##_add(struct ARRAY *a, T *val, unsigned *index_ret) \</span>
+<span class='curline'><a href='../S/139.html#L258'>T</a>                 258 kern/include/array.h #define DECLARRAY(T, INLINE) DECLARRAY_BYTYPE(T##array, struct T, INLINE)</span>
+<span class='curline'><a href='../S/139.html#L259'>T</a>                 259 kern/include/array.h #define DEFARRAY(T, INLINE) DEFARRAY_BYTYPE(T##array, struct T, INLINE)</span>
+<span class='curline'><a href='../S/595.html#L215'>T</a>                 215 userland/testbin/badcall/common_buf.c T(read);</span>
+<span class='curline'><a href='../S/595.html#L216'>T</a>                 216 userland/testbin/badcall/common_buf.c T(write);</span>
+<span class='curline'><a href='../S/595.html#L217'>T</a>                 217 userland/testbin/badcall/common_buf.c T(getdirentry);</span>
+<span class='curline'><a href='../S/595.html#L218'>T</a>                 218 userland/testbin/badcall/common_buf.c T(readlink);</span>
+<span class='curline'><a href='../S/595.html#L219'>T</a>                 219 userland/testbin/badcall/common_buf.c T(getcwd);</span>
+<span class='curline'><a href='../S/596.html#L225'>T</a>                 225 userland/testbin/badcall/common_fds.c T(read, RW_TEST_WRONLY);</span>
+<span class='curline'><a href='../S/596.html#L226'>T</a>                 226 userland/testbin/badcall/common_fds.c T(write, RW_TEST_RDONLY);</span>
+<span class='curline'><a href='../S/596.html#L227'>T</a>                 227 userland/testbin/badcall/common_fds.c T(close, RW_TEST_NONE);</span>
+<span class='curline'><a href='../S/596.html#L228'>T</a>                 228 userland/testbin/badcall/common_fds.c T(ioctl, RW_TEST_NONE);</span>
+<span class='curline'><a href='../S/596.html#L229'>T</a>                 229 userland/testbin/badcall/common_fds.c T(lseek, RW_TEST_NONE);</span>
+<span class='curline'><a href='../S/596.html#L230'>T</a>                 230 userland/testbin/badcall/common_fds.c T(fsync, RW_TEST_NONE);</span>
+<span class='curline'><a href='../S/596.html#L231'>T</a>                 231 userland/testbin/badcall/common_fds.c T(ftruncate, RW_TEST_RDONLY);</span>
+<span class='curline'><a href='../S/596.html#L232'>T</a>                 232 userland/testbin/badcall/common_fds.c T(fstat, RW_TEST_NONE);</span>
+<span class='curline'><a href='../S/596.html#L233'>T</a>                 233 userland/testbin/badcall/common_fds.c T(getdirentry, RW_TEST_WRONLY);</span>
+<span class='curline'><a href='../S/597.html#L193'>T</a>                 193 userland/testbin/badcall/common_path.c T(open);</span>
+<span class='curline'><a href='../S/597.html#L194'>T</a>                 194 userland/testbin/badcall/common_path.c T(remove);</span>
+<span class='curline'><a href='../S/597.html#L195'>T</a>                 195 userland/testbin/badcall/common_path.c T(mkdir);</span>
+<span class='curline'><a href='../S/597.html#L196'>T</a>                 196 userland/testbin/badcall/common_path.c T(rmdir);</span>
+<span class='curline'><a href='../S/597.html#L197'>T</a>                 197 userland/testbin/badcall/common_path.c T(chdir);</span>
+<span class='curline'><a href='../S/597.html#L198'>T</a>                 198 userland/testbin/badcall/common_path.c T(readlink);</span>
+<span class='curline'><a href='../S/597.html#L199'>T</a>                 199 userland/testbin/badcall/common_path.c T(stat);</span>
+<span class='curline'><a href='../S/597.html#L200'>T</a>                 200 userland/testbin/badcall/common_path.c T(lstat);</span>
+<span class='curline'><a href='../S/656.html#L42'>T</a>                  42 userland/testbin/frack/pool.h #define DECLPOOL(T, MAX) \</span>
+<span class='curline'><a href='../S/656.html#L43'>T</a>                  43 userland/testbin/frack/pool.h 	static struct T pool_space_##T[ROUNDUP(MAX, 32)];	\</span>
+<span class='curline'><a href='../S/656.html#L44'>T</a>                  44 userland/testbin/frack/pool.h 	static uint32_t pool_inuse_##T[DIVROUNDUP(MAX, 32)];	\</span>
+<span class='curline'><a href='../S/656.html#L45'>T</a>                  45 userland/testbin/frack/pool.h 	static struct poolctl pool_##T = {			\</span>
+<span class='curline'><a href='../S/656.html#L46'>T</a>                  46 userland/testbin/frack/pool.h 		.inuse = pool_inuse_##T,			\</span>
+<span class='curline'><a href='../S/656.html#L48'>T</a>                  48 userland/testbin/frack/pool.h 		.itemtype = "struct " #T,			\</span>
+<span class='curline'><a href='../S/656.html#L53'>T</a>                  53 userland/testbin/frack/pool.h #define POOLALLOC(T) (&amp;pool_space_##T[poolalloc(&amp;pool_##T)])</span>
+<span class='curline'><a href='../S/656.html#L54'>T</a>                  54 userland/testbin/frack/pool.h #define POOLFREE(T, x) (poolfree(&amp;pool_##T, (x) - pool_space_##T))</span>
+<span class='curline'><a href='../S/670.html#L54'>T</a>                  54 userland/testbin/matmult/matmult.c int T[Dim][Dim][Dim];</span>
+<span class='curline'><a href='../S/670.html#L71'>T</a>                  71 userland/testbin/matmult/matmult.c 		T[i][j][k] = A[i][k] * B[k][j];</span>
+<span class='curline'><a href='../S/670.html#L76'>T</a>                  76 userland/testbin/matmult/matmult.c 		C[i][j] += T[i][j][k];</span>
+</pre>
+</body>
+</html>

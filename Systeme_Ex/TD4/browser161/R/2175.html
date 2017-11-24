@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>thread</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/44.html#L63'>thread</a>             63 kern/arch/mips/include/current.h register struct thread *curthread __asm("$23");	/* s7 register */</span>
+<span class='curline'><a href='../S/44.html#L71'>thread</a>             71 kern/arch/mips/include/current.h #define INIT_CURCPU(cpu, thread) (curthread = (thread), curcpu = (cpu))</span>
+<span class='curline'><a href='../S/65.html#L55'>thread</a>             55 kern/arch/mips/thread/switchframe.c switchframe_init(struct thread *thread,</span>
+<span class='curline'><a href='../S/65.html#L67'>thread</a>             67 kern/arch/mips/thread/switchframe.c         stacktop = ((vaddr_t)thread-&gt;t_stack) + STACK_SIZE;</span>
+<span class='curline'><a href='../S/65.html#L97'>thread</a>             97 kern/arch/mips/thread/switchframe.c 	thread-&gt;t_context = sf;</span>
+<span class='curline'><a href='../S/144.html#L60'>thread</a>             60 kern/include/cpu.h 	struct thread *c_curthread;	/* Current thread on cpu */</span>
+<span class='curline'><a href='../S/176.html#L42'>thread</a>             42 kern/include/proc.h struct thread;</span>
+<span class='curline'><a href='../S/176.html#L89'>thread</a>             89 kern/include/proc.h int proc_addthread(struct proc *proc, struct thread *t);</span>
+<span class='curline'><a href='../S/176.html#L92'>thread</a>             92 kern/include/proc.h void proc_remthread(struct thread *t);</span>
+<span class='curline'><a href='../S/187.html#L119'>thread</a>            119 kern/include/thread.h DECLARRAY(thread, THREADINLINE);</span>
+<span class='curline'><a href='../S/187.html#L120'>thread</a>            120 kern/include/thread.h DEFARRAY(thread, THREADINLINE);</span>
+<span class='curline'><a href='../S/188.html#L34'>thread</a>             34 kern/include/threadlist.h struct thread;	/* from &lt;thread.h&gt; */</span>
+<span class='curline'><a href='../S/188.html#L60'>thread</a>             60 kern/include/threadlist.h 	struct thread *tln_self;</span>
+<span class='curline'><a href='../S/188.html#L70'>thread</a>             70 kern/include/threadlist.h void threadlistnode_init(struct threadlistnode *tln, struct thread *self);</span>
+<span class='curline'><a href='../S/188.html#L81'>thread</a>             81 kern/include/threadlist.h void threadlist_addhead(struct threadlist *tl, struct thread *t);</span>
+<span class='curline'><a href='../S/188.html#L82'>thread</a>             82 kern/include/threadlist.h void threadlist_addtail(struct threadlist *tl, struct thread *t);</span>
+<span class='curline'><a href='../S/188.html#L83'>thread</a>             83 kern/include/threadlist.h struct thread *threadlist_remhead(struct threadlist *tl);</span>
+<span class='curline'><a href='../S/188.html#L84'>thread</a>             84 kern/include/threadlist.h struct thread *threadlist_remtail(struct threadlist *tl);</span>
+<span class='curline'><a href='../S/188.html#L88'>thread</a>             88 kern/include/threadlist.h 			    struct thread *onlist, struct thread *addee);</span>
+<span class='curline'><a href='../S/188.html#L90'>thread</a>             90 kern/include/threadlist.h 			     struct thread *addee, struct thread *onlist);</span>
+<span class='curline'><a href='../S/188.html#L91'>thread</a>             91 kern/include/threadlist.h void threadlist_remove(struct threadlist *tl, struct thread *t);</span>
+<span class='curline'><a href='../S/189.html#L33'>thread</a>             33 kern/include/threadprivate.h struct thread;		/* from &lt;thread.h&gt; */</span>
+<span class='curline'><a href='../S/189.html#L73'>thread</a>             73 kern/include/threadprivate.h void switchframe_init(struct thread *,</span>
+<span class='curline'><a href='../S/208.html#L234'>thread</a>            234 kern/proc/proc.c proc_addthread(struct proc *proc, struct thread *t)</span>
+<span class='curline'><a href='../S/208.html#L261'>thread</a>            261 kern/proc/proc.c proc_remthread(struct thread *t)</span>
+<span class='curline'><a href='../S/217.html#L622'>thread</a>            622 kern/test/semunit.c static struct thread *semu17_thread;</span>
+<span class='curline'><a href='../S/219.html#L47'>thread</a>             47 kern/test/threadlisttest.c static struct thread *fakethreads[NUMNAMES];</span>
+<span class='curline'><a href='../S/219.html#L58'>thread</a>             58 kern/test/threadlisttest.c struct thread *</span>
+<span class='curline'><a href='../S/219.html#L61'>thread</a>             61 kern/test/threadlisttest.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/219.html#L83'>thread</a>             83 kern/test/threadlisttest.c fakethread_destroy(struct thread *t)</span>
+<span class='curline'><a href='../S/219.html#L101'>thread</a>            101 kern/test/threadlisttest.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/219.html#L136'>thread</a>            136 kern/test/threadlisttest.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/219.html#L164'>thread</a>            164 kern/test/threadlisttest.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/219.html#L200'>thread</a>            200 kern/test/threadlisttest.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/219.html#L236'>thread</a>            236 kern/test/threadlisttest.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/219.html#L281'>thread</a>            281 kern/test/threadlisttest.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/225.html#L89'>thread</a>             89 kern/thread/spl.c 	struct thread *cur = curthread;</span>
+<span class='curline'><a href='../S/225.html#L109'>thread</a>            109 kern/thread/spl.c 	struct thread *cur = curthread;</span>
+<span class='curline'><a href='../S/225.html#L134'>thread</a>            134 kern/thread/spl.c 	struct thread *cur = curthread;</span>
+<span class='curline'><a href='../S/227.html#L81'>thread</a>             81 kern/thread/thread.c thread_checkstack_init(struct thread *thread)</span>
+<span class='curline'><a href='../S/227.html#L83'>thread</a>             83 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[0] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L84'>thread</a>             84 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[1] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L85'>thread</a>             85 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[2] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L86'>thread</a>             86 kern/thread/thread.c 	((uint32_t *)thread-&gt;t_stack)[3] = THREAD_STACK_MAGIC;</span>
+<span class='curline'><a href='../S/227.html#L101'>thread</a>            101 kern/thread/thread.c thread_checkstack(struct thread *thread)</span>
+<span class='curline'><a href='../S/227.html#L103'>thread</a>            103 kern/thread/thread.c 	if (thread-&gt;t_stack != NULL) {</span>
+<span class='curline'><a href='../S/227.html#L104'>thread</a>            104 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[0] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L105'>thread</a>            105 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[1] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L106'>thread</a>            106 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[2] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L107'>thread</a>            107 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[3] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L116'>thread</a>            116 kern/thread/thread.c struct thread *</span>
+<span class='curline'><a href='../S/227.html#L119'>thread</a>            119 kern/thread/thread.c 	struct thread *thread;</span>
+<span class='curline'><a href='../S/227.html#L123'>thread</a>            123 kern/thread/thread.c 	thread = kmalloc(sizeof(*thread));</span>
+<span class='curline'><a href='../S/227.html#L124'>thread</a>            124 kern/thread/thread.c 	if (thread == NULL) {</span>
+<span class='curline'><a href='../S/227.html#L128'>thread</a>            128 kern/thread/thread.c 	thread-&gt;t_name = kstrdup(name);</span>
+<span class='curline'><a href='../S/227.html#L129'>thread</a>            129 kern/thread/thread.c 	if (thread-&gt;t_name == NULL) {</span>
+<span class='curline'><a href='../S/227.html#L130'>thread</a>            130 kern/thread/thread.c 		kfree(thread);</span>
+<span class='curline'><a href='../S/227.html#L133'>thread</a>            133 kern/thread/thread.c 	thread-&gt;t_wchan_name = "NEW";</span>
+<span class='curline'><a href='../S/227.html#L134'>thread</a>            134 kern/thread/thread.c 	thread-&gt;t_state = S_READY;</span>
+<span class='curline'><a href='../S/227.html#L137'>thread</a>            137 kern/thread/thread.c 	thread_machdep_init(&amp;thread-&gt;t_machdep);</span>
+<span class='curline'><a href='../S/227.html#L138'>thread</a>            138 kern/thread/thread.c 	threadlistnode_init(&amp;thread-&gt;t_listnode, thread);</span>
+<span class='curline'><a href='../S/227.html#L139'>thread</a>            139 kern/thread/thread.c 	thread-&gt;t_stack = NULL;</span>
+<span class='curline'><a href='../S/227.html#L140'>thread</a>            140 kern/thread/thread.c 	thread-&gt;t_context = NULL;</span>
+<span class='curline'><a href='../S/227.html#L141'>thread</a>            141 kern/thread/thread.c 	thread-&gt;t_cpu = NULL;</span>
+<span class='curline'><a href='../S/227.html#L142'>thread</a>            142 kern/thread/thread.c 	thread-&gt;t_proc = NULL;</span>
+<span class='curline'><a href='../S/227.html#L143'>thread</a>            143 kern/thread/thread.c 	HANGMAN_ACTORINIT(&amp;thread-&gt;t_hangman, thread-&gt;t_name);</span>
+<span class='curline'><a href='../S/227.html#L146'>thread</a>            146 kern/thread/thread.c 	thread-&gt;t_in_interrupt = false;</span>
+<span class='curline'><a href='../S/227.html#L147'>thread</a>            147 kern/thread/thread.c 	thread-&gt;t_curspl = IPL_HIGH;</span>
+<span class='curline'><a href='../S/227.html#L148'>thread</a>            148 kern/thread/thread.c 	thread-&gt;t_iplhigh_count = 1; /* corresponding to t_curspl */</span>
+<span class='curline'><a href='../S/227.html#L152'>thread</a>            152 kern/thread/thread.c 	return thread;</span>
+<span class='curline'><a href='../S/227.html#L265'>thread</a>            265 kern/thread/thread.c thread_destroy(struct thread *thread)</span>
+<span class='curline'><a href='../S/227.html#L267'>thread</a>            267 kern/thread/thread.c 	KASSERT(thread != curthread);</span>
+<span class='curline'><a href='../S/227.html#L268'>thread</a>            268 kern/thread/thread.c 	KASSERT(thread-&gt;t_state != S_RUN);</span>
+<span class='curline'><a href='../S/227.html#L276'>thread</a>            276 kern/thread/thread.c 	KASSERT(thread-&gt;t_proc == NULL);</span>
+<span class='curline'><a href='../S/227.html#L277'>thread</a>            277 kern/thread/thread.c 	if (thread-&gt;t_stack != NULL) {</span>
+<span class='curline'><a href='../S/227.html#L278'>thread</a>            278 kern/thread/thread.c 		kfree(thread-&gt;t_stack);</span>
+<span class='curline'><a href='../S/227.html#L280'>thread</a>            280 kern/thread/thread.c 	threadlistnode_cleanup(&amp;thread-&gt;t_listnode);</span>
+<span class='curline'><a href='../S/227.html#L281'>thread</a>            281 kern/thread/thread.c 	thread_machdep_cleanup(&amp;thread-&gt;t_machdep);</span>
+<span class='curline'><a href='../S/227.html#L284'>thread</a>            284 kern/thread/thread.c 	thread-&gt;t_wchan_name = "DESTROYED";</span>
+<span class='curline'><a href='../S/227.html#L286'>thread</a>            286 kern/thread/thread.c 	kfree(thread-&gt;t_name);</span>
+<span class='curline'><a href='../S/227.html#L287'>thread</a>            287 kern/thread/thread.c 	kfree(thread);</span>
+<span class='curline'><a href='../S/227.html#L300'>thread</a>            300 kern/thread/thread.c 	struct thread *z;</span>
+<span class='curline'><a href='../S/227.html#L452'>thread</a>            452 kern/thread/thread.c thread_make_runnable(struct thread *target, bool already_have_lock)</span>
+<span class='curline'><a href='../S/227.html#L500'>thread</a>            500 kern/thread/thread.c 	struct thread *newthread;</span>
+<span class='curline'><a href='../S/227.html#L564'>thread</a>            564 kern/thread/thread.c 	struct thread *cur, *next;</span>
+<span class='curline'><a href='../S/227.html#L742'>thread</a>            742 kern/thread/thread.c 	struct thread *cur;</span>
+<span class='curline'><a href='../S/227.html#L781'>thread</a>            781 kern/thread/thread.c 	struct thread *cur;</span>
+<span class='curline'><a href='../S/227.html#L854'>thread</a>            854 kern/thread/thread.c 	struct thread *t;</span>
+<span class='curline'><a href='../S/227.html#L1021'>thread</a>           1021 kern/thread/thread.c 	struct thread *target;</span>
+<span class='curline'><a href='../S/227.html#L1050'>thread</a>           1050 kern/thread/thread.c 	struct thread *target;</span>
+<span class='curline'><a href='../S/228.html#L40'>thread</a>             40 kern/thread/threadlist.c threadlistnode_init(struct threadlistnode *tln, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L107'>thread</a>            107 kern/thread/threadlist.c threadlist_insertafternode(struct threadlistnode *onlist, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L127'>thread</a>            127 kern/thread/threadlist.c threadlist_insertbeforenode(struct thread *t, struct threadlistnode *onlist)</span>
+<span class='curline'><a href='../S/228.html#L163'>thread</a>            163 kern/thread/threadlist.c threadlist_addhead(struct threadlist *tl, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L173'>thread</a>            173 kern/thread/threadlist.c threadlist_addtail(struct threadlist *tl, struct thread *t)</span>
+<span class='curline'><a href='../S/228.html#L182'>thread</a>            182 kern/thread/threadlist.c struct thread *</span>
+<span class='curline'><a href='../S/228.html#L200'>thread</a>            200 kern/thread/threadlist.c struct thread *</span>
+<span class='curline'><a href='../S/228.html#L220'>thread</a>            220 kern/thread/threadlist.c 		       struct thread *onlist, struct thread *addee)</span>
+<span class='curline'><a href='../S/228.html#L228'>thread</a>            228 kern/thread/threadlist.c 			struct thread *addee, struct thread *onlist)</span>
+<span class='curline'><a href='../S/228.html#L235'>thread</a>            235 kern/thread/threadlist.c threadlist_remove(struct threadlist *tl, struct thread *t)</span>
+</pre>
+</body>
+</html>

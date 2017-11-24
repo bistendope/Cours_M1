@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>bitmap</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/140.html#L48'>bitmap</a>             48 kern/include/bitmap.h struct bitmap;  /* Opaque. */</span>
+<span class='curline'><a href='../S/140.html#L50'>bitmap</a>             50 kern/include/bitmap.h struct bitmap *bitmap_create(unsigned nbits);</span>
+<span class='curline'><a href='../S/140.html#L51'>bitmap</a>             51 kern/include/bitmap.h void          *bitmap_getdata(struct bitmap *);</span>
+<span class='curline'><a href='../S/140.html#L52'>bitmap</a>             52 kern/include/bitmap.h int            bitmap_alloc(struct bitmap *, unsigned *index);</span>
+<span class='curline'><a href='../S/140.html#L53'>bitmap</a>             53 kern/include/bitmap.h void           bitmap_mark(struct bitmap *, unsigned index);</span>
+<span class='curline'><a href='../S/140.html#L54'>bitmap</a>             54 kern/include/bitmap.h void           bitmap_unmark(struct bitmap *, unsigned index);</span>
+<span class='curline'><a href='../S/140.html#L55'>bitmap</a>             55 kern/include/bitmap.h int            bitmap_isset(struct bitmap *, unsigned index);</span>
+<span class='curline'><a href='../S/140.html#L56'>bitmap</a>             56 kern/include/bitmap.h void           bitmap_destroy(struct bitmap *);</span>
+<span class='curline'><a href='../S/178.html#L70'>bitmap</a>             70 kern/include/sfs.h 	struct bitmap *sfs_freemap;     /* blocks in use are marked 1 */</span>
+<span class='curline'><a href='../S/198.html#L56'>bitmap</a>             56 kern/lib/bitmap.c struct bitmap *</span>
+<span class='curline'><a href='../S/198.html#L59'>bitmap</a>             59 kern/lib/bitmap.c         struct bitmap *b;</span>
+<span class='curline'><a href='../S/198.html#L63'>bitmap</a>             63 kern/lib/bitmap.c         b = kmalloc(sizeof(struct bitmap));</span>
+<span class='curline'><a href='../S/198.html#L93'>bitmap</a>             93 kern/lib/bitmap.c bitmap_getdata(struct bitmap *b)</span>
+<span class='curline'><a href='../S/198.html#L99'>bitmap</a>             99 kern/lib/bitmap.c bitmap_alloc(struct bitmap *b, unsigned *index)</span>
+<span class='curline'><a href='../S/198.html#L135'>bitmap</a>            135 kern/lib/bitmap.c bitmap_mark(struct bitmap *b, unsigned index)</span>
+<span class='curline'><a href='../S/198.html#L148'>bitmap</a>            148 kern/lib/bitmap.c bitmap_unmark(struct bitmap *b, unsigned index)</span>
+<span class='curline'><a href='../S/198.html#L162'>bitmap</a>            162 kern/lib/bitmap.c bitmap_isset(struct bitmap *b, unsigned index)</span>
+<span class='curline'><a href='../S/198.html#L172'>bitmap</a>            172 kern/lib/bitmap.c bitmap_destroy(struct bitmap *b)</span>
+<span class='curline'><a href='../S/213.html#L40'>bitmap</a>             40 kern/test/bitmaptest.c 	struct bitmap *b;</span>
+</pre>
+</body>
+</html>

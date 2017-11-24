@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>vnode</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/96.html#L422'>vnode</a>             422 kern/dev/lamebus/emu.c emufs_eachopen(struct vnode *v, int openflags)</span>
+<span class='curline'><a href='../S/96.html#L443'>vnode</a>             443 kern/dev/lamebus/emu.c emufs_eachopendir(struct vnode *v, int openflags)</span>
+<span class='curline'><a href='../S/96.html#L468'>vnode</a>             468 kern/dev/lamebus/emu.c emufs_reclaim(struct vnode *v)</span>
+<span class='curline'><a href='../S/96.html#L513'>vnode</a>             513 kern/dev/lamebus/emu.c 		struct vnode *vx;</span>
+<span class='curline'><a href='../S/96.html#L541'>vnode</a>             541 kern/dev/lamebus/emu.c emufs_read(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L577'>vnode</a>             577 kern/dev/lamebus/emu.c emufs_getdirentry(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L597'>vnode</a>             597 kern/dev/lamebus/emu.c emufs_write(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L633'>vnode</a>             633 kern/dev/lamebus/emu.c emufs_ioctl(struct vnode *v, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/96.html#L651'>vnode</a>             651 kern/dev/lamebus/emu.c emufs_stat(struct vnode *v, struct stat *statbuf)</span>
+<span class='curline'><a href='../S/96.html#L679'>vnode</a>             679 kern/dev/lamebus/emu.c emufs_file_gettype(struct vnode *v, uint32_t *result)</span>
+<span class='curline'><a href='../S/96.html#L691'>vnode</a>             691 kern/dev/lamebus/emu.c emufs_dir_gettype(struct vnode *v, uint32_t *result)</span>
+<span class='curline'><a href='../S/96.html#L703'>vnode</a>             703 kern/dev/lamebus/emu.c emufs_isseekable(struct vnode *v)</span>
+<span class='curline'><a href='../S/96.html#L714'>vnode</a>             714 kern/dev/lamebus/emu.c emufs_fsync(struct vnode *v)</span>
+<span class='curline'><a href='../S/96.html#L725'>vnode</a>             725 kern/dev/lamebus/emu.c emufs_truncate(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/96.html#L736'>vnode</a>             736 kern/dev/lamebus/emu.c emufs_creat(struct vnode *dir, const char *name, bool excl, mode_t mode,</span>
+<span class='curline'><a href='../S/96.html#L737'>vnode</a>             737 kern/dev/lamebus/emu.c 	    struct vnode **ret)</span>
+<span class='curline'><a href='../S/96.html#L767'>vnode</a>             767 kern/dev/lamebus/emu.c emufs_lookup(struct vnode *dir, char *pathname, struct vnode **ret)</span>
+<span class='curline'><a href='../S/96.html#L797'>vnode</a>             797 kern/dev/lamebus/emu.c emufs_lookparent(struct vnode *dir, char *pathname, struct vnode **ret,</span>
+<span class='curline'><a href='../S/96.html#L829'>vnode</a>             829 kern/dev/lamebus/emu.c emufs_namefile(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L851'>vnode</a>             851 kern/dev/lamebus/emu.c emufs_mmap(struct vnode *v)</span>
+<span class='curline'><a href='../S/96.html#L865'>vnode</a>             865 kern/dev/lamebus/emu.c emufs_symlink(struct vnode *v, const char *contents, const char *name)</span>
+<span class='curline'><a href='../S/96.html#L875'>vnode</a>             875 kern/dev/lamebus/emu.c emufs_mkdir(struct vnode *v, const char *name, mode_t mode)</span>
+<span class='curline'><a href='../S/96.html#L885'>vnode</a>             885 kern/dev/lamebus/emu.c emufs_link(struct vnode *v, const char *name, struct vnode *target)</span>
+<span class='curline'><a href='../S/96.html#L895'>vnode</a>             895 kern/dev/lamebus/emu.c emufs_remove(struct vnode *v, const char *name)</span>
+<span class='curline'><a href='../S/96.html#L904'>vnode</a>             904 kern/dev/lamebus/emu.c emufs_rmdir(struct vnode *v, const char *name)</span>
+<span class='curline'><a href='../S/96.html#L913'>vnode</a>             913 kern/dev/lamebus/emu.c emufs_rename(struct vnode *v1, const char *n1,</span>
+<span class='curline'><a href='../S/96.html#L914'>vnode</a>             914 kern/dev/lamebus/emu.c 	     struct vnode *v2, const char *n2)</span>
+<span class='curline'><a href='../S/96.html#L940'>vnode</a>             940 kern/dev/lamebus/emu.c emufs_void_op_isdir(struct vnode *v)</span>
+<span class='curline'><a href='../S/96.html#L948'>vnode</a>             948 kern/dev/lamebus/emu.c emufs_uio_op_isdir(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L957'>vnode</a>             957 kern/dev/lamebus/emu.c emufs_uio_op_notdir(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L966'>vnode</a>             966 kern/dev/lamebus/emu.c emufs_name_op_notdir(struct vnode *v, const char *name)</span>
+<span class='curline'><a href='../S/96.html#L975'>vnode</a>             975 kern/dev/lamebus/emu.c emufs_readlink_notlink(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/96.html#L984'>vnode</a>             984 kern/dev/lamebus/emu.c emufs_creat_notdir(struct vnode *v, const char *name, bool excl, mode_t mode,</span>
+<span class='curline'><a href='../S/96.html#L985'>vnode</a>             985 kern/dev/lamebus/emu.c 		   struct vnode **retval)</span>
+<span class='curline'><a href='../S/96.html#L997'>vnode</a>             997 kern/dev/lamebus/emu.c emufs_symlink_notdir(struct vnode *v, const char *contents, const char *name)</span>
+<span class='curline'><a href='../S/96.html#L1007'>vnode</a>            1007 kern/dev/lamebus/emu.c emufs_mkdir_notdir(struct vnode *v, const char *name, mode_t mode)</span>
+<span class='curline'><a href='../S/96.html#L1017'>vnode</a>            1017 kern/dev/lamebus/emu.c emufs_link_notdir(struct vnode *v, const char *name, struct vnode *target)</span>
+<span class='curline'><a href='../S/96.html#L1027'>vnode</a>            1027 kern/dev/lamebus/emu.c emufs_rename_notdir(struct vnode *v1, const char *n1,</span>
+<span class='curline'><a href='../S/96.html#L1028'>vnode</a>            1028 kern/dev/lamebus/emu.c 		    struct vnode *v2, const char *n2)</span>
+<span class='curline'><a href='../S/96.html#L1039'>vnode</a>            1039 kern/dev/lamebus/emu.c emufs_lookup_notdir(struct vnode *v, char *pathname, struct vnode **result)</span>
+<span class='curline'><a href='../S/96.html#L1049'>vnode</a>            1049 kern/dev/lamebus/emu.c emufs_lookparent_notdir(struct vnode *v, char *pathname, struct vnode **result,</span>
+<span class='curline'><a href='../S/96.html#L1063'>vnode</a>            1063 kern/dev/lamebus/emu.c emufs_truncate_isdir(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/96.html#L1148'>vnode</a>            1148 kern/dev/lamebus/emu.c 	struct vnode *v;</span>
+<span class='curline'><a href='../S/96.html#L1245'>vnode</a>            1245 kern/dev/lamebus/emu.c emufs_getroot(struct fs *fs, struct vnode **ret)</span>
+<span class='curline'><a href='../S/123.html#L80'>vnode</a>              80 kern/fs/semfs/semfs.h 	struct vnode semv_absvn;		/* Abstract vnode */</span>
+<span class='curline'><a href='../S/123.html#L120'>vnode</a>             120 kern/fs/semfs/semfs.h int semfs_getvnode(struct semfs *, unsigned, struct vnode **ret);</span>
+<span class='curline'><a href='../S/124.html#L69'>vnode</a>              69 kern/fs/semfs/semfs_fsops.c semfs_getroot(struct fs *fs, struct vnode **ret)</span>
+<span class='curline'><a href='../S/124.html#L72'>vnode</a>              72 kern/fs/semfs/semfs_fsops.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/126.html#L49'>vnode</a>              49 kern/fs/semfs/semfs_vnops.c semfs_eachopen(struct vnode *vn, int openflags)</span>
+<span class='curline'><a href='../S/126.html#L67'>vnode</a>              67 kern/fs/semfs/semfs_vnops.c semfs_ioctl(struct vnode *vn, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/126.html#L77'>vnode</a>              77 kern/fs/semfs/semfs_vnops.c semfs_gettype(struct vnode *vn, mode_t *ret)</span>
+<span class='curline'><a href='../S/126.html#L87'>vnode</a>              87 kern/fs/semfs/semfs_vnops.c semfs_isseekable(struct vnode *vn)</span>
+<span class='curline'><a href='../S/126.html#L100'>vnode</a>             100 kern/fs/semfs/semfs_vnops.c semfs_fsync(struct vnode *vn)</span>
+<span class='curline'><a href='../S/126.html#L161'>vnode</a>             161 kern/fs/semfs/semfs_vnops.c semfs_semstat(struct vnode *vn, struct stat *buf)</span>
+<span class='curline'><a href='../S/126.html#L189'>vnode</a>             189 kern/fs/semfs/semfs_vnops.c semfs_read(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L231'>vnode</a>             231 kern/fs/semfs/semfs_vnops.c semfs_write(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L267'>vnode</a>             267 kern/fs/semfs/semfs_vnops.c semfs_truncate(struct vnode *vn, off_t len)</span>
+<span class='curline'><a href='../S/126.html#L303'>vnode</a>             303 kern/fs/semfs/semfs_vnops.c semfs_getdirentry(struct vnode *dirvn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L336'>vnode</a>             336 kern/fs/semfs/semfs_vnops.c semfs_dirstat(struct vnode *vn, struct stat *buf)</span>
+<span class='curline'><a href='../S/126.html#L362'>vnode</a>             362 kern/fs/semfs/semfs_vnops.c semfs_namefile(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/126.html#L374'>vnode</a>             374 kern/fs/semfs/semfs_vnops.c semfs_creat(struct vnode *dirvn, const char *name, bool excl, mode_t mode,</span>
+<span class='curline'><a href='../S/126.html#L375'>vnode</a>             375 kern/fs/semfs/semfs_vnops.c 	    struct vnode **resultvn)</span>
+<span class='curline'><a href='../S/126.html#L472'>vnode</a>             472 kern/fs/semfs/semfs_vnops.c semfs_remove(struct vnode *dirvn, const char *name)</span>
+<span class='curline'><a href='../S/126.html#L526'>vnode</a>             526 kern/fs/semfs/semfs_vnops.c semfs_lookup(struct vnode *dirvn, char *path, struct vnode **resultvn)</span>
+<span class='curline'><a href='../S/126.html#L564'>vnode</a>             564 kern/fs/semfs/semfs_vnops.c semfs_lookparent(struct vnode *dirvn, char *path,</span>
+<span class='curline'><a href='../S/126.html#L565'>vnode</a>             565 kern/fs/semfs/semfs_vnops.c 		 struct vnode **resultdirvn, char *namebuf, size_t bufmax)</span>
+<span class='curline'><a href='../S/126.html#L596'>vnode</a>             596 kern/fs/semfs/semfs_vnops.c semfs_reclaim(struct vnode *vn)</span>
+<span class='curline'><a href='../S/126.html#L600'>vnode</a>             600 kern/fs/semfs/semfs_vnops.c 	struct vnode *vn2;</span>
+<span class='curline'><a href='../S/126.html#L753'>vnode</a>             753 kern/fs/semfs/semfs_vnops.c semfs_getvnode(struct semfs *semfs, unsigned semnum, struct vnode **ret)</span>
+<span class='curline'><a href='../S/126.html#L755'>vnode</a>             755 kern/fs/semfs/semfs_vnops.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/130.html#L120'>vnode</a>             120 kern/fs/sfs/sfs_fsops.c 		struct vnode *v = vnodearray_get(sfs-&gt;sfs_vnodes, i);</span>
+<span class='curline'><a href='../S/131.html#L69'>vnode</a>              69 kern/fs/sfs/sfs_inode.c sfs_reclaim(struct vnode *v)</span>
+<span class='curline'><a href='../S/131.html#L121'>vnode</a>             121 kern/fs/sfs/sfs_inode.c 		struct vnode *v2 = vnodearray_get(sfs-&gt;sfs_vnodes, i);</span>
+<span class='curline'><a href='../S/131.html#L153'>vnode</a>             153 kern/fs/sfs/sfs_inode.c 	struct vnode *v;</span>
+<span class='curline'><a href='../S/131.html#L293'>vnode</a>             293 kern/fs/sfs/sfs_inode.c sfs_getroot(struct fs *fs, struct vnode **ret)</span>
+<span class='curline'><a href='../S/133.html#L53'>vnode</a>              53 kern/fs/sfs/sfs_vnops.c sfs_eachopen(struct vnode *v, int openflags)</span>
+<span class='curline'><a href='../S/133.html#L75'>vnode</a>              75 kern/fs/sfs/sfs_vnops.c sfs_eachopendir(struct vnode *v, int openflags)</span>
+<span class='curline'><a href='../S/133.html#L98'>vnode</a>              98 kern/fs/sfs/sfs_vnops.c sfs_read(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/133.html#L117'>vnode</a>             117 kern/fs/sfs/sfs_vnops.c sfs_write(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/133.html#L136'>vnode</a>             136 kern/fs/sfs/sfs_vnops.c sfs_ioctl(struct vnode *v, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/133.html#L154'>vnode</a>             154 kern/fs/sfs/sfs_vnops.c sfs_stat(struct vnode *v, struct stat *statbuf)</span>
+<span class='curline'><a href='../S/133.html#L183'>vnode</a>             183 kern/fs/sfs/sfs_vnops.c sfs_gettype(struct vnode *v, uint32_t *ret)</span>
+<span class='curline'><a href='../S/133.html#L210'>vnode</a>             210 kern/fs/sfs/sfs_vnops.c sfs_isseekable(struct vnode *v)</span>
+<span class='curline'><a href='../S/133.html#L222'>vnode</a>             222 kern/fs/sfs/sfs_vnops.c sfs_fsync(struct vnode *v)</span>
+<span class='curline'><a href='../S/133.html#L239'>vnode</a>             239 kern/fs/sfs/sfs_vnops.c sfs_mmap(struct vnode *v   /* add stuff as needed */)</span>
+<span class='curline'><a href='../S/133.html#L250'>vnode</a>             250 kern/fs/sfs/sfs_vnops.c sfs_truncate(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/133.html#L265'>vnode</a>             265 kern/fs/sfs/sfs_vnops.c sfs_namefile(struct vnode *vv, struct uio *uio)</span>
+<span class='curline'><a href='../S/133.html#L283'>vnode</a>             283 kern/fs/sfs/sfs_vnops.c sfs_creat(struct vnode *v, const char *name, bool excl, mode_t mode,</span>
+<span class='curline'><a href='../S/133.html#L284'>vnode</a>             284 kern/fs/sfs/sfs_vnops.c 	  struct vnode **ret)</span>
+<span class='curline'><a href='../S/133.html#L356'>vnode</a>             356 kern/fs/sfs/sfs_vnops.c sfs_link(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/133.html#L392'>vnode</a>             392 kern/fs/sfs/sfs_vnops.c sfs_remove(struct vnode *dir, const char *name)</span>
+<span class='curline'><a href='../S/133.html#L432'>vnode</a>             432 kern/fs/sfs/sfs_vnops.c sfs_rename(struct vnode *d1, const char *n1,</span>
+<span class='curline'><a href='../S/133.html#L433'>vnode</a>             433 kern/fs/sfs/sfs_vnops.c 	   struct vnode *d2, const char *n2)</span>
+<span class='curline'><a href='../S/133.html#L523'>vnode</a>             523 kern/fs/sfs/sfs_vnops.c sfs_lookparent(struct vnode *v, char *path, struct vnode **ret,</span>
+<span class='curline'><a href='../S/133.html#L556'>vnode</a>             556 kern/fs/sfs/sfs_vnops.c sfs_lookup(struct vnode *v, char *path, struct vnode **ret)</span>
+<span class='curline'><a href='../S/134.html#L67'>vnode</a>              67 kern/fs/sfs/sfsprivate.h int sfs_reclaim(struct vnode *v);</span>
+<span class='curline'><a href='../S/134.html#L71'>vnode</a>              71 kern/fs/sfs/sfsprivate.h int sfs_getroot(struct fs *fs, struct vnode **ret);</span>
+<span class='curline'><a href='../S/138.html#L41'>vnode</a>              41 kern/include/addrspace.h struct vnode;</span>
+<span class='curline'><a href='../S/138.html#L129'>vnode</a>             129 kern/include/addrspace.h int load_elf(struct vnode *v, vaddr_t *entrypoint);</span>
+<span class='curline'><a href='../S/146.html#L75'>vnode</a>              75 kern/include/device.h struct vnode *dev_create_vnode(struct device *dev);</span>
+<span class='curline'><a href='../S/146.html#L78'>vnode</a>              78 kern/include/device.h void dev_uncreate_vnode(struct vnode *vn);</span>
+<span class='curline'><a href='../S/148.html#L45'>vnode</a>              45 kern/include/emufs.h 	struct vnode ev_v;		/* abstract vnode structure */</span>
+<span class='curline'><a href='../S/150.html#L33'>vnode</a>              33 kern/include/fs.h struct vnode; /* in vnode.h */</span>
+<span class='curline'><a href='../S/150.html#L75'>vnode</a>              75 kern/include/fs.h 	int           (*fsop_getroot)(struct fs *, struct vnode **);</span>
+<span class='curline'><a href='../S/176.html#L43'>vnode</a>              43 kern/include/proc.h struct vnode;</span>
+<span class='curline'><a href='../S/176.html#L71'>vnode</a>              71 kern/include/proc.h 	struct vnode *p_cwd;		/* current working directory */</span>
+<span class='curline'><a href='../S/178.html#L55'>vnode</a>              55 kern/include/sfs.h 	struct vnode sv_absvn;          /* abstract vnode structure */</span>
+<span class='curline'><a href='../S/193.html#L47'>vnode</a>              47 kern/include/vfs.h struct vnode;  /* abstract structure for an on-disk file (vnode.h) */</span>
+<span class='curline'><a href='../S/193.html#L62'>vnode</a>              62 kern/include/vfs.h int vfs_setcurdir(struct vnode *dir);</span>
+<span class='curline'><a href='../S/193.html#L64'>vnode</a>              64 kern/include/vfs.h int vfs_getcurdir(struct vnode **retdir);</span>
+<span class='curline'><a href='../S/193.html#L66'>vnode</a>              66 kern/include/vfs.h int vfs_getroot(const char *devname, struct vnode **result);</span>
+<span class='curline'><a href='../S/193.html#L80'>vnode</a>              80 kern/include/vfs.h int vfs_lookup(char *path, struct vnode **result);</span>
+<span class='curline'><a href='../S/193.html#L81'>vnode</a>              81 kern/include/vfs.h int vfs_lookparent(char *path, struct vnode **result,</span>
+<span class='curline'><a href='../S/193.html#L104'>vnode</a>             104 kern/include/vfs.h int vfs_open(char *path, int openflags, mode_t mode, struct vnode **ret);</span>
+<span class='curline'><a href='../S/193.html#L105'>vnode</a>             105 kern/include/vfs.h void vfs_close(struct vnode *vn);</span>
+<span class='curline'><a href='../S/193.html#L182'>vnode</a>             182 kern/include/vfs.h int vfs_swapon(const char *devname, struct vnode **result);</span>
+<span class='curline'><a href='../S/193.html#L193'>vnode</a>             193 kern/include/vfs.h DECLARRAY(vnode, VFSINLINE);</span>
+<span class='curline'><a href='../S/193.html#L194'>vnode</a>             194 kern/include/vfs.h DEFARRAY(vnode, VFSINLINE);</span>
+<span class='curline'><a href='../S/195.html#L183'>vnode</a>             183 kern/include/vnode.h 	int (*vop_eachopen)(struct vnode *object, int flags_from_open);</span>
+<span class='curline'><a href='../S/195.html#L184'>vnode</a>             184 kern/include/vnode.h 	int (*vop_reclaim)(struct vnode *vnode);</span>
+<span class='curline'><a href='../S/195.html#L187'>vnode</a>             187 kern/include/vnode.h 	int (*vop_read)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L188'>vnode</a>             188 kern/include/vnode.h 	int (*vop_readlink)(struct vnode *link, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L189'>vnode</a>             189 kern/include/vnode.h 	int (*vop_getdirentry)(struct vnode *dir, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L190'>vnode</a>             190 kern/include/vnode.h 	int (*vop_write)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L191'>vnode</a>             191 kern/include/vnode.h 	int (*vop_ioctl)(struct vnode *object, int op, userptr_t data);</span>
+<span class='curline'><a href='../S/195.html#L192'>vnode</a>             192 kern/include/vnode.h 	int (*vop_stat)(struct vnode *object, struct stat *statbuf);</span>
+<span class='curline'><a href='../S/195.html#L193'>vnode</a>             193 kern/include/vnode.h 	int (*vop_gettype)(struct vnode *object, mode_t *result);</span>
+<span class='curline'><a href='../S/195.html#L194'>vnode</a>             194 kern/include/vnode.h 	bool (*vop_isseekable)(struct vnode *object);</span>
+<span class='curline'><a href='../S/195.html#L195'>vnode</a>             195 kern/include/vnode.h 	int (*vop_fsync)(struct vnode *object);</span>
+<span class='curline'><a href='../S/195.html#L196'>vnode</a>             196 kern/include/vnode.h 	int (*vop_mmap)(struct vnode *file /* add stuff */);</span>
+<span class='curline'><a href='../S/195.html#L197'>vnode</a>             197 kern/include/vnode.h 	int (*vop_truncate)(struct vnode *file, off_t len);</span>
+<span class='curline'><a href='../S/195.html#L198'>vnode</a>             198 kern/include/vnode.h 	int (*vop_namefile)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L201'>vnode</a>             201 kern/include/vnode.h 	int (*vop_creat)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L203'>vnode</a>             203 kern/include/vnode.h 			 struct vnode **result);</span>
+<span class='curline'><a href='../S/195.html#L204'>vnode</a>             204 kern/include/vnode.h 	int (*vop_symlink)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L206'>vnode</a>             206 kern/include/vnode.h 	int (*vop_mkdir)(struct vnode *parentdir,</span>
+<span class='curline'><a href='../S/195.html#L208'>vnode</a>             208 kern/include/vnode.h 	int (*vop_link)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L209'>vnode</a>             209 kern/include/vnode.h 			const char *name, struct vnode *file);</span>
+<span class='curline'><a href='../S/195.html#L210'>vnode</a>             210 kern/include/vnode.h 	int (*vop_remove)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L212'>vnode</a>             212 kern/include/vnode.h 	int (*vop_rmdir)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L215'>vnode</a>             215 kern/include/vnode.h 	int (*vop_rename)(struct vnode *vn1, const char *name1,</span>
+<span class='curline'><a href='../S/195.html#L216'>vnode</a>             216 kern/include/vnode.h 			  struct vnode *vn2, const char *name2);</span>
+<span class='curline'><a href='../S/195.html#L219'>vnode</a>             219 kern/include/vnode.h 	int (*vop_lookup)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L220'>vnode</a>             220 kern/include/vnode.h 			  char *pathname, struct vnode **result);</span>
+<span class='curline'><a href='../S/195.html#L221'>vnode</a>             221 kern/include/vnode.h 	int (*vop_lookparent)(struct vnode *dir,</span>
+<span class='curline'><a href='../S/195.html#L222'>vnode</a>             222 kern/include/vnode.h 			      char *pathname, struct vnode **result,</span>
+<span class='curline'><a href='../S/195.html#L258'>vnode</a>             258 kern/include/vnode.h void vnode_check(struct vnode *, const char *op);</span>
+<span class='curline'><a href='../S/195.html#L263'>vnode</a>             263 kern/include/vnode.h void vnode_incref(struct vnode *);</span>
+<span class='curline'><a href='../S/195.html#L264'>vnode</a>             264 kern/include/vnode.h void vnode_decref(struct vnode *);</span>
+<span class='curline'><a href='../S/195.html#L273'>vnode</a>             273 kern/include/vnode.h int vnode_init(struct vnode *, const struct vnode_ops *ops,</span>
+<span class='curline'><a href='../S/195.html#L280'>vnode</a>             280 kern/include/vnode.h void vnode_cleanup(struct vnode *);</span>
+<span class='curline'><a href='../S/195.html#L285'>vnode</a>             285 kern/include/vnode.h int vopfail_uio_notdir(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L286'>vnode</a>             286 kern/include/vnode.h int vopfail_uio_isdir(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L287'>vnode</a>             287 kern/include/vnode.h int vopfail_uio_inval(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L288'>vnode</a>             288 kern/include/vnode.h int vopfail_uio_nosys(struct vnode *vn, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L289'>vnode</a>             289 kern/include/vnode.h int vopfail_mmap_isdir(struct vnode *vn /* add stuff */);</span>
+<span class='curline'><a href='../S/195.html#L290'>vnode</a>             290 kern/include/vnode.h int vopfail_mmap_perm(struct vnode *vn /* add stuff */);</span>
+<span class='curline'><a href='../S/195.html#L291'>vnode</a>             291 kern/include/vnode.h int vopfail_mmap_nosys(struct vnode *vn /* add stuff */);</span>
+<span class='curline'><a href='../S/195.html#L292'>vnode</a>             292 kern/include/vnode.h int vopfail_truncate_isdir(struct vnode *vn, off_t pos);</span>
+<span class='curline'><a href='../S/195.html#L293'>vnode</a>             293 kern/include/vnode.h int vopfail_creat_notdir(struct vnode *vn, const char *name, bool excl,</span>
+<span class='curline'><a href='../S/195.html#L294'>vnode</a>             294 kern/include/vnode.h 			 mode_t mode, struct vnode **result);</span>
+<span class='curline'><a href='../S/195.html#L295'>vnode</a>             295 kern/include/vnode.h int vopfail_symlink_notdir(struct vnode *vn, const char *contents,</span>
+<span class='curline'><a href='../S/195.html#L297'>vnode</a>             297 kern/include/vnode.h int vopfail_symlink_nosys(struct vnode *vn, const char *contents,</span>
+<span class='curline'><a href='../S/195.html#L299'>vnode</a>             299 kern/include/vnode.h int vopfail_mkdir_notdir(struct vnode *vn, const char *name, mode_t mode);</span>
+<span class='curline'><a href='../S/195.html#L300'>vnode</a>             300 kern/include/vnode.h int vopfail_mkdir_nosys(struct vnode *vn, const char *name, mode_t mode);</span>
+<span class='curline'><a href='../S/195.html#L301'>vnode</a>             301 kern/include/vnode.h int vopfail_link_notdir(struct vnode *dir, const char *name,</span>
+<span class='curline'><a href='../S/195.html#L302'>vnode</a>             302 kern/include/vnode.h 			struct vnode *file);</span>
+<span class='curline'><a href='../S/195.html#L303'>vnode</a>             303 kern/include/vnode.h int vopfail_link_nosys(struct vnode *dir, const char *name,</span>
+<span class='curline'><a href='../S/195.html#L304'>vnode</a>             304 kern/include/vnode.h 		       struct vnode *file);</span>
+<span class='curline'><a href='../S/195.html#L305'>vnode</a>             305 kern/include/vnode.h int vopfail_string_notdir(struct vnode *vn, const char *name);</span>
+<span class='curline'><a href='../S/195.html#L306'>vnode</a>             306 kern/include/vnode.h int vopfail_string_nosys(struct vnode *vn, const char *name);</span>
+<span class='curline'><a href='../S/195.html#L307'>vnode</a>             307 kern/include/vnode.h int vopfail_rename_notdir(struct vnode *fromdir, const char *fromname,</span>
+<span class='curline'><a href='../S/195.html#L308'>vnode</a>             308 kern/include/vnode.h 			  struct vnode *todir, const char *toname);</span>
+<span class='curline'><a href='../S/195.html#L309'>vnode</a>             309 kern/include/vnode.h int vopfail_rename_nosys(struct vnode *fromdir, const char *fromname,</span>
+<span class='curline'><a href='../S/195.html#L310'>vnode</a>             310 kern/include/vnode.h 			 struct vnode *todir, const char *toname);</span>
+<span class='curline'><a href='../S/195.html#L311'>vnode</a>             311 kern/include/vnode.h int vopfail_lookup_notdir(struct vnode *vn, char *path, struct vnode **result);</span>
+<span class='curline'><a href='../S/195.html#L312'>vnode</a>             312 kern/include/vnode.h int vopfail_lookparent_notdir(struct vnode *vn, char *path,</span>
+<span class='curline'><a href='../S/195.html#L313'>vnode</a>             313 kern/include/vnode.h 			      struct vnode **result, char *buf, size_t len);</span>
+<span class='curline'><a href='../S/209.html#L79'>vnode</a>              79 kern/syscall/loadelf.c load_segment(struct addrspace *as, struct vnode *v,</span>
+<span class='curline'><a href='../S/209.html#L154'>vnode</a>             154 kern/syscall/loadelf.c load_elf(struct vnode *v, vaddr_t *entrypoint)</span>
+<span class='curline'><a href='../S/210.html#L58'>vnode</a>              58 kern/syscall/runprogram.c 	struct vnode *v;</span>
+<span class='curline'><a href='../S/214.html#L138'>vnode</a>             138 kern/test/fstest.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/214.html#L215'>vnode</a>             215 kern/test/fstest.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/214.html#L428'>vnode</a>             428 kern/test/fstest.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/214.html#L544'>vnode</a>             544 kern/test/fstest.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/214.html#L723'>vnode</a>             723 kern/test/fstest.c 	struct vnode *rv, *wv;</span>
+<span class='curline'><a href='../S/229.html#L53'>vnode</a>              53 kern/vfs/device.c dev_eachopen(struct vnode *v, int flags)</span>
+<span class='curline'><a href='../S/229.html#L70'>vnode</a>              70 kern/vfs/device.c dev_reclaim(struct vnode *v)</span>
+<span class='curline'><a href='../S/229.html#L109'>vnode</a>             109 kern/vfs/device.c dev_read(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/229.html#L128'>vnode</a>             128 kern/vfs/device.c dev_write(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/229.html#L147'>vnode</a>             147 kern/vfs/device.c dev_ioctl(struct vnode *v, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/229.html#L160'>vnode</a>             160 kern/vfs/device.c dev_stat(struct vnode *v, struct stat *statbuf)</span>
+<span class='curline'><a href='../S/229.html#L201'>vnode</a>             201 kern/vfs/device.c dev_gettype(struct vnode *v, mode_t *ret)</span>
+<span class='curline'><a href='../S/229.html#L218'>vnode</a>             218 kern/vfs/device.c dev_isseekable(struct vnode *v)</span>
+<span class='curline'><a href='../S/229.html#L233'>vnode</a>             233 kern/vfs/device.c null_fsync(struct vnode *v)</span>
+<span class='curline'><a href='../S/229.html#L245'>vnode</a>             245 kern/vfs/device.c dev_mmap(struct vnode *v  /* add stuff as needed */)</span>
+<span class='curline'><a href='../S/229.html#L256'>vnode</a>             256 kern/vfs/device.c dev_truncate(struct vnode *v, off_t len)</span>
+<span class='curline'><a href='../S/229.html#L278'>vnode</a>             278 kern/vfs/device.c dev_namefile(struct vnode *v, struct uio *uio)</span>
+<span class='curline'><a href='../S/229.html#L306'>vnode</a>             306 kern/vfs/device.c dev_lookup(struct vnode *dir,</span>
+<span class='curline'><a href='../S/229.html#L307'>vnode</a>             307 kern/vfs/device.c 	   char *pathname, struct vnode **result)</span>
+<span class='curline'><a href='../S/229.html#L356'>vnode</a>             356 kern/vfs/device.c struct vnode *</span>
+<span class='curline'><a href='../S/229.html#L360'>vnode</a>             360 kern/vfs/device.c 	struct vnode *v;</span>
+<span class='curline'><a href='../S/229.html#L362'>vnode</a>             362 kern/vfs/device.c 	v = kmalloc(sizeof(struct vnode));</span>
+<span class='curline'><a href='../S/229.html#L383'>vnode</a>             383 kern/vfs/device.c dev_uncreate_vnode(struct vnode *vn)</span>
+<span class='curline'><a href='../S/231.html#L49'>vnode</a>              49 kern/vfs/vfscwd.c vfs_getcurdir(struct vnode **ret)</span>
+<span class='curline'><a href='../S/231.html#L71'>vnode</a>              71 kern/vfs/vfscwd.c vfs_setcurdir(struct vnode *dir)</span>
+<span class='curline'><a href='../S/231.html#L73'>vnode</a>              73 kern/vfs/vfscwd.c 	struct vnode *old;</span>
+<span class='curline'><a href='../S/231.html#L105'>vnode</a>             105 kern/vfs/vfscwd.c 	struct vnode *old;</span>
+<span class='curline'><a href='../S/231.html#L126'>vnode</a>             126 kern/vfs/vfscwd.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/231.html#L146'>vnode</a>             146 kern/vfs/vfscwd.c 	struct vnode *cwd;</span>
+<span class='curline'><a href='../S/232.html#L51'>vnode</a>              51 kern/vfs/vfsfail.c vopfail_uio_notdir(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L59'>vnode</a>              59 kern/vfs/vfsfail.c vopfail_uio_isdir(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L67'>vnode</a>              67 kern/vfs/vfsfail.c vopfail_uio_inval(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L75'>vnode</a>              75 kern/vfs/vfsfail.c vopfail_uio_nosys(struct vnode *vn, struct uio *uio)</span>
+<span class='curline'><a href='../S/232.html#L86'>vnode</a>              86 kern/vfs/vfsfail.c vopfail_mmap_isdir(struct vnode *vn /*add stuff */)</span>
+<span class='curline'><a href='../S/232.html#L93'>vnode</a>              93 kern/vfs/vfsfail.c vopfail_mmap_perm(struct vnode *vn /*add stuff */)</span>
+<span class='curline'><a href='../S/232.html#L100'>vnode</a>             100 kern/vfs/vfsfail.c vopfail_mmap_nosys(struct vnode *vn /*add stuff */)</span>
+<span class='curline'><a href='../S/232.html#L110'>vnode</a>             110 kern/vfs/vfsfail.c vopfail_truncate_isdir(struct vnode *vn, off_t pos)</span>
+<span class='curline'><a href='../S/232.html#L121'>vnode</a>             121 kern/vfs/vfsfail.c vopfail_creat_notdir(struct vnode *vn, const char *name, bool excl,</span>
+<span class='curline'><a href='../S/232.html#L122'>vnode</a>             122 kern/vfs/vfsfail.c 		     mode_t mode, struct vnode **result)</span>
+<span class='curline'><a href='../S/232.html#L136'>vnode</a>             136 kern/vfs/vfsfail.c vopfail_symlink_notdir(struct vnode *vn, const char *contents,</span>
+<span class='curline'><a href='../S/232.html#L146'>vnode</a>             146 kern/vfs/vfsfail.c vopfail_symlink_nosys(struct vnode *vn, const char *contents,</span>
+<span class='curline'><a href='../S/232.html#L159'>vnode</a>             159 kern/vfs/vfsfail.c vopfail_mkdir_notdir(struct vnode *vn, const char *name, mode_t mode)</span>
+<span class='curline'><a href='../S/232.html#L168'>vnode</a>             168 kern/vfs/vfsfail.c vopfail_mkdir_nosys(struct vnode *vn, const char *name, mode_t mode)</span>
+<span class='curline'><a href='../S/232.html#L180'>vnode</a>             180 kern/vfs/vfsfail.c vopfail_link_notdir(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/232.html#L189'>vnode</a>             189 kern/vfs/vfsfail.c vopfail_link_nosys(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/232.html#L201'>vnode</a>             201 kern/vfs/vfsfail.c vopfail_string_notdir(struct vnode *vn, const char *name)</span>
+<span class='curline'><a href='../S/232.html#L209'>vnode</a>             209 kern/vfs/vfsfail.c vopfail_string_nosys(struct vnode *vn, const char *name)</span>
+<span class='curline'><a href='../S/232.html#L220'>vnode</a>             220 kern/vfs/vfsfail.c vopfail_rename_notdir(struct vnode *fromdir, const char *fromname,</span>
+<span class='curline'><a href='../S/232.html#L221'>vnode</a>             221 kern/vfs/vfsfail.c 		      struct vnode *todir, const char *toname)</span>
+<span class='curline'><a href='../S/232.html#L231'>vnode</a>             231 kern/vfs/vfsfail.c vopfail_rename_nosys(struct vnode *fromdir, const char *fromname,</span>
+<span class='curline'><a href='../S/232.html#L232'>vnode</a>             232 kern/vfs/vfsfail.c 		     struct vnode *todir, const char *toname)</span>
+<span class='curline'><a href='../S/232.html#L245'>vnode</a>             245 kern/vfs/vfsfail.c vopfail_lookup_notdir(struct vnode *vn, char *path, struct vnode **result)</span>
+<span class='curline'><a href='../S/232.html#L254'>vnode</a>             254 kern/vfs/vfsfail.c vopfail_lookparent_notdir(struct vnode *vn, char *path, struct vnode **result,</span>
+<span class='curline'><a href='../S/233.html#L81'>vnode</a>              81 kern/vfs/vfslist.c 	struct vnode *kd_vnode;</span>
+<span class='curline'><a href='../S/233.html#L198'>vnode</a>             198 kern/vfs/vfslist.c vfs_getroot(const char *devname, struct vnode **ret)</span>
+<span class='curline'><a href='../S/233.html#L396'>vnode</a>             396 kern/vfs/vfslist.c 	struct vnode *vnode=NULL;</span>
+<span class='curline'><a href='../S/233.html#L419'>vnode</a>             419 kern/vfs/vfslist.c 	vnode = dev_create_vnode(dev);</span>
+<span class='curline'><a href='../S/233.html#L420'>vnode</a>             420 kern/vfs/vfslist.c 	if (vnode==NULL) {</span>
+<span class='curline'><a href='../S/233.html#L434'>vnode</a>             434 kern/vfs/vfslist.c 	kd-&gt;kd_vnode = vnode;</span>
+<span class='curline'><a href='../S/233.html#L466'>vnode</a>             466 kern/vfs/vfslist.c 	if (vnode) {</span>
+<span class='curline'><a href='../S/233.html#L467'>vnode</a>             467 kern/vfs/vfslist.c 		dev_uncreate_vnode(vnode);</span>
+<span class='curline'><a href='../S/233.html#L586'>vnode</a>             586 kern/vfs/vfslist.c vfs_swapon(const char *devname, struct vnode **ret)</span>
+<span class='curline'><a href='../S/234.html#L43'>vnode</a>              43 kern/vfs/vfslookup.c static struct vnode *bootfs_vnode = NULL;</span>
+<span class='curline'><a href='../S/234.html#L50'>vnode</a>              50 kern/vfs/vfslookup.c change_bootfs(struct vnode *newvn)</span>
+<span class='curline'><a href='../S/234.html#L52'>vnode</a>              52 kern/vfs/vfslookup.c 	struct vnode *oldvn;</span>
+<span class='curline'><a href='../S/234.html#L76'>vnode</a>              76 kern/vfs/vfslookup.c 	struct vnode *newguy;</span>
+<span class='curline'><a href='../S/234.html#L130'>vnode</a>             130 kern/vfs/vfslookup.c getdevice(char *path, char **subpath, struct vnode **startvn)</span>
+<span class='curline'><a href='../S/234.html#L133'>vnode</a>             133 kern/vfs/vfslookup.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/234.html#L243'>vnode</a>             243 kern/vfs/vfslookup.c vfs_lookparent(char *path, struct vnode **retval,</span>
+<span class='curline'><a href='../S/234.html#L246'>vnode</a>             246 kern/vfs/vfslookup.c 	struct vnode *startvn;</span>
+<span class='curline'><a href='../S/234.html#L276'>vnode</a>             276 kern/vfs/vfslookup.c vfs_lookup(char *path, struct vnode **retval)</span>
+<span class='curline'><a href='../S/234.html#L278'>vnode</a>             278 kern/vfs/vfslookup.c 	struct vnode *startvn;</span>
+<span class='curline'><a href='../S/235.html#L45'>vnode</a>              45 kern/vfs/vfspath.c vfs_open(char *path, int openflags, mode_t mode, struct vnode **ret)</span>
+<span class='curline'><a href='../S/235.html#L50'>vnode</a>              50 kern/vfs/vfspath.c 	struct vnode *vn = NULL;</span>
+<span class='curline'><a href='../S/235.html#L68'>vnode</a>              68 kern/vfs/vfspath.c 		struct vnode *dir;</span>
+<span class='curline'><a href='../S/235.html#L116'>vnode</a>             116 kern/vfs/vfspath.c vfs_close(struct vnode *vn)</span>
+<span class='curline'><a href='../S/235.html#L139'>vnode</a>             139 kern/vfs/vfspath.c 	struct vnode *dir;</span>
+<span class='curline'><a href='../S/235.html#L158'>vnode</a>             158 kern/vfs/vfspath.c 	struct vnode *olddir;</span>
+<span class='curline'><a href='../S/235.html#L160'>vnode</a>             160 kern/vfs/vfspath.c 	struct vnode *newdir;</span>
+<span class='curline'><a href='../S/235.html#L193'>vnode</a>             193 kern/vfs/vfspath.c 	struct vnode *oldfile;</span>
+<span class='curline'><a href='../S/235.html#L194'>vnode</a>             194 kern/vfs/vfspath.c 	struct vnode *newdir;</span>
+<span class='curline'><a href='../S/235.html#L233'>vnode</a>             233 kern/vfs/vfspath.c 	struct vnode *newdir;</span>
+<span class='curline'><a href='../S/235.html#L258'>vnode</a>             258 kern/vfs/vfspath.c 	struct vnode *vn;</span>
+<span class='curline'><a href='../S/235.html#L279'>vnode</a>             279 kern/vfs/vfspath.c 	struct vnode *parent;</span>
+<span class='curline'><a href='../S/235.html#L301'>vnode</a>             301 kern/vfs/vfspath.c 	struct vnode *parent;</span>
+<span class='curline'><a href='../S/236.html#L44'>vnode</a>              44 kern/vfs/vnode.c vnode_init(struct vnode *vn, const struct vnode_ops *ops,</span>
+<span class='curline'><a href='../S/236.html#L62'>vnode</a>              62 kern/vfs/vnode.c vnode_cleanup(struct vnode *vn)</span>
+<span class='curline'><a href='../S/236.html#L80'>vnode</a>              80 kern/vfs/vnode.c vnode_incref(struct vnode *vn)</span>
+<span class='curline'><a href='../S/236.html#L95'>vnode</a>              95 kern/vfs/vnode.c vnode_decref(struct vnode *vn)</span>
+<span class='curline'><a href='../S/236.html#L130'>vnode</a>             130 kern/vfs/vnode.c vnode_check(struct vnode *v, const char *opstr)</span>
+</pre>
+</body>
+</html>

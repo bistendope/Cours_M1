@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>timespec</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/90.html#L66'>timespec</a>           66 kern/dev/generic/rtclock.c gettime(struct timespec *ts)</span>
+<span class='curline'><a href='../S/91.html#L38'>timespec</a>           38 kern/dev/generic/rtclock.h struct timespec;</span>
+<span class='curline'><a href='../S/91.html#L42'>timespec</a>           42 kern/dev/generic/rtclock.h 	void (*rtc_gettime)(void *devdata, struct timespec *);</span>
+<span class='curline'><a href='../S/115.html#L149'>timespec</a>          149 kern/dev/lamebus/ltimer.c ltimer_gettime(void *vlt, struct timespec *ts)</span>
+<span class='curline'><a href='../S/116.html#L33'>timespec</a>           33 kern/dev/lamebus/ltimer.h struct timespec;</span>
+<span class='curline'><a href='../S/116.html#L54'>timespec</a>           54 kern/dev/lamebus/ltimer.h 		    struct timespec *ts);     	    // for rtclock</span>
+<span class='curline'><a href='../S/142.html#L60'>timespec</a>           60 kern/include/clock.h void gettime(struct timespec *ret);</span>
+<span class='curline'><a href='../S/142.html#L69'>timespec</a>           69 kern/include/clock.h void timespec_add(const struct timespec *t1,</span>
+<span class='curline'><a href='../S/142.html#L70'>timespec</a>           70 kern/include/clock.h 		  const struct timespec *t2,</span>
+<span class='curline'><a href='../S/142.html#L71'>timespec</a>           71 kern/include/clock.h 		  struct timespec *ret);</span>
+<span class='curline'><a href='../S/142.html#L72'>timespec</a>           72 kern/include/clock.h void timespec_sub(const struct timespec *t1,</span>
+<span class='curline'><a href='../S/142.html#L73'>timespec</a>           73 kern/include/clock.h 		  const struct timespec *t2,</span>
+<span class='curline'><a href='../S/142.html#L74'>timespec</a>           74 kern/include/clock.h 		  struct timespec *ret);</span>
+<span class='curline'><a href='../S/203.html#L37'>timespec</a>           37 kern/lib/time.c timespec_add(const struct timespec *ts1,</span>
+<span class='curline'><a href='../S/203.html#L38'>timespec</a>           38 kern/lib/time.c 	     const struct timespec *ts2,</span>
+<span class='curline'><a href='../S/203.html#L39'>timespec</a>           39 kern/lib/time.c 	     struct timespec *ret)</span>
+<span class='curline'><a href='../S/203.html#L53'>timespec</a>           53 kern/lib/time.c timespec_sub(const struct timespec *ts1,</span>
+<span class='curline'><a href='../S/203.html#L54'>timespec</a>           54 kern/lib/time.c 	     const struct timespec *ts2,</span>
+<span class='curline'><a href='../S/203.html#L55'>timespec</a>           55 kern/lib/time.c 	     struct timespec *ret)</span>
+<span class='curline'><a href='../S/203.html#L58'>timespec</a>           58 kern/lib/time.c 	struct timespec r;</span>
+<span class='curline'><a href='../S/206.html#L720'>timespec</a>          720 kern/main/menu.c 	struct timespec before, after, duration;</span>
+<span class='curline'><a href='../S/211.html#L41'>timespec</a>           41 kern/syscall/time_syscalls.c 	struct timespec ts;</span>
+<span class='curline'><a href='../S/218.html#L229'>timespec</a>          229 kern/test/synchtest.c 	struct timespec ts1, ts2;</span>
+</pre>
+</body>
+</html>

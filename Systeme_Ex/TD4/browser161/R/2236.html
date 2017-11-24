@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>trapframe</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/56.html#L99'>trapframe</a>          99 kern/arch/mips/include/trapframe.h __DEAD void mips_usermode(struct trapframe *tf);</span>
+<span class='curline'><a href='../S/61.html#L45'>trapframe</a>          45 kern/arch/mips/locore/trap.c extern __DEAD void asm_usermode(struct trapframe *tf);</span>
+<span class='curline'><a href='../S/61.html#L48'>trapframe</a>          48 kern/arch/mips/locore/trap.c void mips_trap(struct trapframe *tf);</span>
+<span class='curline'><a href='../S/61.html#L126'>trapframe</a>         126 kern/arch/mips/locore/trap.c mips_trap(struct trapframe *tf)</span>
+<span class='curline'><a href='../S/61.html#L134'>trapframe</a>         134 kern/arch/mips/locore/trap.c 	KASSERT(sizeof(struct trapframe)==(35*4));</span>
+<span class='curline'><a href='../S/61.html#L368'>trapframe</a>         368 kern/arch/mips/locore/trap.c mips_usermode(struct trapframe *tf)</span>
+<span class='curline'><a href='../S/61.html#L426'>trapframe</a>         426 kern/arch/mips/locore/trap.c 	struct trapframe tf;</span>
+<span class='curline'><a href='../S/62.html#L79'>trapframe</a>          79 kern/arch/mips/syscall/syscall.c syscall(struct trapframe *tf)</span>
+<span class='curline'><a href='../S/62.html#L158'>trapframe</a>         158 kern/arch/mips/syscall/syscall.c enter_forked_process(struct trapframe *tf)</span>
+<span class='curline'><a href='../S/73.html#L298'>trapframe</a>         298 kern/arch/sys161/dev/lamebus_machdep.c mainbus_interrupt(struct trapframe *tf)</span>
+<span class='curline'><a href='../S/174.html#L39'>trapframe</a>          39 kern/include/mainbus.h struct trapframe; /* from &lt;machine/trapframe.h&gt; */</span>
+<span class='curline'><a href='../S/174.html#L49'>trapframe</a>          49 kern/include/mainbus.h void mainbus_interrupt(struct trapframe *);</span>
+<span class='curline'><a href='../S/185.html#L35'>trapframe</a>          35 kern/include/syscall.h struct trapframe; /* from &lt;machine/trapframe.h&gt; */</span>
+<span class='curline'><a href='../S/185.html#L41'>trapframe</a>          41 kern/include/syscall.h void syscall(struct trapframe *tf);</span>
+<span class='curline'><a href='../S/185.html#L48'>trapframe</a>          48 kern/include/syscall.h void enter_forked_process(struct trapframe *tf);</span>
+</pre>
+</body>
+</html>

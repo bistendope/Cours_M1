@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>DIVROUNDUP</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/128.html#L218'>DIVROUNDUP</a>        218 kern/fs/sfs/sfs_bmap.c 	uint32_t blocklen = DIVROUNDUP(len, SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/172.html#L195'>DIVROUNDUP</a>        195 kern/include/lib.h #define ROUNDUP(a,b)    (DIVROUNDUP(a,b)*(b))</span>
+<span class='curline'><a href='../S/198.html#L62'>DIVROUNDUP</a>         62 kern/lib/bitmap.c         words = DIVROUNDUP(nbits, BITS_PER_WORD);</span>
+<span class='curline'><a href='../S/198.html#L102'>DIVROUNDUP</a>        102 kern/lib/bitmap.c         unsigned maxix = DIVROUNDUP(b-&gt;nbits, BITS_PER_WORD);</span>
+<span class='curline'><a href='../S/215.html#L198'>DIVROUNDUP</a>        198 kern/test/kmalloctest.c 	numptrblocks = DIVROUNDUP(ptrspace, blocksize);</span>
+<span class='curline'><a href='../S/227.html#L868'>DIVROUNDUP</a>        868 kern/thread/thread.c 	one_share = DIVROUNDUP(total_count, numcpus);</span>
+<span class='curline'><a href='../S/239.html#L504'>DIVROUNDUP</a>        504 kern/vm/kmalloc.c 	const unsigned numfreewords = DIVROUNDUP(maxblocks, 32);</span>
+<span class='curline'><a href='../S/239.html#L644'>DIVROUNDUP</a>        644 kern/vm/kmalloc.c 	unsigned numfreewords = DIVROUNDUP(numblocks, 32);</span>
+<span class='curline'><a href='../S/532.html#L286'>DIVROUNDUP</a>        286 userland/sbin/dumpsfs/dumpsfs.c 	numblocks = DIVROUNDUP(SWAP32(sfi-&gt;sfi_size), SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/656.html#L40'>DIVROUNDUP</a>         40 userland/testbin/frack/pool.h #define ROUNDUP(a, b) 		(DIVROUNDUP(a, b) * (b))</span>
+<span class='curline'><a href='../S/656.html#L44'>DIVROUNDUP</a>         44 userland/testbin/frack/pool.h 	static uint32_t pool_inuse_##T[DIVROUNDUP(MAX, 32)];	\</span>
+</pre>
+</body>
+</html>

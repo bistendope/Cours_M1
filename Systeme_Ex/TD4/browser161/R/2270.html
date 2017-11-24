@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userptr_t</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/61.html#L423'>userptr_t</a>         423 kern/arch/mips/locore/trap.c enter_new_process(int argc, userptr_t argv, userptr_t env,</span>
+<span class='curline'><a href='../S/62.html#L108'>userptr_t</a>         108 kern/arch/mips/syscall/syscall.c 		err = sys___time((userptr_t)tf-&gt;tf_a0,</span>
+<span class='curline'><a href='../S/62.html#L109'>userptr_t</a>         109 kern/arch/mips/syscall/syscall.c 				 (userptr_t)tf-&gt;tf_a1);</span>
+<span class='curline'><a href='../S/86.html#L296'>userptr_t</a>         296 kern/dev/generic/console.c con_ioctl(struct device *dev, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/88.html#L90'>userptr_t</a>          90 kern/dev/generic/random.c randioctl(struct device *dev, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/96.html#L633'>userptr_t</a>         633 kern/dev/lamebus/emu.c emufs_ioctl(struct vnode *v, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/101.html#L157'>userptr_t</a>         157 kern/dev/lamebus/lhd.c lhd_ioctl(struct device *d, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/126.html#L67'>userptr_t</a>          67 kern/fs/semfs/semfs_vnops.c semfs_ioctl(struct vnode *vn, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/133.html#L136'>userptr_t</a>         136 kern/fs/sfs/sfs_vnops.c sfs_ioctl(struct vnode *v, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/143.html#L68'>userptr_t</a>          68 kern/include/copyinout.h int copyout(const void *src, userptr_t userdest, size_t len);</span>
+<span class='curline'><a href='../S/143.html#L70'>userptr_t</a>          70 kern/include/copyinout.h int copyoutstr(const char *src, userptr_t userdest, size_t len, size_t *got);</span>
+<span class='curline'><a href='../S/146.html#L63'>userptr_t</a>          63 kern/include/device.h 	int (*devop_ioctl)(struct device *, int op, userptr_t data);</span>
+<span class='curline'><a href='../S/157.html#L59'>userptr_t</a>          59 kern/include/kern/iovec.h                 userptr_t  iov_ubase;	/* user-supplied pointer */</span>
+<span class='curline'><a href='../S/185.html#L51'>userptr_t</a>          51 kern/include/syscall.h __DEAD void enter_new_process(int argc, userptr_t argv, userptr_t env,</span>
+<span class='curline'><a href='../S/185.html#L60'>userptr_t</a>          60 kern/include/syscall.h int sys___time(userptr_t user_seconds, userptr_t user_nanoseconds);</span>
+<span class='curline'><a href='../S/190.html#L91'>userptr_t</a>          91 kern/include/types.h typedef struct __userptr *userptr_t;</span>
+<span class='curline'><a href='../S/195.html#L191'>userptr_t</a>         191 kern/include/vnode.h 	int (*vop_ioctl)(struct vnode *object, int op, userptr_t data);</span>
+<span class='curline'><a href='../S/205.html#L139'>userptr_t</a>         139 kern/main/main.c 	COMPILE_ASSERT(sizeof(userptr_t) == sizeof(char *));</span>
+<span class='curline'><a href='../S/205.html#L140'>userptr_t</a>         140 kern/main/main.c 	COMPILE_ASSERT(sizeof(*(userptr_t)0) == sizeof(char));</span>
+<span class='curline'><a href='../S/209.html#L96'>userptr_t</a>          96 kern/syscall/loadelf.c 	iov.iov_ubase = (userptr_t)vaddr;</span>
+<span class='curline'><a href='../S/211.html#L39'>userptr_t</a>          39 kern/syscall/time_syscalls.c sys___time(userptr_t user_seconds_ptr, userptr_t user_nanoseconds_ptr)</span>
+<span class='curline'><a href='../S/229.html#L147'>userptr_t</a>         147 kern/vfs/device.c dev_ioctl(struct vnode *v, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/230.html#L78'>userptr_t</a>          78 kern/vfs/devnull.c nullioctl(struct device *dev, int op, userptr_t data)</span>
+<span class='curline'><a href='../S/238.html#L189'>userptr_t</a>         189 kern/vm/copyinout.c copyout(const void *src, userptr_t userdest, size_t len)</span>
+<span class='curline'><a href='../S/238.html#L299'>userptr_t</a>         299 kern/vm/copyinout.c copyoutstr(const char *src, userptr_t userdest, size_t len, size_t *actual)</span>
+</pre>
+</body>
+</html>

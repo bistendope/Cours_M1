@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/arch/mips/locore/trap.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/733.html'>arch</a>/<a href='../files/734.html'>mips</a>/<a href='../files/737.html'>locore</a>/trap.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L74'>[^]</a><a href='#L423'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L74' title='Defined at 74.'>kill_curthread</a></li>
+<li><a href='#L126' title='Defined at 126.'>mips_trap</a></li>
+<li><a href='#L368' title='Defined at 368.'>mips_usermode</a></li>
+<li><a href='#L423' title='Defined at 423.'>enter_new_process</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#include</em> &lt;<a href='../I/41.html'>signal.h</a>&gt;
+<a id='L32' name='L32'></a>  32 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L33' name='L33'></a>  33 <em class='sharp'>#include</em> &lt;<a href='52.html'>mips/specialreg.h</a>&gt;
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='56.html'>mips/trapframe.h</a>&gt;
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='144.html'>cpu.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='181.html'>spl.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='../I/46.html'>thread.h</a>&gt;
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> &lt;<a href='../I/36.html'>current.h</a>&gt;
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='../I/50.html'>vm.h</a>&gt;
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> &lt;<a href='174.html'>mainbus.h</a>&gt;
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> &lt;<a href='../I/147.html'>syscall.h</a>&gt;
+<a id='L42' name='L42'></a>  42 
+<a id='L43' name='L43'></a>  43 
+<a id='L44' name='L44'></a>  44 <em class='comment'>/* in exception-*.S */</em>
+<a id='L45' name='L45'></a>  45 <strong class='reserved'>extern</strong> <a href='../D/1160.html' title='Multiple defined in 4 places.'>__DEAD</a> <strong class='reserved'>void</strong> asm_usermode(<strong class='reserved'>struct</strong> <a href='../S/56.html#L40' title='Defined at 40 in kern/arch/mips/include/trapframe.h.'>trapframe</a> *tf);
+<a id='L46' name='L46'></a>  46 
+<a id='L47' name='L47'></a>  47 <em class='comment'>/* called only from assembler, so not declared in a header */</em>
+<a id='L48' name='L48'></a>  48 <strong class='reserved'>void</strong> <a href='../S/61.html#L126' title='Defined at 126 in kern/arch/mips/locore/trap.c.'>mips_trap</a>(<strong class='reserved'>struct</strong> <a href='../S/56.html#L40' title='Defined at 40 in kern/arch/mips/include/trapframe.h.'>trapframe</a> *tf);
+<a id='L49' name='L49'></a>  49 
+<a id='L50' name='L50'></a>  50 
+<a id='L51' name='L51'></a>  51 <em class='comment'>/* Names for trap codes */</em>
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#define</em> <a href='../R/423.html' title='Multiple referred from 3 places.'>NTRAPCODES</a> 13
+<a id='L53' name='L53'></a>  53 <strong class='reserved'>static</strong> <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *<strong class='reserved'>const</strong> trapcodenames[<a href='../S/61.html#L52' title='Defined at 52 in kern/arch/mips/locore/trap.c.'>NTRAPCODES</a>] = <em class='brace'>{</em>
+<a id='L54' name='L54'></a>  54         "Interrupt",
+<a id='L55' name='L55'></a>  55         "TLB modify trap",
+<a id='L56' name='L56'></a>  56         "TLB miss on load",
+<a id='L57' name='L57'></a>  57         "TLB miss on store",
+<a id='L58' name='L58'></a>  58         "Address error on load",
+<a id='L59' name='L59'></a>  59         "Address error on store",
+<a id='L60' name='L60'></a>  60         "Bus error on code",
+<a id='L61' name='L61'></a>  61         "Bus error on data",
+<a id='L62' name='L62'></a>  62         "System call",
+<a id='L63' name='L63'></a>  63         "Break instruction",
+<a id='L64' name='L64'></a>  64         "Illegal instruction",
+<a id='L65' name='L65'></a>  65         "Coprocessor unusable",
+<a id='L66' name='L66'></a>  66         "Arithmetic overflow",
+<a id='L67' name='L67'></a>  67 <em class='brace'>}</em>;
+<a id='L68' name='L68'></a>  68 
+<a id='L69' name='L69'></a>  69 <em class='comment'>/*</em>
+<a id='L70' name='L70'></a>  70 <em class='comment'> * Function called when user-level code hits a fatal fault.</em>
+<a id='L71' name='L71'></a>  71 <em class='comment'> */</em>
+<a id='L72' name='L72'></a>  72 <strong class='reserved'>static</strong>
+<a id='L73' name='L73'></a>  73 <strong class='reserved'>void</strong>
+<a id='L74' name='L74'></a>  74 <a href='../S/61.html#L275' title='Referred from 275 in kern/arch/mips/locore/trap.c.'>kill_curthread</a>(<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a> epc, <strong class='reserved'>unsigned</strong> code, <a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a> vaddr)
+<a id='L75' name='L75'></a>  75 <em class='brace'>{</em>
+<a id='L76' name='L76'></a>  76         <strong class='reserved'>int</strong> sig = 0;
+<a id='L77' name='L77'></a>  77 
+<a id='L78' name='L78'></a>  78         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(code &lt; <a href='../S/61.html#L52' title='Defined at 52 in kern/arch/mips/locore/trap.c.'>NTRAPCODES</a>);
+<a id='L79' name='L79'></a>  79         <strong class='reserved'>switch</strong> (code) <em class='brace'>{</em>
+<a id='L80' name='L80'></a>  80             <strong class='reserved'>case</strong> <a href='../S/56.html#L81' title='Defined at 81 in kern/arch/mips/include/trapframe.h.'>EX_IRQ</a>:
+<a id='L81' name='L81'></a>  81             <strong class='reserved'>case</strong> <a href='../S/56.html#L87' title='Defined at 87 in kern/arch/mips/include/trapframe.h.'>EX_IBE</a>:
+<a id='L82' name='L82'></a>  82             <strong class='reserved'>case</strong> <a href='../S/56.html#L88' title='Defined at 88 in kern/arch/mips/include/trapframe.h.'>EX_DBE</a>:
+<a id='L83' name='L83'></a>  83             <strong class='reserved'>case</strong> <a href='../S/56.html#L89' title='Defined at 89 in kern/arch/mips/include/trapframe.h.'>EX_SYS</a>:
+<a id='L84' name='L84'></a>  84                 <em class='comment'>/* should not be seen */</em>
+<a id='L85' name='L85'></a>  85                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(0);
+<a id='L86' name='L86'></a>  86                 sig = <a href='../S/163.html#L61' title='Defined at 61 in kern/include/kern/signal.h.'>SIGABRT</a>;
+<a id='L87' name='L87'></a>  87                 <strong class='reserved'>break</strong>;
+<a id='L88' name='L88'></a>  88             <strong class='reserved'>case</strong> <a href='../S/56.html#L82' title='Defined at 82 in kern/arch/mips/include/trapframe.h.'>EX_MOD</a>:
+<a id='L89' name='L89'></a>  89             <strong class='reserved'>case</strong> <a href='../S/56.html#L83' title='Defined at 83 in kern/arch/mips/include/trapframe.h.'>EX_TLBL</a>:
+<a id='L90' name='L90'></a>  90             <strong class='reserved'>case</strong> <a href='../S/56.html#L84' title='Defined at 84 in kern/arch/mips/include/trapframe.h.'>EX_TLBS</a>:
+<a id='L91' name='L91'></a>  91                 sig = <a href='../S/163.html#L66' title='Defined at 66 in kern/include/kern/signal.h.'>SIGSEGV</a>;
+<a id='L92' name='L92'></a>  92                 <strong class='reserved'>break</strong>;
+<a id='L93' name='L93'></a>  93             <strong class='reserved'>case</strong> <a href='../S/56.html#L85' title='Defined at 85 in kern/arch/mips/include/trapframe.h.'>EX_ADEL</a>:
+<a id='L94' name='L94'></a>  94             <strong class='reserved'>case</strong> <a href='../S/56.html#L86' title='Defined at 86 in kern/arch/mips/include/trapframe.h.'>EX_ADES</a>:
+<a id='L95' name='L95'></a>  95                 sig = <a href='../S/163.html#L65' title='Defined at 65 in kern/include/kern/signal.h.'>SIGBUS</a>;
+<a id='L96' name='L96'></a>  96                 <strong class='reserved'>break</strong>;
+<a id='L97' name='L97'></a>  97             <strong class='reserved'>case</strong> <a href='../S/56.html#L90' title='Defined at 90 in kern/arch/mips/include/trapframe.h.'>EX_BP</a>:
+<a id='L98' name='L98'></a>  98                 sig = <a href='../S/163.html#L60' title='Defined at 60 in kern/include/kern/signal.h.'>SIGTRAP</a>;
+<a id='L99' name='L99'></a>  99                 <strong class='reserved'>break</strong>;
+<a id='L100' name='L100'></a> 100             <strong class='reserved'>case</strong> <a href='../S/56.html#L91' title='Defined at 91 in kern/arch/mips/include/trapframe.h.'>EX_RI</a>:
+<a id='L101' name='L101'></a> 101                 sig = <a href='../S/163.html#L59' title='Defined at 59 in kern/include/kern/signal.h.'>SIGILL</a>;
+<a id='L102' name='L102'></a> 102                 <strong class='reserved'>break</strong>;
+<a id='L103' name='L103'></a> 103             <strong class='reserved'>case</strong> <a href='../S/56.html#L92' title='Defined at 92 in kern/arch/mips/include/trapframe.h.'>EX_CPU</a>:
+<a id='L104' name='L104'></a> 104                 sig = <a href='../S/163.html#L66' title='Defined at 66 in kern/include/kern/signal.h.'>SIGSEGV</a>;
+<a id='L105' name='L105'></a> 105                 <strong class='reserved'>break</strong>;
+<a id='L106' name='L106'></a> 106             <strong class='reserved'>case</strong> <a href='../S/56.html#L93' title='Defined at 93 in kern/arch/mips/include/trapframe.h.'>EX_OVF</a>:
+<a id='L107' name='L107'></a> 107                 sig = <a href='../S/163.html#L63' title='Defined at 63 in kern/include/kern/signal.h.'>SIGFPE</a>;
+<a id='L108' name='L108'></a> 108                 <strong class='reserved'>break</strong>;
+<a id='L109' name='L109'></a> 109         <em class='brace'>}</em>
+<a id='L110' name='L110'></a> 110 
+<a id='L111' name='L111'></a> 111         <em class='comment'>/*</em>
+<a id='L112' name='L112'></a> 112 <em class='comment'>         * You will probably want to change this.</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'>         */</em>
+<a id='L114' name='L114'></a> 114 
+<a id='L115' name='L115'></a> 115         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Fatal user mode trap %u sig %d (%s, epc 0x%x, vaddr 0x%x)\n",
+<a id='L116' name='L116'></a> 116                 code, sig, trapcodenames[code], epc, vaddr);
+<a id='L117' name='L117'></a> 117         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("I don't know how to handle this\n");
+<a id='L118' name='L118'></a> 118 <em class='brace'>}</em>
+<a id='L119' name='L119'></a> 119 
+<a id='L120' name='L120'></a> 120 <em class='comment'>/*</em>
+<a id='L121' name='L121'></a> 121 <em class='comment'> * General trap (exception) handling function for mips.</em>
+<a id='L122' name='L122'></a> 122 <em class='comment'> * This is called by the assembly-language exception handler once</em>
+<a id='L123' name='L123'></a> 123 <em class='comment'> * the trapframe has been set up.</em>
+<a id='L124' name='L124'></a> 124 <em class='comment'> */</em>
+<a id='L125' name='L125'></a> 125 <strong class='reserved'>void</strong>
+<a id='L126' name='L126'></a> 126 <a href='../S/61.html#L48' title='Referred from 48 in kern/arch/mips/locore/trap.c.'>mips_trap</a>(<strong class='reserved'>struct</strong> <a href='../S/56.html#L40' title='Defined at 40 in kern/arch/mips/include/trapframe.h.'>trapframe</a> *tf)
+<a id='L127' name='L127'></a> 127 <em class='brace'>{</em>
+<a id='L128' name='L128'></a> 128         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> code;
+<a id='L129' name='L129'></a> 129         <em class='comment'>/*bool isutlb; -- not used */</em>
+<a id='L130' name='L130'></a> 130         <a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a> iskern;
+<a id='L131' name='L131'></a> 131         <strong class='reserved'>int</strong> spl;
+<a id='L132' name='L132'></a> 132 
+<a id='L133' name='L133'></a> 133         <em class='comment'>/* The trap frame is supposed to be 35 registers long. */</em>
+<a id='L134' name='L134'></a> 134         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<strong class='reserved'>sizeof</strong>(<strong class='reserved'>struct</strong> <a href='../S/56.html#L40' title='Defined at 40 in kern/arch/mips/include/trapframe.h.'>trapframe</a>)==(35*4));
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136         <em class='comment'>/*</em>
+<a id='L137' name='L137'></a> 137 <em class='comment'>         * Extract the exception code info from the register fields.</em>
+<a id='L138' name='L138'></a> 138 <em class='comment'>         */</em>
+<a id='L139' name='L139'></a> 139         code = (tf-&gt;tf_cause &amp; <a href='../S/52.html#L75' title='Defined at 75 in kern/arch/mips/include/specialreg.h.'>CCA_CODE</a>) &gt;&gt; <a href='../S/52.html#L80' title='Defined at 80 in kern/arch/mips/include/specialreg.h.'>CCA_CODESHIFT</a>;
+<a id='L140' name='L140'></a> 140         <em class='comment'>/*isutlb = (tf-&gt;tf_cause &amp; CCA_UTLB) != 0;*/</em>
+<a id='L141' name='L141'></a> 141         iskern = (tf-&gt;tf_status &amp; <a href='../S/52.html#L64' title='Defined at 64 in kern/arch/mips/include/specialreg.h.'>CST_KUp</a>) == 0;
+<a id='L142' name='L142'></a> 142 
+<a id='L143' name='L143'></a> 143         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(code &lt; <a href='../S/61.html#L52' title='Defined at 52 in kern/arch/mips/locore/trap.c.'>NTRAPCODES</a>);
+<a id='L144' name='L144'></a> 144 
+<a id='L145' name='L145'></a> 145         <em class='comment'>/* Make sure we haven't run off our stack */</em>
+<a id='L146' name='L146'></a> 146         <strong class='reserved'>if</strong> (<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a> != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a> &amp;&amp; <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_stack != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L147' name='L147'></a> 147                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>((<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)tf &gt; (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_stack);
+<a id='L148' name='L148'></a> 148                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>((<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)tf &lt; (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_stack
+<a id='L149' name='L149'></a> 149                                                 + <a href='../S/187.html#L50' title='Defined at 50 in kern/include/thread.h.'>STACK_SIZE</a>));
+<a id='L150' name='L150'></a> 150         <em class='brace'>}</em>
+<a id='L151' name='L151'></a> 151 
+<a id='L152' name='L152'></a> 152         <em class='comment'>/* Interrupt? Call the interrupt handler and return. */</em>
+<a id='L153' name='L153'></a> 153         <strong class='reserved'>if</strong> (code == <a href='../S/56.html#L81' title='Defined at 81 in kern/arch/mips/include/trapframe.h.'>EX_IRQ</a>) <em class='brace'>{</em>
+<a id='L154' name='L154'></a> 154                 <strong class='reserved'>int</strong> old_in;
+<a id='L155' name='L155'></a> 155                 <a href='../D/1356.html' title='Multiple defined in 4 places.'>bool</a> doadjust;
+<a id='L156' name='L156'></a> 156 
+<a id='L157' name='L157'></a> 157                 old_in = <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt;
+<a id='L158' name='L158'></a> 158                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = 1;
+<a id='L159' name='L159'></a> 159 
+<a id='L160' name='L160'></a> 160                 <em class='comment'>/*</em>
+<a id='L161' name='L161'></a> 161 <em class='comment'>                 * The processor has turned interrupts off; if the</em>
+<a id='L162' name='L162'></a> 162 <em class='comment'>                 * currently recorded interrupt state is interrupts on</em>
+<a id='L163' name='L163'></a> 163 <em class='comment'>                 * (spl of 0), adjust the recorded state to match, and</em>
+<a id='L164' name='L164'></a> 164 <em class='comment'>                 * restore after processing the interrupt.</em>
+<a id='L165' name='L165'></a> 165 <em class='comment'>                 *</em>
+<a id='L166' name='L166'></a> 166 <em class='comment'>                 * How can we get an interrupt if the recorded state</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'>                 * is interrupts off? Well, as things currently stand</em>
+<a id='L168' name='L168'></a> 168 <em class='comment'>                 * when the CPU finishes idling it flips interrupts on</em>
+<a id='L169' name='L169'></a> 169 <em class='comment'>                 * and off to allow things to happen, but leaves</em>
+<a id='L170' name='L170'></a> 170 <em class='comment'>                 * curspl high while doing so.</em>
+<a id='L171' name='L171'></a> 171 <em class='comment'>                 *</em>
+<a id='L172' name='L172'></a> 172 <em class='comment'>                 * While we're here, assert that the interrupt</em>
+<a id='L173' name='L173'></a> 173 <em class='comment'>                 * handling code hasn't leaked a spinlock or an</em>
+<a id='L174' name='L174'></a> 174 <em class='comment'>                 * splhigh().</em>
+<a id='L175' name='L175'></a> 175 <em class='comment'>                 */</em>
+<a id='L176' name='L176'></a> 176 
+<a id='L177' name='L177'></a> 177                 <strong class='reserved'>if</strong> (<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl == 0) <em class='brace'>{</em>
+<a id='L178' name='L178'></a> 178                         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl == 0);
+<a id='L179' name='L179'></a> 179                         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_iplhigh_count == 0);
+<a id='L180' name='L180'></a> 180                         <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl = <a href='../S/181.html#L78' title='Defined at 78 in kern/include/spl.h.'>IPL_HIGH</a>;
+<a id='L181' name='L181'></a> 181                         <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_iplhigh_count++;
+<a id='L182' name='L182'></a> 182                         doadjust = <a href='../D/2694.html' title='Multiple defined in 3 places.'>true</a>;
+<a id='L183' name='L183'></a> 183                 <em class='brace'>}</em>
+<a id='L184' name='L184'></a> 184                 <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L185' name='L185'></a> 185                         doadjust = <a href='../D/1741.html' title='Multiple defined in 3 places.'>false</a>;
+<a id='L186' name='L186'></a> 186                 <em class='brace'>}</em>
+<a id='L187' name='L187'></a> 187 
+<a id='L188' name='L188'></a> 188                 <a href='../S/73.html#L298' title='Defined at 298 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_interrupt</a>(tf);
+<a id='L189' name='L189'></a> 189 
+<a id='L190' name='L190'></a> 190                 <strong class='reserved'>if</strong> (doadjust) <em class='brace'>{</em>
+<a id='L191' name='L191'></a> 191                         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl == <a href='../S/181.html#L78' title='Defined at 78 in kern/include/spl.h.'>IPL_HIGH</a>);
+<a id='L192' name='L192'></a> 192                         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_iplhigh_count == 1);
+<a id='L193' name='L193'></a> 193                         <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_iplhigh_count--;
+<a id='L194' name='L194'></a> 194                         <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl = 0;
+<a id='L195' name='L195'></a> 195                 <em class='brace'>}</em>
+<a id='L196' name='L196'></a> 196 
+<a id='L197' name='L197'></a> 197                 <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_in_interrupt = old_in;
+<a id='L198' name='L198'></a> 198                 <strong class='reserved'>goto</strong> done2;
+<a id='L199' name='L199'></a> 199         <em class='brace'>}</em>
+<a id='L200' name='L200'></a> 200 
+<a id='L201' name='L201'></a> 201         <em class='comment'>/*</em>
+<a id='L202' name='L202'></a> 202 <em class='comment'>         * The processor turned interrupts off when it took the trap.</em>
+<a id='L203' name='L203'></a> 203 <em class='comment'>         *</em>
+<a id='L204' name='L204'></a> 204 <em class='comment'>         * While we're in the kernel, and not actually handling an</em>
+<a id='L205' name='L205'></a> 205 <em class='comment'>         * interrupt, restore the interrupt state to where it was in</em>
+<a id='L206' name='L206'></a> 206 <em class='comment'>         * the previous context, which may be low (interrupts on).</em>
+<a id='L207' name='L207'></a> 207 <em class='comment'>         *</em>
+<a id='L208' name='L208'></a> 208 <em class='comment'>         * Do this by forcing splhigh(), which may do a redundant</em>
+<a id='L209' name='L209'></a> 209 <em class='comment'>         * cpu_irqoff() but forces the stored MI interrupt state into</em>
+<a id='L210' name='L210'></a> 210 <em class='comment'>         * sync, then restoring the previous state.</em>
+<a id='L211' name='L211'></a> 211 <em class='comment'>         */</em>
+<a id='L212' name='L212'></a> 212         spl = <a href='../S/181.html#L103' title='Defined at 103 in kern/include/spl.h.'>splhigh</a>();
+<a id='L213' name='L213'></a> 213         <a href='../S/225.html#L132' title='Defined at 132 in kern/thread/spl.c.'>splx</a>(spl);
+<a id='L214' name='L214'></a> 214 
+<a id='L215' name='L215'></a> 215         <em class='comment'>/* Syscall? Call the syscall handler and return. */</em>
+<a id='L216' name='L216'></a> 216         <strong class='reserved'>if</strong> (code == <a href='../S/56.html#L89' title='Defined at 89 in kern/arch/mips/include/trapframe.h.'>EX_SYS</a>) <em class='brace'>{</em>
+<a id='L217' name='L217'></a> 217                 <em class='comment'>/* Interrupts should have been on while in user mode. */</em>
+<a id='L218' name='L218'></a> 218                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl == 0);
+<a id='L219' name='L219'></a> 219                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_iplhigh_count == 0);
+<a id='L220' name='L220'></a> 220 
+<a id='L221' name='L221'></a> 221                 <a href='../S/172.html#L111' title='Defined at 111 in kern/include/lib.h.'>DEBUG</a>(<a href='../S/172.html#L80' title='Defined at 80 in kern/include/lib.h.'>DB_SYSCALL</a>, "syscall: #%d, args %x %x %x %x\n",
+<a id='L222' name='L222'></a> 222                       tf-&gt;tf_v0, tf-&gt;tf_a0, tf-&gt;tf_a1, tf-&gt;tf_a2, tf-&gt;tf_a3);
+<a id='L223' name='L223'></a> 223 
+<a id='L224' name='L224'></a> 224                 <a href='../S/62.html#L79' title='Defined at 79 in kern/arch/mips/syscall/syscall.c.'>syscall</a>(tf);
+<a id='L225' name='L225'></a> 225                 <strong class='reserved'>goto</strong> done;
+<a id='L226' name='L226'></a> 226         <em class='brace'>}</em>
+<a id='L227' name='L227'></a> 227 
+<a id='L228' name='L228'></a> 228         <em class='comment'>/*</em>
+<a id='L229' name='L229'></a> 229 <em class='comment'>         * Ok, it wasn't any of the really easy cases.</em>
+<a id='L230' name='L230'></a> 230 <em class='comment'>         * Call vm_fault on the TLB exceptions.</em>
+<a id='L231' name='L231'></a> 231 <em class='comment'>         * Panic on the bus error exceptions.</em>
+<a id='L232' name='L232'></a> 232 <em class='comment'>         */</em>
+<a id='L233' name='L233'></a> 233         <strong class='reserved'>switch</strong> (code) <em class='brace'>{</em>
+<a id='L234' name='L234'></a> 234         <strong class='reserved'>case</strong> <a href='../S/56.html#L82' title='Defined at 82 in kern/arch/mips/include/trapframe.h.'>EX_MOD</a>:
+<a id='L235' name='L235'></a> 235                 <strong class='reserved'>if</strong> (<a href='../S/69.html#L137' title='Defined at 137 in kern/arch/mips/vm/dumbvm.c.'>vm_fault</a>(<a href='../S/194.html#L45' title='Defined at 45 in kern/include/vm.h.'>VM_FAULT_READONLY</a>, tf-&gt;tf_vaddr)==0) <em class='brace'>{</em>
+<a id='L236' name='L236'></a> 236                         <strong class='reserved'>goto</strong> done;
+<a id='L237' name='L237'></a> 237                 <em class='brace'>}</em>
+<a id='L238' name='L238'></a> 238                 <strong class='reserved'>break</strong>;
+<a id='L239' name='L239'></a> 239         <strong class='reserved'>case</strong> <a href='../S/56.html#L83' title='Defined at 83 in kern/arch/mips/include/trapframe.h.'>EX_TLBL</a>:
+<a id='L240' name='L240'></a> 240                 <strong class='reserved'>if</strong> (<a href='../S/69.html#L137' title='Defined at 137 in kern/arch/mips/vm/dumbvm.c.'>vm_fault</a>(<a href='../S/194.html#L43' title='Defined at 43 in kern/include/vm.h.'>VM_FAULT_READ</a>, tf-&gt;tf_vaddr)==0) <em class='brace'>{</em>
+<a id='L241' name='L241'></a> 241                         <strong class='reserved'>goto</strong> done;
+<a id='L242' name='L242'></a> 242                 <em class='brace'>}</em>
+<a id='L243' name='L243'></a> 243                 <strong class='reserved'>break</strong>;
+<a id='L244' name='L244'></a> 244         <strong class='reserved'>case</strong> <a href='../S/56.html#L84' title='Defined at 84 in kern/arch/mips/include/trapframe.h.'>EX_TLBS</a>:
+<a id='L245' name='L245'></a> 245                 <strong class='reserved'>if</strong> (<a href='../S/69.html#L137' title='Defined at 137 in kern/arch/mips/vm/dumbvm.c.'>vm_fault</a>(<a href='../S/194.html#L44' title='Defined at 44 in kern/include/vm.h.'>VM_FAULT_WRITE</a>, tf-&gt;tf_vaddr)==0) <em class='brace'>{</em>
+<a id='L246' name='L246'></a> 246                         <strong class='reserved'>goto</strong> done;
+<a id='L247' name='L247'></a> 247                 <em class='brace'>}</em>
+<a id='L248' name='L248'></a> 248                 <strong class='reserved'>break</strong>;
+<a id='L249' name='L249'></a> 249         <strong class='reserved'>case</strong> <a href='../S/56.html#L87' title='Defined at 87 in kern/arch/mips/include/trapframe.h.'>EX_IBE</a>:
+<a id='L250' name='L250'></a> 250         <strong class='reserved'>case</strong> <a href='../S/56.html#L88' title='Defined at 88 in kern/arch/mips/include/trapframe.h.'>EX_DBE</a>:
+<a id='L251' name='L251'></a> 251                 <em class='comment'>/*</em>
+<a id='L252' name='L252'></a> 252 <em class='comment'>                 * This means you loaded invalid TLB entries, or</em>
+<a id='L253' name='L253'></a> 253 <em class='comment'>                 * touched invalid parts of the direct-mapped</em>
+<a id='L254' name='L254'></a> 254 <em class='comment'>                 * segments. These are serious kernel errors, so</em>
+<a id='L255' name='L255'></a> 255 <em class='comment'>                 * panic.</em>
+<a id='L256' name='L256'></a> 256 <em class='comment'>                 *</em>
+<a id='L257' name='L257'></a> 257 <em class='comment'>                 * The MIPS won't even tell you what invalid address</em>
+<a id='L258' name='L258'></a> 258 <em class='comment'>                 * caused the bus error.</em>
+<a id='L259' name='L259'></a> 259 <em class='comment'>                 */</em>
+<a id='L260' name='L260'></a> 260                 <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("Bus error exception, PC=0x%x\n", tf-&gt;tf_epc);
+<a id='L261' name='L261'></a> 261                 <strong class='reserved'>break</strong>;
+<a id='L262' name='L262'></a> 262         <em class='brace'>}</em>
+<a id='L263' name='L263'></a> 263 
+<a id='L264' name='L264'></a> 264         <em class='comment'>/*</em>
+<a id='L265' name='L265'></a> 265 <em class='comment'>         * If we get to this point, it's a fatal fault - either it's</em>
+<a id='L266' name='L266'></a> 266 <em class='comment'>         * one of the other exceptions, like illegal instruction, or</em>
+<a id='L267' name='L267'></a> 267 <em class='comment'>         * it was a page fault we couldn't handle.</em>
+<a id='L268' name='L268'></a> 268 <em class='comment'>         */</em>
+<a id='L269' name='L269'></a> 269 
+<a id='L270' name='L270'></a> 270         <strong class='reserved'>if</strong> (!iskern) <em class='brace'>{</em>
+<a id='L271' name='L271'></a> 271                 <em class='comment'>/*</em>
+<a id='L272' name='L272'></a> 272 <em class='comment'>                 * Fatal fault in user mode.</em>
+<a id='L273' name='L273'></a> 273 <em class='comment'>                 * Kill the current user process.</em>
+<a id='L274' name='L274'></a> 274 <em class='comment'>                 */</em>
+<a id='L275' name='L275'></a> 275                 <a href='../S/61.html#L74' title='Defined at 74 in kern/arch/mips/locore/trap.c.'>kill_curthread</a>(tf-&gt;tf_epc, code, tf-&gt;tf_vaddr);
+<a id='L276' name='L276'></a> 276                 <strong class='reserved'>goto</strong> done;
+<a id='L277' name='L277'></a> 277         <em class='brace'>}</em>
+<a id='L278' name='L278'></a> 278 
+<a id='L279' name='L279'></a> 279         <em class='comment'>/*</em>
+<a id='L280' name='L280'></a> 280 <em class='comment'>         * Fatal fault in kernel mode.</em>
+<a id='L281' name='L281'></a> 281 <em class='comment'>         *</em>
+<a id='L282' name='L282'></a> 282 <em class='comment'>         * If pcb_badfaultfunc is set, we do not panic; badfaultfunc is</em>
+<a id='L283' name='L283'></a> 283 <em class='comment'>         * set by copyin/copyout and related functions to signify that</em>
+<a id='L284' name='L284'></a> 284 <em class='comment'>         * the addresses they're accessing are userlevel-supplied and</em>
+<a id='L285' name='L285'></a> 285 <em class='comment'>         * not trustable. What we actually want to do is resume</em>
+<a id='L286' name='L286'></a> 286 <em class='comment'>         * execution at the function pointed to by badfaultfunc. That's</em>
+<a id='L287' name='L287'></a> 287 <em class='comment'>         * going to be "copyfail" (see copyinout.c), which longjmps</em>
+<a id='L288' name='L288'></a> 288 <em class='comment'>         * back to copyin/copyout or wherever and returns EFAULT.</em>
+<a id='L289' name='L289'></a> 289 <em class='comment'>         *</em>
+<a id='L290' name='L290'></a> 290 <em class='comment'>         * Note that we do not just *call* this function, because that</em>
+<a id='L291' name='L291'></a> 291 <em class='comment'>         * won't necessarily do anything. We want the control flow</em>
+<a id='L292' name='L292'></a> 292 <em class='comment'>         * that is currently executing in copyin (or whichever), and</em>
+<a id='L293' name='L293'></a> 293 <em class='comment'>         * is stopped while we process the exception, to *teleport* to</em>
+<a id='L294' name='L294'></a> 294 <em class='comment'>         * copyfail.</em>
+<a id='L295' name='L295'></a> 295 <em class='comment'>         *</em>
+<a id='L296' name='L296'></a> 296 <em class='comment'>         * This is accomplished by changing tf-&gt;tf_epc and returning</em>
+<a id='L297' name='L297'></a> 297 <em class='comment'>         * from the exception handler.</em>
+<a id='L298' name='L298'></a> 298 <em class='comment'>         */</em>
+<a id='L299' name='L299'></a> 299 
+<a id='L300' name='L300'></a> 300         <strong class='reserved'>if</strong> (<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a> != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a> &amp;&amp;
+<a id='L301' name='L301'></a> 301             <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_machdep.tm_badfaultfunc != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L302' name='L302'></a> 302                 tf-&gt;tf_epc = (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>) <a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_machdep.tm_badfaultfunc;
+<a id='L303' name='L303'></a> 303                 <strong class='reserved'>goto</strong> done;
+<a id='L304' name='L304'></a> 304         <em class='brace'>}</em>
+<a id='L305' name='L305'></a> 305 
+<a id='L306' name='L306'></a> 306         <em class='comment'>/*</em>
+<a id='L307' name='L307'></a> 307 <em class='comment'>         * Really fatal kernel-mode fault.</em>
+<a id='L308' name='L308'></a> 308 <em class='comment'>         */</em>
+<a id='L309' name='L309'></a> 309 
+<a id='L310' name='L310'></a> 310         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("panic: Fatal exception %u (%s) in kernel mode\n", code,
+<a id='L311' name='L311'></a> 311                 trapcodenames[code]);
+<a id='L312' name='L312'></a> 312         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("panic: EPC 0x%x, exception vaddr 0x%x\n",
+<a id='L313' name='L313'></a> 313                 tf-&gt;tf_epc, tf-&gt;tf_vaddr);
+<a id='L314' name='L314'></a> 314 
+<a id='L315' name='L315'></a> 315         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("I can't handle this... I think I'll just die now...\n");
+<a id='L316' name='L316'></a> 316 
+<a id='L317' name='L317'></a> 317  done:
+<a id='L318' name='L318'></a> 318         <em class='comment'>/*</em>
+<a id='L319' name='L319'></a> 319 <em class='comment'>         * Turn interrupts off on the processor, without affecting the</em>
+<a id='L320' name='L320'></a> 320 <em class='comment'>         * stored interrupt state.</em>
+<a id='L321' name='L321'></a> 321 <em class='comment'>         */</em>
+<a id='L322' name='L322'></a> 322         <a href='../S/63.html#L223' title='Defined at 223 in kern/arch/mips/thread/cpu.c.'>cpu_irqoff</a>();
+<a id='L323' name='L323'></a> 323  done2:
+<a id='L324' name='L324'></a> 324 
+<a id='L325' name='L325'></a> 325         <em class='comment'>/*</em>
+<a id='L326' name='L326'></a> 326 <em class='comment'>         * The boot thread can get here (e.g. on interrupt return) but</em>
+<a id='L327' name='L327'></a> 327 <em class='comment'>         * since it doesn't go to userlevel, it can't be returning to</em>
+<a id='L328' name='L328'></a> 328 <em class='comment'>         * userlevel, so there's no need to set cputhreads[] and</em>
+<a id='L329' name='L329'></a> 329 <em class='comment'>         * cpustacks[]. Just return.</em>
+<a id='L330' name='L330'></a> 330 <em class='comment'>         */</em>
+<a id='L331' name='L331'></a> 331         <strong class='reserved'>if</strong> (<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_stack == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L332' name='L332'></a> 332                 <strong class='reserved'>return</strong>;
+<a id='L333' name='L333'></a> 333         <em class='brace'>}</em>
+<a id='L334' name='L334'></a> 334 
+<a id='L335' name='L335'></a> 335         cputhreads[<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number] = (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>;
+<a id='L336' name='L336'></a> 336         cpustacks[<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number] = (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_stack + <a href='../S/187.html#L50' title='Defined at 50 in kern/include/thread.h.'>STACK_SIZE</a>;
+<a id='L337' name='L337'></a> 337 
+<a id='L338' name='L338'></a> 338         <em class='comment'>/*</em>
+<a id='L339' name='L339'></a> 339 <em class='comment'>         * This assertion will fail if either</em>
+<a id='L340' name='L340'></a> 340 <em class='comment'>         *   (1) curthread-&gt;t_stack is corrupted, or</em>
+<a id='L341' name='L341'></a> 341 <em class='comment'>         *   (2) the trap frame is somehow on the wrong kernel stack.</em>
+<a id='L342' name='L342'></a> 342 <em class='comment'>         *</em>
+<a id='L343' name='L343'></a> 343 <em class='comment'>         * If cpustacks[] is corrupted, the next trap back to the</em>
+<a id='L344' name='L344'></a> 344 <em class='comment'>         * kernel will (most likely) hang the system, so it's better</em>
+<a id='L345' name='L345'></a> 345 <em class='comment'>         * to find out now.</em>
+<a id='L346' name='L346'></a> 346 <em class='comment'>         */</em>
+<a id='L347' name='L347'></a> 347         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/187.html#L56' title='Defined at 56 in kern/include/thread.h.'>SAME_STACK</a>(cpustacks[<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number]-1, (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)tf));
+<a id='L348' name='L348'></a> 348 <em class='brace'>}</em>
+<a id='L349' name='L349'></a> 349 
+<a id='L350' name='L350'></a> 350 <em class='comment'>/*</em>
+<a id='L351' name='L351'></a> 351 <em class='comment'> * Function for entering user mode.</em>
+<a id='L352' name='L352'></a> 352 <em class='comment'> *</em>
+<a id='L353' name='L353'></a> 353 <em class='comment'> * This should not be used by threads returning from traps - they</em>
+<a id='L354' name='L354'></a> 354 <em class='comment'> * should just return from mips_trap(). It should be used by threads</em>
+<a id='L355' name='L355'></a> 355 <em class='comment'> * entering user mode for the first time - whether the child thread in</em>
+<a id='L356' name='L356'></a> 356 <em class='comment'> * a fork(), or into a brand-new address space after exec(), or when</em>
+<a id='L357' name='L357'></a> 357 <em class='comment'> * starting the first userlevel program.</em>
+<a id='L358' name='L358'></a> 358 <em class='comment'> *</em>
+<a id='L359' name='L359'></a> 359 <em class='comment'> * It works by jumping into the exception return code.</em>
+<a id='L360' name='L360'></a> 360 <em class='comment'> *</em>
+<a id='L361' name='L361'></a> 361 <em class='comment'> * mips_usermode is common code for this. It cannot usefully be called</em>
+<a id='L362' name='L362'></a> 362 <em class='comment'> * outside the mips port, but should be called from one of the</em>
+<a id='L363' name='L363'></a> 363 <em class='comment'> * following places:</em>
+<a id='L364' name='L364'></a> 364 <em class='comment'> *    - enter_new_process, for use by exec and equivalent.</em>
+<a id='L365' name='L365'></a> 365 <em class='comment'> *    - enter_forked_process, in syscall.c, for use by fork.</em>
+<a id='L366' name='L366'></a> 366 <em class='comment'> */</em>
+<a id='L367' name='L367'></a> 367 <strong class='reserved'>void</strong>
+<a id='L368' name='L368'></a> 368 <a href='../R/1659.html' title='Multiple referred from 2 places.'>mips_usermode</a>(<strong class='reserved'>struct</strong> <a href='../S/56.html#L40' title='Defined at 40 in kern/arch/mips/include/trapframe.h.'>trapframe</a> *tf)
+<a id='L369' name='L369'></a> 369 <em class='brace'>{</em>
+<a id='L370' name='L370'></a> 370 
+<a id='L371' name='L371'></a> 371         <em class='comment'>/*</em>
+<a id='L372' name='L372'></a> 372 <em class='comment'>         * Interrupts should be off within the kernel while entering</em>
+<a id='L373' name='L373'></a> 373 <em class='comment'>         * user mode. However, while in user mode, interrupts should</em>
+<a id='L374' name='L374'></a> 374 <em class='comment'>         * be on. To interact properly with the spl-handling logic</em>
+<a id='L375' name='L375'></a> 375 <em class='comment'>         * above, we explicitly call spl0() and then call cpu_irqoff().</em>
+<a id='L376' name='L376'></a> 376 <em class='comment'>         */</em>
+<a id='L377' name='L377'></a> 377         <a href='../S/181.html#L96' title='Defined at 96 in kern/include/spl.h.'>spl0</a>();
+<a id='L378' name='L378'></a> 378         <a href='../S/63.html#L223' title='Defined at 223 in kern/arch/mips/thread/cpu.c.'>cpu_irqoff</a>();
+<a id='L379' name='L379'></a> 379 
+<a id='L380' name='L380'></a> 380         cputhreads[<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number] = (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>;
+<a id='L381' name='L381'></a> 381         cpustacks[<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number] = (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_stack + <a href='../S/187.html#L50' title='Defined at 50 in kern/include/thread.h.'>STACK_SIZE</a>;
+<a id='L382' name='L382'></a> 382 
+<a id='L383' name='L383'></a> 383         <em class='comment'>/*</em>
+<a id='L384' name='L384'></a> 384 <em class='comment'>         * This assertion will fail if either</em>
+<a id='L385' name='L385'></a> 385 <em class='comment'>         *   (1) cpustacks[] is corrupted, or</em>
+<a id='L386' name='L386'></a> 386 <em class='comment'>         *   (2) the trap frame is not on our own kernel stack, or</em>
+<a id='L387' name='L387'></a> 387 <em class='comment'>         *   (3) the boot thread tries to enter user mode.</em>
+<a id='L388' name='L388'></a> 388 <em class='comment'>         *</em>
+<a id='L389' name='L389'></a> 389 <em class='comment'>         * If cpustacks[] is corrupted, the next trap back to the</em>
+<a id='L390' name='L390'></a> 390 <em class='comment'>         * kernel will (most likely) hang the system, so it's better</em>
+<a id='L391' name='L391'></a> 391 <em class='comment'>         * to find out now.</em>
+<a id='L392' name='L392'></a> 392 <em class='comment'>         *</em>
+<a id='L393' name='L393'></a> 393 <em class='comment'>         * It's necessary for the trap frame used here to be on the</em>
+<a id='L394' name='L394'></a> 394 <em class='comment'>         * current thread's own stack. It cannot correctly be on</em>
+<a id='L395' name='L395'></a> 395 <em class='comment'>         * either another thread's stack or in the kernel heap.</em>
+<a id='L396' name='L396'></a> 396 <em class='comment'>         * (Exercise: why?)</em>
+<a id='L397' name='L397'></a> 397 <em class='comment'>         */</em>
+<a id='L398' name='L398'></a> 398         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/187.html#L56' title='Defined at 56 in kern/include/thread.h.'>SAME_STACK</a>(cpustacks[<a href='../S/145.html#L79' title='Defined at 79 in kern/include/current.h.'>curcpu</a>-&gt;c_number]-1, (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)tf));
+<a id='L399' name='L399'></a> 399 
+<a id='L400' name='L400'></a> 400         <em class='comment'>/*</em>
+<a id='L401' name='L401'></a> 401 <em class='comment'>         * This actually does it. See exception-*.S.</em>
+<a id='L402' name='L402'></a> 402 <em class='comment'>         */</em>
+<a id='L403' name='L403'></a> 403         asm_usermode(tf);
+<a id='L404' name='L404'></a> 404 <em class='brace'>}</em>
+<a id='L405' name='L405'></a> 405 
+<a id='L406' name='L406'></a> 406 <em class='comment'>/*</em>
+<a id='L407' name='L407'></a> 407 <em class='comment'> * enter_new_process: go to user mode after loading an executable.</em>
+<a id='L408' name='L408'></a> 408 <em class='comment'> *</em>
+<a id='L409' name='L409'></a> 409 <em class='comment'> * Performs the necessary initialization so that the user program will</em>
+<a id='L410' name='L410'></a> 410 <em class='comment'> * get the arguments supplied in argc/argv (note that argv must be a</em>
+<a id='L411' name='L411'></a> 411 <em class='comment'> * user-level address) and the environment pointer env (ditto), and</em>
+<a id='L412' name='L412'></a> 412 <em class='comment'> * begin executing at the specified entry point. The stack pointer is</em>
+<a id='L413' name='L413'></a> 413 <em class='comment'> * initialized from the stackptr argument. Note that passing argc/argv</em>
+<a id='L414' name='L414'></a> 414 <em class='comment'> * may use additional stack space on some other platforms (but not on</em>
+<a id='L415' name='L415'></a> 415 <em class='comment'> * mips).</em>
+<a id='L416' name='L416'></a> 416 <em class='comment'> *</em>
+<a id='L417' name='L417'></a> 417 <em class='comment'> * Unless you implement execve() that passes environments around, just</em>
+<a id='L418' name='L418'></a> 418 <em class='comment'> * pass NULL for the environment.</em>
+<a id='L419' name='L419'></a> 419 <em class='comment'> *</em>
+<a id='L420' name='L420'></a> 420 <em class='comment'> * Works by creating an ersatz trapframe.</em>
+<a id='L421' name='L421'></a> 421 <em class='comment'> */</em>
+<a id='L422' name='L422'></a> 422 <strong class='reserved'>void</strong>
+<a id='L423' name='L423'></a> 423 <a href='../R/1353.html' title='Multiple referred from 2 places.'>enter_new_process</a>(<strong class='reserved'>int</strong> argc, <a href='../S/190.html#L91' title='Defined at 91 in kern/include/types.h.'>userptr_t</a> argv, <a href='../S/190.html#L91' title='Defined at 91 in kern/include/types.h.'>userptr_t</a> env,
+<a id='L424' name='L424'></a> 424                   <a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a> stack, <a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a> <a href='../S/617.html#L50' title='Defined at 50 in userland/testbin/ctest/ctest.c.'>entry</a>)
+<a id='L425' name='L425'></a> 425 <em class='brace'>{</em>
+<a id='L426' name='L426'></a> 426         <strong class='reserved'>struct</strong> <a href='../S/56.html#L40' title='Defined at 40 in kern/arch/mips/include/trapframe.h.'>trapframe</a> tf;
+<a id='L427' name='L427'></a> 427 
+<a id='L428' name='L428'></a> 428         <a href='../S/27.html#L49' title='Defined at 49 in common/libc/string/bzero.c.'>bzero</a>(&amp;tf, <strong class='reserved'>sizeof</strong>(tf));
+<a id='L429' name='L429'></a> 429 
+<a id='L430' name='L430'></a> 430         tf.tf_status = <a href='../S/52.html#L68' title='Defined at 68 in kern/arch/mips/include/specialreg.h.'>CST_IRQMASK</a> | <a href='../S/52.html#L63' title='Defined at 63 in kern/arch/mips/include/specialreg.h.'>CST_IEp</a> | <a href='../S/52.html#L64' title='Defined at 64 in kern/arch/mips/include/specialreg.h.'>CST_KUp</a>;
+<a id='L431' name='L431'></a> 431         tf.tf_epc = <a href='../S/617.html#L50' title='Defined at 50 in userland/testbin/ctest/ctest.c.'>entry</a>;
+<a id='L432' name='L432'></a> 432         tf.tf_a0 = argc;
+<a id='L433' name='L433'></a> 433         tf.tf_a1 = (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)argv;
+<a id='L434' name='L434'></a> 434         tf.tf_a2 = (<a href='../S/57.html#L44' title='Defined at 44 in kern/arch/mips/include/types.h.'>vaddr_t</a>)env;
+<a id='L435' name='L435'></a> 435         tf.tf_sp = stack;
+<a id='L436' name='L436'></a> 436 
+<a id='L437' name='L437'></a> 437         <a href='../S/61.html#L368' title='Defined at 368 in kern/arch/mips/locore/trap.c.'>mips_usermode</a>(&amp;tf);
+<a id='L438' name='L438'></a> 438 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L74'>[^]</a><a href='#L423'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

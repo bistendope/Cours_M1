@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>PAGE_FRAME</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L146'>PAGE_FRAME</a>        146 kern/arch/mips/vm/dumbvm.c 	faultaddress &amp;= PAGE_FRAME;</span>
+<span class='curline'><a href='../S/69.html#L187'>PAGE_FRAME</a>        187 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_vbase1 &amp; PAGE_FRAME) == as-&gt;as_vbase1);</span>
+<span class='curline'><a href='../S/69.html#L188'>PAGE_FRAME</a>        188 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_pbase1 &amp; PAGE_FRAME) == as-&gt;as_pbase1);</span>
+<span class='curline'><a href='../S/69.html#L189'>PAGE_FRAME</a>        189 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_vbase2 &amp; PAGE_FRAME) == as-&gt;as_vbase2);</span>
+<span class='curline'><a href='../S/69.html#L190'>PAGE_FRAME</a>        190 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_pbase2 &amp; PAGE_FRAME) == as-&gt;as_pbase2);</span>
+<span class='curline'><a href='../S/69.html#L191'>PAGE_FRAME</a>        191 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_stackpbase &amp; PAGE_FRAME) == as-&gt;as_stackpbase);</span>
+<span class='curline'><a href='../S/69.html#L214'>PAGE_FRAME</a>        214 kern/arch/mips/vm/dumbvm.c 	KASSERT((paddr &amp; PAGE_FRAME) == paddr);</span>
+<span class='curline'><a href='../S/69.html#L299'>PAGE_FRAME</a>        299 kern/arch/mips/vm/dumbvm.c 	sz += vaddr &amp; ~(vaddr_t)PAGE_FRAME;</span>
+<span class='curline'><a href='../S/69.html#L300'>PAGE_FRAME</a>        300 kern/arch/mips/vm/dumbvm.c 	vaddr &amp;= PAGE_FRAME;</span>
+<span class='curline'><a href='../S/69.html#L303'>PAGE_FRAME</a>        303 kern/arch/mips/vm/dumbvm.c 	sz = (sz + PAGE_SIZE - 1) &amp; PAGE_FRAME;</span>
+<span class='curline'><a href='../S/239.html#L156'>PAGE_FRAME</a>        156 kern/vm/kmalloc.c #define PR_PAGEADDR(pr)  ((pr)-&gt;pageaddr_and_blocktype &amp; PAGE_FRAME)</span>
+<span class='curline'><a href='../S/239.html#L157'>PAGE_FRAME</a>        157 kern/vm/kmalloc.c #define PR_BLOCKTYPE(pr) ((pr)-&gt;pageaddr_and_blocktype &amp; ~PAGE_FRAME)</span>
+<span class='curline'><a href='../S/239.html#L158'>PAGE_FRAME</a>        158 kern/vm/kmalloc.c #define MKPAB(pa, blk)   (((pa)&amp;PAGE_FRAME) | ((blk) &amp; ~PAGE_FRAME))</span>
+</pre>
+</body>
+</html>

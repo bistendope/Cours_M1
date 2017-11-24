@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>sfs_dinode</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/130.html#L329'>sfs_dinode</a>        329 kern/fs/sfs/sfs_fsops.c 	COMPILE_ASSERT(sizeof(struct sfs_dinode)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/178.html#L56'>sfs_dinode</a>         56 kern/include/sfs.h 	struct sfs_dinode sv_i;		/* copy of on-disk inode */</span>
+<span class='curline'><a href='../S/532.html#L280'>sfs_dinode</a>        280 userland/sbin/dumpsfs/dumpsfs.c traverse(const struct sfs_dinode *sfi, void (*doblock)(uint32_t, uint32_t))</span>
+<span class='curline'><a href='../S/532.html#L329'>sfs_dinode</a>        329 userland/sbin/dumpsfs/dumpsfs.c dumpdir(uint32_t ino, const struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/532.html#L367'>sfs_dinode</a>        367 userland/sbin/dumpsfs/dumpsfs.c recursedir(uint32_t ino, const struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/532.html#L420'>sfs_dinode</a>        420 userland/sbin/dumpsfs/dumpsfs.c dumpfile(uint32_t ino, const struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/532.html#L430'>sfs_dinode</a>        430 userland/sbin/dumpsfs/dumpsfs.c 	struct sfs_dinode sfi;</span>
+<span class='curline'><a href='../S/540.html#L74'>sfs_dinode</a>         74 userland/sbin/mksfs/mksfs.c 	assert(sizeof(struct sfs_dinode)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/540.html#L174'>sfs_dinode</a>        174 userland/sbin/mksfs/mksfs.c 	struct sfs_dinode sfi;</span>
+<span class='curline'><a href='../S/551.html#L239'>sfs_dinode</a>        239 userland/sbin/sfsck/inode.c 	struct sfs_dinode sfi;</span>
+<span class='curline'><a href='../S/556.html#L185'>sfs_dinode</a>        185 userland/sbin/sfsck/pass1.c check_inode_blocks(uint32_t ino, struct sfs_dinode *sfi, int isdir)</span>
+<span class='curline'><a href='../S/556.html#L260'>sfs_dinode</a>        260 userland/sbin/sfsck/pass1.c pass1_inode(uint32_t ino, struct sfs_dinode *sfi, int alreadychanged)</span>
+<span class='curline'><a href='../S/556.html#L362'>sfs_dinode</a>        362 userland/sbin/sfsck/pass1.c 	struct sfs_dinode sfi;</span>
+<span class='curline'><a href='../S/556.html#L407'>sfs_dinode</a>        407 userland/sbin/sfsck/pass1.c 			struct sfs_dinode subsfi;</span>
+<span class='curline'><a href='../S/556.html#L452'>sfs_dinode</a>        452 userland/sbin/sfsck/pass1.c 	struct sfs_dinode sfi;</span>
+<span class='curline'><a href='../S/557.html#L65'>sfs_dinode</a>         65 userland/sbin/sfsck/pass2.c 	struct sfs_dinode sfi;</span>
+<span class='curline'><a href='../S/557.html#L249'>sfs_dinode</a>        249 userland/sbin/sfsck/pass2.c 			struct sfs_dinode subsfi;</span>
+<span class='curline'><a href='../S/561.html#L52'>sfs_dinode</a>         52 userland/sbin/sfsck/sfs.c 	assert(sizeof(struct sfs_dinode)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/561.html#L77'>sfs_dinode</a>         77 userland/sbin/sfsck/sfs.c swapinode(struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/561.html#L162'>sfs_dinode</a>        162 userland/sbin/sfsck/sfs.c bmap(const struct sfs_dinode *sfi, uint32_t fileblock)</span>
+<span class='curline'><a href='../S/561.html#L234'>sfs_dinode</a>        234 userland/sbin/sfsck/sfs.c sfs_readinode(uint32_t ino, struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/561.html#L241'>sfs_dinode</a>        241 userland/sbin/sfsck/sfs.c sfs_writeinode(uint32_t ino, struct sfs_dinode *sfi)</span>
+<span class='curline'><a href='../S/561.html#L298'>sfs_dinode</a>        298 userland/sbin/sfsck/sfs.c sfs_readdir(struct sfs_dinode *sfi, struct sfs_direntry *d, unsigned nd)</span>
+<span class='curline'><a href='../S/561.html#L363'>sfs_dinode</a>        363 userland/sbin/sfsck/sfs.c sfs_writedir(const struct sfs_dinode *sfi, struct sfs_direntry *d, unsigned nd)</span>
+<span class='curline'><a href='../S/562.html#L42'>sfs_dinode</a>         42 userland/sbin/sfsck/sfs.h struct sfs_dinode;</span>
+<span class='curline'><a href='../S/562.html#L61'>sfs_dinode</a>         61 userland/sbin/sfsck/sfs.h void sfs_readinode(uint32_t inum, struct sfs_dinode *sfi);</span>
+<span class='curline'><a href='../S/562.html#L62'>sfs_dinode</a>         62 userland/sbin/sfsck/sfs.h void sfs_writeinode(uint32_t inum, struct sfs_dinode *sfi);</span>
+<span class='curline'><a href='../S/562.html#L69'>sfs_dinode</a>         69 userland/sbin/sfsck/sfs.h void sfs_readdir(struct sfs_dinode *sfi, struct sfs_direntry *d, unsigned nd);</span>
+<span class='curline'><a href='../S/562.html#L70'>sfs_dinode</a>         70 userland/sbin/sfsck/sfs.h void sfs_writedir(const struct sfs_dinode *sfi,</span>
+</pre>
+</body>
+</html>

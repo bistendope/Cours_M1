@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/main/main.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/754.html'>main</a>/main.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L80'>[^]</a><a href='#L209'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L80' title='Defined at 80.'>boot</a></li>
+<li><a href='#L148' title='Defined at 148.'>shutdown</a></li>
+<li><a href='#L172' title='Defined at 172.'>sys_reboot</a></li>
+<li><a href='#L209' title='Defined at 209.'>kmain</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * Main.</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> */</em>
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>kern/errno.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='../I/139.html'>kern/reboot.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>kern/unistd.h</a>&gt;
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='181.html'>spl.h</a>&gt;
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> &lt;<a href='142.html'>clock.h</a>&gt;
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> &lt;<a href='../I/46.html'>thread.h</a>&gt;
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#include</em> &lt;<a href='176.html'>proc.h</a>&gt;
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#include</em> &lt;<a href='../I/36.html'>current.h</a>&gt;
+<a id='L44' name='L44'></a>  44 <em class='sharp'>#include</em> &lt;<a href='184.html'>synch.h</a>&gt;
+<a id='L45' name='L45'></a>  45 <em class='sharp'>#include</em> &lt;<a href='../I/50.html'>vm.h</a>&gt;
+<a id='L46' name='L46'></a>  46 <em class='sharp'>#include</em> &lt;<a href='174.html'>mainbus.h</a>&gt;
+<a id='L47' name='L47'></a>  47 <em class='sharp'>#include</em> &lt;<a href='193.html'>vfs.h</a>&gt;
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#include</em> &lt;<a href='146.html'>device.h</a>&gt;
+<a id='L49' name='L49'></a>  49 <em class='sharp'>#include</em> &lt;<a href='../I/147.html'>syscall.h</a>&gt;
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#include</em> &lt;<a href='../I/166.html'>test.h</a>&gt;
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#include</em> &lt;<a href='192.html'>version.h</a>&gt;
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#include</em> "autoconf.h"  <em class='comment'>// for pseudoconfig</em>
+<a id='L53' name='L53'></a>  53 
+<a id='L54' name='L54'></a>  54 
+<a id='L55' name='L55'></a>  55 <em class='comment'>/*</em>
+<a id='L56' name='L56'></a>  56 <em class='comment'> * These two pieces of data are maintained by the makefiles and build system.</em>
+<a id='L57' name='L57'></a>  57 <em class='comment'> * buildconfig is the name of the config file the kernel was configured with.</em>
+<a id='L58' name='L58'></a>  58 <em class='comment'> * buildversion starts at 1 and is incremented every time you link a kernel.</em>
+<a id='L59' name='L59'></a>  59 <em class='comment'> *</em>
+<a id='L60' name='L60'></a>  60 <em class='comment'> * The purpose is not to show off how many kernels you've linked, but</em>
+<a id='L61' name='L61'></a>  61 <em class='comment'> * to make it easy to make sure that the kernel you just booted is the</em>
+<a id='L62' name='L62'></a>  62 <em class='comment'> * same one you just built.</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'> */</em>
+<a id='L64' name='L64'></a>  64 <strong class='reserved'>extern</strong> <strong class='reserved'>const</strong> <strong class='reserved'>int</strong> buildversion;
+<a id='L65' name='L65'></a>  65 <strong class='reserved'>extern</strong> <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> buildconfig[];
+<a id='L66' name='L66'></a>  66 
+<a id='L67' name='L67'></a>  67 <em class='comment'>/*</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'> * Copyright message for the OS/161 base code.</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> */</em>
+<a id='L70' name='L70'></a>  70 <strong class='reserved'>static</strong> <strong class='reserved'>const</strong> <strong class='reserved'>char</strong> harvard_copyright[] =
+<a id='L71' name='L71'></a>  71     "Copyright (c) 2000, 2001-2005, 2008-2011, 2013, 2014\n"
+<a id='L72' name='L72'></a>  72     "   President and Fellows of Harvard College.  All rights reserved.\n";
+<a id='L73' name='L73'></a>  73 
+<a id='L74' name='L74'></a>  74 
+<a id='L75' name='L75'></a>  75 <em class='comment'>/*</em>
+<a id='L76' name='L76'></a>  76 <em class='comment'> * Initial boot sequence.</em>
+<a id='L77' name='L77'></a>  77 <em class='comment'> */</em>
+<a id='L78' name='L78'></a>  78 <strong class='reserved'>static</strong>
+<a id='L79' name='L79'></a>  79 <strong class='reserved'>void</strong>
+<a id='L80' name='L80'></a>  80 <a href='../S/205.html#L211' title='Referred from 211 in kern/main/main.c.'>boot</a>(<strong class='reserved'>void</strong>)
+<a id='L81' name='L81'></a>  81 <em class='brace'>{</em>
+<a id='L82' name='L82'></a>  82         <em class='comment'>/*</em>
+<a id='L83' name='L83'></a>  83 <em class='comment'>         * The order of these is important!</em>
+<a id='L84' name='L84'></a>  84 <em class='comment'>         * Don't go changing it without thinking about the consequences.</em>
+<a id='L85' name='L85'></a>  85 <em class='comment'>         *</em>
+<a id='L86' name='L86'></a>  86 <em class='comment'>         * Among other things, be aware that console output gets</em>
+<a id='L87' name='L87'></a>  87 <em class='comment'>         * buffered up at first and does not actually appear until</em>
+<a id='L88' name='L88'></a>  88 <em class='comment'>         * mainbus_bootstrap() attaches the console device. This can</em>
+<a id='L89' name='L89'></a>  89 <em class='comment'>         * be remarkably confusing if a bug occurs at this point. So</em>
+<a id='L90' name='L90'></a>  90 <em class='comment'>         * don't put new code before mainbus_bootstrap if you don't</em>
+<a id='L91' name='L91'></a>  91 <em class='comment'>         * absolutely have to.</em>
+<a id='L92' name='L92'></a>  92 <em class='comment'>         *</em>
+<a id='L93' name='L93'></a>  93 <em class='comment'>         * Also note that the buffer for this is only 1k. If you</em>
+<a id='L94' name='L94'></a>  94 <em class='comment'>         * overflow it, the system will crash without printing</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'>         * anything at all. You can make it larger though (it's in</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'>         * dev/generic/console.c).</em>
+<a id='L97' name='L97'></a>  97 <em class='comment'>         */</em>
+<a id='L98' name='L98'></a>  98 
+<a id='L99' name='L99'></a>  99         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("\n");
+<a id='L100' name='L100'></a> 100         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("OS/161 base system version %s\n", <a href='../S/192.html#L37' title='Defined at 37 in kern/include/version.h.'>BASE_VERSION</a>);
+<a id='L101' name='L101'></a> 101         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("%s", harvard_copyright);
+<a id='L102' name='L102'></a> 102         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("\n");
+<a id='L103' name='L103'></a> 103 
+<a id='L104' name='L104'></a> 104         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Put-your-group-name-here's system version %s (%s #%d)\n",
+<a id='L105' name='L105'></a> 105                 <a href='../S/192.html#L42' title='Defined at 42 in kern/include/version.h.'>GROUP_VERSION</a>, buildconfig, buildversion);
+<a id='L106' name='L106'></a> 106         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("\n");
+<a id='L107' name='L107'></a> 107 
+<a id='L108' name='L108'></a> 108         <em class='comment'>/* Early initialization. */</em>
+<a id='L109' name='L109'></a> 109         <a href='../S/70.html#L46' title='Defined at 46 in kern/arch/mips/vm/ram.c.'>ram_bootstrap</a>();
+<a id='L110' name='L110'></a> 110         <a href='../S/208.html#L179' title='Defined at 179 in kern/proc/proc.c.'>proc_bootstrap</a>();
+<a id='L111' name='L111'></a> 111         <a href='../S/227.html#L372' title='Defined at 372 in kern/thread/thread.c.'>thread_bootstrap</a>();
+<a id='L112' name='L112'></a> 112         <a href='../S/222.html#L66' title='Defined at 66 in kern/thread/clock.c.'>hardclock_bootstrap</a>();
+<a id='L113' name='L113'></a> 113         <a href='../S/233.html#L102' title='Defined at 102 in kern/vfs/vfslist.c.'>vfs_bootstrap</a>();
+<a id='L114' name='L114'></a> 114         <a href='../S/239.html#L701' title='Defined at 701 in kern/vm/kmalloc.c.'>kheap_nextgeneration</a>();
+<a id='L115' name='L115'></a> 115 
+<a id='L116' name='L116'></a> 116         <em class='comment'>/* Probe and initialize devices. Interrupts should come on. */</em>
+<a id='L117' name='L117'></a> 117         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Device probe...\n");
+<a id='L118' name='L118'></a> 118         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl &gt; 0);
+<a id='L119' name='L119'></a> 119         <a href='../S/73.html#L87' title='Defined at 87 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_bootstrap</a>();
+<a id='L120' name='L120'></a> 120         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(<a href='../S/145.html#L71' title='Defined at 71 in kern/include/current.h.'>curthread</a>-&gt;t_curspl == 0);
+<a id='L121' name='L121'></a> 121         <em class='comment'>/* Now do pseudo-devices. */</em>
+<a id='L122' name='L122'></a> 122         pseudoconfig();
+<a id='L123' name='L123'></a> 123         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("\n");
+<a id='L124' name='L124'></a> 124         <a href='../S/239.html#L701' title='Defined at 701 in kern/vm/kmalloc.c.'>kheap_nextgeneration</a>();
+<a id='L125' name='L125'></a> 125 
+<a id='L126' name='L126'></a> 126         <em class='comment'>/* Late phase of initialization. */</em>
+<a id='L127' name='L127'></a> 127         <a href='../S/69.html#L68' title='Defined at 68 in kern/arch/mips/vm/dumbvm.c.'>vm_bootstrap</a>();
+<a id='L128' name='L128'></a> 128         <a href='../S/201.html#L65' title='Defined at 65 in kern/lib/kprintf.c.'>kprintf_bootstrap</a>();
+<a id='L129' name='L129'></a> 129         <a href='../S/227.html#L427' title='Defined at 427 in kern/thread/thread.c.'>thread_start_cpus</a>();
+<a id='L130' name='L130'></a> 130 
+<a id='L131' name='L131'></a> 131         <em class='comment'>/* Default bootfs - but ignore failure, in case emu0 doesn't exist */</em>
+<a id='L132' name='L132'></a> 132         <a href='../S/234.html#L71' title='Defined at 71 in kern/vfs/vfslookup.c.'>vfs_setbootfs</a>("emu0");
+<a id='L133' name='L133'></a> 133 
+<a id='L134' name='L134'></a> 134         <a href='../S/239.html#L701' title='Defined at 701 in kern/vm/kmalloc.c.'>kheap_nextgeneration</a>();
+<a id='L135' name='L135'></a> 135 
+<a id='L136' name='L136'></a> 136         <em class='comment'>/*</em>
+<a id='L137' name='L137'></a> 137 <em class='comment'>         * Make sure various things aren't screwed up.</em>
+<a id='L138' name='L138'></a> 138 <em class='comment'>         */</em>
+<a id='L139' name='L139'></a> 139         <a href='../S/141.html#L42' title='Defined at 42 in kern/include/cdefs.h.'>COMPILE_ASSERT</a>(<strong class='reserved'>sizeof</strong>(<a href='../S/190.html#L91' title='Defined at 91 in kern/include/types.h.'>userptr_t</a>) == <strong class='reserved'>sizeof</strong>(<strong class='reserved'>char</strong> *));
+<a id='L140' name='L140'></a> 140         <a href='../S/141.html#L42' title='Defined at 42 in kern/include/cdefs.h.'>COMPILE_ASSERT</a>(<strong class='reserved'>sizeof</strong>(*(<a href='../S/190.html#L91' title='Defined at 91 in kern/include/types.h.'>userptr_t</a>)0) == <strong class='reserved'>sizeof</strong>(<strong class='reserved'>char</strong>));
+<a id='L141' name='L141'></a> 141 <em class='brace'>}</em>
+<a id='L142' name='L142'></a> 142 
+<a id='L143' name='L143'></a> 143 <em class='comment'>/*</em>
+<a id='L144' name='L144'></a> 144 <em class='comment'> * Shutdown sequence. Opposite to boot().</em>
+<a id='L145' name='L145'></a> 145 <em class='comment'> */</em>
+<a id='L146' name='L146'></a> 146 <strong class='reserved'>static</strong>
+<a id='L147' name='L147'></a> 147 <strong class='reserved'>void</strong>
+<a id='L148' name='L148'></a> 148 <a href='../S/205.html#L183' title='Referred from 183 in kern/main/main.c.'>shutdown</a>(<strong class='reserved'>void</strong>)
+<a id='L149' name='L149'></a> 149 <em class='brace'>{</em>
+<a id='L150' name='L150'></a> 150 
+<a id='L151' name='L151'></a> 151         <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Shutting down.\n");
+<a id='L152' name='L152'></a> 152 
+<a id='L153' name='L153'></a> 153         <a href='../S/234.html#L115' title='Defined at 115 in kern/vfs/vfslookup.c.'>vfs_clearbootfs</a>();
+<a id='L154' name='L154'></a> 154         <a href='../S/231.html#L103' title='Defined at 103 in kern/vfs/vfscwd.c.'>vfs_clearcurdir</a>();
+<a id='L155' name='L155'></a> 155         <a href='../S/233.html#L721' title='Defined at 721 in kern/vfs/vfslist.c.'>vfs_unmountall</a>();
+<a id='L156' name='L156'></a> 156 
+<a id='L157' name='L157'></a> 157         <a href='../S/227.html#L357' title='Defined at 357 in kern/thread/thread.c.'>thread_shutdown</a>();
+<a id='L158' name='L158'></a> 158 
+<a id='L159' name='L159'></a> 159         <a href='../S/181.html#L103' title='Defined at 103 in kern/include/spl.h.'>splhigh</a>();
+<a id='L160' name='L160'></a> 160 <em class='brace'>}</em>
+<a id='L161' name='L161'></a> 161 
+<a id='L162' name='L162'></a> 162 <em class='comment'>/*****************************************/</em>
+<a id='L163' name='L163'></a> 163 
+<a id='L164' name='L164'></a> 164 <em class='comment'>/*</em>
+<a id='L165' name='L165'></a> 165 <em class='comment'> * reboot() system call.</em>
+<a id='L166' name='L166'></a> 166 <em class='comment'> *</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'> * Note: this is here because it's directly related to the code above,</em>
+<a id='L168' name='L168'></a> 168 <em class='comment'> * not because this is where system call code should go. Other syscall</em>
+<a id='L169' name='L169'></a> 169 <em class='comment'> * code should probably live in the "syscall" directory.</em>
+<a id='L170' name='L170'></a> 170 <em class='comment'> */</em>
+<a id='L171' name='L171'></a> 171 <strong class='reserved'>int</strong>
+<a id='L172' name='L172'></a> 172 <a href='../R/2116.html' title='Multiple referred from 3 places.'>sys_reboot</a>(<strong class='reserved'>int</strong> code)
+<a id='L173' name='L173'></a> 173 <em class='brace'>{</em>
+<a id='L174' name='L174'></a> 174         <strong class='reserved'>switch</strong> (code) <em class='brace'>{</em>
+<a id='L175' name='L175'></a> 175             <strong class='reserved'>case</strong> <a href='../S/159.html#L40' title='Defined at 40 in kern/include/kern/reboot.h.'>RB_REBOOT</a>:
+<a id='L176' name='L176'></a> 176             <strong class='reserved'>case</strong> <a href='../S/159.html#L41' title='Defined at 41 in kern/include/kern/reboot.h.'>RB_HALT</a>:
+<a id='L177' name='L177'></a> 177             <strong class='reserved'>case</strong> <a href='../S/159.html#L42' title='Defined at 42 in kern/include/kern/reboot.h.'>RB_POWEROFF</a>:
+<a id='L178' name='L178'></a> 178                 <strong class='reserved'>break</strong>;
+<a id='L179' name='L179'></a> 179             <strong class='reserved'>default</strong>:
+<a id='L180' name='L180'></a> 180                 <strong class='reserved'>return</strong> <a href='../S/154.html#L52' title='Defined at 52 in kern/include/kern/errno.h.'>EINVAL</a>;
+<a id='L181' name='L181'></a> 181         <em class='brace'>}</em>
+<a id='L182' name='L182'></a> 182 
+<a id='L183' name='L183'></a> 183         <a href='../S/205.html#L148' title='Defined at 148 in kern/main/main.c.'>shutdown</a>();
+<a id='L184' name='L184'></a> 184 
+<a id='L185' name='L185'></a> 185         <strong class='reserved'>switch</strong> (code) <em class='brace'>{</em>
+<a id='L186' name='L186'></a> 186             <strong class='reserved'>case</strong> <a href='../S/159.html#L41' title='Defined at 41 in kern/include/kern/reboot.h.'>RB_HALT</a>:
+<a id='L187' name='L187'></a> 187                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("The system is halted.\n");
+<a id='L188' name='L188'></a> 188                 <a href='../S/73.html#L226' title='Defined at 226 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_halt</a>();
+<a id='L189' name='L189'></a> 189                 <strong class='reserved'>break</strong>;
+<a id='L190' name='L190'></a> 190             <strong class='reserved'>case</strong> <a href='../S/159.html#L40' title='Defined at 40 in kern/include/kern/reboot.h.'>RB_REBOOT</a>:
+<a id='L191' name='L191'></a> 191                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("Rebooting...\n");
+<a id='L192' name='L192'></a> 192                 <a href='../S/73.html#L207' title='Defined at 207 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_reboot</a>();
+<a id='L193' name='L193'></a> 193                 <strong class='reserved'>break</strong>;
+<a id='L194' name='L194'></a> 194             <strong class='reserved'>case</strong> <a href='../S/159.html#L42' title='Defined at 42 in kern/include/kern/reboot.h.'>RB_POWEROFF</a>:
+<a id='L195' name='L195'></a> 195                 <a href='../S/201.html#L96' title='Defined at 96 in kern/lib/kprintf.c.'>kprintf</a>("The system is halted.\n");
+<a id='L196' name='L196'></a> 196                 <a href='../S/73.html#L192' title='Defined at 192 in kern/arch/sys161/dev/lamebus_machdep.c.'>mainbus_poweroff</a>();
+<a id='L197' name='L197'></a> 197                 <strong class='reserved'>break</strong>;
+<a id='L198' name='L198'></a> 198         <em class='brace'>}</em>
+<a id='L199' name='L199'></a> 199 
+<a id='L200' name='L200'></a> 200         <a href='../S/201.html#L134' title='Defined at 134 in kern/lib/kprintf.c.'>panic</a>("reboot operation failed\n");
+<a id='L201' name='L201'></a> 201         <strong class='reserved'>return</strong> 0;
+<a id='L202' name='L202'></a> 202 <em class='brace'>}</em>
+<a id='L203' name='L203'></a> 203 
+<a id='L204' name='L204'></a> 204 <em class='comment'>/*</em>
+<a id='L205' name='L205'></a> 205 <em class='comment'> * Kernel main. Boot up, then fork the menu thread; wait for a reboot</em>
+<a id='L206' name='L206'></a> 206 <em class='comment'> * request, and then shut down.</em>
+<a id='L207' name='L207'></a> 207 <em class='comment'> */</em>
+<a id='L208' name='L208'></a> 208 <strong class='reserved'>void</strong>
+<a id='L209' name='L209'></a> 209 <a href='../S/186.html#L105' title='Referred from 105 in kern/include/test.h.'>kmain</a>(<strong class='reserved'>char</strong> *arguments)
+<a id='L210' name='L210'></a> 210 <em class='brace'>{</em>
+<a id='L211' name='L211'></a> 211         <a href='../S/205.html#L80' title='Defined at 80 in kern/main/main.c.'>boot</a>();
+<a id='L212' name='L212'></a> 212 
+<a id='L213' name='L213'></a> 213         <a href='../D/2056.html' title='Multiple defined in 2 places.'>menu</a>(arguments);
+<a id='L214' name='L214'></a> 214 
+<a id='L215' name='L215'></a> 215         <em class='comment'>/* Should not get here */</em>
+<a id='L216' name='L216'></a> 216 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L80'>[^]</a><a href='#L209'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

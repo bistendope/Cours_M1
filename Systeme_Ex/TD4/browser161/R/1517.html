@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>isdir</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/96.html#L414'>isdir</a>             414 kern/dev/lamebus/emu.c static int emufs_loadvnode(struct emufs_fs *ef, uint32_t handle, int isdir,</span>
+<span class='curline'><a href='../S/96.html#L744'>isdir</a>             744 kern/dev/lamebus/emu.c 	int isdir;</span>
+<span class='curline'><a href='../S/96.html#L747'>isdir</a>             747 kern/dev/lamebus/emu.c 			  &amp;handle, &amp;isdir);</span>
+<span class='curline'><a href='../S/96.html#L752'>isdir</a>             752 kern/dev/lamebus/emu.c 	result = emufs_loadvnode(ef, handle, isdir, &amp;newguy);</span>
+<span class='curline'><a href='../S/96.html#L774'>isdir</a>             774 kern/dev/lamebus/emu.c 	int isdir;</span>
+<span class='curline'><a href='../S/96.html#L777'>isdir</a>             777 kern/dev/lamebus/emu.c 			  &amp;handle, &amp;isdir);</span>
+<span class='curline'><a href='../S/96.html#L782'>isdir</a>             782 kern/dev/lamebus/emu.c 	result = emufs_loadvnode(ef, handle, isdir, &amp;newguy);</span>
+<span class='curline'><a href='../S/96.html#L1145'>isdir</a>            1145 kern/dev/lamebus/emu.c emufs_loadvnode(struct emufs_fs *ef, uint32_t handle, int isdir,</span>
+<span class='curline'><a href='../S/96.html#L1183'>isdir</a>            1183 kern/dev/lamebus/emu.c 	result = vnode_init(&amp;ev-&gt;ev_v, isdir ? &amp;emufs_dirops : &amp;emufs_fileops,</span>
+<span class='curline'><a href='../S/448.html#L270'>isdir</a>             270 userland/bin/ls/ls.c 		if (!isdir(newpath)) {</span>
+<span class='curline'><a href='../S/448.html#L290'>isdir</a>             290 userland/bin/ls/ls.c 	if (!dopt &amp;&amp; isdir(path)) {</span>
+<span class='curline'><a href='../S/556.html#L185'>isdir</a>             185 userland/sbin/sfsck/pass1.c check_inode_blocks(uint32_t ino, struct sfs_dinode *sfi, int isdir)</span>
+<span class='curline'><a href='../S/556.html#L199'>isdir</a>             199 userland/sbin/sfsck/pass1.c 	ibs.usagetype = isdir ? B_DIRDATA : B_DATA;</span>
+<span class='curline'><a href='../S/556.html#L263'>isdir</a>             263 userland/sbin/sfsck/pass1.c 	int isdir = sfi-&gt;sfi_type == SFS_TYPE_DIR;</span>
+<span class='curline'><a href='../S/556.html#L280'>isdir</a>             280 userland/sbin/sfsck/pass1.c 	if (check_inode_blocks(ino, sfi, isdir)) {</span>
+<span class='curline'><a href='../S/642.html#L208'>isdir</a>             208 userland/testbin/frack/check.c 	unsigned isdir;</span>
+<span class='curline'><a href='../S/642.html#L506'>isdir</a>             506 userland/testbin/frack/check.c 	ret-&gt;isdir = 0;</span>
+<span class='curline'><a href='../S/642.html#L520'>isdir</a>             520 userland/testbin/frack/check.c 	ret-&gt;isdir = 1;</span>
+<span class='curline'><a href='../S/642.html#L547'>isdir</a>             547 userland/testbin/frack/check.c 	if (obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L559'>isdir</a>             559 userland/testbin/frack/check.c 	if (obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L615'>isdir</a>             615 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L636'>isdir</a>             636 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L658'>isdir</a>             658 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L677'>isdir</a>             677 userland/testbin/frack/check.c findsub(struct fsobject *obj, unsigned isdir, unsigned id)</span>
+<span class='curline'><a href='../S/642.html#L684'>isdir</a>             684 userland/testbin/frack/check.c 	objid = obj-&gt;isdir ? obj-&gt;obj_dir.identity : obj-&gt;obj_file.identity;</span>
+<span class='curline'><a href='../S/642.html#L685'>isdir</a>             685 userland/testbin/frack/check.c 	if (obj-&gt;isdir == isdir &amp;&amp; objid == id) {</span>
+<span class='curline'><a href='../S/642.html#L690'>isdir</a>             690 userland/testbin/frack/check.c 	if (!obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L695'>isdir</a>             695 userland/testbin/frack/check.c 		ret = findsub(de-&gt;obj, isdir, id);</span>
+<span class='curline'><a href='../S/642.html#L749'>isdir</a>             749 userland/testbin/frack/check.c 	assert(rootdir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L756'>isdir</a>             756 userland/testbin/frack/check.c 		assert(rootdir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L828'>isdir</a>             828 userland/testbin/frack/check.c 		assert(obj2-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L843'>isdir</a>             843 userland/testbin/frack/check.c 		assert(!obj2-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L856'>isdir</a>             856 userland/testbin/frack/check.c 		assert(!obj2-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L871'>isdir</a>             871 userland/testbin/frack/check.c 		assert(!obj2-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L893'>isdir</a>             893 userland/testbin/frack/check.c 		assert(obj2-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L1480'>isdir</a>            1480 userland/testbin/frack/check.c 	if (de-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L1500'>isdir</a>            1500 userland/testbin/frack/check.c 	if (!de-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L1518'>isdir</a>            1518 userland/testbin/frack/check.c 	assert(obj-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L1519'>isdir</a>            1519 userland/testbin/frack/check.c 	assert(obj-&gt;obj_dir.parent-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L1536'>isdir</a>            1536 userland/testbin/frack/check.c 	return de != NULL &amp;&amp; !de-&gt;obj-&gt;isdir;</span>
+<span class='curline'><a href='../S/642.html#L1552'>isdir</a>            1552 userland/testbin/frack/check.c 	return de != NULL &amp;&amp; de-&gt;obj-&gt;isdir;</span>
+<span class='curline'><a href='../S/642.html#L1569'>isdir</a>            1569 userland/testbin/frack/check.c 	assert(!obj-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2039'>isdir</a>            2039 userland/testbin/frack/check.c 	if (obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2058'>isdir</a>            2058 userland/testbin/frack/check.c 	if (obja-&gt;isdir != objb-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2066'>isdir</a>            2066 userland/testbin/frack/check.c 		if (obja-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2069'>isdir</a>            2069 userland/testbin/frack/check.c 		assert(objb-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2073'>isdir</a>            2073 userland/testbin/frack/check.c 	if (!obja-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2077'>isdir</a>            2077 userland/testbin/frack/check.c 		assert(!objb-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2094'>isdir</a>            2094 userland/testbin/frack/check.c 	assert(obja-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2095'>isdir</a>            2095 userland/testbin/frack/check.c 	assert(objb-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2109'>isdir</a>            2109 userland/testbin/frack/check.c 			if (enta-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2129'>isdir</a>            2129 userland/testbin/frack/check.c 			if (entb-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2168'>isdir</a>            2168 userland/testbin/frack/check.c 	assert(obja-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2169'>isdir</a>            2169 userland/testbin/frack/check.c 	assert(objb-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2178'>isdir</a>            2178 userland/testbin/frack/check.c 				if (enta-&gt;obj-&gt;isdir &amp;&amp;</span>
+<span class='curline'><a href='../S/642.html#L2179'>isdir</a>            2179 userland/testbin/frack/check.c 				    !entb-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2184'>isdir</a>            2184 userland/testbin/frack/check.c 				else if (!enta-&gt;obj-&gt;isdir &amp;&amp;</span>
+<span class='curline'><a href='../S/642.html#L2185'>isdir</a>            2185 userland/testbin/frack/check.c 					 entb-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2190'>isdir</a>            2190 userland/testbin/frack/check.c 				else if (!enta-&gt;obj-&gt;isdir &amp;&amp;</span>
+<span class='curline'><a href='../S/642.html#L2191'>isdir</a>            2191 userland/testbin/frack/check.c 					 !entb-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2219'>isdir</a>            2219 userland/testbin/frack/check.c 			if (enta-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2242'>isdir</a>            2242 userland/testbin/frack/check.c 			if (entb-&gt;obj-&gt;isdir) {</span>
+<span class='curline'><a href='../S/642.html#L2646'>isdir</a>            2646 userland/testbin/frack/check.c 	assert(!file-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2780'>isdir</a>            2780 userland/testbin/frack/check.c 	assert(dir-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2783'>isdir</a>            2783 userland/testbin/frack/check.c 		if (de-&gt;obj-&gt;isdir) {</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>SFS_BITSPERBLOCK</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/162.html#L60'>SFS_BITSPERBLOCK</a>   60 kern/include/kern/sfs.h #define SFS_FREEMAPBITS(nblocks) SFS_ROUNDUP(nblocks, SFS_BITSPERBLOCK)</span>
+<span class='curline'><a href='../S/162.html#L63'>SFS_BITSPERBLOCK</a>   63 kern/include/kern/sfs.h #define SFS_FREEMAPBLOCKS(nblocks)  (SFS_FREEMAPBITS(nblocks)/SFS_BITSPERBLOCK)</span>
+<span class='curline'><a href='../S/532.html#L192'>SFS_BITSPERBLOCK</a>  192 userland/sbin/dumpsfs/dumpsfs.c 		       i*SFS_BITSPERBLOCK, (i+1)*SFS_BITSPERBLOCK - 1,</span>
+<span class='curline'><a href='../S/532.html#L193'>SFS_BITSPERBLOCK</a>  193 userland/sbin/dumpsfs/dumpsfs.c 		       i*SFS_BITSPERBLOCK, (i+1)*SFS_BITSPERBLOCK - 1);</span>
+<span class='curline'><a href='../S/532.html#L197'>SFS_BITSPERBLOCK</a>  197 userland/sbin/dumpsfs/dumpsfs.c 					 i*SFS_BITSPERBLOCK + j*8);</span>
+<span class='curline'><a href='../S/532.html#L201'>SFS_BITSPERBLOCK</a>  201 userland/sbin/dumpsfs/dumpsfs.c 				bn = i*SFS_BITSPERBLOCK + j*8 + k;</span>
+<span class='curline'><a href='../S/548.html#L72'>SFS_BITSPERBLOCK</a>   72 userland/sbin/sfsck/freemap.c 	for (i=fsblocks; i &lt; mapblocks*SFS_BITSPERBLOCK; i++) {</span>
+<span class='curline'><a href='../S/548.html#L210'>SFS_BITSPERBLOCK</a>  210 userland/sbin/sfsck/freemap.c 			blocknum = mapblock*SFS_BITSPERBLOCK +</span>
+</pre>
+</body>
+</html>

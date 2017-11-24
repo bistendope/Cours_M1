@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kmalloc</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/69.html#L240'>kmalloc</a>           240 kern/arch/mips/vm/dumbvm.c 	struct addrspace *as = kmalloc(sizeof(struct addrspace));</span>
+<span class='curline'><a href='../S/86.html#L318'>kmalloc</a>           318 kern/dev/generic/console.c 	dev = kmalloc(sizeof(*dev));</span>
+<span class='curline'><a href='../S/92.html#L44'>kmalloc</a>            44 kern/dev/lamebus/beep_ltimer.c 	struct beep_softc *bs = kmalloc(sizeof(struct beep_softc));</span>
+<span class='curline'><a href='../S/93.html#L44'>kmalloc</a>            44 kern/dev/lamebus/con_lscreen.c 	struct con_softc *cs = kmalloc(sizeof(struct con_softc));</span>
+<span class='curline'><a href='../S/94.html#L44'>kmalloc</a>            44 kern/dev/lamebus/con_lser.c 	struct con_softc *cs = kmalloc(sizeof(struct con_softc));</span>
+<span class='curline'><a href='../S/96.html#L1174'>kmalloc</a>          1174 kern/dev/lamebus/emu.c 	ev = kmalloc(sizeof(struct emufs_vnode));</span>
+<span class='curline'><a href='../S/96.html#L1297'>kmalloc</a>          1297 kern/dev/lamebus/emu.c 	ef = kmalloc(sizeof(struct emufs_fs));</span>
+<span class='curline'><a href='../S/98.html#L53'>kmalloc</a>            53 kern/dev/lamebus/emu_att.c 	es = kmalloc(sizeof(struct emu_softc));</span>
+<span class='curline'><a href='../S/99.html#L645'>kmalloc</a>           645 kern/dev/lamebus/lamebus.c 	lamebus = kmalloc(sizeof(struct lamebus_softc));</span>
+<span class='curline'><a href='../S/103.html#L53'>kmalloc</a>            53 kern/dev/lamebus/lhd_att.c 	lh = kmalloc(sizeof(struct lhd_softc));</span>
+<span class='curline'><a href='../S/108.html#L49'>kmalloc</a>            49 kern/dev/lamebus/lrandom_att.c 	lr = kmalloc(sizeof(struct lrandom_softc));</span>
+<span class='curline'><a href='../S/111.html#L55'>kmalloc</a>            55 kern/dev/lamebus/lscreen_att.c 	ls = kmalloc(sizeof(struct lscreen_softc));</span>
+<span class='curline'><a href='../S/114.html#L49'>kmalloc</a>            49 kern/dev/lamebus/lser_att.c 	ls = kmalloc(sizeof(struct lser_softc));</span>
+<span class='curline'><a href='../S/117.html#L53'>kmalloc</a>            53 kern/dev/lamebus/ltimer_att.c 	lt = kmalloc(sizeof(struct ltimer_softc));</span>
+<span class='curline'><a href='../S/120.html#L54'>kmalloc</a>            54 kern/dev/lamebus/ltrace_att.c 	lt = kmalloc(sizeof(struct ltrace_softc));</span>
+<span class='curline'><a href='../S/121.html#L44'>kmalloc</a>            44 kern/dev/lamebus/random_lrandom.c 	struct random_softc *rs = kmalloc(sizeof(struct random_softc));</span>
+<span class='curline'><a href='../S/122.html#L54'>kmalloc</a>            54 kern/dev/lamebus/rtclock_ltimer.c 	struct rtclock_softc *rtc = kmalloc(sizeof(struct rtclock_softc));</span>
+<span class='curline'><a href='../S/124.html#L163'>kmalloc</a>           163 kern/fs/semfs/semfs_fsops.c 	semfs = kmalloc(sizeof(*semfs));</span>
+<span class='curline'><a href='../S/125.html#L53'>kmalloc</a>            53 kern/fs/semfs/semfs_obj.c 	sem = kmalloc(sizeof(*sem));</span>
+<span class='curline'><a href='../S/125.html#L124'>kmalloc</a>           124 kern/fs/semfs/semfs_obj.c 	dent = kmalloc(sizeof(*dent));</span>
+<span class='curline'><a href='../S/126.html#L732'>kmalloc</a>           732 kern/fs/semfs/semfs_vnops.c 	semv = kmalloc(sizeof(*semv));</span>
+<span class='curline'><a href='../S/130.html#L333'>kmalloc</a>           333 kern/fs/sfs/sfs_fsops.c 	sfs = kmalloc(sizeof(struct sfs_fs));</span>
+<span class='curline'><a href='../S/131.html#L187'>kmalloc</a>           187 kern/fs/sfs/sfs_inode.c 	sv = kmalloc(sizeof(struct sfs_vnode));</span>
+<span class='curline'><a href='../S/139.html#L189'>kmalloc</a>           189 kern/include/array.h 		struct ARRAY *a = kmalloc(sizeof(*a));		\</span>
+<span class='curline'><a href='../S/172.html#L129'>kmalloc</a>           129 kern/include/lib.h void *kmalloc(size_t size);</span>
+<span class='curline'><a href='../S/197.html#L42'>kmalloc</a>            42 kern/lib/array.c 	a = kmalloc(sizeof(*a));</span>
+<span class='curline'><a href='../S/197.html#L98'>kmalloc</a>            98 kern/lib/array.c 		newptr = kmalloc(newmax*sizeof(*a-&gt;v));</span>
+<span class='curline'><a href='../S/198.html#L63'>kmalloc</a>            63 kern/lib/bitmap.c         b = kmalloc(sizeof(struct bitmap));</span>
+<span class='curline'><a href='../S/198.html#L67'>kmalloc</a>            67 kern/lib/bitmap.c         b-&gt;v = kmalloc(words*sizeof(WORD_TYPE));</span>
+<span class='curline'><a href='../S/202.html#L42'>kmalloc</a>            42 kern/lib/misc.c 	z = kmalloc(strlen(s)+1);</span>
+<span class='curline'><a href='../S/208.html#L66'>kmalloc</a>            66 kern/proc/proc.c 	proc = kmalloc(sizeof(*proc));</span>
+<span class='curline'><a href='../S/215.html#L72'>kmalloc</a>            72 kern/test/kmalloctest.c 		ptr = kmalloc(ITEMSIZE);</span>
+<span class='curline'><a href='../S/215.html#L204'>kmalloc</a>           204 kern/test/kmalloctest.c 	ptrblocks = kmalloc(numptrblocks * sizeof(ptrblocks[0]));</span>
+<span class='curline'><a href='../S/215.html#L210'>kmalloc</a>           210 kern/test/kmalloctest.c 		ptrblocks[i] = kmalloc(blocksize);</span>
+<span class='curline'><a href='../S/215.html#L223'>kmalloc</a>           223 kern/test/kmalloctest.c 		ptr = kmalloc(cursize);</span>
+<span class='curline'><a href='../S/215.html#L321'>kmalloc</a>           321 kern/test/kmalloctest.c 		ptrs[p] = kmalloc(sizes[p] * PAGE_SIZE);</span>
+<span class='curline'><a href='../S/219.html#L63'>kmalloc</a>            63 kern/test/threadlisttest.c 	t = kmalloc(sizeof(*t));</span>
+<span class='curline'><a href='../S/221.html#L175'>kmalloc</a>           175 kern/test/tt3.c 	m1 = kmalloc(sizeof(struct matrix));</span>
+<span class='curline'><a href='../S/221.html#L177'>kmalloc</a>           177 kern/test/tt3.c 	m2 = kmalloc(sizeof(struct matrix));</span>
+<span class='curline'><a href='../S/221.html#L179'>kmalloc</a>           179 kern/test/tt3.c 	m3 = kmalloc(sizeof(struct matrix));</span>
+<span class='curline'><a href='../S/226.html#L52'>kmalloc</a>            52 kern/thread/synch.c         sem = kmalloc(sizeof(*sem));</span>
+<span class='curline'><a href='../S/226.html#L146'>kmalloc</a>           146 kern/thread/synch.c         lock = kmalloc(sizeof(*lock));</span>
+<span class='curline'><a href='../S/226.html#L220'>kmalloc</a>           220 kern/thread/synch.c         cv = kmalloc(sizeof(*cv));</span>
+<span class='curline'><a href='../S/227.html#L123'>kmalloc</a>           123 kern/thread/thread.c 	thread = kmalloc(sizeof(*thread));</span>
+<span class='curline'><a href='../S/227.html#L170'>kmalloc</a>           170 kern/thread/thread.c 	c = kmalloc(sizeof(*c));</span>
+<span class='curline'><a href='../S/227.html#L213'>kmalloc</a>           213 kern/thread/thread.c 		c-&gt;c_curthread-&gt;t_stack = kmalloc(STACK_SIZE);</span>
+<span class='curline'><a href='../S/227.html#L509'>kmalloc</a>           509 kern/thread/thread.c 	newthread-&gt;t_stack = kmalloc(STACK_SIZE);</span>
+<span class='curline'><a href='../S/227.html#L971'>kmalloc</a>           971 kern/thread/thread.c 	wc = kmalloc(sizeof(*wc));</span>
+<span class='curline'><a href='../S/229.html#L362'>kmalloc</a>           362 kern/vfs/device.c 	v = kmalloc(sizeof(struct vnode));</span>
+<span class='curline'><a href='../S/230.html#L106'>kmalloc</a>           106 kern/vfs/devnull.c 	dev = kmalloc(sizeof(*dev));</span>
+<span class='curline'><a href='../S/233.html#L311'>kmalloc</a>           311 kern/vfs/vfslist.c 	char *s = kmalloc(strlen(name)+3+1);</span>
+<span class='curline'><a href='../S/233.html#L425'>kmalloc</a>           425 kern/vfs/vfslist.c 	kd = kmalloc(sizeof(struct knowndev));</span>
+<span class='curline'><a href='../S/237.html#L48'>kmalloc</a>            48 kern/vm/addrspace.c 	as = kmalloc(sizeof(struct addrspace));</span>
+</pre>
+</body>
+</html>

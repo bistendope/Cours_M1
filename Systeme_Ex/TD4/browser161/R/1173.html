@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>curcpu</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/44.html#L71'>curcpu</a>             71 kern/arch/mips/include/current.h #define INIT_CURCPU(cpu, thread) (curthread = (thread), curcpu = (cpu))</span>
+<span class='curline'><a href='../S/61.html#L335'>curcpu</a>            335 kern/arch/mips/locore/trap.c 	cputhreads[curcpu-&gt;c_number] = (vaddr_t)curthread;</span>
+<span class='curline'><a href='../S/61.html#L336'>curcpu</a>            336 kern/arch/mips/locore/trap.c 	cpustacks[curcpu-&gt;c_number] = (vaddr_t)curthread-&gt;t_stack + STACK_SIZE;</span>
+<span class='curline'><a href='../S/61.html#L347'>curcpu</a>            347 kern/arch/mips/locore/trap.c 	KASSERT(SAME_STACK(cpustacks[curcpu-&gt;c_number]-1, (vaddr_t)tf));</span>
+<span class='curline'><a href='../S/61.html#L380'>curcpu</a>            380 kern/arch/mips/locore/trap.c 	cputhreads[curcpu-&gt;c_number] = (vaddr_t)curthread;</span>
+<span class='curline'><a href='../S/61.html#L381'>curcpu</a>            381 kern/arch/mips/locore/trap.c 	cpustacks[curcpu-&gt;c_number] = (vaddr_t)curthread-&gt;t_stack + STACK_SIZE;</span>
+<span class='curline'><a href='../S/61.html#L398'>curcpu</a>            398 kern/arch/mips/locore/trap.c 	KASSERT(SAME_STACK(cpustacks[curcpu-&gt;c_number]-1, (vaddr_t)tf));</span>
+<span class='curline'><a href='../S/69.html#L86'>curcpu</a>             86 kern/arch/mips/vm/dumbvm.c 		KASSERT(curcpu-&gt;c_spinlocks == 0);</span>
+<span class='curline'><a href='../S/73.html#L313'>curcpu</a>            313 kern/arch/sys161/dev/lamebus_machdep.c 		lamebus_clear_ipi(lamebus, curcpu);</span>
+<span class='curline'><a href='../S/86.html#L210'>curcpu</a>            210 kern/dev/generic/console.c 		 curcpu-&gt;c_spinlocks &gt; 0) {</span>
+<span class='curline'><a href='../S/99.html#L156'>curcpu</a>            156 kern/dev/lamebus/lamebus.c 				curcpu-&gt;c_hardware_number = i;</span>
+<span class='curline'><a href='../S/99.html#L473'>curcpu</a>            473 kern/dev/lamebus/lamebus.c 			curcpu-&gt;c_number);</span>
+<span class='curline'><a href='../S/145.html#L71'>curcpu</a>             71 kern/include/current.h #define curthread curcpu-&gt;c_curthread</span>
+<span class='curline'><a href='../S/145.html#L72'>curcpu</a>             72 kern/include/current.h #define CURCPU_EXISTS() (curcpu != NULL)</span>
+<span class='curline'><a href='../S/201.html#L105'>curcpu</a>            105 kern/lib/kprintf.c 		&amp;&amp; curcpu-&gt;c_spinlocks == 0;</span>
+<span class='curline'><a href='../S/222.html#L99'>curcpu</a>             99 kern/thread/clock.c 	curcpu-&gt;c_hardclocks++;</span>
+<span class='curline'><a href='../S/222.html#L100'>curcpu</a>            100 kern/thread/clock.c 	if ((curcpu-&gt;c_hardclocks % MIGRATE_HARDCLOCKS) == 0) {</span>
+<span class='curline'><a href='../S/222.html#L103'>curcpu</a>            103 kern/thread/clock.c 	if ((curcpu-&gt;c_hardclocks % SCHEDULE_HARDCLOCKS) == 0) {</span>
+<span class='curline'><a href='../S/224.html#L84'>curcpu</a>             84 kern/thread/spinlock.c 		mycpu = curcpu-&gt;c_self;</span>
+<span class='curline'><a href='../S/224.html#L90'>curcpu</a>             90 kern/thread/spinlock.c 		HANGMAN_WAIT(&amp;curcpu-&gt;c_hangman, &amp;splk-&gt;splk_hangman);</span>
+<span class='curline'><a href='../S/224.html#L120'>curcpu</a>            120 kern/thread/spinlock.c 		HANGMAN_ACQUIRE(&amp;curcpu-&gt;c_hangman, &amp;splk-&gt;splk_hangman);</span>
+<span class='curline'><a href='../S/224.html#L132'>curcpu</a>            132 kern/thread/spinlock.c 		KASSERT(splk-&gt;splk_holder == curcpu-&gt;c_self);</span>
+<span class='curline'><a href='../S/224.html#L133'>curcpu</a>            133 kern/thread/spinlock.c 		KASSERT(curcpu-&gt;c_spinlocks &gt; 0);</span>
+<span class='curline'><a href='../S/224.html#L134'>curcpu</a>            134 kern/thread/spinlock.c 		curcpu-&gt;c_spinlocks--;</span>
+<span class='curline'><a href='../S/224.html#L135'>curcpu</a>            135 kern/thread/spinlock.c 		HANGMAN_RELEASE(&amp;curcpu-&gt;c_hangman, &amp;splk-&gt;splk_hangman);</span>
+<span class='curline'><a href='../S/224.html#L155'>curcpu</a>            155 kern/thread/spinlock.c 	return (splk-&gt;splk_holder == curcpu-&gt;c_self);</span>
+<span class='curline'><a href='../S/227.html#L239'>curcpu</a>            239 kern/thread/thread.c 		curthread-&gt;t_cpu = curcpu;</span>
+<span class='curline'><a href='../S/227.html#L240'>curcpu</a>            240 kern/thread/thread.c 		curcpu-&gt;c_curthread = curthread;</span>
+<span class='curline'><a href='../S/227.html#L302'>curcpu</a>            302 kern/thread/thread.c 	while ((z = threadlist_remhead(&amp;curcpu-&gt;c_zombies)) != NULL) {</span>
+<span class='curline'><a href='../S/227.html#L331'>curcpu</a>            331 kern/thread/thread.c 	curcpu-&gt;c_runqueue.tl_count = 0;</span>
+<span class='curline'><a href='../S/227.html#L332'>curcpu</a>            332 kern/thread/thread.c 	curcpu-&gt;c_runqueue.tl_head.tln_next = &amp;curcpu-&gt;c_runqueue.tl_tail;</span>
+<span class='curline'><a href='../S/227.html#L333'>curcpu</a>            333 kern/thread/thread.c 	curcpu-&gt;c_runqueue.tl_tail.tln_prev = &amp;curcpu-&gt;c_runqueue.tl_head;</span>
+<span class='curline'><a href='../S/227.html#L389'>curcpu</a>            389 kern/thread/thread.c 	KASSERT(curcpu != NULL);</span>
+<span class='curline'><a href='../S/227.html#L410'>curcpu</a>            410 kern/thread/thread.c 	KASSERT(curcpu != NULL);</span>
+<span class='curline'><a href='../S/227.html#L412'>curcpu</a>            412 kern/thread/thread.c 	KASSERT(curcpu-&gt;c_number == software_number);</span>
+<span class='curline'><a href='../S/227.html#L471'>curcpu</a>            471 kern/thread/thread.c 	if (targetcpu-&gt;c_isidle &amp;&amp; targetcpu != curcpu-&gt;c_self) {</span>
+<span class='curline'><a href='../S/227.html#L567'>curcpu</a>            567 kern/thread/thread.c 	DEBUGASSERT(curcpu-&gt;c_curthread == curthread);</span>
+<span class='curline'><a href='../S/227.html#L568'>curcpu</a>            568 kern/thread/thread.c 	DEBUGASSERT(curthread-&gt;t_cpu == curcpu-&gt;c_self);</span>
+<span class='curline'><a href='../S/227.html#L579'>curcpu</a>            579 kern/thread/thread.c 	if (curcpu-&gt;c_isidle) {</span>
+<span class='curline'><a href='../S/227.html#L588'>curcpu</a>            588 kern/thread/thread.c 	spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L591'>curcpu</a>            591 kern/thread/thread.c 	if (newstate == S_READY &amp;&amp; threadlist_isempty(&amp;curcpu-&gt;c_runqueue)) {</span>
+<span class='curline'><a href='../S/227.html#L592'>curcpu</a>            592 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L619'>curcpu</a>            619 kern/thread/thread.c 		threadlist_addtail(&amp;curcpu-&gt;c_zombies, cur);</span>
+<span class='curline'><a href='../S/227.html#L642'>curcpu</a>            642 kern/thread/thread.c 	curcpu-&gt;c_isidle = true;</span>
+<span class='curline'><a href='../S/227.html#L644'>curcpu</a>            644 kern/thread/thread.c 		next = threadlist_remhead(&amp;curcpu-&gt;c_runqueue);</span>
+<span class='curline'><a href='../S/227.html#L646'>curcpu</a>            646 kern/thread/thread.c 			spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L648'>curcpu</a>            648 kern/thread/thread.c 			spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L651'>curcpu</a>            651 kern/thread/thread.c 	curcpu-&gt;c_isidle = false;</span>
+<span class='curline'><a href='../S/227.html#L660'>curcpu</a>            660 kern/thread/thread.c 	curcpu-&gt;c_curthread = next;</span>
+<span class='curline'><a href='../S/227.html#L718'>curcpu</a>            718 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L751'>curcpu</a>            751 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L862'>curcpu</a>            862 kern/thread/thread.c 		if (c == curcpu-&gt;c_self) {</span>
+<span class='curline'><a href='../S/227.html#L875'>curcpu</a>            875 kern/thread/thread.c 	spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L877'>curcpu</a>            877 kern/thread/thread.c 		t = threadlist_remtail(&amp;curcpu-&gt;c_runqueue);</span>
+<span class='curline'><a href='../S/227.html#L880'>curcpu</a>            880 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L884'>curcpu</a>            884 kern/thread/thread.c 		if (c == curcpu-&gt;c_self) {</span>
+<span class='curline'><a href='../S/227.html#L922'>curcpu</a>            922 kern/thread/thread.c 			      t-&gt;t_name, curcpu-&gt;c_number, c-&gt;c_number);</span>
+<span class='curline'><a href='../S/227.html#L941'>curcpu</a>            941 kern/thread/thread.c 		spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L943'>curcpu</a>            943 kern/thread/thread.c 			threadlist_addtail(&amp;curcpu-&gt;c_runqueue, t);</span>
+<span class='curline'><a href='../S/227.html#L945'>curcpu</a>            945 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L1009'>curcpu</a>           1009 kern/thread/thread.c 	KASSERT(curcpu-&gt;c_spinlocks == 1);</span>
+<span class='curline'><a href='../S/227.html#L1123'>curcpu</a>           1123 kern/thread/thread.c 		if (c != curcpu-&gt;c_self) {</span>
+<span class='curline'><a href='../S/227.html#L1172'>curcpu</a>           1172 kern/thread/thread.c 	spinlock_acquire(&amp;curcpu-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1173'>curcpu</a>           1173 kern/thread/thread.c 	bits = curcpu-&gt;c_ipi_pending;</span>
+<span class='curline'><a href='../S/227.html#L1177'>curcpu</a>           1177 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1182'>curcpu</a>           1182 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_ipi_lock);</span>
+<span class='curline'><a href='../S/227.html#L1183'>curcpu</a>           1183 kern/thread/thread.c 		spinlock_acquire(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L1184'>curcpu</a>           1184 kern/thread/thread.c 		if (!curcpu-&gt;c_isidle) {</span>
+<span class='curline'><a href='../S/227.html#L1186'>curcpu</a>           1186 kern/thread/thread.c 				curcpu-&gt;c_number);</span>
+<span class='curline'><a href='../S/227.html#L1188'>curcpu</a>           1188 kern/thread/thread.c 		spinlock_release(&amp;curcpu-&gt;c_runqueue_lock);</span>
+<span class='curline'><a href='../S/227.html#L1189'>curcpu</a>           1189 kern/thread/thread.c 		kprintf("cpu%d: offline.\n", curcpu-&gt;c_number);</span>
+<span class='curline'><a href='../S/227.html#L1204'>curcpu</a>           1204 kern/thread/thread.c 		for (i=0; i&lt;curcpu-&gt;c_numshootdown; i++) {</span>
+<span class='curline'><a href='../S/227.html#L1205'>curcpu</a>           1205 kern/thread/thread.c 			vm_tlbshootdown(&amp;curcpu-&gt;c_shootdown[i]);</span>
+<span class='curline'><a href='../S/227.html#L1207'>curcpu</a>           1207 kern/thread/thread.c 		curcpu-&gt;c_numshootdown = 0;</span>
+<span class='curline'><a href='../S/227.html#L1210'>curcpu</a>           1210 kern/thread/thread.c 	curcpu-&gt;c_ipi_pending = 0;</span>
+<span class='curline'><a href='../S/227.html#L1211'>curcpu</a>           1211 kern/thread/thread.c 	spinlock_release(&amp;curcpu-&gt;c_ipi_lock);</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>wchan</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/184.html#L48'>wchan</a>              48 kern/include/synch.h 	struct wchan *sem_wchan;</span>
+<span class='curline'><a href='../S/196.html#L39'>wchan</a>              39 kern/include/wchan.h struct wchan; /* Opaque */</span>
+<span class='curline'><a href='../S/196.html#L46'>wchan</a>              46 kern/include/wchan.h struct wchan *wchan_create(const char *name);</span>
+<span class='curline'><a href='../S/196.html#L51'>wchan</a>              51 kern/include/wchan.h void wchan_destroy(struct wchan *wc);</span>
+<span class='curline'><a href='../S/196.html#L57'>wchan</a>              57 kern/include/wchan.h bool wchan_isempty(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/196.html#L67'>wchan</a>              67 kern/include/wchan.h void wchan_sleep(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/196.html#L76'>wchan</a>              76 kern/include/wchan.h void wchan_wakeone(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/196.html#L77'>wchan</a>              77 kern/include/wchan.h void wchan_wakeall(struct wchan *wc, struct spinlock *lk);</span>
+<span class='curline'><a href='../S/217.html#L323'>wchan</a>             323 kern/test/semunit.c 	struct wchan *wchan;</span>
+<span class='curline'><a href='../S/217.html#L330'>wchan</a>             330 kern/test/semunit.c 	wchan = sem-&gt;sem_wchan;</span>
+<span class='curline'><a href='../S/217.html#L357'>wchan</a>             357 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L400'>wchan</a>             400 kern/test/semunit.c 	struct wchan *wchan;</span>
+<span class='curline'><a href='../S/217.html#L408'>wchan</a>             408 kern/test/semunit.c 	wchan = sem-&gt;sem_wchan;</span>
+<span class='curline'><a href='../S/217.html#L434'>wchan</a>             434 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L482'>wchan</a>             482 kern/test/semunit.c 	struct wchan *wchan;</span>
+<span class='curline'><a href='../S/217.html#L491'>wchan</a>             491 kern/test/semunit.c 	wchan = sem-&gt;sem_wchan;</span>
+<span class='curline'><a href='../S/217.html#L493'>wchan</a>             493 kern/test/semunit.c 	wchan = sem-&gt;sem_wchan;</span>
+<span class='curline'><a href='../S/217.html#L518'>wchan</a>             518 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L682'>wchan</a>             682 kern/test/semunit.c 	struct wchan *wchan;</span>
+<span class='curline'><a href='../S/217.html#L692'>wchan</a>             692 kern/test/semunit.c 	wchan = sem-&gt;sem_wchan;</span>
+<span class='curline'><a href='../S/217.html#L701'>wchan</a>             701 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L739'>wchan</a>             739 kern/test/semunit.c 	struct wchan *wchan;</span>
+<span class='curline'><a href='../S/217.html#L754'>wchan</a>             754 kern/test/semunit.c 	wchan = sem-&gt;sem_wchan;</span>
+<span class='curline'><a href='../S/217.html#L763'>wchan</a>             763 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/221.html#L55'>wchan</a>              55 kern/test/tt3.c static struct wchan *waitchans[NWAITCHANS];</span>
+<span class='curline'><a href='../S/221.html#L92'>wchan</a>              92 kern/test/tt3.c 			struct wchan *wc;</span>
+<span class='curline'><a href='../S/221.html#L126'>wchan</a>             126 kern/test/tt3.c 			struct wchan *wc;</span>
+<span class='curline'><a href='../S/222.html#L59'>wchan</a>              59 kern/thread/clock.c static struct wchan *lbolt;</span>
+<span class='curline'><a href='../S/227.html#L562'>wchan</a>             562 kern/thread/thread.c thread_switch(threadstate_t newstate, struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L966'>wchan</a>             966 kern/thread/thread.c struct wchan *</span>
+<span class='curline'><a href='../S/227.html#L969'>wchan</a>             969 kern/thread/thread.c 	struct wchan *wc;</span>
+<span class='curline'><a href='../S/227.html#L986'>wchan</a>             986 kern/thread/thread.c wchan_destroy(struct wchan *wc)</span>
+<span class='curline'><a href='../S/227.html#L1000'>wchan</a>            1000 kern/thread/thread.c wchan_sleep(struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L1019'>wchan</a>            1019 kern/thread/thread.c wchan_wakeone(struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L1048'>wchan</a>            1048 kern/thread/thread.c wchan_wakeall(struct wchan *wc, struct spinlock *lk)</span>
+<span class='curline'><a href='../S/227.html#L1082'>wchan</a>            1082 kern/thread/thread.c wchan_isempty(struct wchan *wc, struct spinlock *lk)</span>
+</pre>
+</body>
+</html>

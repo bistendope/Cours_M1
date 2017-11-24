@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>KASSERT</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/24.html#L43'>KASSERT</a>            43 common/libc/printf/__printf.c #define assert KASSERT</span>
+<span class='curline'><a href='../S/61.html#L78'>KASSERT</a>            78 kern/arch/mips/locore/trap.c 	KASSERT(code &lt; NTRAPCODES);</span>
+<span class='curline'><a href='../S/61.html#L85'>KASSERT</a>            85 kern/arch/mips/locore/trap.c 		KASSERT(0);</span>
+<span class='curline'><a href='../S/61.html#L134'>KASSERT</a>           134 kern/arch/mips/locore/trap.c 	KASSERT(sizeof(struct trapframe)==(35*4));</span>
+<span class='curline'><a href='../S/61.html#L143'>KASSERT</a>           143 kern/arch/mips/locore/trap.c 	KASSERT(code &lt; NTRAPCODES);</span>
+<span class='curline'><a href='../S/61.html#L147'>KASSERT</a>           147 kern/arch/mips/locore/trap.c 		KASSERT((vaddr_t)tf &gt; (vaddr_t)curthread-&gt;t_stack);</span>
+<span class='curline'><a href='../S/61.html#L148'>KASSERT</a>           148 kern/arch/mips/locore/trap.c 		KASSERT((vaddr_t)tf &lt; (vaddr_t)(curthread-&gt;t_stack</span>
+<span class='curline'><a href='../S/61.html#L178'>KASSERT</a>           178 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/61.html#L179'>KASSERT</a>           179 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/61.html#L191'>KASSERT</a>           191 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_curspl == IPL_HIGH);</span>
+<span class='curline'><a href='../S/61.html#L192'>KASSERT</a>           192 kern/arch/mips/locore/trap.c 			KASSERT(curthread-&gt;t_iplhigh_count == 1);</span>
+<span class='curline'><a href='../S/61.html#L218'>KASSERT</a>           218 kern/arch/mips/locore/trap.c 		KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/61.html#L219'>KASSERT</a>           219 kern/arch/mips/locore/trap.c 		KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/61.html#L347'>KASSERT</a>           347 kern/arch/mips/locore/trap.c 	KASSERT(SAME_STACK(cpustacks[curcpu-&gt;c_number]-1, (vaddr_t)tf));</span>
+<span class='curline'><a href='../S/61.html#L398'>KASSERT</a>           398 kern/arch/mips/locore/trap.c 	KASSERT(SAME_STACK(cpustacks[curcpu-&gt;c_number]-1, (vaddr_t)tf));</span>
+<span class='curline'><a href='../S/62.html#L85'>KASSERT</a>            85 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread != NULL);</span>
+<span class='curline'><a href='../S/62.html#L86'>KASSERT</a>            86 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/62.html#L87'>KASSERT</a>            87 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/62.html#L144'>KASSERT</a>           144 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/62.html#L146'>KASSERT</a>           146 kern/arch/mips/syscall/syscall.c 	KASSERT(curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/63.html#L80'>KASSERT</a>            80 kern/arch/mips/thread/cpu.c 	KASSERT(c-&gt;c_number &lt; MAXCPUS);</span>
+<span class='curline'><a href='../S/67.html#L48'>KASSERT</a>            48 kern/arch/mips/thread/thread_machdep.c 	KASSERT(tm-&gt;tm_badfaultfunc == NULL);</span>
+<span class='curline'><a href='../S/69.html#L86'>KASSERT</a>            86 kern/arch/mips/vm/dumbvm.c 		KASSERT(curcpu-&gt;c_spinlocks == 0);</span>
+<span class='curline'><a href='../S/69.html#L89'>KASSERT</a>            89 kern/arch/mips/vm/dumbvm.c 		KASSERT(curthread-&gt;t_in_interrupt == 0);</span>
+<span class='curline'><a href='../S/69.html#L180'>KASSERT</a>           180 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_vbase1 != 0);</span>
+<span class='curline'><a href='../S/69.html#L181'>KASSERT</a>           181 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_pbase1 != 0);</span>
+<span class='curline'><a href='../S/69.html#L182'>KASSERT</a>           182 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_npages1 != 0);</span>
+<span class='curline'><a href='../S/69.html#L183'>KASSERT</a>           183 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_vbase2 != 0);</span>
+<span class='curline'><a href='../S/69.html#L184'>KASSERT</a>           184 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_pbase2 != 0);</span>
+<span class='curline'><a href='../S/69.html#L185'>KASSERT</a>           185 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_npages2 != 0);</span>
+<span class='curline'><a href='../S/69.html#L186'>KASSERT</a>           186 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_stackpbase != 0);</span>
+<span class='curline'><a href='../S/69.html#L187'>KASSERT</a>           187 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_vbase1 &amp; PAGE_FRAME) == as-&gt;as_vbase1);</span>
+<span class='curline'><a href='../S/69.html#L188'>KASSERT</a>           188 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_pbase1 &amp; PAGE_FRAME) == as-&gt;as_pbase1);</span>
+<span class='curline'><a href='../S/69.html#L189'>KASSERT</a>           189 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_vbase2 &amp; PAGE_FRAME) == as-&gt;as_vbase2);</span>
+<span class='curline'><a href='../S/69.html#L190'>KASSERT</a>           190 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_pbase2 &amp; PAGE_FRAME) == as-&gt;as_pbase2);</span>
+<span class='curline'><a href='../S/69.html#L191'>KASSERT</a>           191 kern/arch/mips/vm/dumbvm.c 	KASSERT((as-&gt;as_stackpbase &amp; PAGE_FRAME) == as-&gt;as_stackpbase);</span>
+<span class='curline'><a href='../S/69.html#L214'>KASSERT</a>           214 kern/arch/mips/vm/dumbvm.c 	KASSERT((paddr &amp; PAGE_FRAME) == paddr);</span>
+<span class='curline'><a href='../S/69.html#L341'>KASSERT</a>           341 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_pbase1 == 0);</span>
+<span class='curline'><a href='../S/69.html#L342'>KASSERT</a>           342 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_pbase2 == 0);</span>
+<span class='curline'><a href='../S/69.html#L343'>KASSERT</a>           343 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_stackpbase == 0);</span>
+<span class='curline'><a href='../S/69.html#L380'>KASSERT</a>           380 kern/arch/mips/vm/dumbvm.c 	KASSERT(as-&gt;as_stackpbase != 0);</span>
+<span class='curline'><a href='../S/69.html#L409'>KASSERT</a>           409 kern/arch/mips/vm/dumbvm.c 	KASSERT(new-&gt;as_pbase1 != 0);</span>
+<span class='curline'><a href='../S/69.html#L410'>KASSERT</a>           410 kern/arch/mips/vm/dumbvm.c 	KASSERT(new-&gt;as_pbase2 != 0);</span>
+<span class='curline'><a href='../S/69.html#L411'>KASSERT</a>           411 kern/arch/mips/vm/dumbvm.c 	KASSERT(new-&gt;as_stackpbase != 0);</span>
+<span class='curline'><a href='../S/73.html#L90'>KASSERT</a>            90 kern/arch/sys161/dev/lamebus_machdep.c 	KASSERT(curthread-&gt;t_curspl &gt; 0);</span>
+<span class='curline'><a href='../S/73.html#L143'>KASSERT</a>           143 kern/arch/sys161/dev/lamebus_machdep.c 	KASSERT(slot &gt;= 0 &amp;&amp; slot &lt; LB_NSLOTS);</span>
+<span class='curline'><a href='../S/73.html#L304'>KASSERT</a>           304 kern/arch/sys161/dev/lamebus_machdep.c 	KASSERT(curthread-&gt;t_curspl &gt; 0);</span>
+<span class='curline'><a href='../S/84.html#L57'>KASSERT</a>            57 kern/dev/generic/beep.c 	KASSERT(the_beep==NULL);</span>
+<span class='curline'><a href='../S/86.html#L95'>KASSERT</a>            95 kern/dev/generic/console.c 	KASSERT(delayed_outbuf_pos &lt; sizeof(delayed_outbuf));</span>
+<span class='curline'><a href='../S/86.html#L222'>KASSERT</a>           222 kern/dev/generic/console.c 	KASSERT(cs != NULL);</span>
+<span class='curline'><a href='../S/86.html#L223'>KASSERT</a>           223 kern/dev/generic/console.c 	KASSERT(!curthread-&gt;t_in_interrupt &amp;&amp; curthread-&gt;t_iplhigh_count == 0);</span>
+<span class='curline'><a href='../S/86.html#L260'>KASSERT</a>           260 kern/dev/generic/console.c 	KASSERT(lk != NULL);</span>
+<span class='curline'><a href='../S/86.html#L357'>KASSERT</a>           357 kern/dev/generic/console.c 		KASSERT(the_console!=NULL);</span>
+<span class='curline'><a href='../S/86.html#L360'>KASSERT</a>           360 kern/dev/generic/console.c 	KASSERT(the_console==NULL);</span>
+<span class='curline'><a href='../S/88.html#L120'>KASSERT</a>           120 kern/dev/generic/random.c 	KASSERT(the_random==NULL);</span>
+<span class='curline'><a href='../S/90.html#L60'>KASSERT</a>            60 kern/dev/generic/rtclock.c 	KASSERT(the_clock==NULL);</span>
+<span class='curline'><a href='../S/90.html#L68'>KASSERT</a>            68 kern/dev/generic/rtclock.c 	KASSERT(the_clock!=NULL);</span>
+<span class='curline'><a href='../S/96.html#L274'>KASSERT</a>           274 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L334'>KASSERT</a>           334 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw == UIO_WRITE);</span>
+<span class='curline'><a href='../S/96.html#L391'>KASSERT</a>           391 kern/dev/lamebus/emu.c 	KASSERT(len &gt;= 0);</span>
+<span class='curline'><a href='../S/96.html#L494'>KASSERT</a>           494 kern/dev/lamebus/emu.c 	KASSERT(ev-&gt;ev_v.vn_refcount == 1);</span>
+<span class='curline'><a href='../S/96.html#L548'>KASSERT</a>           548 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L582'>KASSERT</a>           582 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/96.html#L604'>KASSERT</a>           604 kern/dev/lamebus/emu.c 	KASSERT(uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/96.html#L1249'>KASSERT</a>          1249 kern/dev/lamebus/emu.c 	KASSERT(fs != NULL);</span>
+<span class='curline'><a href='../S/96.html#L1253'>KASSERT</a>          1253 kern/dev/lamebus/emu.c 	KASSERT(ef != NULL);</span>
+<span class='curline'><a href='../S/96.html#L1254'>KASSERT</a>          1254 kern/dev/lamebus/emu.c 	KASSERT(ef-&gt;ef_root != NULL);</span>
+<span class='curline'><a href='../S/96.html#L1319'>KASSERT</a>          1319 kern/dev/lamebus/emu.c 	KASSERT(ef-&gt;ef_root!=NULL);</span>
+<span class='curline'><a href='../S/99.html#L313'>KASSERT</a>           313 kern/dev/lamebus/lamebus.c 	KASSERT(slot&gt;=0 &amp;&amp; slot &lt; LB_NSLOTS);</span>
+<span class='curline'><a href='../S/99.html#L333'>KASSERT</a>           333 kern/dev/lamebus/lamebus.c 	KASSERT(slot&gt;=0 &amp;&amp; slot &lt; LB_NSLOTS);</span>
+<span class='curline'><a href='../S/99.html#L356'>KASSERT</a>           356 kern/dev/lamebus/lamebus.c 	KASSERT(slot&gt;=0 &amp;&amp; slot &lt; LB_NSLOTS);</span>
+<span class='curline'><a href='../S/99.html#L365'>KASSERT</a>           365 kern/dev/lamebus/lamebus.c 	KASSERT(sc-&gt;ls_devdata[slot]==NULL);</span>
+<span class='curline'><a href='../S/99.html#L366'>KASSERT</a>           366 kern/dev/lamebus/lamebus.c 	KASSERT(sc-&gt;ls_irqfuncs[slot]==NULL);</span>
+<span class='curline'><a href='../S/99.html#L382'>KASSERT</a>           382 kern/dev/lamebus/lamebus.c 	KASSERT(slot&gt;=0 &amp;&amp; slot &lt; LB_NSLOTS);</span>
+<span class='curline'><a href='../S/99.html#L391'>KASSERT</a>           391 kern/dev/lamebus/lamebus.c 	KASSERT(sc-&gt;ls_irqfuncs[slot]!=NULL);</span>
+<span class='curline'><a href='../S/99.html#L406'>KASSERT</a>           406 kern/dev/lamebus/lamebus.c 	KASSERT(slot &gt;= 0 &amp;&amp; slot &lt; LB_NSLOTS);</span>
+<span class='curline'><a href='../S/99.html#L419'>KASSERT</a>           419 kern/dev/lamebus/lamebus.c 	KASSERT(slot &gt;= 0 &amp;&amp; slot &lt; LB_NSLOTS);</span>
+<span class='curline'><a href='../S/99.html#L457'>KASSERT</a>           457 kern/dev/lamebus/lamebus.c 	KASSERT(lamebus != NULL);</span>
+<span class='curline'><a href='../S/112.html#L121'>KASSERT</a>           121 kern/dev/lamebus/lser.c 	KASSERT(spinlock_do_i_hold(&amp;sc-&gt;ls_lock));</span>
+<span class='curline'><a href='../S/125.html#L97'>KASSERT</a>            97 kern/fs/semfs/semfs_obj.c 	KASSERT(lock_do_i_hold(semfs-&gt;semfs_tablelock));</span>
+<span class='curline'><a href='../S/126.html#L311'>KASSERT</a>           311 kern/fs/semfs/semfs_vnops.c 	KASSERT(uio-&gt;uio_offset &gt;= 0);</span>
+<span class='curline'><a href='../S/126.html#L496'>KASSERT</a>           496 kern/fs/semfs/semfs_vnops.c 			KASSERT(sem-&gt;sems_linked);</span>
+<span class='curline'><a href='../S/126.html#L631'>KASSERT</a>           631 kern/fs/semfs/semfs_vnops.c 		KASSERT(sem-&gt;sems_hasvnode);</span>
+<span class='curline'><a href='../S/126.html#L743'>KASSERT</a>           743 kern/fs/semfs/semfs_vnops.c 	KASSERT(result == 0);</span>
+<span class='curline'><a href='../S/126.html#L791'>KASSERT</a>           791 kern/fs/semfs/semfs_vnops.c 		KASSERT(sem != NULL);</span>
+<span class='curline'><a href='../S/126.html#L792'>KASSERT</a>           792 kern/fs/semfs/semfs_vnops.c 		KASSERT(sem-&gt;sems_hasvnode == false);</span>
+<span class='curline'><a href='../S/128.html#L67'>KASSERT</a>            67 kern/fs/sfs/sfs_bmap.c 	KASSERT(sizeof(idbuf)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/128.html#L70'>KASSERT</a>            70 kern/fs/sfs/sfs_bmap.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/128.html#L226'>KASSERT</a>           226 kern/fs/sfs/sfs_bmap.c 	KASSERT(sizeof(idbuf)==SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/129.html#L69'>KASSERT</a>            69 kern/fs/sfs/sfs_dir.c 	KASSERT(slot&gt;=0);</span>
+<span class='curline'><a href='../S/129.html#L87'>KASSERT</a>            87 kern/fs/sfs/sfs_dir.c 	KASSERT(sv-&gt;sv_i.sfi_type == SFS_TYPE_DIR);</span>
+<span class='curline'><a href='../S/129.html#L133'>KASSERT</a>           133 kern/fs/sfs/sfs_dir.c 				KASSERT(found==0);</span>
+<span class='curline'><a href='../S/130.html#L266'>KASSERT</a>           266 kern/fs/sfs/sfs_fsops.c 	KASSERT(sfs-&gt;sfs_device == NULL);</span>
+<span class='curline'><a href='../S/130.html#L290'>KASSERT</a>           290 kern/fs/sfs/sfs_fsops.c 	KASSERT(sfs-&gt;sfs_superdirty == false);</span>
+<span class='curline'><a href='../S/130.html#L291'>KASSERT</a>           291 kern/fs/sfs/sfs_fsops.c 	KASSERT(sfs-&gt;sfs_freemapdirty == false);</span>
+<span class='curline'><a href='../S/131.html#L87'>KASSERT</a>            87 kern/fs/sfs/sfs_inode.c 		KASSERT(v-&gt;vn_refcount&gt;1);</span>
+<span class='curline'><a href='../S/131.html#L177'>KASSERT</a>           177 kern/fs/sfs/sfs_inode.c 			KASSERT(forcetype==SFS_TYPE_INVAL);</span>
+<span class='curline'><a href='../S/131.html#L214'>KASSERT</a>           214 kern/fs/sfs/sfs_inode.c 		KASSERT(sv-&gt;sv_i.sfi_type == SFS_TYPE_INVAL);</span>
+<span class='curline'><a href='../S/132.html#L65'>KASSERT</a>            65 kern/fs/sfs/sfs_io.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/132.html#L113'>KASSERT</a>           113 kern/fs/sfs/sfs_io.c 	KASSERT(len == SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L128'>KASSERT</a>           128 kern/fs/sfs/sfs_io.c 	KASSERT(len == SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L170'>KASSERT</a>           170 kern/fs/sfs/sfs_io.c 	KASSERT(skipstart + len &lt;= SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L173'>KASSERT</a>           173 kern/fs/sfs/sfs_io.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/132.html#L189'>KASSERT</a>           189 kern/fs/sfs/sfs_io.c 		KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/132.html#L256'>KASSERT</a>           256 kern/fs/sfs/sfs_io.c 		KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/132.html#L271'>KASSERT</a>           271 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_resid &gt;= SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L317'>KASSERT</a>           317 kern/fs/sfs/sfs_io.c 			KASSERT(uio-&gt;uio_resid &gt; extraresid);</span>
+<span class='curline'><a href='../S/132.html#L353'>KASSERT</a>           353 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_offset % SFS_BLOCKSIZE == 0);</span>
+<span class='curline'><a href='../S/132.html#L365'>KASSERT</a>           365 kern/fs/sfs/sfs_io.c 	KASSERT(uio-&gt;uio_resid &lt; SFS_BLOCKSIZE);</span>
+<span class='curline'><a href='../S/132.html#L427'>KASSERT</a>           427 kern/fs/sfs/sfs_io.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/132.html#L442'>KASSERT</a>           442 kern/fs/sfs/sfs_io.c 		KASSERT(rw == UIO_READ);</span>
+<span class='curline'><a href='../S/133.html#L103'>KASSERT</a>           103 kern/fs/sfs/sfs_vnops.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/133.html#L122'>KASSERT</a>           122 kern/fs/sfs/sfs_vnops.c 	KASSERT(uio-&gt;uio_rw==UIO_WRITE);</span>
+<span class='curline'><a href='../S/133.html#L268'>KASSERT</a>           268 kern/fs/sfs/sfs_vnops.c 	KASSERT(sv-&gt;sv_ino == SFS_ROOTDIR_INO);</span>
+<span class='curline'><a href='../S/133.html#L362'>KASSERT</a>           362 kern/fs/sfs/sfs_vnops.c 	KASSERT(file-&gt;vn_fs == dir-&gt;vn_fs);</span>
+<span class='curline'><a href='../S/133.html#L412'>KASSERT</a>           412 kern/fs/sfs/sfs_vnops.c 		KASSERT(victim-&gt;sv_i.sfi_linkcount &gt; 0);</span>
+<span class='curline'><a href='../S/133.html#L443'>KASSERT</a>           443 kern/fs/sfs/sfs_vnops.c 	KASSERT(d1==d2);</span>
+<span class='curline'><a href='../S/133.html#L444'>KASSERT</a>           444 kern/fs/sfs/sfs_vnops.c 	KASSERT(sv-&gt;sv_ino == SFS_ROOTDIR_INO);</span>
+<span class='curline'><a href='../S/133.html#L454'>KASSERT</a>           454 kern/fs/sfs/sfs_vnops.c 	KASSERT(g1-&gt;sv_i.sfi_type == SFS_TYPE_FILE);</span>
+<span class='curline'><a href='../S/133.html#L483'>KASSERT</a>           483 kern/fs/sfs/sfs_vnops.c 	KASSERT(g1-&gt;sv_i.sfi_linkcount&gt;0);</span>
+<span class='curline'><a href='../S/139.html#L39'>KASSERT</a>            39 kern/include/array.h #define ARRAYASSERT KASSERT</span>
+<span class='curline'><a href='../S/198.html#L81'>KASSERT</a>            81 kern/lib/bitmap.c                 KASSERT(nbits / BITS_PER_WORD == words-1);</span>
+<span class='curline'><a href='../S/198.html#L82'>KASSERT</a>            82 kern/lib/bitmap.c                 KASSERT(overbits &gt; 0 &amp;&amp; overbits &lt; BITS_PER_WORD);</span>
+<span class='curline'><a href='../S/198.html#L113'>KASSERT</a>           113 kern/lib/bitmap.c                                         KASSERT(*index &lt; b-&gt;nbits);</span>
+<span class='curline'><a href='../S/198.html#L117'>KASSERT</a>           117 kern/lib/bitmap.c                         KASSERT(0);</span>
+<span class='curline'><a href='../S/198.html#L140'>KASSERT</a>           140 kern/lib/bitmap.c         KASSERT(index &lt; b-&gt;nbits);</span>
+<span class='curline'><a href='../S/198.html#L143'>KASSERT</a>           143 kern/lib/bitmap.c         KASSERT((b-&gt;v[ix] &amp; mask)==0);</span>
+<span class='curline'><a href='../S/198.html#L153'>KASSERT</a>           153 kern/lib/bitmap.c         KASSERT(index &lt; b-&gt;nbits);</span>
+<span class='curline'><a href='../S/198.html#L156'>KASSERT</a>           156 kern/lib/bitmap.c         KASSERT((b-&gt;v[ix] &amp; mask)!=0);</span>
+<span class='curline'><a href='../S/201.html#L67'>KASSERT</a>            67 kern/lib/kprintf.c 	KASSERT(kprintf_lock == NULL);</span>
+<span class='curline'><a href='../S/204.html#L52'>KASSERT</a>            52 kern/lib/uio.c 		KASSERT(uio-&gt;uio_space == NULL);</span>
+<span class='curline'><a href='../S/204.html#L55'>KASSERT</a>            55 kern/lib/uio.c 		KASSERT(uio-&gt;uio_space == proc_getas());</span>
+<span class='curline'><a href='../S/204.html#L130'>KASSERT</a>           130 kern/lib/uio.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/205.html#L118'>KASSERT</a>           118 kern/main/main.c 	KASSERT(curthread-&gt;t_curspl &gt; 0);</span>
+<span class='curline'><a href='../S/205.html#L120'>KASSERT</a>           120 kern/main/main.c 	KASSERT(curthread-&gt;t_curspl == 0);</span>
+<span class='curline'><a href='../S/206.html#L80'>KASSERT</a>            80 kern/main/menu.c 	KASSERT(nargs &gt;= 1);</span>
+<span class='curline'><a href='../S/206.html#L87'>KASSERT</a>            87 kern/main/menu.c 	KASSERT(strlen(args[0]) &lt; sizeof(progname));</span>
+<span class='curline'><a href='../S/206.html#L744'>KASSERT</a>           744 kern/main/menu.c 			KASSERT(cmdtable[i].func!=NULL);</span>
+<span class='curline'><a href='../S/208.html#L105'>KASSERT</a>           105 kern/proc/proc.c 	KASSERT(proc != NULL);</span>
+<span class='curline'><a href='../S/208.html#L106'>KASSERT</a>           106 kern/proc/proc.c 	KASSERT(proc != kproc);</span>
+<span class='curline'><a href='../S/208.html#L168'>KASSERT</a>           168 kern/proc/proc.c 	KASSERT(proc-&gt;p_numthreads == 0);</span>
+<span class='curline'><a href='../S/208.html#L238'>KASSERT</a>           238 kern/proc/proc.c 	KASSERT(t-&gt;t_proc == NULL);</span>
+<span class='curline'><a href='../S/208.html#L267'>KASSERT</a>           267 kern/proc/proc.c 	KASSERT(proc != NULL);</span>
+<span class='curline'><a href='../S/208.html#L270'>KASSERT</a>           270 kern/proc/proc.c 	KASSERT(proc-&gt;p_numthreads &gt; 0);</span>
+<span class='curline'><a href='../S/208.html#L313'>KASSERT</a>           313 kern/proc/proc.c 	KASSERT(proc != NULL);</span>
+<span class='curline'><a href='../S/210.html#L69'>KASSERT</a>            69 kern/syscall/runprogram.c 	KASSERT(proc_getas() == NULL);</span>
+<span class='curline'><a href='../S/212.html#L51'>KASSERT</a>            51 kern/test/arraytest.c 	KASSERT(n==0);</span>
+<span class='curline'><a href='../S/212.html#L55'>KASSERT</a>            55 kern/test/arraytest.c 		KASSERT(r==0);</span>
+<span class='curline'><a href='../S/212.html#L57'>KASSERT</a>            57 kern/test/arraytest.c 		KASSERT(n==i+1);</span>
+<span class='curline'><a href='../S/212.html#L60'>KASSERT</a>            60 kern/test/arraytest.c 	KASSERT(n==TESTSIZE);</span>
+<span class='curline'><a href='../S/212.html#L64'>KASSERT</a>            64 kern/test/arraytest.c 		KASSERT(*p == i);</span>
+<span class='curline'><a href='../S/212.html#L67'>KASSERT</a>            67 kern/test/arraytest.c 	KASSERT(n==TESTSIZE);</span>
+<span class='curline'><a href='../S/212.html#L72'>KASSERT</a>            72 kern/test/arraytest.c 		KASSERT(*p == i);</span>
+<span class='curline'><a href='../S/212.html#L75'>KASSERT</a>            75 kern/test/arraytest.c 	KASSERT(n==TESTSIZE);</span>
+<span class='curline'><a href='../S/212.html#L83'>KASSERT</a>            83 kern/test/arraytest.c 		KASSERT(*p == TESTSIZE-i-1);</span>
+<span class='curline'><a href='../S/212.html#L87'>KASSERT</a>            87 kern/test/arraytest.c 	KASSERT(r==0);</span>
+<span class='curline'><a href='../S/212.html#L91'>KASSERT</a>            91 kern/test/arraytest.c 		KASSERT(*p == TESTSIZE-i-1);</span>
+<span class='curline'><a href='../S/212.html#L98'>KASSERT</a>            98 kern/test/arraytest.c 		KASSERT(*p == TESTSIZE-i-2);</span>
+<span class='curline'><a href='../S/212.html#L101'>KASSERT</a>           101 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L105'>KASSERT</a>           105 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L107'>KASSERT</a>           107 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-3);</span>
+<span class='curline'><a href='../S/212.html#L112'>KASSERT</a>           112 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L114'>KASSERT</a>           114 kern/test/arraytest.c 	KASSERT(p==NULL);</span>
+<span class='curline'><a href='../S/212.html#L118'>KASSERT</a>           118 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L120'>KASSERT</a>           120 kern/test/arraytest.c 	KASSERT(p==NULL);</span>
+<span class='curline'><a href='../S/212.html#L133'>KASSERT</a>           133 kern/test/arraytest.c 	KASSERT(a != NULL);</span>
+<span class='curline'><a href='../S/212.html#L164'>KASSERT</a>           164 kern/test/arraytest.c 	KASSERT(a != NULL);</span>
+<span class='curline'><a href='../S/212.html#L170'>KASSERT</a>           170 kern/test/arraytest.c 		KASSERT(result == 0);</span>
+<span class='curline'><a href='../S/212.html#L171'>KASSERT</a>           171 kern/test/arraytest.c 		KASSERT(x == i);</span>
+<span class='curline'><a href='../S/212.html#L173'>KASSERT</a>           173 kern/test/arraytest.c 	KASSERT(array_num(a) == BIGTESTSIZE);</span>
+<span class='curline'><a href='../S/212.html#L177'>KASSERT</a>           177 kern/test/arraytest.c 		KASSERT(array_get(a, i) == p);</span>
+<span class='curline'><a href='../S/212.html#L182'>KASSERT</a>           182 kern/test/arraytest.c 	KASSERT(result == 0);</span>
+<span class='curline'><a href='../S/212.html#L186'>KASSERT</a>           186 kern/test/arraytest.c 	KASSERT(result == 0);</span>
+<span class='curline'><a href='../S/212.html#L193'>KASSERT</a>           193 kern/test/arraytest.c 		KASSERT(array_get(a, i) == NTH(i));</span>
+<span class='curline'><a href='../S/212.html#L198'>KASSERT</a>           198 kern/test/arraytest.c 	KASSERT(array_get(a, 0) == NTH(0));</span>
+<span class='curline'><a href='../S/212.html#L199'>KASSERT</a>           199 kern/test/arraytest.c 	KASSERT(array_num(a) == BIGTESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L201'>KASSERT</a>           201 kern/test/arraytest.c 		KASSERT(array_get(a, i) == NTH(i+1));</span>
+<span class='curline'><a href='../S/212.html#L206'>KASSERT</a>           206 kern/test/arraytest.c 	KASSERT(result == 0);</span>
+<span class='curline'><a href='../S/212.html#L207'>KASSERT</a>           207 kern/test/arraytest.c 	KASSERT(array_get(a, 0) == NTH(0));</span>
+<span class='curline'><a href='../S/212.html#L209'>KASSERT</a>           209 kern/test/arraytest.c 		KASSERT(array_get(a, i) == NTH(i+1));</span>
+<span class='curline'><a href='../S/212.html#L214'>KASSERT</a>           214 kern/test/arraytest.c 	KASSERT(result == 0);</span>
+<span class='curline'><a href='../S/213.html#L55'>KASSERT</a>            55 kern/test/bitmaptest.c 	KASSERT(b != NULL);</span>
+<span class='curline'><a href='../S/213.html#L58'>KASSERT</a>            58 kern/test/bitmaptest.c 		KASSERT(bitmap_isset(b, i)==0);</span>
+<span class='curline'><a href='../S/213.html#L68'>KASSERT</a>            68 kern/test/bitmaptest.c 			KASSERT(bitmap_isset(b, i));</span>
+<span class='curline'><a href='../S/213.html#L71'>KASSERT</a>            71 kern/test/bitmaptest.c 			KASSERT(bitmap_isset(b, i)==0);</span>
+<span class='curline'><a href='../S/213.html#L85'>KASSERT</a>            85 kern/test/bitmaptest.c 			KASSERT(bitmap_isset(b, i)==0);</span>
+<span class='curline'><a href='../S/213.html#L88'>KASSERT</a>            88 kern/test/bitmaptest.c 			KASSERT(bitmap_isset(b, i));</span>
+<span class='curline'><a href='../S/213.html#L93'>KASSERT</a>            93 kern/test/bitmaptest.c 		KASSERT(x &lt; TESTSIZE);</span>
+<span class='curline'><a href='../S/213.html#L94'>KASSERT</a>            94 kern/test/bitmaptest.c 		KASSERT(bitmap_isset(b, x));</span>
+<span class='curline'><a href='../S/213.html#L95'>KASSERT</a>            95 kern/test/bitmaptest.c 		KASSERT(data[x]==1);</span>
+<span class='curline'><a href='../S/213.html#L100'>KASSERT</a>           100 kern/test/bitmaptest.c 		KASSERT(bitmap_isset(b, i));</span>
+<span class='curline'><a href='../S/213.html#L101'>KASSERT</a>           101 kern/test/bitmaptest.c 		KASSERT(data[i]==0);</span>
+<span class='curline'><a href='../S/214.html#L85'>KASSERT</a>            85 kern/test/fstest.c 	KASSERT(amt&gt;=0);</span>
+<span class='curline'><a href='../S/214.html#L94'>KASSERT</a>            94 kern/test/fstest.c 			KASSERT(ch&gt;='A' &amp;&amp; ch&lt;='Z');</span>
+<span class='curline'><a href='../S/214.html#L108'>KASSERT</a>           108 kern/test/fstest.c 	KASSERT(strlen(buf) &lt; buflen);</span>
+<span class='curline'><a href='../S/214.html#L150'>KASSERT</a>           150 kern/test/fstest.c 	KASSERT(sizeof(buf) &gt; strlen(SLOGAN));</span>
+<span class='curline'><a href='../S/215.html#L257'>KASSERT</a>           257 kern/test/kmalloctest.c 		KASSERT(ptr != NULL);</span>
+<span class='curline'><a href='../S/215.html#L277'>KASSERT</a>           277 kern/test/kmalloctest.c 		KASSERT(totalsize &gt; 0);</span>
+<span class='curline'><a href='../S/215.html#L281'>KASSERT</a>           281 kern/test/kmalloctest.c 	KASSERT(totalsize == 0);</span>
+<span class='curline'><a href='../S/215.html#L285'>KASSERT</a>           285 kern/test/kmalloctest.c 		KASSERT(ptrblocks[i] != NULL);</span>
+<span class='curline'><a href='../S/217.html#L100'>KASSERT</a>           100 kern/test/semunit.c 	KASSERT(waiters_running &gt; 0);</span>
+<span class='curline'><a href='../S/217.html#L166'>KASSERT</a>           166 kern/test/semunit.c 	KASSERT(!strcmp(sem-&gt;sem_name, name));</span>
+<span class='curline'><a href='../S/217.html#L167'>KASSERT</a>           167 kern/test/semunit.c 	KASSERT(sem-&gt;sem_name != name);</span>
+<span class='curline'><a href='../S/217.html#L168'>KASSERT</a>           168 kern/test/semunit.c 	KASSERT(sem-&gt;sem_wchan != NULL);</span>
+<span class='curline'><a href='../S/217.html#L169'>KASSERT</a>           169 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L170'>KASSERT</a>           170 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 56);</span>
+<span class='curline'><a href='../S/217.html#L224'>KASSERT</a>           224 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count &gt; 0);</span>
+<span class='curline'><a href='../S/217.html#L248'>KASSERT</a>           248 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0xf0000000U);</span>
+<span class='curline'><a href='../S/217.html#L331'>KASSERT</a>           331 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L332'>KASSERT</a>           332 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L343'>KASSERT</a>           343 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/217.html#L350'>KASSERT</a>           350 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == true);</span>
+<span class='curline'><a href='../S/217.html#L355'>KASSERT</a>           355 kern/test/semunit.c 	KASSERT(name == sem-&gt;sem_name);</span>
+<span class='curline'><a href='../S/217.html#L356'>KASSERT</a>           356 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L357'>KASSERT</a>           357 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L358'>KASSERT</a>           358 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L359'>KASSERT</a>           359 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 1);</span>
+<span class='curline'><a href='../S/217.html#L409'>KASSERT</a>           409 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L410'>KASSERT</a>           410 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L412'>KASSERT</a>           412 kern/test/semunit.c 	KASSERT(waiters_running == 1);</span>
+<span class='curline'><a href='../S/217.html#L417'>KASSERT</a>           417 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/217.html#L424'>KASSERT</a>           424 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == true);</span>
+<span class='curline'><a href='../S/217.html#L432'>KASSERT</a>           432 kern/test/semunit.c 	KASSERT(name == sem-&gt;sem_name);</span>
+<span class='curline'><a href='../S/217.html#L433'>KASSERT</a>           433 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L434'>KASSERT</a>           434 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L435'>KASSERT</a>           435 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L436'>KASSERT</a>           436 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0);</span>
+<span class='curline'><a href='../S/217.html#L438'>KASSERT</a>           438 kern/test/semunit.c 	KASSERT(waiters_running == 0);</span>
+<span class='curline'><a href='../S/217.html#L492'>KASSERT</a>           492 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L494'>KASSERT</a>           494 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L496'>KASSERT</a>           496 kern/test/semunit.c 	KASSERT(waiters_running == 2);</span>
+<span class='curline'><a href='../S/217.html#L501'>KASSERT</a>           501 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/217.html#L508'>KASSERT</a>           508 kern/test/semunit.c 		KASSERT(curthread-&gt;t_in_interrupt == true);</span>
+<span class='curline'><a href='../S/217.html#L516'>KASSERT</a>           516 kern/test/semunit.c 	KASSERT(name == sem-&gt;sem_name);</span>
+<span class='curline'><a href='../S/217.html#L517'>KASSERT</a>           517 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L518'>KASSERT</a>           518 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L519'>KASSERT</a>           519 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L520'>KASSERT</a>           520 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0);</span>
+<span class='curline'><a href='../S/217.html#L522'>KASSERT</a>           522 kern/test/semunit.c 	KASSERT(waiters_running == 1);</span>
+<span class='curline'><a href='../S/217.html#L530'>KASSERT</a>           530 kern/test/semunit.c 	KASSERT(waiters_running == 0);</span>
+<span class='curline'><a href='../S/217.html#L573'>KASSERT</a>           573 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0);</span>
+<span class='curline'><a href='../S/217.html#L635'>KASSERT</a>           635 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0);</span>
+<span class='curline'><a href='../S/217.html#L659'>KASSERT</a>           659 kern/test/semunit.c 	KASSERT(semu17_thread != NULL);</span>
+<span class='curline'><a href='../S/217.html#L660'>KASSERT</a>           660 kern/test/semunit.c 	KASSERT(semu17_thread-&gt;t_state == S_SLEEP);</span>
+<span class='curline'><a href='../S/217.html#L691'>KASSERT</a>           691 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L693'>KASSERT</a>           693 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L694'>KASSERT</a>           694 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 1);</span>
+<span class='curline'><a href='../S/217.html#L699'>KASSERT</a>           699 kern/test/semunit.c 	KASSERT(name == sem-&gt;sem_name);</span>
+<span class='curline'><a href='../S/217.html#L700'>KASSERT</a>           700 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L701'>KASSERT</a>           701 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L702'>KASSERT</a>           702 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L703'>KASSERT</a>           703 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0);</span>
+<span class='curline'><a href='../S/217.html#L753'>KASSERT</a>           753 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L755'>KASSERT</a>           755 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L756'>KASSERT</a>           756 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0);</span>
+<span class='curline'><a href='../S/217.html#L761'>KASSERT</a>           761 kern/test/semunit.c 	KASSERT(name == sem-&gt;sem_name);</span>
+<span class='curline'><a href='../S/217.html#L762'>KASSERT</a>           762 kern/test/semunit.c 	KASSERT(!strcmp(name, NAMESTRING));</span>
+<span class='curline'><a href='../S/217.html#L763'>KASSERT</a>           763 kern/test/semunit.c 	KASSERT(wchan == sem-&gt;sem_wchan);</span>
+<span class='curline'><a href='../S/217.html#L764'>KASSERT</a>           764 kern/test/semunit.c 	KASSERT(spinlock_not_held(&amp;sem-&gt;sem_lock));</span>
+<span class='curline'><a href='../S/217.html#L765'>KASSERT</a>           765 kern/test/semunit.c 	KASSERT(sem-&gt;sem_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L85'>KASSERT</a>            85 kern/test/threadlisttest.c 	KASSERT(t-&gt;t_stack == FAKE_MAGIC);</span>
+<span class='curline'><a href='../S/219.html#L110'>KASSERT</a>           110 kern/test/threadlisttest.c 		KASSERT(rev ? (cmp &gt; 0) : (cmp &lt; 0));</span>
+<span class='curline'><a href='../S/219.html#L114'>KASSERT</a>           114 kern/test/threadlisttest.c 	KASSERT(rev ? (cmp &gt; 0) : (cmp &lt; 0));</span>
+<span class='curline'><a href='../S/219.html#L127'>KASSERT</a>           127 kern/test/threadlisttest.c 	KASSERT(threadlist_isempty(&amp;tl));</span>
+<span class='curline'><a href='../S/219.html#L143'>KASSERT</a>           143 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 1);</span>
+<span class='curline'><a href='../S/219.html#L145'>KASSERT</a>           145 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L146'>KASSERT</a>           146 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[0]);</span>
+<span class='curline'><a href='../S/219.html#L151'>KASSERT</a>           151 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 1);</span>
+<span class='curline'><a href='../S/219.html#L153'>KASSERT</a>           153 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L154'>KASSERT</a>           154 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[0]);</span>
+<span class='curline'><a href='../S/219.html#L170'>KASSERT</a>           170 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 2);</span>
+<span class='curline'><a href='../S/219.html#L175'>KASSERT</a>           175 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[1]);</span>
+<span class='curline'><a href='../S/219.html#L177'>KASSERT</a>           177 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[0]);</span>
+<span class='curline'><a href='../S/219.html#L178'>KASSERT</a>           178 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L182'>KASSERT</a>           182 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 2);</span>
+<span class='curline'><a href='../S/219.html#L187'>KASSERT</a>           187 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[1]);</span>
+<span class='curline'><a href='../S/219.html#L189'>KASSERT</a>           189 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[0]);</span>
+<span class='curline'><a href='../S/219.html#L190'>KASSERT</a>           190 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L206'>KASSERT</a>           206 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 2);</span>
+<span class='curline'><a href='../S/219.html#L211'>KASSERT</a>           211 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[0]);</span>
+<span class='curline'><a href='../S/219.html#L213'>KASSERT</a>           213 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[1]);</span>
+<span class='curline'><a href='../S/219.html#L214'>KASSERT</a>           214 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L218'>KASSERT</a>           218 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 2);</span>
+<span class='curline'><a href='../S/219.html#L223'>KASSERT</a>           223 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[1]);</span>
+<span class='curline'><a href='../S/219.html#L225'>KASSERT</a>           225 kern/test/threadlisttest.c 	KASSERT(t == fakethreads[0]);</span>
+<span class='curline'><a href='../S/219.html#L226'>KASSERT</a>           226 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L243'>KASSERT</a>           243 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 2);</span>
+<span class='curline'><a href='../S/219.html#L247'>KASSERT</a>           247 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 3);</span>
+<span class='curline'><a href='../S/219.html#L251'>KASSERT</a>           251 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 4);</span>
+<span class='curline'><a href='../S/219.html#L255'>KASSERT</a>           255 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 5);</span>
+<span class='curline'><a href='../S/219.html#L258'>KASSERT</a>           258 kern/test/threadlisttest.c 	KASSERT(fakethreads[4]-&gt;t_listnode.tln_prev-&gt;tln_self ==</span>
+<span class='curline'><a href='../S/219.html#L260'>KASSERT</a>           260 kern/test/threadlisttest.c 	KASSERT(fakethreads[3]-&gt;t_listnode.tln_prev-&gt;tln_self ==</span>
+<span class='curline'><a href='../S/219.html#L262'>KASSERT</a>           262 kern/test/threadlisttest.c 	KASSERT(fakethreads[2]-&gt;t_listnode.tln_prev-&gt;tln_self ==</span>
+<span class='curline'><a href='../S/219.html#L264'>KASSERT</a>           264 kern/test/threadlisttest.c 	KASSERT(fakethreads[1]-&gt;t_listnode.tln_prev-&gt;tln_self ==</span>
+<span class='curline'><a href='../S/219.html#L269'>KASSERT</a>           269 kern/test/threadlisttest.c 		KASSERT(t == fakethreads[i]);</span>
+<span class='curline'><a href='../S/219.html#L271'>KASSERT</a>           271 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/219.html#L289'>KASSERT</a>           289 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == NUMNAMES);</span>
+<span class='curline'><a href='../S/219.html#L293'>KASSERT</a>           293 kern/test/threadlisttest.c 		KASSERT(t == fakethreads[i]);</span>
+<span class='curline'><a href='../S/219.html#L296'>KASSERT</a>           296 kern/test/threadlisttest.c 	KASSERT(i == NUMNAMES);</span>
+<span class='curline'><a href='../S/219.html#L300'>KASSERT</a>           300 kern/test/threadlisttest.c 		KASSERT(t == fakethreads[NUMNAMES - i - 1]);</span>
+<span class='curline'><a href='../S/219.html#L303'>KASSERT</a>           303 kern/test/threadlisttest.c 	KASSERT(i == NUMNAMES);</span>
+<span class='curline'><a href='../S/219.html#L307'>KASSERT</a>           307 kern/test/threadlisttest.c 		KASSERT(t == fakethreads[i]);</span>
+<span class='curline'><a href='../S/219.html#L309'>KASSERT</a>           309 kern/test/threadlisttest.c 	KASSERT(tl.tl_count == 0);</span>
+<span class='curline'><a href='../S/221.html#L176'>KASSERT</a>           176 kern/test/tt3.c 	KASSERT(m1 != NULL);</span>
+<span class='curline'><a href='../S/221.html#L178'>KASSERT</a>           178 kern/test/tt3.c 	KASSERT(m2 != NULL);</span>
+<span class='curline'><a href='../S/221.html#L180'>KASSERT</a>           180 kern/test/tt3.c 	KASSERT(m3 != NULL);</span>
+<span class='curline'><a href='../S/224.html#L64'>KASSERT</a>            64 kern/thread/spinlock.c 	KASSERT(splk-&gt;splk_holder == NULL);</span>
+<span class='curline'><a href='../S/224.html#L65'>KASSERT</a>            65 kern/thread/spinlock.c 	KASSERT(spinlock_data_get(&amp;splk-&gt;splk_lock) == 0);</span>
+<span class='curline'><a href='../S/224.html#L132'>KASSERT</a>           132 kern/thread/spinlock.c 		KASSERT(splk-&gt;splk_holder == curcpu-&gt;c_self);</span>
+<span class='curline'><a href='../S/224.html#L133'>KASSERT</a>           133 kern/thread/spinlock.c 		KASSERT(curcpu-&gt;c_spinlocks &gt; 0);</span>
+<span class='curline'><a href='../S/225.html#L92'>KASSERT</a>            92 kern/thread/spl.c 	KASSERT(oldspl == IPL_NONE);</span>
+<span class='curline'><a href='../S/225.html#L93'>KASSERT</a>            93 kern/thread/spl.c 	KASSERT(newspl == IPL_HIGH);</span>
+<span class='curline'><a href='../S/225.html#L112'>KASSERT</a>           112 kern/thread/spl.c 	KASSERT(oldspl == IPL_HIGH);</span>
+<span class='curline'><a href='../S/225.html#L113'>KASSERT</a>           113 kern/thread/spl.c 	KASSERT(newspl == IPL_NONE);</span>
+<span class='curline'><a href='../S/226.html#L79'>KASSERT</a>            79 kern/thread/synch.c         KASSERT(sem != NULL);</span>
+<span class='curline'><a href='../S/226.html#L91'>KASSERT</a>            91 kern/thread/synch.c         KASSERT(sem != NULL);</span>
+<span class='curline'><a href='../S/226.html#L99'>KASSERT</a>            99 kern/thread/synch.c         KASSERT(curthread-&gt;t_in_interrupt == false);</span>
+<span class='curline'><a href='../S/226.html#L118'>KASSERT</a>           118 kern/thread/synch.c         KASSERT(sem-&gt;sem_count &gt; 0);</span>
+<span class='curline'><a href='../S/226.html#L126'>KASSERT</a>           126 kern/thread/synch.c         KASSERT(sem != NULL);</span>
+<span class='curline'><a href='../S/226.html#L131'>KASSERT</a>           131 kern/thread/synch.c         KASSERT(sem-&gt;sem_count &gt; 0);</span>
+<span class='curline'><a href='../S/226.html#L167'>KASSERT</a>           167 kern/thread/synch.c         KASSERT(lock != NULL);</span>
+<span class='curline'><a href='../S/226.html#L239'>KASSERT</a>           239 kern/thread/synch.c         KASSERT(cv != NULL);</span>
+<span class='curline'><a href='../S/227.html#L104'>KASSERT</a>           104 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[0] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L105'>KASSERT</a>           105 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[1] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L106'>KASSERT</a>           106 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[2] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L107'>KASSERT</a>           107 kern/thread/thread.c 		KASSERT(((uint32_t*)thread-&gt;t_stack)[3] == THREAD_STACK_MAGIC);</span>
+<span class='curline'><a href='../S/227.html#L267'>KASSERT</a>           267 kern/thread/thread.c 	KASSERT(thread != curthread);</span>
+<span class='curline'><a href='../S/227.html#L268'>KASSERT</a>           268 kern/thread/thread.c 	KASSERT(thread-&gt;t_state != S_RUN);</span>
+<span class='curline'><a href='../S/227.html#L276'>KASSERT</a>           276 kern/thread/thread.c 	KASSERT(thread-&gt;t_proc == NULL);</span>
+<span class='curline'><a href='../S/227.html#L303'>KASSERT</a>           303 kern/thread/thread.c 		KASSERT(z != curthread);</span>
+<span class='curline'><a href='../S/227.html#L304'>KASSERT</a>           304 kern/thread/thread.c 		KASSERT(z-&gt;t_state == S_ZOMBIE);</span>
+<span class='curline'><a href='../S/227.html#L384'>KASSERT</a>           384 kern/thread/thread.c 	KASSERT(CURCPU_EXISTS() == false);</span>
+<span class='curline'><a href='../S/227.html#L386'>KASSERT</a>           386 kern/thread/thread.c 	KASSERT(CURCPU_EXISTS() == true);</span>
+<span class='curline'><a href='../S/227.html#L389'>KASSERT</a>           389 kern/thread/thread.c 	KASSERT(curcpu != NULL);</span>
+<span class='curline'><a href='../S/227.html#L390'>KASSERT</a>           390 kern/thread/thread.c 	KASSERT(curthread != NULL);</span>
+<span class='curline'><a href='../S/227.html#L391'>KASSERT</a>           391 kern/thread/thread.c 	KASSERT(curthread-&gt;t_proc != NULL);</span>
+<span class='curline'><a href='../S/227.html#L392'>KASSERT</a>           392 kern/thread/thread.c 	KASSERT(curthread-&gt;t_proc == kproc);</span>
+<span class='curline'><a href='../S/227.html#L410'>KASSERT</a>           410 kern/thread/thread.c 	KASSERT(curcpu != NULL);</span>
+<span class='curline'><a href='../S/227.html#L411'>KASSERT</a>           411 kern/thread/thread.c 	KASSERT(curthread != NULL);</span>
+<span class='curline'><a href='../S/227.html#L412'>KASSERT</a>           412 kern/thread/thread.c 	KASSERT(curcpu-&gt;c_number == software_number);</span>
+<span class='curline'><a href='../S/227.html#L461'>KASSERT</a>           461 kern/thread/thread.c 		KASSERT(spinlock_do_i_hold(&amp;targetcpu-&gt;c_runqueue_lock));</span>
+<span class='curline'><a href='../S/227.html#L792'>KASSERT</a>           792 kern/thread/thread.c 	KASSERT(cur-&gt;t_proc == NULL);</span>
+<span class='curline'><a href='../S/227.html#L948'>KASSERT</a>           948 kern/thread/thread.c 	KASSERT(threadlist_isempty(&amp;victims));</span>
+<span class='curline'><a href='../S/227.html#L1003'>KASSERT</a>          1003 kern/thread/thread.c 	KASSERT(!curthread-&gt;t_in_interrupt);</span>
+<span class='curline'><a href='../S/227.html#L1006'>KASSERT</a>          1006 kern/thread/thread.c 	KASSERT(spinlock_do_i_hold(lk));</span>
+<span class='curline'><a href='../S/227.html#L1009'>KASSERT</a>          1009 kern/thread/thread.c 	KASSERT(curcpu-&gt;c_spinlocks == 1);</span>
+<span class='curline'><a href='../S/227.html#L1023'>KASSERT</a>          1023 kern/thread/thread.c 	KASSERT(spinlock_do_i_hold(lk));</span>
+<span class='curline'><a href='../S/227.html#L1053'>KASSERT</a>          1053 kern/thread/thread.c 	KASSERT(spinlock_do_i_hold(lk));</span>
+<span class='curline'><a href='../S/227.html#L1086'>KASSERT</a>          1086 kern/thread/thread.c 	KASSERT(spinlock_do_i_hold(lk));</span>
+<span class='curline'><a href='../S/227.html#L1104'>KASSERT</a>          1104 kern/thread/thread.c 	KASSERT(code &gt;= 0 &amp;&amp; code &lt; 32);</span>
+<span class='curline'><a href='../S/228.html#L43'>KASSERT</a>            43 kern/thread/threadlist.c 	KASSERT(t != NULL);</span>
+<span class='curline'><a href='../S/228.html#L55'>KASSERT</a>            55 kern/thread/threadlist.c 	KASSERT(tln-&gt;tln_next == NULL);</span>
+<span class='curline'><a href='../S/228.html#L56'>KASSERT</a>            56 kern/thread/threadlist.c 	KASSERT(tln-&gt;tln_prev == NULL);</span>
+<span class='curline'><a href='../S/228.html#L57'>KASSERT</a>            57 kern/thread/threadlist.c 	KASSERT(tln-&gt;tln_self != NULL);</span>
+<span class='curline'><a href='../S/228.html#L85'>KASSERT</a>            85 kern/thread/threadlist.c 	KASSERT(threadlist_isempty(tl));</span>
+<span class='curline'><a href='../S/228.html#L86'>KASSERT</a>            86 kern/thread/threadlist.c 	KASSERT(tl-&gt;tl_count == 0);</span>
+<span class='curline'><a href='../S/229.html#L119'>KASSERT</a>           119 kern/vfs/device.c 	KASSERT(uio-&gt;uio_rw == UIO_READ);</span>
+<span class='curline'><a href='../S/229.html#L138'>KASSERT</a>           138 kern/vfs/device.c 	KASSERT(uio-&gt;uio_rw == UIO_WRITE);</span>
+<span class='curline'><a href='../S/229.html#L385'>KASSERT</a>           385 kern/vfs/device.c 	KASSERT(vn-&gt;vn_ops == &amp;dev_vnode_ops);</span>
+<span class='curline'><a href='../S/231.html#L151'>KASSERT</a>           151 kern/vfs/vfscwd.c 	KASSERT(uio-&gt;uio_rw==UIO_READ);</span>
+<span class='curline'><a href='../S/231.html#L159'>KASSERT</a>           159 kern/vfs/vfscwd.c 	KASSERT(cwd-&gt;vn_fs != NULL);</span>
+<span class='curline'><a href='../S/231.html#L167'>KASSERT</a>           167 kern/vfs/vfscwd.c 	KASSERT(name != NULL);</span>
+<span class='curline'><a href='../S/233.html#L155'>KASSERT</a>           155 kern/vfs/vfslist.c 	KASSERT(lock_do_i_hold(vfs_biglock));</span>
+<span class='curline'><a href='../S/233.html#L156'>KASSERT</a>           156 kern/vfs/vfslist.c 	KASSERT(vfs_biglock_depth &gt; 0);</span>
+<span class='curline'><a href='../S/233.html#L203'>KASSERT</a>           203 kern/vfs/vfslist.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/233.html#L240'>KASSERT</a>           240 kern/vfs/vfslist.c 			KASSERT(kd-&gt;kd_fs==NULL);</span>
+<span class='curline'><a href='../S/233.html#L241'>KASSERT</a>           241 kern/vfs/vfslist.c 			KASSERT(kd-&gt;kd_rawname==NULL);</span>
+<span class='curline'><a href='../S/233.html#L242'>KASSERT</a>           242 kern/vfs/vfslist.c 			KASSERT(kd-&gt;kd_device != NULL);</span>
+<span class='curline'><a href='../S/233.html#L253'>KASSERT</a>           253 kern/vfs/vfslist.c 			KASSERT(kd-&gt;kd_device != NULL);</span>
+<span class='curline'><a href='../S/233.html#L282'>KASSERT</a>           282 kern/vfs/vfslist.c 	KASSERT(fs != NULL);</span>
+<span class='curline'><a href='../S/233.html#L284'>KASSERT</a>           284 kern/vfs/vfslist.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/233.html#L361'>KASSERT</a>           361 kern/vfs/vfslist.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/233.html#L512'>KASSERT</a>           512 kern/vfs/vfslist.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/233.html#L558'>KASSERT</a>           558 kern/vfs/vfslist.c 	KASSERT(kd-&gt;kd_rawname != NULL);</span>
+<span class='curline'><a href='../S/233.html#L559'>KASSERT</a>           559 kern/vfs/vfslist.c 	KASSERT(kd-&gt;kd_device != NULL);</span>
+<span class='curline'><a href='../S/233.html#L567'>KASSERT</a>           567 kern/vfs/vfslist.c 	KASSERT(fs != NULL);</span>
+<span class='curline'><a href='../S/233.html#L568'>KASSERT</a>           568 kern/vfs/vfslist.c 	KASSERT(fs != SWAP_FS); </span>
+<span class='curline'><a href='../S/233.html#L615'>KASSERT</a>           615 kern/vfs/vfslist.c 	KASSERT(kd-&gt;kd_rawname != NULL);</span>
+<span class='curline'><a href='../S/233.html#L616'>KASSERT</a>           616 kern/vfs/vfslist.c 	KASSERT(kd-&gt;kd_device != NULL);</span>
+<span class='curline'><a href='../S/233.html#L654'>KASSERT</a>           654 kern/vfs/vfslist.c 	KASSERT(kd-&gt;kd_rawname != NULL);</span>
+<span class='curline'><a href='../S/233.html#L655'>KASSERT</a>           655 kern/vfs/vfslist.c 	KASSERT(kd-&gt;kd_device != NULL);</span>
+<span class='curline'><a href='../S/233.html#L673'>KASSERT</a>           673 kern/vfs/vfslist.c 	KASSERT(result==0);</span>
+<span class='curline'><a href='../S/233.html#L710'>KASSERT</a>           710 kern/vfs/vfslist.c 	KASSERT(result==0);</span>
+<span class='curline'><a href='../S/234.html#L136'>KASSERT</a>           136 kern/vfs/vfslookup.c 	KASSERT(vfs_biglock_do_i_hold());</span>
+<span class='curline'><a href='../S/234.html#L195'>KASSERT</a>           195 kern/vfs/vfslookup.c 	KASSERT(colon==0 || slash==0);</span>
+<span class='curline'><a href='../S/234.html#L205'>KASSERT</a>           205 kern/vfs/vfslookup.c 		KASSERT(path[0]==':');</span>
+<span class='curline'><a href='../S/234.html#L216'>KASSERT</a>           216 kern/vfs/vfslookup.c 		KASSERT(vn-&gt;vn_fs!=NULL);</span>
+<span class='curline'><a href='../S/235.html#L88'>KASSERT</a>            88 kern/vfs/vfspath.c 	KASSERT(vn != NULL);</span>
+<span class='curline'><a href='../S/236.html#L47'>KASSERT</a>            47 kern/vfs/vnode.c 	KASSERT(vn != NULL);</span>
+<span class='curline'><a href='../S/236.html#L48'>KASSERT</a>            48 kern/vfs/vnode.c 	KASSERT(ops != NULL);</span>
+<span class='curline'><a href='../S/236.html#L64'>KASSERT</a>            64 kern/vfs/vnode.c 	KASSERT(vn-&gt;vn_refcount == 1);</span>
+<span class='curline'><a href='../S/236.html#L82'>KASSERT</a>            82 kern/vfs/vnode.c 	KASSERT(vn != NULL);</span>
+<span class='curline'><a href='../S/236.html#L100'>KASSERT</a>           100 kern/vfs/vnode.c 	KASSERT(vn != NULL);</span>
+<span class='curline'><a href='../S/236.html#L104'>KASSERT</a>           104 kern/vfs/vnode.c 	KASSERT(vn-&gt;vn_refcount &gt; 0);</span>
+<span class='curline'><a href='../S/239.html#L224'>KASSERT</a>           224 kern/vm/kmalloc.c 	KASSERT(root-&gt;page == NULL);</span>
+<span class='curline'><a href='../S/239.html#L238'>KASSERT</a>           238 kern/vm/kmalloc.c 	KASSERT(va % PAGE_SIZE == 0);</span>
+<span class='curline'><a href='../S/239.html#L246'>KASSERT</a>           246 kern/vm/kmalloc.c 		KASSERT(root-&gt;page != NULL);</span>
+<span class='curline'><a href='../S/239.html#L292'>KASSERT</a>           292 kern/vm/kmalloc.c 			KASSERT(0);</span>
+<span class='curline'><a href='../S/239.html#L318'>KASSERT</a>           318 kern/vm/kmalloc.c 			KASSERT(root-&gt;numinuse == 0);</span>
+<span class='curline'><a href='../S/239.html#L328'>KASSERT</a>           328 kern/vm/kmalloc.c 			KASSERT((root-&gt;pagerefs_inuse[i] &amp; k) != 0);</span>
+<span class='curline'><a href='../S/239.html#L330'>KASSERT</a>           330 kern/vm/kmalloc.c 			KASSERT(root-&gt;numinuse &gt; 0);</span>
+<span class='curline'><a href='../S/239.html#L336'>KASSERT</a>           336 kern/vm/kmalloc.c 	KASSERT(0);</span>
+<span class='curline'><a href='../S/239.html#L374'>KASSERT</a>           374 kern/vm/kmalloc.c 	KASSERT(clientsize + GUARD_OVERHEAD &lt;= blocksize);</span>
+<span class='curline'><a href='../S/239.html#L375'>KASSERT</a>           375 kern/vm/kmalloc.c 	KASSERT(clientsize &lt; 65536U);</span>
+<span class='curline'><a href='../S/239.html#L426'>KASSERT</a>           426 kern/vm/kmalloc.c 	KASSERT(*(uint16_t *)lowguard == GUARD_HALFWORD);</span>
+<span class='curline'><a href='../S/239.html#L427'>KASSERT</a>           427 kern/vm/kmalloc.c 	KASSERT(*(uint16_t *)highguard == GUARD_HALFWORD);</span>
+<span class='curline'><a href='../S/239.html#L429'>KASSERT</a>           429 kern/vm/kmalloc.c 	KASSERT(clientsize == *(uint16_t *)highsize);</span>
+<span class='curline'><a href='../S/239.html#L430'>KASSERT</a>           430 kern/vm/kmalloc.c 	KASSERT(clientsize + GUARD_OVERHEAD &gt; smallerblocksize);</span>
+<span class='curline'><a href='../S/239.html#L431'>KASSERT</a>           431 kern/vm/kmalloc.c 	KASSERT(clientsize + GUARD_OVERHEAD &lt;= blocksize);</span>
+<span class='curline'><a href='../S/239.html#L434'>KASSERT</a>           434 kern/vm/kmalloc.c 		KASSERT(*(uint8_t *)i == GUARD_FILLBYTE);</span>
+<span class='curline'><a href='../S/239.html#L468'>KASSERT</a>           468 kern/vm/kmalloc.c 		KASSERT(ptr[i] == 0xdeadbeef);</span>
+<span class='curline'><a href='../S/239.html#L510'>KASSERT</a>           510 kern/vm/kmalloc.c 	KASSERT(spinlock_do_i_hold(&amp;kmalloc_spinlock));</span>
+<span class='curline'><a href='../S/239.html#L513'>KASSERT</a>           513 kern/vm/kmalloc.c 		KASSERT(pr-&gt;nfree==0);</span>
+<span class='curline'><a href='../S/239.html#L519'>KASSERT</a>           519 kern/vm/kmalloc.c 	KASSERT(blktype &gt;= 0 &amp;&amp; blktype &lt; NSIZES);</span>
+<span class='curline'><a href='../S/239.html#L530'>KASSERT</a>           530 kern/vm/kmalloc.c 	KASSERT(prpage &gt;= MIPS_KSEG0);</span>
+<span class='curline'><a href='../S/239.html#L531'>KASSERT</a>           531 kern/vm/kmalloc.c 	KASSERT(prpage &lt; MIPS_KSEG1);</span>
+<span class='curline'><a href='../S/239.html#L534'>KASSERT</a>           534 kern/vm/kmalloc.c 	KASSERT(pr-&gt;freelist_offset &lt; PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L535'>KASSERT</a>           535 kern/vm/kmalloc.c 	KASSERT(pr-&gt;freelist_offset % blocksize == 0);</span>
+<span class='curline'><a href='../S/239.html#L542'>KASSERT</a>           542 kern/vm/kmalloc.c 		KASSERT(fla &gt;= prpage &amp;&amp; fla &lt; prpage + PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L543'>KASSERT</a>           543 kern/vm/kmalloc.c 		KASSERT((fla-prpage) % blocksize == 0);</span>
+<span class='curline'><a href='../S/239.html#L550'>KASSERT</a>           550 kern/vm/kmalloc.c 		KASSERT((isfree[blocknum / 32] &amp; mask) == 0);</span>
+<span class='curline'><a href='../S/239.html#L553'>KASSERT</a>           553 kern/vm/kmalloc.c 		KASSERT(fl-&gt;next != fl);</span>
+<span class='curline'><a href='../S/239.html#L556'>KASSERT</a>           556 kern/vm/kmalloc.c 	KASSERT(nfree==pr-&gt;nfree);</span>
+<span class='curline'><a href='../S/239.html#L586'>KASSERT</a>           586 kern/vm/kmalloc.c 	KASSERT(spinlock_do_i_hold(&amp;kmalloc_spinlock));</span>
+<span class='curline'><a href='../S/239.html#L591'>KASSERT</a>           591 kern/vm/kmalloc.c 			KASSERT(sc &lt; TOTAL_PAGEREFS);</span>
+<span class='curline'><a href='../S/239.html#L598'>KASSERT</a>           598 kern/vm/kmalloc.c 		KASSERT(ac &lt; TOTAL_PAGEREFS);</span>
+<span class='curline'><a href='../S/239.html#L602'>KASSERT</a>           602 kern/vm/kmalloc.c 	KASSERT(sc==ac);</span>
+<span class='curline'><a href='../S/239.html#L756'>KASSERT</a>           756 kern/vm/kmalloc.c 	KASSERT(spinlock_do_i_hold(&amp;kmalloc_spinlock));</span>
+<span class='curline'><a href='../S/239.html#L765'>KASSERT</a>           765 kern/vm/kmalloc.c 	KASSERT(blktype &gt;= 0 &amp;&amp; blktype &lt; NSIZES);</span>
+<span class='curline'><a href='../S/239.html#L769'>KASSERT</a>           769 kern/vm/kmalloc.c 	KASSERT(n &lt;= 32 * ARRAYCOUNT(freemap));</span>
+<span class='curline'><a href='../S/239.html#L778'>KASSERT</a>           778 kern/vm/kmalloc.c 			KASSERT(index&lt;n);</span>
+<span class='curline'><a href='../S/239.html#L828'>KASSERT</a>           828 kern/vm/kmalloc.c 	KASSERT(blktype&gt;=0 &amp;&amp; blktype&lt;NSIZES);</span>
+<span class='curline'><a href='../S/239.html#L917'>KASSERT</a>           917 kern/vm/kmalloc.c 		KASSERT(PR_BLOCKTYPE(pr) == blktype);</span>
+<span class='curline'><a href='../S/239.html#L924'>KASSERT</a>           924 kern/vm/kmalloc.c 			KASSERT(pr-&gt;freelist_offset &lt; PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L934'>KASSERT</a>           934 kern/vm/kmalloc.c 				KASSERT(pr-&gt;nfree &gt; 0);</span>
+<span class='curline'><a href='../S/239.html#L936'>KASSERT</a>           936 kern/vm/kmalloc.c 				KASSERT(fla - prpage &lt; PAGE_SIZE);</span>
+<span class='curline'><a href='../S/239.html#L940'>KASSERT</a>           940 kern/vm/kmalloc.c 				KASSERT(pr-&gt;nfree == 0);</span>
+<span class='curline'><a href='../S/239.html#L973'>KASSERT</a>           973 kern/vm/kmalloc.c 	KASSERT(prpage % PAGE_SIZE == 0);</span>
+<span class='curline'><a href='../S/239.html#L1004'>KASSERT</a>          1004 kern/vm/kmalloc.c 		KASSERT(fl != fl-&gt;next);</span>
+<span class='curline'><a href='../S/239.html#L1008'>KASSERT</a>          1008 kern/vm/kmalloc.c 	KASSERT(pr-&gt;freelist_offset == (pr-&gt;nfree-1)*sizes[blktype]);</span>
+<span class='curline'><a href='../S/239.html#L1075'>KASSERT</a>          1075 kern/vm/kmalloc.c 		KASSERT(blktype &gt;= 0 &amp;&amp; blktype &lt; NSIZES);</span>
+<span class='curline'><a href='../S/239.html#L1078'>KASSERT</a>          1078 kern/vm/kmalloc.c 		KASSERT(blktype&gt;=0 &amp;&amp; blktype&lt;NSIZES);</span>
+<span class='curline'><a href='../S/239.html#L1129'>KASSERT</a>          1129 kern/vm/kmalloc.c 				KASSERT(fl2 != fl);</span>
+<span class='curline'><a href='../S/239.html#L1134'>KASSERT</a>          1134 kern/vm/kmalloc.c 		KASSERT(fl != fl-&gt;next);</span>
+<span class='curline'><a href='../S/239.html#L1140'>KASSERT</a>          1140 kern/vm/kmalloc.c 	KASSERT(pr-&gt;nfree &lt;= PAGE_SIZE / sizes[blktype]);</span>
+<span class='curline'><a href='../S/239.html#L1196'>KASSERT</a>          1196 kern/vm/kmalloc.c 		KASSERT(address % PAGE_SIZE == 0);</span>
+<span class='curline'><a href='../S/239.html#L1220'>KASSERT</a>          1220 kern/vm/kmalloc.c 		KASSERT((vaddr_t)ptr%PAGE_SIZE==0);</span>
+</pre>
+</body>
+</html>

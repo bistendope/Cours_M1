@@ -1,0 +1,11 @@
+{
+	"animaux" : [
+		{ "id" : "afrique", "nom" : "Afrique", "nombre" : "17"},
+		{ "id" : "animauxdelaferme", "nom" : "Animaux de la ferme", "nombre" : "12"},
+		{ "id" : "asieetaustralie", "nom" : "Asie et Australie", "nombre" : "0"},
+		{ "id" : "chevaux", "nom" : "Chevaux", "nombre" : "0"},
+		{ "id" : "chiens", "nom" : "Chiens", "nombre" : "0"},
+		{ "id" : "europe", "nom" : "Europe", "nombre" : "0"},
+		{ "id" : "ocean", "nom" : "Océan", "nombre" : "0"}
+	]
+}

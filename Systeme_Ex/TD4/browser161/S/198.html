@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>kern/lib/bitmap.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/732.html'>kern</a>/<a href='../files/753.html'>lib</a>/bitmap.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L57'>[^]</a><a href='#L172'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L57' title='Defined at 57.'>bitmap_create</a></li>
+<li><a href='#L93' title='Defined at 93.'>bitmap_getdata</a></li>
+<li><a href='#L99' title='Defined at 99.'>bitmap_alloc</a></li>
+<li><a href='#L126' title='Defined at 126.'>bitmap_translate</a></li>
+<li><a href='#L135' title='Defined at 135.'>bitmap_mark</a></li>
+<li><a href='#L148' title='Defined at 148.'>bitmap_unmark</a></li>
+<li><a href='#L162' title='Defined at 162.'>bitmap_isset</a></li>
+<li><a href='#L172' title='Defined at 172.'>bitmap_destroy</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * Fixed-size array of bits. (Intended for storage management.)</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> */</em>
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#include</em> &lt;<a href='../I/42.html'>types.h</a>&gt;
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#include</em> &lt;<a href='../I/134.html'>kern/errno.h</a>&gt;
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#include</em> &lt;<a href='172.html'>lib.h</a>&gt;
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#include</em> &lt;<a href='140.html'>bitmap.h</a>&gt;
+<a id='L38' name='L38'></a>  38 
+<a id='L39' name='L39'></a>  39 <em class='comment'>/*</em>
+<a id='L40' name='L40'></a>  40 <em class='comment'> * It would be a lot more efficient on most platforms to use uint32_t</em>
+<a id='L41' name='L41'></a>  41 <em class='comment'> * or unsigned long as the base type for holding bits. But we don't,</em>
+<a id='L42' name='L42'></a>  42 <em class='comment'> * because if one uses any data type more than a single byte wide,</em>
+<a id='L43' name='L43'></a>  43 <em class='comment'> * bitmap data saved on disk becomes endian-dependent, which is a</em>
+<a id='L44' name='L44'></a>  44 <em class='comment'> * severe nuisance.</em>
+<a id='L45' name='L45'></a>  45 <em class='comment'> */</em>
+<a id='L46' name='L46'></a>  46 <em class='sharp'>#define</em> <a href='../R/18.html' title='Multiple referred from 11 places.'>BITS_PER_WORD</a>   (<a href='../D/46.html' title='Multiple defined in 2 places.'>CHAR_BIT</a>)
+<a id='L47' name='L47'></a>  47 <em class='sharp'>#define</em> <a href='../R/712.html' title='Multiple referred from 10 places.'>WORD_TYPE</a>       <strong class='reserved'>unsigned</strong> <strong class='reserved'>char</strong>
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#define</em> <a href='../S/198.html#L106' title='Referred from 106 in kern/lib/bitmap.c.'>WORD_ALLBITS</a>    (0xff)
+<a id='L49' name='L49'></a>  49 
+<a id='L50' name='L50'></a>  50 <strong class='reserved'>struct</strong> <a href='../R/1006.html' title='Multiple referred from 19 places.'>bitmap</a> <em class='brace'>{</em>
+<a id='L51' name='L51'></a>  51         <strong class='reserved'>unsigned</strong> nbits;
+<a id='L52' name='L52'></a>  52         <a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a> *v;
+<a id='L53' name='L53'></a>  53 <em class='brace'>}</em>;
+<a id='L54' name='L54'></a>  54 
+<a id='L55' name='L55'></a>  55 
+<a id='L56' name='L56'></a>  56 <strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *
+<a id='L57' name='L57'></a>  57 <a href='../R/1008.html' title='Multiple referred from 3 places.'>bitmap_create</a>(<strong class='reserved'>unsigned</strong> nbits)
+<a id='L58' name='L58'></a>  58 <em class='brace'>{</em>
+<a id='L59' name='L59'></a>  59         <strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *b;
+<a id='L60' name='L60'></a>  60         <strong class='reserved'>unsigned</strong> words;
+<a id='L61' name='L61'></a>  61 
+<a id='L62' name='L62'></a>  62         words = <a href='../D/120.html' title='Multiple defined in 3 places.'>DIVROUNDUP</a>(nbits, <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>);
+<a id='L63' name='L63'></a>  63         b = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(<strong class='reserved'>sizeof</strong>(<strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a>));
+<a id='L64' name='L64'></a>  64         <strong class='reserved'>if</strong> (b == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L65' name='L65'></a>  65                 <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L66' name='L66'></a>  66         <em class='brace'>}</em>
+<a id='L67' name='L67'></a>  67         b-&gt;v = <a href='../S/239.html#L1170' title='Defined at 1170 in kern/vm/kmalloc.c.'>kmalloc</a>(words*<strong class='reserved'>sizeof</strong>(<a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a>));
+<a id='L68' name='L68'></a>  68         <strong class='reserved'>if</strong> (b-&gt;v == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L69' name='L69'></a>  69                 <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(b);
+<a id='L70' name='L70'></a>  70                 <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L71' name='L71'></a>  71         <em class='brace'>}</em>
+<a id='L72' name='L72'></a>  72 
+<a id='L73' name='L73'></a>  73         <a href='../S/27.html#L49' title='Defined at 49 in common/libc/string/bzero.c.'>bzero</a>(b-&gt;v, words*<strong class='reserved'>sizeof</strong>(<a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a>));
+<a id='L74' name='L74'></a>  74         b-&gt;nbits = nbits;
+<a id='L75' name='L75'></a>  75 
+<a id='L76' name='L76'></a>  76         <em class='comment'>/* Mark any leftover bits at the end in use */</em>
+<a id='L77' name='L77'></a>  77         <strong class='reserved'>if</strong> (words &gt; nbits / <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>) <em class='brace'>{</em>
+<a id='L78' name='L78'></a>  78                 <strong class='reserved'>unsigned</strong> j, ix = words-1;
+<a id='L79' name='L79'></a>  79                 <strong class='reserved'>unsigned</strong> overbits = nbits - ix*<a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>;
+<a id='L80' name='L80'></a>  80 
+<a id='L81' name='L81'></a>  81                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(nbits / <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a> == words-1);
+<a id='L82' name='L82'></a>  82                 <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(overbits &gt; 0 &amp;&amp; overbits &lt; <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>);
+<a id='L83' name='L83'></a>  83 
+<a id='L84' name='L84'></a>  84                 <strong class='reserved'>for</strong> (j=overbits; j&lt;<a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>; j++) <em class='brace'>{</em>
+<a id='L85' name='L85'></a>  85                         b-&gt;v[ix] |= ((<a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a>)1 &lt;&lt; j);
+<a id='L86' name='L86'></a>  86                 <em class='brace'>}</em>
+<a id='L87' name='L87'></a>  87         <em class='brace'>}</em>
+<a id='L88' name='L88'></a>  88 
+<a id='L89' name='L89'></a>  89         <strong class='reserved'>return</strong> b;
+<a id='L90' name='L90'></a>  90 <em class='brace'>}</em>
+<a id='L91' name='L91'></a>  91 
+<a id='L92' name='L92'></a>  92 <strong class='reserved'>void</strong> *
+<a id='L93' name='L93'></a>  93 <a href='../R/1010.html' title='Multiple referred from 2 places.'>bitmap_getdata</a>(<strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *b)
+<a id='L94' name='L94'></a>  94 <em class='brace'>{</em>
+<a id='L95' name='L95'></a>  95         <strong class='reserved'>return</strong> b-&gt;v;
+<a id='L96' name='L96'></a>  96 <em class='brace'>}</em>
+<a id='L97' name='L97'></a>  97 
+<a id='L98' name='L98'></a>  98 <strong class='reserved'>int</strong>
+<a id='L99' name='L99'></a>  99 <a href='../R/1007.html' title='Multiple referred from 3 places.'>bitmap_alloc</a>(<strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *b, <strong class='reserved'>unsigned</strong> *index)
+<a id='L100' name='L100'></a> 100 <em class='brace'>{</em>
+<a id='L101' name='L101'></a> 101         <strong class='reserved'>unsigned</strong> ix;
+<a id='L102' name='L102'></a> 102         <strong class='reserved'>unsigned</strong> maxix = <a href='../D/120.html' title='Multiple defined in 3 places.'>DIVROUNDUP</a>(b-&gt;nbits, <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>);
+<a id='L103' name='L103'></a> 103         <strong class='reserved'>unsigned</strong> offset;
+<a id='L104' name='L104'></a> 104 
+<a id='L105' name='L105'></a> 105         <strong class='reserved'>for</strong> (ix=0; ix&lt;maxix; ix++) <em class='brace'>{</em>
+<a id='L106' name='L106'></a> 106                 <strong class='reserved'>if</strong> (b-&gt;v[ix]!=<a href='../S/198.html#L48' title='Defined at 48 in kern/lib/bitmap.c.'>WORD_ALLBITS</a>) <em class='brace'>{</em>
+<a id='L107' name='L107'></a> 107                         <strong class='reserved'>for</strong> (offset = 0; offset &lt; <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>; offset++) <em class='brace'>{</em>
+<a id='L108' name='L108'></a> 108                                 <a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a> mask = ((<a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a>)1) &lt;&lt; offset;
+<a id='L109' name='L109'></a> 109 
+<a id='L110' name='L110'></a> 110                                 <strong class='reserved'>if</strong> ((b-&gt;v[ix] &amp; mask)==0) <em class='brace'>{</em>
+<a id='L111' name='L111'></a> 111                                         b-&gt;v[ix] |= mask;
+<a id='L112' name='L112'></a> 112                                         *index = (ix*<a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>)+offset;
+<a id='L113' name='L113'></a> 113                                         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(*index &lt; b-&gt;nbits);
+<a id='L114' name='L114'></a> 114                                         <strong class='reserved'>return</strong> 0;
+<a id='L115' name='L115'></a> 115                                 <em class='brace'>}</em>
+<a id='L116' name='L116'></a> 116                         <em class='brace'>}</em>
+<a id='L117' name='L117'></a> 117                         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(0);
+<a id='L118' name='L118'></a> 118                 <em class='brace'>}</em>
+<a id='L119' name='L119'></a> 119         <em class='brace'>}</em>
+<a id='L120' name='L120'></a> 120         <strong class='reserved'>return</strong> <a href='../S/154.html#L80' title='Defined at 80 in kern/include/kern/errno.h.'>ENOSPC</a>;
+<a id='L121' name='L121'></a> 121 <em class='brace'>}</em>
+<a id='L122' name='L122'></a> 122 
+<a id='L123' name='L123'></a> 123 <strong class='reserved'>static</strong>
+<a id='L124' name='L124'></a> 124 <strong class='reserved'>inline</strong>
+<a id='L125' name='L125'></a> 125 <strong class='reserved'>void</strong>
+<a id='L126' name='L126'></a> 126 <a href='../R/1013.html' title='Multiple referred from 3 places.'>bitmap_translate</a>(<strong class='reserved'>unsigned</strong> bitno, <strong class='reserved'>unsigned</strong> *ix, <a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a> *mask)
+<a id='L127' name='L127'></a> 127 <em class='brace'>{</em>
+<a id='L128' name='L128'></a> 128         <strong class='reserved'>unsigned</strong> offset;
+<a id='L129' name='L129'></a> 129         *ix = bitno / <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>;
+<a id='L130' name='L130'></a> 130         offset = bitno % <a href='../S/198.html#L46' title='Defined at 46 in kern/lib/bitmap.c.'>BITS_PER_WORD</a>;
+<a id='L131' name='L131'></a> 131         *mask = ((<a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a>)1) &lt;&lt; offset;
+<a id='L132' name='L132'></a> 132 <em class='brace'>}</em>
+<a id='L133' name='L133'></a> 133 
+<a id='L134' name='L134'></a> 134 <strong class='reserved'>void</strong>
+<a id='L135' name='L135'></a> 135 <a href='../R/1012.html' title='Multiple referred from 3 places.'>bitmap_mark</a>(<strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *b, <strong class='reserved'>unsigned</strong> index)
+<a id='L136' name='L136'></a> 136 <em class='brace'>{</em>
+<a id='L137' name='L137'></a> 137         <strong class='reserved'>unsigned</strong> ix;
+<a id='L138' name='L138'></a> 138         <a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a> mask;
+<a id='L139' name='L139'></a> 139 
+<a id='L140' name='L140'></a> 140         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(index &lt; b-&gt;nbits);
+<a id='L141' name='L141'></a> 141         <a href='../S/198.html#L126' title='Defined at 126 in kern/lib/bitmap.c.'>bitmap_translate</a>(index, &amp;ix, &amp;mask);
+<a id='L142' name='L142'></a> 142 
+<a id='L143' name='L143'></a> 143         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>((b-&gt;v[ix] &amp; mask)==0);
+<a id='L144' name='L144'></a> 144         b-&gt;v[ix] |= mask;
+<a id='L145' name='L145'></a> 145 <em class='brace'>}</em>
+<a id='L146' name='L146'></a> 146 
+<a id='L147' name='L147'></a> 147 <strong class='reserved'>void</strong>
+<a id='L148' name='L148'></a> 148 <a href='../R/1014.html' title='Multiple referred from 4 places.'>bitmap_unmark</a>(<strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *b, <strong class='reserved'>unsigned</strong> index)
+<a id='L149' name='L149'></a> 149 <em class='brace'>{</em>
+<a id='L150' name='L150'></a> 150         <strong class='reserved'>unsigned</strong> ix;
+<a id='L151' name='L151'></a> 151         <a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a> mask;
+<a id='L152' name='L152'></a> 152 
+<a id='L153' name='L153'></a> 153         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>(index &lt; b-&gt;nbits);
+<a id='L154' name='L154'></a> 154         <a href='../S/198.html#L126' title='Defined at 126 in kern/lib/bitmap.c.'>bitmap_translate</a>(index, &amp;ix, &amp;mask);
+<a id='L155' name='L155'></a> 155 
+<a id='L156' name='L156'></a> 156         <a href='../D/413.html' title='Multiple defined in 2 places.'>KASSERT</a>((b-&gt;v[ix] &amp; mask)!=0);
+<a id='L157' name='L157'></a> 157         b-&gt;v[ix] &amp;= ~mask;
+<a id='L158' name='L158'></a> 158 <em class='brace'>}</em>
+<a id='L159' name='L159'></a> 159 
+<a id='L160' name='L160'></a> 160 
+<a id='L161' name='L161'></a> 161 <strong class='reserved'>int</strong>
+<a id='L162' name='L162'></a> 162 <a href='../R/1011.html' title='Multiple referred from 9 places.'>bitmap_isset</a>(<strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *b, <strong class='reserved'>unsigned</strong> index)
+<a id='L163' name='L163'></a> 163 <em class='brace'>{</em>
+<a id='L164' name='L164'></a> 164         <strong class='reserved'>unsigned</strong> ix;
+<a id='L165' name='L165'></a> 165         <a href='../S/198.html#L47' title='Defined at 47 in kern/lib/bitmap.c.'>WORD_TYPE</a> mask;
+<a id='L166' name='L166'></a> 166 
+<a id='L167' name='L167'></a> 167         <a href='../S/198.html#L126' title='Defined at 126 in kern/lib/bitmap.c.'>bitmap_translate</a>(index, &amp;ix, &amp;mask);
+<a id='L168' name='L168'></a> 168         <strong class='reserved'>return</strong> (b-&gt;v[ix] &amp; mask);
+<a id='L169' name='L169'></a> 169 <em class='brace'>}</em>
+<a id='L170' name='L170'></a> 170 
+<a id='L171' name='L171'></a> 171 <strong class='reserved'>void</strong>
+<a id='L172' name='L172'></a> 172 <a href='../R/1009.html' title='Multiple referred from 2 places.'>bitmap_destroy</a>(<strong class='reserved'>struct</strong> <a href='../S/198.html#L50' title='Defined at 50 in kern/lib/bitmap.c.'>bitmap</a> *b)
+<a id='L173' name='L173'></a> 173 <em class='brace'>{</em>
+<a id='L174' name='L174'></a> 174         <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(b-&gt;v);
+<a id='L175' name='L175'></a> 175         <a href='../S/239.html#L1212' title='Defined at 1212 in kern/vm/kmalloc.c.'>kfree</a>(b);
+<a id='L176' name='L176'></a> 176 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L57'>[^]</a><a href='#L172'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

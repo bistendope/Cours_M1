@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/testbin/badcall/test.h</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/801.html'>testbin</a>/<a href='../files/804.html'>badcall</a>/test.h</h2>
+<em class='comment'>/* [&lt;][&gt;][^][v][top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'><a href='../J/166.html' title='Multiple included from 44 places.'>INCLUDED FROM</a></h2>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='sharp'>#define</em> <a href='../R/639.html' title='Multiple referred from 43 places.'>TESTFILE</a> "badcallfile"
+<a id='L31' name='L31'></a>  31 <em class='sharp'>#define</em> <a href='../R/638.html' title='Multiple referred from 30 places.'>TESTDIR</a>  "badcalldir"
+<a id='L32' name='L32'></a>  32 <em class='sharp'>#define</em> <a href='../R/641.html' title='Multiple referred from 6 places.'>TESTLINK</a> "badcalllink"
+<a id='L33' name='L33'></a>  33 
+<a id='L34' name='L34'></a>  34 <em class='sharp'>#if</em> <strong class='reserved'>defined</strong>(__clang__) || <strong class='reserved'>defined</strong>(__GNUC__)
+<a id='L35' name='L35'></a>  35 <em class='sharp'>#define</em> <a href='../R/464.html' title='Multiple referred from 14 places.'>PF</a>(a, b) <strong class='reserved'>__attribute__</strong>((__format__(__printf__, a, b)))
+<a id='L36' name='L36'></a>  36 <em class='sharp'>#else</em>
+<a id='L37' name='L37'></a>  37 <em class='sharp'>#define</em> <a href='../R/464.html' title='Multiple referred from 14 places.'>PF</a>(a, b)
+<a id='L38' name='L38'></a>  38 <em class='sharp'>#endif</em>
+<a id='L39' name='L39'></a>  39 
+<a id='L40' name='L40'></a>  40 <em class='comment'>/* driver.c */</em>
+<a id='L41' name='L41'></a>  41 <strong class='reserved'>int</strong> <a href='../S/599.html#L46' title='Defined at 46 in userland/testbin/badcall/driver.c.'>open_testfile</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *str);
+<a id='L42' name='L42'></a>  42 <strong class='reserved'>int</strong> <a href='../S/599.html#L103' title='Defined at 103 in userland/testbin/badcall/driver.c.'>reopen_testfile</a>(<strong class='reserved'>int</strong> openflags);
+<a id='L43' name='L43'></a>  43 <strong class='reserved'>int</strong> <a href='../S/599.html#L84' title='Defined at 84 in userland/testbin/badcall/driver.c.'>create_testfile</a>(<strong class='reserved'>void</strong>);
+<a id='L44' name='L44'></a>  44 <strong class='reserved'>int</strong> <a href='../S/599.html#L121' title='Defined at 121 in userland/testbin/badcall/driver.c.'>create_testdir</a>(<strong class='reserved'>void</strong>);
+<a id='L45' name='L45'></a>  45 <strong class='reserved'>int</strong> <a href='../S/599.html#L141' title='Defined at 141 in userland/testbin/badcall/driver.c.'>create_testlink</a>(<strong class='reserved'>void</strong>);
+<a id='L46' name='L46'></a>  46 
+<a id='L47' name='L47'></a>  47 <em class='comment'>/* report.c */</em>
+<a id='L48' name='L48'></a>  48 <a href='../D/611.html' title='Multiple defined in 3 places.'>PF</a>(1, 2) <strong class='reserved'>void</strong> <a href='../S/601.html#L127' title='Defined at 127 in userland/testbin/badcall/report.c.'>report_begin</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *descfmt, ...);
+<a id='L49' name='L49'></a>  49 <strong class='reserved'>void</strong> <a href='../S/601.html#L143' title='Defined at 143 in userland/testbin/badcall/report.c.'>report_hassubs</a>(<strong class='reserved'>void</strong>);
+<a id='L50' name='L50'></a>  50 <a href='../D/611.html' title='Multiple defined in 3 places.'>PF</a>(1, 2) <strong class='reserved'>void</strong> <a href='../S/601.html#L156' title='Defined at 156 in userland/testbin/badcall/report.c.'>report_beginsub</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *descfmt, ...);
+<a id='L51' name='L51'></a>  51 <a href='../D/611.html' title='Multiple defined in 3 places.'>PF</a>(1, 2) <strong class='reserved'>void</strong> <a href='../S/601.html#L174' title='Defined at 174 in userland/testbin/badcall/report.c.'>report_warn</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *fmt, ...);
+<a id='L52' name='L52'></a>  52 <a href='../D/611.html' title='Multiple defined in 3 places.'>PF</a>(1, 2) <strong class='reserved'>void</strong> <a href='../S/601.html#L192' title='Defined at 192 in userland/testbin/badcall/report.c.'>report_warnx</a>(<strong class='reserved'>const</strong> <strong class='reserved'>char</strong> *fmt, ...);
+<a id='L53' name='L53'></a>  53 <strong class='reserved'>void</strong> <a href='../S/601.html#L211' title='Defined at 211 in userland/testbin/badcall/report.c.'>report_result</a>(<strong class='reserved'>int</strong> rv, <strong class='reserved'>int</strong> error);
+<a id='L54' name='L54'></a>  54 <strong class='reserved'>void</strong> <a href='../S/601.html#L231' title='Defined at 231 in userland/testbin/badcall/report.c.'>report_saw_enosys</a>(<strong class='reserved'>void</strong>);
+<a id='L55' name='L55'></a>  55 <strong class='reserved'>void</strong> <a href='../S/601.html#L254' title='Defined at 254 in userland/testbin/badcall/report.c.'>report_passed</a>(<strong class='reserved'>void</strong>);
+<a id='L56' name='L56'></a>  56 <strong class='reserved'>void</strong> <a href='../S/601.html#L260' title='Defined at 260 in userland/testbin/badcall/report.c.'>report_failure</a>(<strong class='reserved'>void</strong>);
+<a id='L57' name='L57'></a>  57 <strong class='reserved'>void</strong> <a href='../S/601.html#L266' title='Defined at 266 in userland/testbin/badcall/report.c.'>report_skipped</a>(<strong class='reserved'>void</strong>);
+<a id='L58' name='L58'></a>  58 <strong class='reserved'>void</strong> <a href='../S/601.html#L272' title='Defined at 272 in userland/testbin/badcall/report.c.'>report_aborted</a>(<strong class='reserved'>void</strong>);
+<a id='L59' name='L59'></a>  59 <strong class='reserved'>void</strong> <a href='../S/601.html#L286' title='Defined at 286 in userland/testbin/badcall/report.c.'>report_survival</a>(<strong class='reserved'>int</strong> rv, <strong class='reserved'>int</strong> error);
+<a id='L60' name='L60'></a>  60 <strong class='reserved'>void</strong> <a href='../S/601.html#L326' title='Defined at 326 in userland/testbin/badcall/report.c.'>report_check</a>(<strong class='reserved'>int</strong> rv, <strong class='reserved'>int</strong> error, <strong class='reserved'>int</strong> right_error);
+<a id='L61' name='L61'></a>  61 <strong class='reserved'>void</strong> <a href='../S/601.html#L332' title='Defined at 332 in userland/testbin/badcall/report.c.'>report_check2</a>(<strong class='reserved'>int</strong> rv, <strong class='reserved'>int</strong> error, <strong class='reserved'>int</strong> okerr1, <strong class='reserved'>int</strong> okerr2);
+<a id='L62' name='L62'></a>  62 <strong class='reserved'>void</strong> <a href='../S/601.html#L342' title='Defined at 342 in userland/testbin/badcall/report.c.'>report_check3</a>(<strong class='reserved'>int</strong> rv, <strong class='reserved'>int</strong> error, <strong class='reserved'>int</strong> okerr1, <strong class='reserved'>int</strong> okerr2, <strong class='reserved'>int</strong> okerr3);
+<a id='L63' name='L63'></a>  63 
+<a id='L64' name='L64'></a>  64 <em class='comment'>/* common_buf.c */</em>
+<a id='L65' name='L65'></a>  65 <strong class='reserved'>void</strong> test_read_buf(<strong class='reserved'>void</strong>);
+<a id='L66' name='L66'></a>  66 <strong class='reserved'>void</strong> test_write_buf(<strong class='reserved'>void</strong>);
+<a id='L67' name='L67'></a>  67 <strong class='reserved'>void</strong> test_getdirentry_buf(<strong class='reserved'>void</strong>);
+<a id='L68' name='L68'></a>  68 <strong class='reserved'>void</strong> test_getcwd_buf(<strong class='reserved'>void</strong>);
+<a id='L69' name='L69'></a>  69 <strong class='reserved'>void</strong> test_readlink_buf(<strong class='reserved'>void</strong>);
+<a id='L70' name='L70'></a>  70 
+<a id='L71' name='L71'></a>  71 <em class='comment'>/* common_fds.c */</em>
+<a id='L72' name='L72'></a>  72 <strong class='reserved'>void</strong> test_read_fd(<strong class='reserved'>void</strong>);
+<a id='L73' name='L73'></a>  73 <strong class='reserved'>void</strong> test_write_fd(<strong class='reserved'>void</strong>);
+<a id='L74' name='L74'></a>  74 <strong class='reserved'>void</strong> test_close_fd(<strong class='reserved'>void</strong>);
+<a id='L75' name='L75'></a>  75 <strong class='reserved'>void</strong> test_ioctl_fd(<strong class='reserved'>void</strong>);
+<a id='L76' name='L76'></a>  76 <strong class='reserved'>void</strong> test_lseek_fd(<strong class='reserved'>void</strong>);
+<a id='L77' name='L77'></a>  77 <strong class='reserved'>void</strong> test_fsync_fd(<strong class='reserved'>void</strong>);
+<a id='L78' name='L78'></a>  78 <strong class='reserved'>void</strong> test_ftruncate_fd(<strong class='reserved'>void</strong>);
+<a id='L79' name='L79'></a>  79 <strong class='reserved'>void</strong> test_fstat_fd(<strong class='reserved'>void</strong>);
+<a id='L80' name='L80'></a>  80 <strong class='reserved'>void</strong> test_getdirentry_fd(<strong class='reserved'>void</strong>);
+<a id='L81' name='L81'></a>  81 <strong class='reserved'>void</strong> test_dup2_fd(<strong class='reserved'>void</strong>);
+<a id='L82' name='L82'></a>  82 
+<a id='L83' name='L83'></a>  83 <em class='comment'>/* common_path.c */</em>
+<a id='L84' name='L84'></a>  84 <strong class='reserved'>void</strong> test_open_path(<strong class='reserved'>void</strong>);
+<a id='L85' name='L85'></a>  85 <strong class='reserved'>void</strong> test_remove_path(<strong class='reserved'>void</strong>);
+<a id='L86' name='L86'></a>  86 <strong class='reserved'>void</strong> test_rename_paths(<strong class='reserved'>void</strong>);
+<a id='L87' name='L87'></a>  87 <strong class='reserved'>void</strong> test_link_paths(<strong class='reserved'>void</strong>);
+<a id='L88' name='L88'></a>  88 <strong class='reserved'>void</strong> test_mkdir_path(<strong class='reserved'>void</strong>);
+<a id='L89' name='L89'></a>  89 <strong class='reserved'>void</strong> test_rmdir_path(<strong class='reserved'>void</strong>);
+<a id='L90' name='L90'></a>  90 <strong class='reserved'>void</strong> test_chdir_path(<strong class='reserved'>void</strong>);
+<a id='L91' name='L91'></a>  91 <strong class='reserved'>void</strong> test_symlink_paths(<strong class='reserved'>void</strong>);
+<a id='L92' name='L92'></a>  92 <strong class='reserved'>void</strong> test_readlink_path(<strong class='reserved'>void</strong>);
+<a id='L93' name='L93'></a>  93 <strong class='reserved'>void</strong> test_stat_path(<strong class='reserved'>void</strong>);
+<a id='L94' name='L94'></a>  94 <strong class='reserved'>void</strong> test_lstat_path(<strong class='reserved'>void</strong>);
+<a id='L95' name='L95'></a>  95 
+<a id='L96' name='L96'></a>  96 <em class='comment'>/* bad_*.c */</em>
+<a id='L97' name='L97'></a>  97 <strong class='reserved'>void</strong> <a href='../S/572.html#L167' title='Defined at 167 in userland/testbin/badcall/bad_execv.c.'>test_execv</a>(<strong class='reserved'>void</strong>);
+<a id='L98' name='L98'></a>  98 <strong class='reserved'>void</strong> <a href='../S/593.html#L405' title='Defined at 405 in userland/testbin/badcall/bad_waitpid.c.'>test_waitpid</a>(<strong class='reserved'>void</strong>);
+<a id='L99' name='L99'></a>  99 <strong class='reserved'>void</strong> <a href='../S/581.html#L72' title='Defined at 72 in userland/testbin/badcall/bad_open.c.'>test_open</a>(<strong class='reserved'>void</strong>);
+<a id='L100' name='L100'></a> 100 <strong class='reserved'>void</strong> <a href='../S/583.html#L37' title='Defined at 37 in userland/testbin/badcall/bad_read.c.'>test_read</a>(<strong class='reserved'>void</strong>);
+<a id='L101' name='L101'></a> 101 <strong class='reserved'>void</strong> <a href='../S/594.html#L37' title='Defined at 37 in userland/testbin/badcall/bad_write.c.'>test_write</a>(<strong class='reserved'>void</strong>);
+<a id='L102' name='L102'></a> 102 <strong class='reserved'>void</strong> <a href='../S/570.html#L37' title='Defined at 37 in userland/testbin/badcall/bad_close.c.'>test_close</a>(<strong class='reserved'>void</strong>);
+<a id='L103' name='L103'></a> 103 <strong class='reserved'>void</strong> <a href='../S/585.html#L59' title='Defined at 59 in userland/testbin/badcall/bad_reboot.c.'>test_reboot</a>(<strong class='reserved'>void</strong>);
+<a id='L104' name='L104'></a> 104 <strong class='reserved'>void</strong> <a href='../S/589.html#L117' title='Defined at 117 in userland/testbin/badcall/bad_sbrk.c.'>test_sbrk</a>(<strong class='reserved'>void</strong>);
+<a id='L105' name='L105'></a> 105 <strong class='reserved'>void</strong> <a href='../S/577.html#L96' title='Defined at 96 in userland/testbin/badcall/bad_ioctl.c.'>test_ioctl</a>(<strong class='reserved'>void</strong>);
+<a id='L106' name='L106'></a> 106 <strong class='reserved'>void</strong> <a href='../S/579.html#L269' title='Defined at 269 in userland/testbin/badcall/bad_lseek.c.'>test_lseek</a>(<strong class='reserved'>void</strong>);
+<a id='L107' name='L107'></a> 107 <strong class='reserved'>void</strong> <a href='../S/573.html#L37' title='Defined at 37 in userland/testbin/badcall/bad_fsync.c.'>test_fsync</a>(<strong class='reserved'>void</strong>);
+<a id='L108' name='L108'></a> 108 <strong class='reserved'>void</strong> <a href='../S/574.html#L89' title='Defined at 89 in userland/testbin/badcall/bad_ftruncate.c.'>test_ftruncate</a>(<strong class='reserved'>void</strong>);
+<a id='L109' name='L109'></a> 109 <strong class='reserved'>void</strong> <a href='../S/590.html#L107' title='Defined at 107 in userland/testbin/badcall/bad_stat.c.'>test_fstat</a>(<strong class='reserved'>void</strong>);          <em class='comment'>/* in bad_stat.c */</em>
+<a id='L110' name='L110'></a> 110 <strong class='reserved'>void</strong> <a href='../S/586.html#L98' title='Defined at 98 in userland/testbin/badcall/bad_remove.c.'>test_remove</a>(<strong class='reserved'>void</strong>);
+<a id='L111' name='L111'></a> 111 <strong class='reserved'>void</strong> <a href='../S/587.html#L102' title='Defined at 102 in userland/testbin/badcall/bad_rename.c.'>test_rename</a>(<strong class='reserved'>void</strong>);
+<a id='L112' name='L112'></a> 112 <strong class='reserved'>void</strong> <a href='../S/578.html#L82' title='Defined at 82 in userland/testbin/badcall/bad_link.c.'>test_link</a>(<strong class='reserved'>void</strong>);
+<a id='L113' name='L113'></a> 113 <strong class='reserved'>void</strong> <a href='../S/580.html#L80' title='Defined at 80 in userland/testbin/badcall/bad_mkdir.c.'>test_mkdir</a>(<strong class='reserved'>void</strong>);
+<a id='L114' name='L114'></a> 114 <strong class='reserved'>void</strong> <a href='../S/588.html#L96' title='Defined at 96 in userland/testbin/badcall/bad_rmdir.c.'>test_rmdir</a>(<strong class='reserved'>void</strong>);
+<a id='L115' name='L115'></a> 115 <strong class='reserved'>void</strong> <a href='../S/569.html#L56' title='Defined at 56 in userland/testbin/badcall/bad_chdir.c.'>test_chdir</a>(<strong class='reserved'>void</strong>);
+<a id='L116' name='L116'></a> 116 <strong class='reserved'>void</strong> <a href='../S/576.html#L37' title='Defined at 37 in userland/testbin/badcall/bad_getdirentry.c.'>test_getdirentry</a>(<strong class='reserved'>void</strong>);
+<a id='L117' name='L117'></a> 117 <strong class='reserved'>void</strong> <a href='../S/591.html#L63' title='Defined at 63 in userland/testbin/badcall/bad_symlink.c.'>test_symlink</a>(<strong class='reserved'>void</strong>);
+<a id='L118' name='L118'></a> 118 <strong class='reserved'>void</strong> <a href='../S/584.html#L83' title='Defined at 83 in userland/testbin/badcall/bad_readlink.c.'>test_readlink</a>(<strong class='reserved'>void</strong>);
+<a id='L119' name='L119'></a> 119 <strong class='reserved'>void</strong> <a href='../S/571.html#L126' title='Defined at 126 in userland/testbin/badcall/bad_dup2.c.'>test_dup2</a>(<strong class='reserved'>void</strong>);
+<a id='L120' name='L120'></a> 120 <strong class='reserved'>void</strong> <a href='../S/582.html#L79' title='Defined at 79 in userland/testbin/badcall/bad_pipe.c.'>test_pipe</a>(<strong class='reserved'>void</strong>);
+<a id='L121' name='L121'></a> 121 <strong class='reserved'>void</strong> <a href='../S/592.html#L69' title='Defined at 69 in userland/testbin/badcall/bad_time.c.'>test_time</a>(<strong class='reserved'>void</strong>);
+<a id='L122' name='L122'></a> 122 <strong class='reserved'>void</strong> <a href='../S/575.html#L37' title='Defined at 37 in userland/testbin/badcall/bad_getcwd.c.'>test_getcwd</a>(<strong class='reserved'>void</strong>);
+<a id='L123' name='L123'></a> 123 <strong class='reserved'>void</strong> <a href='../S/590.html#L122' title='Defined at 122 in userland/testbin/badcall/bad_stat.c.'>test_stat</a>(<strong class='reserved'>void</strong>);
+<a id='L124' name='L124'></a> 124 <strong class='reserved'>void</strong> <a href='../S/590.html#L114' title='Defined at 114 in userland/testbin/badcall/bad_stat.c.'>test_lstat</a>(<strong class='reserved'>void</strong>);          <em class='comment'>/* in bad_stat.c */</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;][^][v]<a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

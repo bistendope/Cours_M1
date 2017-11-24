@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>BITS_PER_WORD</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/198.html#L62'>BITS_PER_WORD</a>      62 kern/lib/bitmap.c         words = DIVROUNDUP(nbits, BITS_PER_WORD);</span>
+<span class='curline'><a href='../S/198.html#L77'>BITS_PER_WORD</a>      77 kern/lib/bitmap.c         if (words &gt; nbits / BITS_PER_WORD) {</span>
+<span class='curline'><a href='../S/198.html#L79'>BITS_PER_WORD</a>      79 kern/lib/bitmap.c                 unsigned overbits = nbits - ix*BITS_PER_WORD;</span>
+<span class='curline'><a href='../S/198.html#L81'>BITS_PER_WORD</a>      81 kern/lib/bitmap.c                 KASSERT(nbits / BITS_PER_WORD == words-1);</span>
+<span class='curline'><a href='../S/198.html#L82'>BITS_PER_WORD</a>      82 kern/lib/bitmap.c                 KASSERT(overbits &gt; 0 &amp;&amp; overbits &lt; BITS_PER_WORD);</span>
+<span class='curline'><a href='../S/198.html#L84'>BITS_PER_WORD</a>      84 kern/lib/bitmap.c                 for (j=overbits; j&lt;BITS_PER_WORD; j++) {</span>
+<span class='curline'><a href='../S/198.html#L102'>BITS_PER_WORD</a>     102 kern/lib/bitmap.c         unsigned maxix = DIVROUNDUP(b-&gt;nbits, BITS_PER_WORD);</span>
+<span class='curline'><a href='../S/198.html#L107'>BITS_PER_WORD</a>     107 kern/lib/bitmap.c                         for (offset = 0; offset &lt; BITS_PER_WORD; offset++) {</span>
+<span class='curline'><a href='../S/198.html#L112'>BITS_PER_WORD</a>     112 kern/lib/bitmap.c                                         *index = (ix*BITS_PER_WORD)+offset;</span>
+<span class='curline'><a href='../S/198.html#L129'>BITS_PER_WORD</a>     129 kern/lib/bitmap.c         *ix = bitno / BITS_PER_WORD;</span>
+<span class='curline'><a href='../S/198.html#L130'>BITS_PER_WORD</a>     130 kern/lib/bitmap.c         offset = bitno % BITS_PER_WORD;</span>
+</pre>
+</body>
+</html>

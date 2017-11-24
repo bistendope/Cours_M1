@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>cpu</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/44.html#L71'>cpu</a>                71 kern/arch/mips/include/current.h #define INIT_CURCPU(cpu, thread) (curthread = (thread), curcpu = (cpu))</span>
+<span class='curline'><a href='../S/63.html#L76'>cpu</a>                76 kern/arch/mips/thread/cpu.c cpu_machdep_init(struct cpu *c)</span>
+<span class='curline'><a href='../S/73.html#L274'>cpu</a>               274 kern/arch/sys161/dev/lamebus_machdep.c mainbus_send_ipi(struct cpu *target)</span>
+<span class='curline'><a href='../S/99.html#L615'>cpu</a>               615 kern/dev/lamebus/lamebus.c lamebus_assert_ipi(struct lamebus_softc *lamebus, struct cpu *target)</span>
+<span class='curline'><a href='../S/99.html#L625'>cpu</a>               625 kern/dev/lamebus/lamebus.c lamebus_clear_ipi(struct lamebus_softc *lamebus, struct cpu *target)</span>
+<span class='curline'><a href='../S/100.html#L163'>cpu</a>               163 kern/dev/lamebus/lamebus.h void lamebus_assert_ipi(struct lamebus_softc *, struct cpu *targetcpu);</span>
+<span class='curline'><a href='../S/100.html#L164'>cpu</a>               164 kern/dev/lamebus/lamebus.h void lamebus_clear_ipi(struct lamebus_softc *, struct cpu *targetcpu);</span>
+<span class='curline'><a href='../S/144.html#L53'>cpu</a>                53 kern/include/cpu.h 	struct cpu *c_self;		/* Canonical address of this struct */</span>
+<span class='curline'><a href='../S/144.html#L110'>cpu</a>               110 kern/include/cpu.h struct cpu *cpu_create(unsigned hardware_number);</span>
+<span class='curline'><a href='../S/144.html#L111'>cpu</a>               111 kern/include/cpu.h void cpu_machdep_init(struct cpu *);</span>
+<span class='curline'><a href='../S/144.html#L169'>cpu</a>               169 kern/include/cpu.h void ipi_send(struct cpu *target, int code);</span>
+<span class='curline'><a href='../S/144.html#L171'>cpu</a>               171 kern/include/cpu.h void ipi_tlbshootdown(struct cpu *target, const struct tlbshootdown *mapping);</span>
+<span class='curline'><a href='../S/174.html#L38'>cpu</a>                38 kern/include/mainbus.h struct cpu;       /* from &lt;cpu.h&gt; */</span>
+<span class='curline'><a href='../S/174.html#L56'>cpu</a>                56 kern/include/mainbus.h void mainbus_send_ipi(struct cpu *target);</span>
+<span class='curline'><a href='../S/180.html#L60'>cpu</a>                60 kern/include/spinlock.h 	struct cpu *splk_holder;	    /* CPU holding this lock. */</span>
+<span class='curline'><a href='../S/187.html#L43'>cpu</a>                43 kern/include/thread.h struct cpu;</span>
+<span class='curline'><a href='../S/187.html#L84'>cpu</a>                84 kern/include/thread.h 	struct cpu *t_cpu;		/* CPU thread runs on */</span>
+<span class='curline'><a href='../S/224.html#L78'>cpu</a>                78 kern/thread/spinlock.c 	struct cpu *mycpu;</span>
+<span class='curline'><a href='../S/227.html#L65'>cpu</a>                65 kern/thread/thread.c DECLARRAY(cpu, static __UNUSED inline);</span>
+<span class='curline'><a href='../S/227.html#L66'>cpu</a>                66 kern/thread/thread.c DEFARRAY(cpu, static __UNUSED inline);</span>
+<span class='curline'><a href='../S/227.html#L163'>cpu</a>               163 kern/thread/thread.c struct cpu *</span>
+<span class='curline'><a href='../S/227.html#L166'>cpu</a>               166 kern/thread/thread.c 	struct cpu *c;</span>
+<span class='curline'><a href='../S/227.html#L454'>cpu</a>               454 kern/thread/thread.c 	struct cpu *targetcpu;</span>
+<span class='curline'><a href='../S/227.html#L852'>cpu</a>               852 kern/thread/thread.c 	struct cpu *c;</span>
+<span class='curline'><a href='../S/227.html#L1102'>cpu</a>              1102 kern/thread/thread.c ipi_send(struct cpu *target, int code)</span>
+<span class='curline'><a href='../S/227.html#L1119'>cpu</a>              1119 kern/thread/thread.c 	struct cpu *c;</span>
+<span class='curline'><a href='../S/227.html#L1133'>cpu</a>              1133 kern/thread/thread.c ipi_tlbshootdown(struct cpu *target, const struct tlbshootdown *mapping)</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>userland/lib/libc/stdlib/malloc.c</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<a id='TOP' name='TOP'></a><h2 class='header'><a href='../mains.html'>root</a>/<a href='../files/761.html'>userland</a>/<a href='../files/781.html'>lib</a>/<a href='../files/785.html'>libc</a>/<a href='../files/789.html'>stdlib</a>/malloc.c</h2>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L162'>[^]</a><a href='#L534'>[v]</a>[top]<a href='#BOTTOM'>[bottom]</a><a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+<hr />
+<h2 class='header'>DEFINITIONS</h2>
+This source file includes following definitions.
+<ol>
+<li><a href='#L162' title='Defined at 162.'>__malloc_init</a></li>
+<li><a href='#L233' title='Defined at 233.'>__malloc_dump</a></li>
+<li><a href='#L282' title='Defined at 282.'>__malloc_sbrk</a></li>
+<li><a href='#L311' title='Defined at 311.'>__malloc_split</a></li>
+<li><a href='#L352' title='Defined at 352.'>malloc</a></li>
+<li><a href='#L490' title='Defined at 490.'>__malloc_deadbeef</a></li>
+<li><a href='#L504' title='Defined at 504.'>__malloc_trymerge</a></li>
+<li><a href='#L534' title='Defined at 534.'>free</a></li>
+</ol>
+<hr />
+<pre>
+<a id='L1' name='L1'></a>   1 <em class='comment'>/*</em>
+<a id='L2' name='L2'></a>   2 <em class='comment'> * Copyright (c) 2000, 2001, 2002, 2003, 2004, 2005, 2008, 2009, 2014</em>
+<a id='L3' name='L3'></a>   3 <em class='comment'> *      The President and Fellows of Harvard College.</em>
+<a id='L4' name='L4'></a>   4 <em class='comment'> *</em>
+<a id='L5' name='L5'></a>   5 <em class='comment'> * Redistribution and use in source and binary forms, with or without</em>
+<a id='L6' name='L6'></a>   6 <em class='comment'> * modification, are permitted provided that the following conditions</em>
+<a id='L7' name='L7'></a>   7 <em class='comment'> * are met:</em>
+<a id='L8' name='L8'></a>   8 <em class='comment'> * 1. Redistributions of source code must retain the above copyright</em>
+<a id='L9' name='L9'></a>   9 <em class='comment'> *    notice, this list of conditions and the following disclaimer.</em>
+<a id='L10' name='L10'></a>  10 <em class='comment'> * 2. Redistributions in binary form must reproduce the above copyright</em>
+<a id='L11' name='L11'></a>  11 <em class='comment'> *    notice, this list of conditions and the following disclaimer in the</em>
+<a id='L12' name='L12'></a>  12 <em class='comment'> *    documentation and/or other materials provided with the distribution.</em>
+<a id='L13' name='L13'></a>  13 <em class='comment'> * 3. Neither the name of the University nor the names of its contributors</em>
+<a id='L14' name='L14'></a>  14 <em class='comment'> *    may be used to endorse or promote products derived from this software</em>
+<a id='L15' name='L15'></a>  15 <em class='comment'> *    without specific prior written permission.</em>
+<a id='L16' name='L16'></a>  16 <em class='comment'> *</em>
+<a id='L17' name='L17'></a>  17 <em class='comment'> * THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND</em>
+<a id='L18' name='L18'></a>  18 <em class='comment'> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</em>
+<a id='L19' name='L19'></a>  19 <em class='comment'> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</em>
+<a id='L20' name='L20'></a>  20 <em class='comment'> * ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE</em>
+<a id='L21' name='L21'></a>  21 <em class='comment'> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</em>
+<a id='L22' name='L22'></a>  22 <em class='comment'> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</em>
+<a id='L23' name='L23'></a>  23 <em class='comment'> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</em>
+<a id='L24' name='L24'></a>  24 <em class='comment'> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</em>
+<a id='L25' name='L25'></a>  25 <em class='comment'> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</em>
+<a id='L26' name='L26'></a>  26 <em class='comment'> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</em>
+<a id='L27' name='L27'></a>  27 <em class='comment'> * SUCH DAMAGE.</em>
+<a id='L28' name='L28'></a>  28 <em class='comment'> */</em>
+<a id='L29' name='L29'></a>  29 
+<a id='L30' name='L30'></a>  30 <em class='comment'>/*</em>
+<a id='L31' name='L31'></a>  31 <em class='comment'> * User-level malloc and free implementation.</em>
+<a id='L32' name='L32'></a>  32 <em class='comment'> *</em>
+<a id='L33' name='L33'></a>  33 <em class='comment'> * This is a basic first-fit allocator. It's intended to be simple and</em>
+<a id='L34' name='L34'></a>  34 <em class='comment'> * easy to follow. It performs abysmally if the heap becomes larger than</em>
+<a id='L35' name='L35'></a>  35 <em class='comment'> * physical memory. To get (much) better out-of-core performance, port</em>
+<a id='L36' name='L36'></a>  36 <em class='comment'> * the kernel's malloc. :-)</em>
+<a id='L37' name='L37'></a>  37 <em class='comment'> */</em>
+<a id='L38' name='L38'></a>  38 
+<a id='L39' name='L39'></a>  39 <em class='sharp'>#include</em> &lt;<a href='480.html'>stdlib.h</a>&gt;
+<a id='L40' name='L40'></a>  40 <em class='sharp'>#include</em> &lt;<a href='478.html'>stdint.h</a>&gt;  <em class='comment'>// for uintptr_t on non-OS/161 platforms</em>
+<a id='L41' name='L41'></a>  41 <em class='sharp'>#include</em> &lt;<a href='../I/150.html'>unistd.h</a>&gt;
+<a id='L42' name='L42'></a>  42 <em class='sharp'>#include</em> &lt;<a href='470.html'>err.h</a>&gt;
+<a id='L43' name='L43'></a>  43 <em class='sharp'>#include</em> &lt;<a href='469.html'>assert.h</a>&gt;
+<a id='L44' name='L44'></a>  44 
+<a id='L45' name='L45'></a>  45 <em class='sharp'>#undef</em> <a href='../R/361.html' title='Multiple referred from 7 places.'>MALLOCDEBUG</a>
+<a id='L46' name='L46'></a>  46 
+<a id='L47' name='L47'></a>  47 <em class='sharp'>#if</em> <strong class='reserved'>defined</strong>(__mips__) || <strong class='reserved'>defined</strong>(__i386__)
+<a id='L48' name='L48'></a>  48 <em class='sharp'>#define</em> <a href='../S/514.html#L73' title='Referred from 73 in userland/lib/libc/stdlib/malloc.c.'>MALLOC32</a>
+<a id='L49' name='L49'></a>  49 <em class='sharp'>#elif</em> <strong class='reserved'>defined</strong>(__alpha__) || <strong class='reserved'>defined</strong>(__x86_64__)
+<a id='L50' name='L50'></a>  50 <em class='sharp'>#define</em> <a href='../S/514.html#L89' title='Referred from 89 in userland/lib/libc/stdlib/malloc.c.'>MALLOC64</a>
+<a id='L51' name='L51'></a>  51 <em class='sharp'>#else</em>
+<a id='L52' name='L52'></a>  52 <em class='sharp'>#error</em> "please fix me"
+<a id='L53' name='L53'></a>  53 <em class='sharp'>#endif</em>
+<a id='L54' name='L54'></a>  54 
+<a id='L55' name='L55'></a>  55 <em class='comment'>/*</em>
+<a id='L56' name='L56'></a>  56 <em class='comment'> * malloc block header.</em>
+<a id='L57' name='L57'></a>  57 <em class='comment'> *</em>
+<a id='L58' name='L58'></a>  58 <em class='comment'> * mh_prevblock is the downwards offset to the previous header, 0 if this</em>
+<a id='L59' name='L59'></a>  59 <em class='comment'> * is the bottom of the heap.</em>
+<a id='L60' name='L60'></a>  60 <em class='comment'> *</em>
+<a id='L61' name='L61'></a>  61 <em class='comment'> * mh_nextblock is the upwards offset to the next header.</em>
+<a id='L62' name='L62'></a>  62 <em class='comment'> *</em>
+<a id='L63' name='L63'></a>  63 <em class='comment'> * mh_pad is unused.</em>
+<a id='L64' name='L64'></a>  64 <em class='comment'> * mh_inuse is 1 if the block is in use, 0 if it is free.</em>
+<a id='L65' name='L65'></a>  65 <em class='comment'> * mh_magic* should always be a fixed value.</em>
+<a id='L66' name='L66'></a>  66 <em class='comment'> *</em>
+<a id='L67' name='L67'></a>  67 <em class='comment'> * MBLOCKSIZE should equal sizeof(struct mheader) and be a power of 2.</em>
+<a id='L68' name='L68'></a>  68 <em class='comment'> * MBLOCKSHIFT is the log base 2 of MBLOCKSIZE.</em>
+<a id='L69' name='L69'></a>  69 <em class='comment'> * MMAGIC is the value for mh_magic*.</em>
+<a id='L70' name='L70'></a>  70 <em class='comment'> */</em>
+<a id='L71' name='L71'></a>  71 <strong class='reserved'>struct</strong> <a href='../R/1656.html' title='Multiple referred from 18 places.'>mheader</a> <em class='brace'>{</em>
+<a id='L72' name='L72'></a>  72 
+<a id='L73' name='L73'></a>  73 <em class='sharp'>#if</em> <strong class='reserved'>defined</strong>(<a href='../S/514.html#L48' title='Defined at 48 in userland/lib/libc/stdlib/malloc.c.'>MALLOC32</a>)
+<a id='L74' name='L74'></a>  74 <em class='sharp'>#define</em> <a href='../R/381.html' title='Multiple referred from 15 places.'>MBLOCKSIZE</a> 8
+<a id='L75' name='L75'></a>  75 <em class='sharp'>#define</em> <a href='../R/380.html' title='Multiple referred from 8 places.'>MBLOCKSHIFT</a> 3
+<a id='L76' name='L76'></a>  76 <em class='sharp'>#define</em> <a href='../R/389.html' title='Multiple referred from 5 places.'>MMAGIC</a> 2
+<a id='L77' name='L77'></a>  77         <em class='comment'>/*</em>
+<a id='L78' name='L78'></a>  78 <em class='comment'>         * 32-bit platform. size_t is 32 bits (4 bytes).</em>
+<a id='L79' name='L79'></a>  79 <em class='comment'>         * Block size is 8 bytes.</em>
+<a id='L80' name='L80'></a>  80 <em class='comment'>         */</em>
+<a id='L81' name='L81'></a>  81         <strong class='reserved'>unsigned</strong> mh_prevblock:29;
+<a id='L82' name='L82'></a>  82         <strong class='reserved'>unsigned</strong> mh_pad:1;
+<a id='L83' name='L83'></a>  83         <strong class='reserved'>unsigned</strong> mh_magic1:2;
+<a id='L84' name='L84'></a>  84 
+<a id='L85' name='L85'></a>  85         <strong class='reserved'>unsigned</strong> mh_nextblock:29;
+<a id='L86' name='L86'></a>  86         <strong class='reserved'>unsigned</strong> mh_inuse:1;
+<a id='L87' name='L87'></a>  87         <strong class='reserved'>unsigned</strong> mh_magic2:2;
+<a id='L88' name='L88'></a>  88 
+<a id='L89' name='L89'></a>  89 <em class='sharp'>#elif</em> <strong class='reserved'>defined</strong>(<a href='../S/514.html#L50' title='Defined at 50 in userland/lib/libc/stdlib/malloc.c.'>MALLOC64</a>)
+<a id='L90' name='L90'></a>  90 <em class='sharp'>#define</em> <a href='../R/381.html' title='Multiple referred from 15 places.'>MBLOCKSIZE</a> 16
+<a id='L91' name='L91'></a>  91 <em class='sharp'>#define</em> <a href='../R/380.html' title='Multiple referred from 8 places.'>MBLOCKSHIFT</a> 4
+<a id='L92' name='L92'></a>  92 <em class='sharp'>#define</em> <a href='../R/389.html' title='Multiple referred from 5 places.'>MMAGIC</a> 6
+<a id='L93' name='L93'></a>  93         <em class='comment'>/*</em>
+<a id='L94' name='L94'></a>  94 <em class='comment'>         * 64-bit platform. size_t is 64 bits (8 bytes)</em>
+<a id='L95' name='L95'></a>  95 <em class='comment'>         * Block size is 16 bytes.</em>
+<a id='L96' name='L96'></a>  96 <em class='comment'>         */</em>
+<a id='L97' name='L97'></a>  97         <strong class='reserved'>unsigned</strong> mh_prevblock:60;
+<a id='L98' name='L98'></a>  98         <strong class='reserved'>unsigned</strong> mh_pad:1;
+<a id='L99' name='L99'></a>  99         <strong class='reserved'>unsigned</strong> mh_magic1:3;
+<a id='L100' name='L100'></a> 100 
+<a id='L101' name='L101'></a> 101         <strong class='reserved'>unsigned</strong> mh_nextblock:60;
+<a id='L102' name='L102'></a> 102         <strong class='reserved'>unsigned</strong> mh_inuse:1;
+<a id='L103' name='L103'></a> 103         <strong class='reserved'>unsigned</strong> mh_magic2:3;
+<a id='L104' name='L104'></a> 104 
+<a id='L105' name='L105'></a> 105 <em class='sharp'>#else</em>
+<a id='L106' name='L106'></a> 106 <em class='sharp'>#error</em> "please fix me"
+<a id='L107' name='L107'></a> 107 <em class='sharp'>#endif</em>
+<a id='L108' name='L108'></a> 108 <em class='brace'>}</em>;
+<a id='L109' name='L109'></a> 109 
+<a id='L110' name='L110'></a> 110 <em class='comment'>/*</em>
+<a id='L111' name='L111'></a> 111 <em class='comment'> * Operator macros on struct mheader.</em>
+<a id='L112' name='L112'></a> 112 <em class='comment'> *</em>
+<a id='L113' name='L113'></a> 113 <em class='comment'> * M_NEXT/PREVOFF:      return offset to next/previous header</em>
+<a id='L114' name='L114'></a> 114 <em class='comment'> * M_NEXT/PREV:         return next/previous header</em>
+<a id='L115' name='L115'></a> 115 <em class='comment'> *</em>
+<a id='L116' name='L116'></a> 116 <em class='comment'> * M_DATA:              return data pointer of a header</em>
+<a id='L117' name='L117'></a> 117 <em class='comment'> * M_SIZE:              return data size of a header</em>
+<a id='L118' name='L118'></a> 118 <em class='comment'> *</em>
+<a id='L119' name='L119'></a> 119 <em class='comment'> * M_OK:                true if the magic values are correct</em>
+<a id='L120' name='L120'></a> 120 <em class='comment'> *</em>
+<a id='L121' name='L121'></a> 121 <em class='comment'> * M_MKFIELD:           prepare a value for mh_next/prevblock.</em>
+<a id='L122' name='L122'></a> 122 <em class='comment'> *                      (value should include the header size)</em>
+<a id='L123' name='L123'></a> 123 <em class='comment'> */</em>
+<a id='L124' name='L124'></a> 124 
+<a id='L125' name='L125'></a> 125 <em class='sharp'>#define</em> <a href='../R/393.html' title='Multiple referred from 6 places.'>M_NEXTOFF</a>(mh)   ((<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>)(((<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>)((mh)-&gt;mh_nextblock))&lt;&lt;<a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a>))
+<a id='L126' name='L126'></a> 126 <em class='sharp'>#define</em> <a href='../S/514.html#L128' title='Referred from 128 in userland/lib/libc/stdlib/malloc.c.'>M_PREVOFF</a>(mh)   ((<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>)(((<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>)((mh)-&gt;mh_prevblock))&lt;&lt;<a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a>))
+<a id='L127' name='L127'></a> 127 <em class='sharp'>#define</em> <a href='../R/392.html' title='Multiple referred from 4 places.'>M_NEXT</a>(mh)      ((<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *)(((<strong class='reserved'>char</strong>*)(mh))+<a href='../S/514.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/malloc.c.'>M_NEXTOFF</a>(mh)))
+<a id='L128' name='L128'></a> 128 <em class='sharp'>#define</em> <a href='../S/514.html#L583' title='Referred from 583 in userland/lib/libc/stdlib/malloc.c.'>M_PREV</a>(mh)      ((<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *)(((<strong class='reserved'>char</strong>*)(mh))-<a href='../S/514.html#L126' title='Defined at 126 in userland/lib/libc/stdlib/malloc.c.'>M_PREVOFF</a>(mh)))
+<a id='L129' name='L129'></a> 129 
+<a id='L130' name='L130'></a> 130 <em class='sharp'>#define</em> <a href='../R/390.html' title='Multiple referred from 5 places.'>M_DATA</a>(mh)      ((<strong class='reserved'>void</strong> *)((mh)+1))
+<a id='L131' name='L131'></a> 131 <em class='sharp'>#define</em> <a href='../R/397.html' title='Multiple referred from 9 places.'>M_SIZE</a>(mh)      (<a href='../S/514.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/malloc.c.'>M_NEXTOFF</a>(mh)-<a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>)
+<a id='L132' name='L132'></a> 132 
+<a id='L133' name='L133'></a> 133 <em class='sharp'>#define</em> <a href='../R/394.html' title='Multiple referred from 3 places.'>M_OK</a>(mh)        ((mh)-&gt;mh_magic1==<a href='../D/533.html' title='Multiple defined in 2 places.'>MMAGIC</a> &amp;&amp; (mh)-&gt;mh_magic2==<a href='../D/533.html' title='Multiple defined in 2 places.'>MMAGIC</a>)
+<a id='L134' name='L134'></a> 134 
+<a id='L135' name='L135'></a> 135 <em class='sharp'>#define</em> <a href='../R/391.html' title='Multiple referred from 6 places.'>M_MKFIELD</a>(off)  ((off)&gt;&gt;<a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a>)
+<a id='L136' name='L136'></a> 136 
+<a id='L137' name='L137'></a> 137 <em class='comment'>/*</em>
+<a id='L138' name='L138'></a> 138 <em class='comment'> * System page size. In POSIX you're supposed to call</em>
+<a id='L139' name='L139'></a> 139 <em class='comment'> * sysconf(_SC_PAGESIZE). If _SC_PAGESIZE isn't defined, as on OS/161,</em>
+<a id='L140' name='L140'></a> 140 <em class='comment'> * assume 4K.</em>
+<a id='L141' name='L141'></a> 141 <em class='comment'> */</em>
+<a id='L142' name='L142'></a> 142 
+<a id='L143' name='L143'></a> 143 <em class='sharp'>#ifdef</em> _SC_PAGESIZE
+<a id='L144' name='L144'></a> 144 <strong class='reserved'>static</strong> <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> __malloc_pagesize;
+<a id='L145' name='L145'></a> 145 <em class='sharp'>#define</em> <a href='../R/456.html' title='Multiple referred from 87 places.'>PAGE_SIZE</a> __malloc_pagesize
+<a id='L146' name='L146'></a> 146 <em class='sharp'>#else</em>
+<a id='L147' name='L147'></a> 147 <em class='sharp'>#define</em> <a href='../R/456.html' title='Multiple referred from 87 places.'>PAGE_SIZE</a> 4096
+<a id='L148' name='L148'></a> 148 <em class='sharp'>#endif</em>
+<a id='L149' name='L149'></a> 149 
+<a id='L150' name='L150'></a> 150 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L151' name='L151'></a> 151 
+<a id='L152' name='L152'></a> 152 <em class='comment'>/*</em>
+<a id='L153' name='L153'></a> 153 <em class='comment'> * Static variables - the bottom and top addresses of the heap.</em>
+<a id='L154' name='L154'></a> 154 <em class='comment'> */</em>
+<a id='L155' name='L155'></a> 155 <strong class='reserved'>static</strong> <a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a> __heapbase, __heaptop;
+<a id='L156' name='L156'></a> 156 
+<a id='L157' name='L157'></a> 157 <em class='comment'>/*</em>
+<a id='L158' name='L158'></a> 158 <em class='comment'> * Setup function.</em>
+<a id='L159' name='L159'></a> 159 <em class='comment'> */</em>
+<a id='L160' name='L160'></a> 160 <strong class='reserved'>static</strong>
+<a id='L161' name='L161'></a> 161 <strong class='reserved'>void</strong>
+<a id='L162' name='L162'></a> 162 <a href='../S/514.html#L361' title='Referred from 361 in userland/lib/libc/stdlib/malloc.c.'>__malloc_init</a>(<strong class='reserved'>void</strong>)
+<a id='L163' name='L163'></a> 163 <em class='brace'>{</em>
+<a id='L164' name='L164'></a> 164         <strong class='reserved'>void</strong> *x;
+<a id='L165' name='L165'></a> 165 
+<a id='L166' name='L166'></a> 166         <em class='comment'>/*</em>
+<a id='L167' name='L167'></a> 167 <em class='comment'>         * Check various assumed properties of the sizes.</em>
+<a id='L168' name='L168'></a> 168 <em class='comment'>         */</em>
+<a id='L169' name='L169'></a> 169         <strong class='reserved'>if</strong> (<strong class='reserved'>sizeof</strong>(<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a>) != <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>) <em class='brace'>{</em>
+<a id='L170' name='L170'></a> 170                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error - MBLOCKSIZE wrong");
+<a id='L171' name='L171'></a> 171         <em class='brace'>}</em>
+<a id='L172' name='L172'></a> 172         <strong class='reserved'>if</strong> ((<a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> &amp; (<a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>-1))!=0) <em class='brace'>{</em>
+<a id='L173' name='L173'></a> 173                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error - MBLOCKSIZE not power of 2");
+<a id='L174' name='L174'></a> 174         <em class='brace'>}</em>
+<a id='L175' name='L175'></a> 175         <strong class='reserved'>if</strong> (1&lt;&lt;<a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a> != <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>) <em class='brace'>{</em>
+<a id='L176' name='L176'></a> 176                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error - MBLOCKSHIFT wrong");
+<a id='L177' name='L177'></a> 177         <em class='brace'>}</em>
+<a id='L178' name='L178'></a> 178 
+<a id='L179' name='L179'></a> 179         <em class='comment'>/* init should only be called once. */</em>
+<a id='L180' name='L180'></a> 180         <strong class='reserved'>if</strong> (__heapbase!=0 || __heaptop!=0) <em class='brace'>{</em>
+<a id='L181' name='L181'></a> 181                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error - bad init call");
+<a id='L182' name='L182'></a> 182         <em class='brace'>}</em>
+<a id='L183' name='L183'></a> 183 
+<a id='L184' name='L184'></a> 184         <em class='comment'>/* Get the page size, if needed. */</em>
+<a id='L185' name='L185'></a> 185 <em class='sharp'>#ifdef</em> _SC_PAGESIZE
+<a id='L186' name='L186'></a> 186         __malloc_pagesize = sysconf(_SC_PAGESIZE);
+<a id='L187' name='L187'></a> 187 <em class='sharp'>#endif</em>
+<a id='L188' name='L188'></a> 188 
+<a id='L189' name='L189'></a> 189         <em class='comment'>/* Use sbrk to find the base of the heap. */</em>
+<a id='L190' name='L190'></a> 190         x = sbrk(0);
+<a id='L191' name='L191'></a> 191         <strong class='reserved'>if</strong> (x==(<strong class='reserved'>void</strong> *)-1) <em class='brace'>{</em>
+<a id='L192' name='L192'></a> 192                 <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "malloc: initial sbrk failed");
+<a id='L193' name='L193'></a> 193         <em class='brace'>}</em>
+<a id='L194' name='L194'></a> 194         <strong class='reserved'>if</strong> (x==(<strong class='reserved'>void</strong> *) 0) <em class='brace'>{</em>
+<a id='L195' name='L195'></a> 195                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error - heap began at 0");
+<a id='L196' name='L196'></a> 196         <em class='brace'>}</em>
+<a id='L197' name='L197'></a> 197         __heapbase = __heaptop = (<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)x;
+<a id='L198' name='L198'></a> 198 
+<a id='L199' name='L199'></a> 199         <em class='comment'>/*</em>
+<a id='L200' name='L200'></a> 200 <em class='comment'>         * Make sure the heap base is aligned the way we want it.</em>
+<a id='L201' name='L201'></a> 201 <em class='comment'>         * (On OS/161, it will begin on a page boundary. But on</em>
+<a id='L202' name='L202'></a> 202 <em class='comment'>         * an arbitrary Unix, it may not be, as traditionally it</em>
+<a id='L203' name='L203'></a> 203 <em class='comment'>         * begins at _end.)</em>
+<a id='L204' name='L204'></a> 204 <em class='comment'>         */</em>
+<a id='L205' name='L205'></a> 205 
+<a id='L206' name='L206'></a> 206         <strong class='reserved'>if</strong> (__heapbase % <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> != 0) <em class='brace'>{</em>
+<a id='L207' name='L207'></a> 207                 <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> adjust = <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> - (__heapbase % <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>);
+<a id='L208' name='L208'></a> 208                 x = sbrk(adjust);
+<a id='L209' name='L209'></a> 209                 <strong class='reserved'>if</strong> (x==(<strong class='reserved'>void</strong> *)-1) <em class='brace'>{</em>
+<a id='L210' name='L210'></a> 210                         <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "malloc: sbrk failed aligning heap base");
+<a id='L211' name='L211'></a> 211                 <em class='brace'>}</em>
+<a id='L212' name='L212'></a> 212                 <strong class='reserved'>if</strong> ((<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)x != __heapbase) <em class='brace'>{</em>
+<a id='L213' name='L213'></a> 213                         <a href='../D/1724.html' title='Multiple defined in 2 places.'>err</a>(1, "malloc: heap base moved during init");
+<a id='L214' name='L214'></a> 214                 <em class='brace'>}</em>
+<a id='L215' name='L215'></a> 215 <em class='sharp'>#ifdef</em> <a href='../S/514.html#L45' title='Defined at 45 in userland/lib/libc/stdlib/malloc.c.'>MALLOCDEBUG</a>
+<a id='L216' name='L216'></a> 216                 <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("malloc: adjusted heap base upwards by %lu bytes",
+<a id='L217' name='L217'></a> 217                       (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) adjust);
+<a id='L218' name='L218'></a> 218 <em class='sharp'>#endif</em>
+<a id='L219' name='L219'></a> 219                 __heapbase += adjust;
+<a id='L220' name='L220'></a> 220                 __heaptop = __heapbase;
+<a id='L221' name='L221'></a> 221         <em class='brace'>}</em>
+<a id='L222' name='L222'></a> 222 <em class='brace'>}</em>
+<a id='L223' name='L223'></a> 223 
+<a id='L224' name='L224'></a> 224 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L225' name='L225'></a> 225 
+<a id='L226' name='L226'></a> 226 <em class='sharp'>#ifdef</em> <a href='../S/514.html#L45' title='Defined at 45 in userland/lib/libc/stdlib/malloc.c.'>MALLOCDEBUG</a>
+<a id='L227' name='L227'></a> 227 
+<a id='L228' name='L228'></a> 228 <em class='comment'>/*</em>
+<a id='L229' name='L229'></a> 229 <em class='comment'> * Debugging print function to iterate and dump the entire heap.</em>
+<a id='L230' name='L230'></a> 230 <em class='comment'> */</em>
+<a id='L231' name='L231'></a> 231 <strong class='reserved'>static</strong>
+<a id='L232' name='L232'></a> 232 <strong class='reserved'>void</strong>
+<a id='L233' name='L233'></a> 233 <a href='../R/891.html' title='Multiple referred from 5 places.'>__malloc_dump</a>(<strong class='reserved'>void</strong>)
+<a id='L234' name='L234'></a> 234 <em class='brace'>{</em>
+<a id='L235' name='L235'></a> 235         <strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mh;
+<a id='L236' name='L236'></a> 236         <a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a> i;
+<a id='L237' name='L237'></a> 237         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> rightprevblock;
+<a id='L238' name='L238'></a> 238 
+<a id='L239' name='L239'></a> 239         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("heap: ************************************************");
+<a id='L240' name='L240'></a> 240 
+<a id='L241' name='L241'></a> 241         rightprevblock = 0;
+<a id='L242' name='L242'></a> 242         <strong class='reserved'>for</strong> (i=__heapbase; i&lt;__heaptop; i += <a href='../S/514.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/malloc.c.'>M_NEXTOFF</a>(mh)) <em class='brace'>{</em>
+<a id='L243' name='L243'></a> 243                 mh = (<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *) i;
+<a id='L244' name='L244'></a> 244                 <strong class='reserved'>if</strong> (!<a href='../S/514.html#L133' title='Defined at 133 in userland/lib/libc/stdlib/malloc.c.'>M_OK</a>(mh)) <em class='brace'>{</em>
+<a id='L245' name='L245'></a> 245                         <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Heap corrupt; header at 0x%lx"
+<a id='L246' name='L246'></a> 246                              " has bad magic bits",
+<a id='L247' name='L247'></a> 247                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) i);
+<a id='L248' name='L248'></a> 248                 <em class='brace'>}</em>
+<a id='L249' name='L249'></a> 249                 <strong class='reserved'>if</strong> (mh-&gt;mh_prevblock != rightprevblock) <em class='brace'>{</em>
+<a id='L250' name='L250'></a> 250                         <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Heap corrupt; header at 0x%lx"
+<a id='L251' name='L251'></a> 251                              " has bad previous-block size %lu "
+<a id='L252' name='L252'></a> 252                              "(should be %lu)",
+<a id='L253' name='L253'></a> 253                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) i,
+<a id='L254' name='L254'></a> 254                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) mh-&gt;mh_prevblock &lt;&lt; <a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a>,
+<a id='L255' name='L255'></a> 255                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) rightprevblock &lt;&lt; <a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a>);
+<a id='L256' name='L256'></a> 256                 <em class='brace'>}</em>
+<a id='L257' name='L257'></a> 257                 rightprevblock = mh-&gt;mh_nextblock;
+<a id='L258' name='L258'></a> 258 
+<a id='L259' name='L259'></a> 259                 <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("heap: 0x%lx 0x%-6lx (next: 0x%lx) %s",
+<a id='L260' name='L260'></a> 260                       (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) i + <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>,
+<a id='L261' name='L261'></a> 261                       (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) <a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh),
+<a id='L262' name='L262'></a> 262                       (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) (i+<a href='../S/514.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/malloc.c.'>M_NEXTOFF</a>(mh)),
+<a id='L263' name='L263'></a> 263                       mh-&gt;mh_inuse ? "INUSE" : "FREE");
+<a id='L264' name='L264'></a> 264         <em class='brace'>}</em>
+<a id='L265' name='L265'></a> 265         <strong class='reserved'>if</strong> (i!=__heaptop) <em class='brace'>{</em>
+<a id='L266' name='L266'></a> 266                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Heap corrupt; ran off end");
+<a id='L267' name='L267'></a> 267         <em class='brace'>}</em>
+<a id='L268' name='L268'></a> 268 
+<a id='L269' name='L269'></a> 269         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("heap: ************************************************");
+<a id='L270' name='L270'></a> 270 <em class='brace'>}</em>
+<a id='L271' name='L271'></a> 271 
+<a id='L272' name='L272'></a> 272 <em class='sharp'>#endif</em> <em class='comment'>/* MALLOCDEBUG */</em>
+<a id='L273' name='L273'></a> 273 
+<a id='L274' name='L274'></a> 274 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L275' name='L275'></a> 275 
+<a id='L276' name='L276'></a> 276 <em class='comment'>/*</em>
+<a id='L277' name='L277'></a> 277 <em class='comment'> * Get more memory (at the top of the heap) using sbrk, and</em>
+<a id='L278' name='L278'></a> 278 <em class='comment'> * return a pointer to it.</em>
+<a id='L279' name='L279'></a> 279 <em class='comment'> */</em>
+<a id='L280' name='L280'></a> 280 <strong class='reserved'>static</strong>
+<a id='L281' name='L281'></a> 281 <strong class='reserved'>void</strong> *
+<a id='L282' name='L282'></a> 282 <a href='../S/514.html#L447' title='Referred from 447 in userland/lib/libc/stdlib/malloc.c.'>__malloc_sbrk</a>(<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> size)
+<a id='L283' name='L283'></a> 283 <em class='brace'>{</em>
+<a id='L284' name='L284'></a> 284         <strong class='reserved'>void</strong> *x;
+<a id='L285' name='L285'></a> 285 
+<a id='L286' name='L286'></a> 286         x = sbrk(size);
+<a id='L287' name='L287'></a> 287         <strong class='reserved'>if</strong> (x == (<strong class='reserved'>void</strong> *)-1) <em class='brace'>{</em>
+<a id='L288' name='L288'></a> 288                 <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L289' name='L289'></a> 289         <em class='brace'>}</em>
+<a id='L290' name='L290'></a> 290 
+<a id='L291' name='L291'></a> 291         <strong class='reserved'>if</strong> ((<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)x != __heaptop) <em class='brace'>{</em>
+<a id='L292' name='L292'></a> 292                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error - "
+<a id='L293' name='L293'></a> 293                      "heap top moved itself from 0x%lx to 0x%lx",
+<a id='L294' name='L294'></a> 294                      (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) __heaptop,
+<a id='L295' name='L295'></a> 295                      (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) (<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>) x);
+<a id='L296' name='L296'></a> 296         <em class='brace'>}</em>
+<a id='L297' name='L297'></a> 297         __heaptop += size;
+<a id='L298' name='L298'></a> 298         <strong class='reserved'>return</strong> x;
+<a id='L299' name='L299'></a> 299 <em class='brace'>}</em>
+<a id='L300' name='L300'></a> 300 
+<a id='L301' name='L301'></a> 301 <em class='comment'>/*</em>
+<a id='L302' name='L302'></a> 302 <em class='comment'> * Make a new (free) block from the block passed in, leaving size</em>
+<a id='L303' name='L303'></a> 303 <em class='comment'> * bytes for data in the current block. size must be a multiple of</em>
+<a id='L304' name='L304'></a> 304 <em class='comment'> * MBLOCKSIZE.</em>
+<a id='L305' name='L305'></a> 305 <em class='comment'> *</em>
+<a id='L306' name='L306'></a> 306 <em class='comment'> * Only split if the excess space is at least twice the blocksize -</em>
+<a id='L307' name='L307'></a> 307 <em class='comment'> * one blocksize to hold a header and one for data.</em>
+<a id='L308' name='L308'></a> 308 <em class='comment'> */</em>
+<a id='L309' name='L309'></a> 309 <strong class='reserved'>static</strong>
+<a id='L310' name='L310'></a> 310 <strong class='reserved'>void</strong>
+<a id='L311' name='L311'></a> 311 <a href='../R/894.html' title='Multiple referred from 2 places.'>__malloc_split</a>(<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mh, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> size)
+<a id='L312' name='L312'></a> 312 <em class='brace'>{</em>
+<a id='L313' name='L313'></a> 313         <strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mhnext, *mhnew;
+<a id='L314' name='L314'></a> 314         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> oldsize;
+<a id='L315' name='L315'></a> 315 
+<a id='L316' name='L316'></a> 316         <strong class='reserved'>if</strong> (size % <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> != 0) <em class='brace'>{</em>
+<a id='L317' name='L317'></a> 317                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error (size %lu passed to split)",
+<a id='L318' name='L318'></a> 318                      (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) size);
+<a id='L319' name='L319'></a> 319         <em class='brace'>}</em>
+<a id='L320' name='L320'></a> 320 
+<a id='L321' name='L321'></a> 321         <strong class='reserved'>if</strong> (<a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh) - size &lt; 2*<a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>) <em class='brace'>{</em>
+<a id='L322' name='L322'></a> 322                 <em class='comment'>/* no room */</em>
+<a id='L323' name='L323'></a> 323                 <strong class='reserved'>return</strong>;
+<a id='L324' name='L324'></a> 324         <em class='brace'>}</em>
+<a id='L325' name='L325'></a> 325 
+<a id='L326' name='L326'></a> 326         mhnext = <a href='../S/514.html#L127' title='Defined at 127 in userland/lib/libc/stdlib/malloc.c.'>M_NEXT</a>(mh);
+<a id='L327' name='L327'></a> 327 
+<a id='L328' name='L328'></a> 328         oldsize = <a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh);
+<a id='L329' name='L329'></a> 329         mh-&gt;mh_nextblock = <a href='../S/514.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/malloc.c.'>M_MKFIELD</a>(size + <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>);
+<a id='L330' name='L330'></a> 330 
+<a id='L331' name='L331'></a> 331         mhnew = <a href='../S/514.html#L127' title='Defined at 127 in userland/lib/libc/stdlib/malloc.c.'>M_NEXT</a>(mh);
+<a id='L332' name='L332'></a> 332         <strong class='reserved'>if</strong> (mhnew==mhnext) <em class='brace'>{</em>
+<a id='L333' name='L333'></a> 333                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Internal error (split screwed up?)");
+<a id='L334' name='L334'></a> 334         <em class='brace'>}</em>
+<a id='L335' name='L335'></a> 335 
+<a id='L336' name='L336'></a> 336         mhnew-&gt;mh_prevblock = <a href='../S/514.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/malloc.c.'>M_MKFIELD</a>(size + <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>);
+<a id='L337' name='L337'></a> 337         mhnew-&gt;mh_pad = 0;
+<a id='L338' name='L338'></a> 338         mhnew-&gt;mh_magic1 = <a href='../D/533.html' title='Multiple defined in 2 places.'>MMAGIC</a>;
+<a id='L339' name='L339'></a> 339         mhnew-&gt;mh_nextblock = <a href='../S/514.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/malloc.c.'>M_MKFIELD</a>(oldsize - size);
+<a id='L340' name='L340'></a> 340         mhnew-&gt;mh_inuse = 0;
+<a id='L341' name='L341'></a> 341         mhnew-&gt;mh_magic2 = <a href='../D/533.html' title='Multiple defined in 2 places.'>MMAGIC</a>;
+<a id='L342' name='L342'></a> 342 
+<a id='L343' name='L343'></a> 343         <strong class='reserved'>if</strong> (mhnext != (<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *) __heaptop) <em class='brace'>{</em>
+<a id='L344' name='L344'></a> 344                 mhnext-&gt;mh_prevblock = mhnew-&gt;mh_nextblock;
+<a id='L345' name='L345'></a> 345         <em class='brace'>}</em>
+<a id='L346' name='L346'></a> 346 <em class='brace'>}</em>
+<a id='L347' name='L347'></a> 347 
+<a id='L348' name='L348'></a> 348 <em class='comment'>/*</em>
+<a id='L349' name='L349'></a> 349 <em class='comment'> * malloc itself.</em>
+<a id='L350' name='L350'></a> 350 <em class='comment'> */</em>
+<a id='L351' name='L351'></a> 351 <strong class='reserved'>void</strong> *
+<a id='L352' name='L352'></a> 352 <a href='../R/1634.html' title='Multiple referred from 15 places.'>malloc</a>(<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> size)
+<a id='L353' name='L353'></a> 353 <em class='brace'>{</em>
+<a id='L354' name='L354'></a> 354         <strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mh;
+<a id='L355' name='L355'></a> 355         <a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a> i;
+<a id='L356' name='L356'></a> 356         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> rightprevblock;
+<a id='L357' name='L357'></a> 357         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> morespace;
+<a id='L358' name='L358'></a> 358         <strong class='reserved'>void</strong> *p;
+<a id='L359' name='L359'></a> 359 
+<a id='L360' name='L360'></a> 360         <strong class='reserved'>if</strong> (__heapbase==0) <em class='brace'>{</em>
+<a id='L361' name='L361'></a> 361                 <a href='../S/514.html#L162' title='Defined at 162 in userland/lib/libc/stdlib/malloc.c.'>__malloc_init</a>();
+<a id='L362' name='L362'></a> 362         <em class='brace'>}</em>
+<a id='L363' name='L363'></a> 363         <strong class='reserved'>if</strong> (__heapbase==0 || __heaptop==0 || __heapbase &gt; __heaptop) <em class='brace'>{</em>
+<a id='L364' name='L364'></a> 364                 <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("malloc: Internal error - local data corrupt");
+<a id='L365' name='L365'></a> 365                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: heapbase 0x%lx; heaptop 0x%lx",
+<a id='L366' name='L366'></a> 366                      (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) __heapbase, (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) __heaptop);
+<a id='L367' name='L367'></a> 367         <em class='brace'>}</em>
+<a id='L368' name='L368'></a> 368 
+<a id='L369' name='L369'></a> 369 <em class='sharp'>#ifdef</em> <a href='../S/514.html#L45' title='Defined at 45 in userland/lib/libc/stdlib/malloc.c.'>MALLOCDEBUG</a>
+<a id='L370' name='L370'></a> 370         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("malloc: about to allocate %lu (0x%lx) bytes",
+<a id='L371' name='L371'></a> 371               (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) size, (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) size);
+<a id='L372' name='L372'></a> 372         <a href='../S/514.html#L233' title='Defined at 233 in userland/lib/libc/stdlib/malloc.c.'>__malloc_dump</a>();
+<a id='L373' name='L373'></a> 373 <em class='sharp'>#endif</em>
+<a id='L374' name='L374'></a> 374 
+<a id='L375' name='L375'></a> 375         <em class='comment'>/* Round size up to an integral number of blocks. */</em>
+<a id='L376' name='L376'></a> 376         size = ((size + <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> - 1) &amp; ~(<a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a>)(<a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a>-1));
+<a id='L377' name='L377'></a> 377 
+<a id='L378' name='L378'></a> 378         <em class='comment'>/*</em>
+<a id='L379' name='L379'></a> 379 <em class='comment'>         * First-fit search algorithm for available blocks.</em>
+<a id='L380' name='L380'></a> 380 <em class='comment'>         * Check to make sure the next/previous sizes all agree.</em>
+<a id='L381' name='L381'></a> 381 <em class='comment'>         */</em>
+<a id='L382' name='L382'></a> 382         rightprevblock = 0;
+<a id='L383' name='L383'></a> 383         mh = <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L384' name='L384'></a> 384         <strong class='reserved'>for</strong> (i=__heapbase; i&lt;__heaptop; i += <a href='../S/514.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/malloc.c.'>M_NEXTOFF</a>(mh)) <em class='brace'>{</em>
+<a id='L385' name='L385'></a> 385                 mh = (<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *) i;
+<a id='L386' name='L386'></a> 386                 <strong class='reserved'>if</strong> (!<a href='../S/514.html#L133' title='Defined at 133 in userland/lib/libc/stdlib/malloc.c.'>M_OK</a>(mh)) <em class='brace'>{</em>
+<a id='L387' name='L387'></a> 387                         <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Heap corrupt; header at 0x%lx"
+<a id='L388' name='L388'></a> 388                              " has bad magic bits",
+<a id='L389' name='L389'></a> 389                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) i);
+<a id='L390' name='L390'></a> 390                 <em class='brace'>}</em>
+<a id='L391' name='L391'></a> 391                 <strong class='reserved'>if</strong> (mh-&gt;mh_prevblock != rightprevblock) <em class='brace'>{</em>
+<a id='L392' name='L392'></a> 392                         <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Heap corrupt; header at 0x%lx"
+<a id='L393' name='L393'></a> 393                              " has bad previous-block size %lu "
+<a id='L394' name='L394'></a> 394                              "(should be %lu)",
+<a id='L395' name='L395'></a> 395                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) i,
+<a id='L396' name='L396'></a> 396                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) mh-&gt;mh_prevblock &lt;&lt; <a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a>,
+<a id='L397' name='L397'></a> 397                              (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) rightprevblock &lt;&lt; <a href='../D/522.html' title='Multiple defined in 2 places.'>MBLOCKSHIFT</a>);
+<a id='L398' name='L398'></a> 398                 <em class='brace'>}</em>
+<a id='L399' name='L399'></a> 399                 rightprevblock = mh-&gt;mh_nextblock;
+<a id='L400' name='L400'></a> 400 
+<a id='L401' name='L401'></a> 401                 <em class='comment'>/* Can't allocate a block that's in use. */</em>
+<a id='L402' name='L402'></a> 402                 <strong class='reserved'>if</strong> (mh-&gt;mh_inuse) <em class='brace'>{</em>
+<a id='L403' name='L403'></a> 403                         <strong class='reserved'>continue</strong>;
+<a id='L404' name='L404'></a> 404                 <em class='brace'>}</em>
+<a id='L405' name='L405'></a> 405 
+<a id='L406' name='L406'></a> 406                 <em class='comment'>/* Can't allocate a block that isn't big enough. */</em>
+<a id='L407' name='L407'></a> 407                 <strong class='reserved'>if</strong> (<a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh) &lt; size) <em class='brace'>{</em>
+<a id='L408' name='L408'></a> 408                         <strong class='reserved'>continue</strong>;
+<a id='L409' name='L409'></a> 409                 <em class='brace'>}</em>
+<a id='L410' name='L410'></a> 410 
+<a id='L411' name='L411'></a> 411                 <em class='comment'>/* Try splitting block. */</em>
+<a id='L412' name='L412'></a> 412                 <a href='../S/514.html#L311' title='Defined at 311 in userland/lib/libc/stdlib/malloc.c.'>__malloc_split</a>(mh, size);
+<a id='L413' name='L413'></a> 413 
+<a id='L414' name='L414'></a> 414                 <em class='comment'>/*</em>
+<a id='L415' name='L415'></a> 415 <em class='comment'>                 * Now, allocate.</em>
+<a id='L416' name='L416'></a> 416 <em class='comment'>                 */</em>
+<a id='L417' name='L417'></a> 417                 mh-&gt;mh_inuse = 1;
+<a id='L418' name='L418'></a> 418 
+<a id='L419' name='L419'></a> 419 <em class='sharp'>#ifdef</em> <a href='../S/514.html#L45' title='Defined at 45 in userland/lib/libc/stdlib/malloc.c.'>MALLOCDEBUG</a>
+<a id='L420' name='L420'></a> 420                 <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("malloc: allocating at %p", <a href='../S/514.html#L130' title='Defined at 130 in userland/lib/libc/stdlib/malloc.c.'>M_DATA</a>(mh));
+<a id='L421' name='L421'></a> 421                 <a href='../S/514.html#L233' title='Defined at 233 in userland/lib/libc/stdlib/malloc.c.'>__malloc_dump</a>();
+<a id='L422' name='L422'></a> 422 <em class='sharp'>#endif</em>
+<a id='L423' name='L423'></a> 423                 <strong class='reserved'>return</strong> <a href='../S/514.html#L130' title='Defined at 130 in userland/lib/libc/stdlib/malloc.c.'>M_DATA</a>(mh);
+<a id='L424' name='L424'></a> 424         <em class='brace'>}</em>
+<a id='L425' name='L425'></a> 425         <strong class='reserved'>if</strong> (i!=__heaptop) <em class='brace'>{</em>
+<a id='L426' name='L426'></a> 426                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "malloc: Heap corrupt; ran off end");
+<a id='L427' name='L427'></a> 427         <em class='brace'>}</em>
+<a id='L428' name='L428'></a> 428 
+<a id='L429' name='L429'></a> 429         <em class='comment'>/*</em>
+<a id='L430' name='L430'></a> 430 <em class='comment'>         * Didn't find anything. Expand the heap.</em>
+<a id='L431' name='L431'></a> 431 <em class='comment'>         *</em>
+<a id='L432' name='L432'></a> 432 <em class='comment'>         * If the heap is nonempty and the top block (the one mh is</em>
+<a id='L433' name='L433'></a> 433 <em class='comment'>         * left pointing to after the above loop) is free, we can</em>
+<a id='L434' name='L434'></a> 434 <em class='comment'>         * expand it. Otherwise we need a new block.</em>
+<a id='L435' name='L435'></a> 435 <em class='comment'>         */</em>
+<a id='L436' name='L436'></a> 436         <strong class='reserved'>if</strong> (mh != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a> &amp;&amp; !mh-&gt;mh_inuse) <em class='brace'>{</em>
+<a id='L437' name='L437'></a> 437                 <a href='../D/1309.html' title='Multiple defined in 5 places.'>assert</a>(size &gt; <a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh));
+<a id='L438' name='L438'></a> 438                 morespace = size - <a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh);
+<a id='L439' name='L439'></a> 439         <em class='brace'>}</em>
+<a id='L440' name='L440'></a> 440         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L441' name='L441'></a> 441                 morespace = <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> + size;
+<a id='L442' name='L442'></a> 442         <em class='brace'>}</em>
+<a id='L443' name='L443'></a> 443 
+<a id='L444' name='L444'></a> 444         <em class='comment'>/* Round the amount of space we ask for up to a whole page. */</em>
+<a id='L445' name='L445'></a> 445         morespace = <a href='../D/603.html' title='Multiple defined in 5 places.'>PAGE_SIZE</a> * ((morespace + <a href='../D/603.html' title='Multiple defined in 5 places.'>PAGE_SIZE</a> - 1) / <a href='../D/603.html' title='Multiple defined in 5 places.'>PAGE_SIZE</a>);
+<a id='L446' name='L446'></a> 446 
+<a id='L447' name='L447'></a> 447         p = <a href='../S/514.html#L282' title='Defined at 282 in userland/lib/libc/stdlib/malloc.c.'>__malloc_sbrk</a>(morespace);
+<a id='L448' name='L448'></a> 448         <strong class='reserved'>if</strong> (p == <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L449' name='L449'></a> 449                 <strong class='reserved'>return</strong> <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>;
+<a id='L450' name='L450'></a> 450         <em class='brace'>}</em>
+<a id='L451' name='L451'></a> 451 
+<a id='L452' name='L452'></a> 452         <strong class='reserved'>if</strong> (mh != <a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a> &amp;&amp; !mh-&gt;mh_inuse) <em class='brace'>{</em>
+<a id='L453' name='L453'></a> 453                 <em class='comment'>/* update old header */</em>
+<a id='L454' name='L454'></a> 454                 mh-&gt;mh_nextblock = <a href='../S/514.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/malloc.c.'>M_MKFIELD</a>(<a href='../S/514.html#L125' title='Defined at 125 in userland/lib/libc/stdlib/malloc.c.'>M_NEXTOFF</a>(mh) + morespace);
+<a id='L455' name='L455'></a> 455                 mh-&gt;mh_inuse = 1;
+<a id='L456' name='L456'></a> 456         <em class='brace'>}</em>
+<a id='L457' name='L457'></a> 457         <strong class='reserved'>else</strong> <em class='brace'>{</em>
+<a id='L458' name='L458'></a> 458                 <em class='comment'>/* fill out new header */</em>
+<a id='L459' name='L459'></a> 459                 mh = p;
+<a id='L460' name='L460'></a> 460                 mh-&gt;mh_prevblock = rightprevblock;
+<a id='L461' name='L461'></a> 461                 mh-&gt;mh_magic1 = <a href='../D/533.html' title='Multiple defined in 2 places.'>MMAGIC</a>;
+<a id='L462' name='L462'></a> 462                 mh-&gt;mh_magic2 = <a href='../D/533.html' title='Multiple defined in 2 places.'>MMAGIC</a>;
+<a id='L463' name='L463'></a> 463                 mh-&gt;mh_pad = 0;
+<a id='L464' name='L464'></a> 464                 mh-&gt;mh_inuse = 1;
+<a id='L465' name='L465'></a> 465                 mh-&gt;mh_nextblock = <a href='../S/514.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/malloc.c.'>M_MKFIELD</a>(morespace);
+<a id='L466' name='L466'></a> 466         <em class='brace'>}</em>
+<a id='L467' name='L467'></a> 467 
+<a id='L468' name='L468'></a> 468         <em class='comment'>/*</em>
+<a id='L469' name='L469'></a> 469 <em class='comment'>         * Either way, try splitting the block we got as because of</em>
+<a id='L470' name='L470'></a> 470 <em class='comment'>         * the page rounding it might be quite a bit bigger than we</em>
+<a id='L471' name='L471'></a> 471 <em class='comment'>         * needed.</em>
+<a id='L472' name='L472'></a> 472 <em class='comment'>         */</em>
+<a id='L473' name='L473'></a> 473         <a href='../S/514.html#L311' title='Defined at 311 in userland/lib/libc/stdlib/malloc.c.'>__malloc_split</a>(mh, size);
+<a id='L474' name='L474'></a> 474 
+<a id='L475' name='L475'></a> 475 <em class='sharp'>#ifdef</em> <a href='../S/514.html#L45' title='Defined at 45 in userland/lib/libc/stdlib/malloc.c.'>MALLOCDEBUG</a>
+<a id='L476' name='L476'></a> 476         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("malloc: allocating at %p", <a href='../S/514.html#L130' title='Defined at 130 in userland/lib/libc/stdlib/malloc.c.'>M_DATA</a>(mh));
+<a id='L477' name='L477'></a> 477         <a href='../S/514.html#L233' title='Defined at 233 in userland/lib/libc/stdlib/malloc.c.'>__malloc_dump</a>();
+<a id='L478' name='L478'></a> 478 <em class='sharp'>#endif</em>
+<a id='L479' name='L479'></a> 479         <strong class='reserved'>return</strong> <a href='../S/514.html#L130' title='Defined at 130 in userland/lib/libc/stdlib/malloc.c.'>M_DATA</a>(mh);
+<a id='L480' name='L480'></a> 480 <em class='brace'>}</em>
+<a id='L481' name='L481'></a> 481 
+<a id='L482' name='L482'></a> 482 <em class='comment'>////////////////////////////////////////////////////////////</em>
+<a id='L483' name='L483'></a> 483 
+<a id='L484' name='L484'></a> 484 <em class='comment'>/*</em>
+<a id='L485' name='L485'></a> 485 <em class='comment'> * Clear a range of memory with 0xdeadbeef.</em>
+<a id='L486' name='L486'></a> 486 <em class='comment'> * ptr must be suitably aligned.</em>
+<a id='L487' name='L487'></a> 487 <em class='comment'> */</em>
+<a id='L488' name='L488'></a> 488 <strong class='reserved'>static</strong>
+<a id='L489' name='L489'></a> 489 <strong class='reserved'>void</strong>
+<a id='L490' name='L490'></a> 490 <a href='../R/890.html' title='Multiple referred from 2 places.'>__malloc_deadbeef</a>(<strong class='reserved'>void</strong> *ptr, <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> size)
+<a id='L491' name='L491'></a> 491 <em class='brace'>{</em>
+<a id='L492' name='L492'></a> 492         <a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a> *x = ptr;
+<a id='L493' name='L493'></a> 493         <a href='../D/2492.html' title='Multiple defined in 2 places.'>size_t</a> i, n = size/<strong class='reserved'>sizeof</strong>(<a href='../D/2705.html' title='Multiple defined in 4 places.'>uint32_t</a>);
+<a id='L494' name='L494'></a> 494         <strong class='reserved'>for</strong> (i=0; i&lt;n; i++) <em class='brace'>{</em>
+<a id='L495' name='L495'></a> 495                 x[i] = 0xdeadbeef;
+<a id='L496' name='L496'></a> 496         <em class='brace'>}</em>
+<a id='L497' name='L497'></a> 497 <em class='brace'>}</em>
+<a id='L498' name='L498'></a> 498 
+<a id='L499' name='L499'></a> 499 <em class='comment'>/*</em>
+<a id='L500' name='L500'></a> 500 <em class='comment'> * Attempt to merge two adjacent blocks (mh below mhnext).</em>
+<a id='L501' name='L501'></a> 501 <em class='comment'> */</em>
+<a id='L502' name='L502'></a> 502 <strong class='reserved'>static</strong>
+<a id='L503' name='L503'></a> 503 <strong class='reserved'>void</strong>
+<a id='L504' name='L504'></a> 504 <a href='../R/895.html' title='Multiple referred from 2 places.'>__malloc_trymerge</a>(<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mh, <strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mhnext)
+<a id='L505' name='L505'></a> 505 <em class='brace'>{</em>
+<a id='L506' name='L506'></a> 506         <strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mhnextnext;
+<a id='L507' name='L507'></a> 507 
+<a id='L508' name='L508'></a> 508         <strong class='reserved'>if</strong> (mh-&gt;mh_nextblock != mhnext-&gt;mh_prevblock) <em class='brace'>{</em>
+<a id='L509' name='L509'></a> 509                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "free: Heap corrupt (%p and %p inconsistent)",
+<a id='L510' name='L510'></a> 510                      mh, mhnext);
+<a id='L511' name='L511'></a> 511         <em class='brace'>}</em>
+<a id='L512' name='L512'></a> 512         <strong class='reserved'>if</strong> (mh-&gt;mh_inuse || mhnext-&gt;mh_inuse) <em class='brace'>{</em>
+<a id='L513' name='L513'></a> 513                 <em class='comment'>/* can't merge */</em>
+<a id='L514' name='L514'></a> 514                 <strong class='reserved'>return</strong>;
+<a id='L515' name='L515'></a> 515         <em class='brace'>}</em>
+<a id='L516' name='L516'></a> 516 
+<a id='L517' name='L517'></a> 517         mhnextnext = <a href='../S/514.html#L127' title='Defined at 127 in userland/lib/libc/stdlib/malloc.c.'>M_NEXT</a>(mhnext);
+<a id='L518' name='L518'></a> 518 
+<a id='L519' name='L519'></a> 519         mh-&gt;mh_nextblock = <a href='../S/514.html#L135' title='Defined at 135 in userland/lib/libc/stdlib/malloc.c.'>M_MKFIELD</a>(<a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> + <a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh) +
+<a id='L520' name='L520'></a> 520                                      <a href='../D/523.html' title='Multiple defined in 2 places.'>MBLOCKSIZE</a> + <a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mhnext));
+<a id='L521' name='L521'></a> 521 
+<a id='L522' name='L522'></a> 522         <strong class='reserved'>if</strong> (mhnextnext != (<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *)__heaptop) <em class='brace'>{</em>
+<a id='L523' name='L523'></a> 523                 mhnextnext-&gt;mh_prevblock = mh-&gt;mh_nextblock;
+<a id='L524' name='L524'></a> 524         <em class='brace'>}</em>
+<a id='L525' name='L525'></a> 525 
+<a id='L526' name='L526'></a> 526         <em class='comment'>/* Deadbeef out the memory used by the now-obsolete header */</em>
+<a id='L527' name='L527'></a> 527         <a href='../S/514.html#L490' title='Defined at 490 in userland/lib/libc/stdlib/malloc.c.'>__malloc_deadbeef</a>(mhnext, <strong class='reserved'>sizeof</strong>(<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a>));
+<a id='L528' name='L528'></a> 528 <em class='brace'>}</em>
+<a id='L529' name='L529'></a> 529 
+<a id='L530' name='L530'></a> 530 <em class='comment'>/*</em>
+<a id='L531' name='L531'></a> 531 <em class='comment'> * The actual free() implementation.</em>
+<a id='L532' name='L532'></a> 532 <em class='comment'> */</em>
+<a id='L533' name='L533'></a> 533 <strong class='reserved'>void</strong>
+<a id='L534' name='L534'></a> 534 <a href='../R/1405.html' title='Multiple referred from 15 places.'>free</a>(<strong class='reserved'>void</strong> *x)
+<a id='L535' name='L535'></a> 535 <em class='brace'>{</em>
+<a id='L536' name='L536'></a> 536         <strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *mh, *mhnext, *mhprev;
+<a id='L537' name='L537'></a> 537 
+<a id='L538' name='L538'></a> 538         <strong class='reserved'>if</strong> (x==<a href='../D/570.html' title='Multiple defined in 2 places.'>NULL</a>) <em class='brace'>{</em>
+<a id='L539' name='L539'></a> 539                 <em class='comment'>/* safest practice */</em>
+<a id='L540' name='L540'></a> 540                 <strong class='reserved'>return</strong>;
+<a id='L541' name='L541'></a> 541         <em class='brace'>}</em>
+<a id='L542' name='L542'></a> 542 
+<a id='L543' name='L543'></a> 543         <em class='comment'>/* Consistency check. */</em>
+<a id='L544' name='L544'></a> 544         <strong class='reserved'>if</strong> (__heapbase==0 || __heaptop==0 || __heapbase &gt; __heaptop) <em class='brace'>{</em>
+<a id='L545' name='L545'></a> 545                 <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("free: Internal error - local data corrupt");
+<a id='L546' name='L546'></a> 546                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "free: heapbase 0x%lx; heaptop 0x%lx",
+<a id='L547' name='L547'></a> 547                      (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) __heapbase, (<strong class='reserved'>unsigned</strong> <strong class='reserved'>long</strong>) __heaptop);
+<a id='L548' name='L548'></a> 548         <em class='brace'>}</em>
+<a id='L549' name='L549'></a> 549 
+<a id='L550' name='L550'></a> 550         <em class='comment'>/* Don't allow freeing pointers that aren't on the heap. */</em>
+<a id='L551' name='L551'></a> 551         <strong class='reserved'>if</strong> ((<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)x &lt; __heapbase || (<a href='../D/2709.html' title='Multiple defined in 2 places.'>uintptr_t</a>)x &gt;= __heaptop) <em class='brace'>{</em>
+<a id='L552' name='L552'></a> 552                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "free: Invalid pointer %p freed (out of range)", x);
+<a id='L553' name='L553'></a> 553         <em class='brace'>}</em>
+<a id='L554' name='L554'></a> 554 
+<a id='L555' name='L555'></a> 555 <em class='sharp'>#ifdef</em> <a href='../S/514.html#L45' title='Defined at 45 in userland/lib/libc/stdlib/malloc.c.'>MALLOCDEBUG</a>
+<a id='L556' name='L556'></a> 556         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("free: about to free %p", x);
+<a id='L557' name='L557'></a> 557         <a href='../S/514.html#L233' title='Defined at 233 in userland/lib/libc/stdlib/malloc.c.'>__malloc_dump</a>();
+<a id='L558' name='L558'></a> 558 <em class='sharp'>#endif</em>
+<a id='L559' name='L559'></a> 559 
+<a id='L560' name='L560'></a> 560         mh = ((<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *)x)-1;
+<a id='L561' name='L561'></a> 561         <strong class='reserved'>if</strong> (!<a href='../S/514.html#L133' title='Defined at 133 in userland/lib/libc/stdlib/malloc.c.'>M_OK</a>(mh)) <em class='brace'>{</em>
+<a id='L562' name='L562'></a> 562                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "free: Invalid pointer %p freed (corrupt header)", x);
+<a id='L563' name='L563'></a> 563         <em class='brace'>}</em>
+<a id='L564' name='L564'></a> 564 
+<a id='L565' name='L565'></a> 565         <strong class='reserved'>if</strong> (!mh-&gt;mh_inuse) <em class='brace'>{</em>
+<a id='L566' name='L566'></a> 566                 <a href='../D/1725.html' title='Multiple defined in 2 places.'>errx</a>(1, "free: Invalid pointer %p freed (already free)", x);
+<a id='L567' name='L567'></a> 567         <em class='brace'>}</em>
+<a id='L568' name='L568'></a> 568 
+<a id='L569' name='L569'></a> 569         <em class='comment'>/* mark it free */</em>
+<a id='L570' name='L570'></a> 570         mh-&gt;mh_inuse = 0;
+<a id='L571' name='L571'></a> 571 
+<a id='L572' name='L572'></a> 572         <em class='comment'>/* wipe it */</em>
+<a id='L573' name='L573'></a> 573         <a href='../S/514.html#L490' title='Defined at 490 in userland/lib/libc/stdlib/malloc.c.'>__malloc_deadbeef</a>(<a href='../S/514.html#L130' title='Defined at 130 in userland/lib/libc/stdlib/malloc.c.'>M_DATA</a>(mh), <a href='../S/514.html#L131' title='Defined at 131 in userland/lib/libc/stdlib/malloc.c.'>M_SIZE</a>(mh));
+<a id='L574' name='L574'></a> 574 
+<a id='L575' name='L575'></a> 575         <em class='comment'>/* Try merging with the block above (but not if we're at the top) */</em>
+<a id='L576' name='L576'></a> 576         mhnext = <a href='../S/514.html#L127' title='Defined at 127 in userland/lib/libc/stdlib/malloc.c.'>M_NEXT</a>(mh);
+<a id='L577' name='L577'></a> 577         <strong class='reserved'>if</strong> (mhnext != (<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *)__heaptop) <em class='brace'>{</em>
+<a id='L578' name='L578'></a> 578                 <a href='../S/514.html#L504' title='Defined at 504 in userland/lib/libc/stdlib/malloc.c.'>__malloc_trymerge</a>(mh, mhnext);
+<a id='L579' name='L579'></a> 579         <em class='brace'>}</em>
+<a id='L580' name='L580'></a> 580 
+<a id='L581' name='L581'></a> 581         <em class='comment'>/* Try merging with the block below (but not if we're at the bottom) */</em>
+<a id='L582' name='L582'></a> 582         <strong class='reserved'>if</strong> (mh != (<strong class='reserved'>struct</strong> <a href='../S/514.html#L71' title='Defined at 71 in userland/lib/libc/stdlib/malloc.c.'>mheader</a> *)__heapbase) <em class='brace'>{</em>
+<a id='L583' name='L583'></a> 583                 mhprev = <a href='../S/514.html#L128' title='Defined at 128 in userland/lib/libc/stdlib/malloc.c.'>M_PREV</a>(mh);
+<a id='L584' name='L584'></a> 584                 <a href='../S/514.html#L504' title='Defined at 504 in userland/lib/libc/stdlib/malloc.c.'>__malloc_trymerge</a>(mhprev, mh);
+<a id='L585' name='L585'></a> 585         <em class='brace'>}</em>
+<a id='L586' name='L586'></a> 586 
+<a id='L587' name='L587'></a> 587 <em class='sharp'>#ifdef</em> <a href='../S/514.html#L45' title='Defined at 45 in userland/lib/libc/stdlib/malloc.c.'>MALLOCDEBUG</a>
+<a id='L588' name='L588'></a> 588         <a href='../D/2825.html' title='Multiple defined in 2 places.'>warnx</a>("free: freed %p", x);
+<a id='L589' name='L589'></a> 589         <a href='../S/514.html#L233' title='Defined at 233 in userland/lib/libc/stdlib/malloc.c.'>__malloc_dump</a>();
+<a id='L590' name='L590'></a> 590 <em class='sharp'>#endif</em>
+<a id='L591' name='L591'></a> 591 <em class='brace'>}</em>
+</pre>
+<hr />
+<a id='BOTTOM' name='BOTTOM'></a>
+<em class='comment'>/* [&lt;][&gt;]<a href='#L162'>[^]</a><a href='#L534'>[v]</a><a href='#TOP'>[top]</a>[bottom]<a href='../mains.html'>[index]</a><a href='../help.html'>[help]</a> */</em>
+</body>
+</html>

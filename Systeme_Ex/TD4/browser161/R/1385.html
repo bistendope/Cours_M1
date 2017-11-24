@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>file</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/133.html#L356'>file</a>              356 kern/fs/sfs/sfs_vnops.c sfs_link(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/133.html#L359'>file</a>              359 kern/fs/sfs/sfs_vnops.c 	struct sfs_vnode *f = file-&gt;vn_data;</span>
+<span class='curline'><a href='../S/133.html#L362'>file</a>              362 kern/fs/sfs/sfs_vnops.c 	KASSERT(file-&gt;vn_fs == dir-&gt;vn_fs);</span>
+<span class='curline'><a href='../S/172.html#L183'>file</a>              183 kern/include/lib.h __DEAD void badassert(const char *expr, const char *file,</span>
+<span class='curline'><a href='../S/195.html#L187'>file</a>              187 kern/include/vnode.h 	int (*vop_read)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L190'>file</a>              190 kern/include/vnode.h 	int (*vop_write)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L196'>file</a>              196 kern/include/vnode.h 	int (*vop_mmap)(struct vnode *file /* add stuff */);</span>
+<span class='curline'><a href='../S/195.html#L197'>file</a>              197 kern/include/vnode.h 	int (*vop_truncate)(struct vnode *file, off_t len);</span>
+<span class='curline'><a href='../S/195.html#L198'>file</a>              198 kern/include/vnode.h 	int (*vop_namefile)(struct vnode *file, struct uio *uio);</span>
+<span class='curline'><a href='../S/195.html#L209'>file</a>              209 kern/include/vnode.h 			const char *name, struct vnode *file);</span>
+<span class='curline'><a href='../S/195.html#L302'>file</a>              302 kern/include/vnode.h 			struct vnode *file);</span>
+<span class='curline'><a href='../S/195.html#L304'>file</a>              304 kern/include/vnode.h 		       struct vnode *file);</span>
+<span class='curline'><a href='../S/201.html#L212'>file</a>              212 kern/lib/kprintf.c badassert(const char *expr, const char *file, int line, const char *func)</span>
+<span class='curline'><a href='../S/201.html#L215'>file</a>              215 kern/lib/kprintf.c 	      expr, file, line, func);</span>
+<span class='curline'><a href='../S/232.html#L180'>file</a>              180 kern/vfs/vfsfail.c vopfail_link_notdir(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/232.html#L184'>file</a>              184 kern/vfs/vfsfail.c 	(void)file;</span>
+<span class='curline'><a href='../S/232.html#L189'>file</a>              189 kern/vfs/vfsfail.c vopfail_link_nosys(struct vnode *dir, const char *name, struct vnode *file)</span>
+<span class='curline'><a href='../S/232.html#L193'>file</a>              193 kern/vfs/vfsfail.c 	(void)file;</span>
+<span class='curline'><a href='../S/440.html#L80'>file</a>               80 userland/bin/cat/cat.c cat(const char *file)</span>
+<span class='curline'><a href='../S/440.html#L87'>file</a>               87 userland/bin/cat/cat.c 	if (!strcmp(file, "-")) {</span>
+<span class='curline'><a href='../S/440.html#L96'>file</a>               96 userland/bin/cat/cat.c 	fd = open(file, O_RDONLY);</span>
+<span class='curline'><a href='../S/440.html#L98'>file</a>               98 userland/bin/cat/cat.c 		err(1, "%s", file);</span>
+<span class='curline'><a href='../S/440.html#L100'>file</a>              100 userland/bin/cat/cat.c 	docat(file, fd);</span>
+<span class='curline'><a href='../S/448.html#L116'>file</a>              116 userland/bin/ls/ls.c printheader(const char *file)</span>
+<span class='curline'><a href='../S/448.html#L126'>file</a>              126 userland/bin/ls/ls.c 	printf("%s:\n", file);</span>
+<span class='curline'><a href='../S/448.html#L138'>file</a>              138 userland/bin/ls/ls.c 	const char *file;</span>
+<span class='curline'><a href='../S/448.html#L154'>file</a>              154 userland/bin/ls/ls.c 	file = basename(path);</span>
+<span class='curline'><a href='../S/448.html#L185'>file</a>              185 userland/bin/ls/ls.c 	printf("%s\n", file);</span>
+<span class='curline'><a href='../S/458.html#L41'>file</a>               41 userland/bin/rm/rm.c doremove(const char *file)</span>
+<span class='curline'><a href='../S/458.html#L43'>file</a>               43 userland/bin/rm/rm.c 	if (remove(file)) {</span>
+<span class='curline'><a href='../S/458.html#L44'>file</a>               44 userland/bin/rm/rm.c 		err(1, "%s", file);</span>
+<span class='curline'><a href='../S/469.html#L41'>file</a>               41 userland/include/assert.h void __bad_assert(const char *file, int line, const char *msg);</span>
+<span class='curline'><a href='../S/523.html#L42'>file</a>               42 userland/lib/libc/unix/__assert.c __bad_assert(const char *file, int line, const char *expr)</span>
+<span class='curline'><a href='../S/523.html#L46'>file</a>               46 userland/lib/libc/unix/__assert.c 		 expr, file, line);</span>
+<span class='curline'><a href='../S/636.html#L52'>file</a>               52 userland/testbin/filetest/filetest.c 	const char *file;</span>
+<span class='curline'><a href='../S/636.html#L57'>file</a>               57 userland/testbin/filetest/filetest.c 		file = "testfile";</span>
+<span class='curline'><a href='../S/636.html#L60'>file</a>               60 userland/testbin/filetest/filetest.c 		file = argv[1];</span>
+<span class='curline'><a href='../S/636.html#L66'>file</a>               66 userland/testbin/filetest/filetest.c 	fd = open(file, O_WRONLY|O_CREAT|O_TRUNC, 0664);</span>
+<span class='curline'><a href='../S/636.html#L68'>file</a>               68 userland/testbin/filetest/filetest.c 		err(1, "%s: open for write", file);</span>
+<span class='curline'><a href='../S/636.html#L74'>file</a>               74 userland/testbin/filetest/filetest.c 		err(1, "%s: write", file);</span>
+<span class='curline'><a href='../S/636.html#L79'>file</a>               79 userland/testbin/filetest/filetest.c 		err(1, "%s: close (1st time)", file);</span>
+<span class='curline'><a href='../S/636.html#L82'>file</a>               82 userland/testbin/filetest/filetest.c 	fd = open(file, O_RDONLY);</span>
+<span class='curline'><a href='../S/636.html#L84'>file</a>               84 userland/testbin/filetest/filetest.c 		err(1, "%s: open for read", file);</span>
+<span class='curline'><a href='../S/636.html#L89'>file</a>               89 userland/testbin/filetest/filetest.c 		err(1, "%s: read", file);</span>
+<span class='curline'><a href='../S/636.html#L93'>file</a>               93 userland/testbin/filetest/filetest.c 		err(1, "%s: close (2nd time)", file);</span>
+<span class='curline'><a href='../S/636.html#L102'>file</a>              102 userland/testbin/filetest/filetest.c 	rv = remove(file);</span>
+<span class='curline'><a href='../S/636.html#L104'>file</a>              104 userland/testbin/filetest/filetest.c 		err(1, "%s: remove", file);</span>
+<span class='curline'><a href='../S/642.html#L100'>file</a>              100 userland/testbin/frack/check.c 			unsigned file;</span>
+<span class='curline'><a href='../S/642.html#L107'>file</a>              107 userland/testbin/frack/check.c 			unsigned file;</span>
+<span class='curline'><a href='../S/642.html#L160'>file</a>              160 userland/testbin/frack/check.c 			unsigned file;</span>
+<span class='curline'><a href='../S/642.html#L313'>file</a>              313 userland/testbin/frack/check.c fc_create_truncate(struct fschange *prev_thisfile, unsigned file, off_t len)</span>
+<span class='curline'><a href='../S/642.html#L319'>file</a>              319 userland/testbin/frack/check.c 	fc-&gt;fc_truncate.file = file;</span>
+<span class='curline'><a href='../S/642.html#L326'>file</a>              326 userland/testbin/frack/check.c fc_create_write(struct fschange *prev_thisfile, unsigned file,</span>
+<span class='curline'><a href='../S/642.html#L334'>file</a>              334 userland/testbin/frack/check.c 	fc-&gt;fc_write.file = file;</span>
+<span class='curline'><a href='../S/642.html#L412'>file</a>              412 userland/testbin/frack/check.c 	       unsigned file)</span>
+<span class='curline'><a href='../S/642.html#L424'>file</a>              424 userland/testbin/frack/check.c 	mdc-&gt;fc_link.file = file;</span>
+<span class='curline'><a href='../S/642.html#L773'>file</a>              773 userland/testbin/frack/check.c 		obj1 = findfile_maybe(rootdir, change-&gt;fc_truncate.file);</span>
+<span class='curline'><a href='../S/642.html#L786'>file</a>              786 userland/testbin/frack/check.c 		obj1 = findfile_maybe(rootdir, change-&gt;fc_write.file);</span>
+<span class='curline'><a href='../S/642.html#L857'>file</a>              857 userland/testbin/frack/check.c 		assert(obj2-&gt;obj_file.identity == change-&gt;fc_link.file);</span>
+<span class='curline'><a href='../S/642.html#L1021'>file</a>             1021 userland/testbin/frack/check.c 			if (here-&gt;fc_truncate.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L1026'>file</a>             1026 userland/testbin/frack/check.c 			if (here-&gt;fc_write.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L1044'>file</a>             1044 userland/testbin/frack/check.c 			if (here-&gt;fc_link.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L1141'>file</a>             1141 userland/testbin/frack/check.c 		if (fc-&gt;fc_truncate.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L1146'>file</a>             1146 userland/testbin/frack/check.c 		if (fc-&gt;fc_write.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L1156'>file</a>             1156 userland/testbin/frack/check.c 		if (fc-&gt;fc_link.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L1303'>file</a>             1303 userland/testbin/frack/check.c 				res-&gt;objnum = here-&gt;fc_link.file;</span>
+<span class='curline'><a href='../S/642.html#L2293'>file</a>             2293 userland/testbin/frack/check.c 			if (change-&gt;fc_truncate.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L2298'>file</a>             2298 userland/testbin/frack/check.c 			if (change-&gt;fc_write.file == filenum) {</span>
+<span class='curline'><a href='../S/642.html#L2636'>file</a>             2636 userland/testbin/frack/check.c checkonefilecontents(const char *namestr, struct fsobject *file,</span>
+<span class='curline'><a href='../S/642.html#L2646'>file</a>             2646 userland/testbin/frack/check.c 	assert(!file-&gt;isdir);</span>
+<span class='curline'><a href='../S/642.html#L2671'>file</a>             2671 userland/testbin/frack/check.c 	change = backup_for_file(change, file-&gt;obj_file.identity);</span>
+<span class='curline'><a href='../S/642.html#L2676'>file</a>             2676 userland/testbin/frack/check.c 	if (file-&gt;obj_file.len == 0) {</span>
+<span class='curline'><a href='../S/642.html#L2709'>file</a>             2709 userland/testbin/frack/check.c 		       namestr, file-&gt;obj_file.len);</span>
+<span class='curline'><a href='../S/642.html#L2742'>file</a>             2742 userland/testbin/frack/check.c 	while (!change_is_present(fd, namestr, file-&gt;obj_file.len, change)) {</span>
+<span class='curline'><a href='../S/642.html#L2747'>file</a>             2747 userland/testbin/frack/check.c 		change = backup_for_file(change-&gt;prev,file-&gt;obj_file.identity);</span>
+<span class='curline'><a href='../S/642.html#L2765'>file</a>             2765 userland/testbin/frack/check.c 	checkfilerange(fd, namestr, change, 0, file-&gt;obj_file.len);</span>
+<span class='curline'><a href='../S/653.html#L105'>file</a>              105 userland/testbin/frack/ops.c DECLPOOL(file, MAXFILES);</span>
+<span class='curline'><a href='../S/653.html#L107'>file</a>              107 userland/testbin/frack/ops.c struct file *</span>
+<span class='curline'><a href='../S/653.html#L110'>file</a>              110 userland/testbin/frack/ops.c 	struct file *ret;</span>
+<span class='curline'><a href='../S/653.html#L123'>file</a>              123 userland/testbin/frack/ops.c 	ret = POOLALLOC(file);</span>
+<span class='curline'><a href='../S/653.html#L157'>file</a>              157 userland/testbin/frack/ops.c op_close(struct file *f)</span>
+<span class='curline'><a href='../S/653.html#L165'>file</a>              165 userland/testbin/frack/ops.c 	POOLFREE(file, f);</span>
+<span class='curline'><a href='../S/653.html#L169'>file</a>              169 userland/testbin/frack/ops.c op_write(struct file *f, off_t pos, off_t len)</span>
+<span class='curline'><a href='../S/653.html#L194'>file</a>              194 userland/testbin/frack/ops.c op_truncate(struct file *f, off_t len)</span>
+<span class='curline'><a href='../S/654.html#L31'>file</a>               31 userland/testbin/frack/ops.h struct file;</span>
+<span class='curline'><a href='../S/654.html#L36'>file</a>               36 userland/testbin/frack/ops.h struct file *op_open(unsigned, unsigned, unsigned);</span>
+<span class='curline'><a href='../S/654.html#L37'>file</a>               37 userland/testbin/frack/ops.h void op_close(struct file *);</span>
+<span class='curline'><a href='../S/654.html#L38'>file</a>               38 userland/testbin/frack/ops.h void op_write(struct file *, off_t, off_t);</span>
+<span class='curline'><a href='../S/654.html#L39'>file</a>               39 userland/testbin/frack/ops.h void op_truncate(struct file *, off_t);</span>
+<span class='curline'><a href='../S/655.html#L53'>file</a>               53 userland/testbin/frack/pool.c 	     pool-&gt;itemtype, pool-&gt;maxname, pool-&gt;file);</span>
+<span class='curline'><a href='../S/656.html#L36'>file</a>               36 userland/testbin/frack/pool.h 	const char *file;</span>
+<span class='curline'><a href='../S/656.html#L50'>file</a>               50 userland/testbin/frack/pool.h 		.file = __FILE__				\</span>
+<span class='curline'><a href='../S/657.html#L215'>file</a>              215 userland/testbin/frack/workloads.c file_randomwrite(struct file *f, enum sizes sz,</span>
+<span class='curline'><a href='../S/657.html#L242'>file</a>              242 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L254'>file</a>              254 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L272'>file</a>              272 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L366'>file</a>              366 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L419'>file</a>              419 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L439'>file</a>              439 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L462'>file</a>              462 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L484'>file</a>              484 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L503'>file</a>              503 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L522'>file</a>              522 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L540'>file</a>              540 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L559'>file</a>              559 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L580'>file</a>              580 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L821'>file</a>              821 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L839'>file</a>              839 userland/testbin/frack/workloads.c 	struct file *f;</span>
+<span class='curline'><a href='../S/657.html#L895'>file</a>              895 userland/testbin/frack/workloads.c 	struct file *files[27];</span>
+<span class='curline'><a href='../S/657.html#L925'>file</a>              925 userland/testbin/frack/workloads.c 	struct file *files[27];</span>
+<span class='curline'><a href='../S/657.html#L1367'>file</a>             1367 userland/testbin/frack/workloads.c 	  struct file **files, unsigned opennum, unsigned totnum)</span>
+<span class='curline'><a href='../S/657.html#L1381'>file</a>             1381 userland/testbin/frack/workloads.c randwrite(struct file *file)</span>
+<span class='curline'><a href='../S/657.html#L1389'>file</a>             1389 userland/testbin/frack/workloads.c 	op_write(file, pos, len);</span>
+<span class='curline'><a href='../S/657.html#L1394'>file</a>             1394 userland/testbin/frack/workloads.c randtruncate(struct file *file)</span>
+<span class='curline'><a href='../S/657.html#L1396'>file</a>             1396 userland/testbin/frack/workloads.c 	op_truncate(file, random() % sizebytes(SIZE_MEDIUM));</span>
+<span class='curline'><a href='../S/657.html#L1407'>file</a>             1407 userland/testbin/frack/workloads.c 	struct file *files[27];</span>
+<span class='curline'><a href='../S/657.html#L1442'>file</a>             1442 userland/testbin/frack/workloads.c 	struct file *files[27];</span>
+<span class='curline'><a href='../S/657.html#L1597'>file</a>             1597 userland/testbin/frack/workloads.c        bool dofileops, struct file **files)</span>
+<span class='curline'><a href='../S/657.html#L1720'>file</a>             1720 userland/testbin/frack/workloads.c      bool dofileops, struct file **files)</span>
+<span class='curline'><a href='../S/657.html#L1777'>file</a>             1777 userland/testbin/frack/workloads.c 	struct file *files[27];</span>
+<span class='curline'><a href='../S/687.html#L68'>file</a>               68 userland/testbin/redirect/redirect.c dodup2(int ofd, int nfd, const char *file)</span>
+<span class='curline'><a href='../S/687.html#L74'>file</a>               74 userland/testbin/redirect/redirect.c 		err(1, "%s: dup2", file);</span>
+<span class='curline'><a href='../S/687.html#L83'>file</a>               83 userland/testbin/redirect/redirect.c doclose(int fd, const char *file)</span>
+<span class='curline'><a href='../S/687.html#L86'>file</a>               86 userland/testbin/redirect/redirect.c 		warnx("%s: close", file);</span>
+<span class='curline'><a href='../S/691.html#L103'>file</a>              103 userland/testbin/rmtest/rmtest.c 	int file, len;</span>
+<span class='curline'><a href='../S/691.html#L107'>file</a>              107 userland/testbin/rmtest/rmtest.c 	file = open(TEST, O_WRONLY | O_CREAT | O_TRUNC, 0664);</span>
+<span class='curline'><a href='../S/691.html#L108'>file</a>              108 userland/testbin/rmtest/rmtest.c 	write(file, TESTDATA, TESTLEN);</span>
+<span class='curline'><a href='../S/691.html#L109'>file</a>              109 userland/testbin/rmtest/rmtest.c 	close(file);</span>
+<span class='curline'><a href='../S/691.html#L112'>file</a>              112 userland/testbin/rmtest/rmtest.c 	file = open(TEST, O_RDONLY);</span>
+<span class='curline'><a href='../S/691.html#L113'>file</a>              113 userland/testbin/rmtest/rmtest.c 	len = read(file, buf, TESTLEN);</span>
+<span class='curline'><a href='../S/691.html#L125'>file</a>              125 userland/testbin/rmtest/rmtest.c 	if (lseek(file, 0, SEEK_SET)) {</span>
+<span class='curline'><a href='../S/691.html#L130'>file</a>              130 userland/testbin/rmtest/rmtest.c 	dorm(file);</span>
+<span class='curline'><a href='../S/691.html#L134'>file</a>              134 userland/testbin/rmtest/rmtest.c 	len = read(file, buf, TESTLEN);</span>
+<span class='curline'><a href='../S/691.html#L147'>file</a>              147 userland/testbin/rmtest/rmtest.c 	close(file);</span>
+<span class='curline'><a href='../S/691.html#L150'>file</a>              150 userland/testbin/rmtest/rmtest.c 	file = open(TEST, O_RDONLY);</span>
+<span class='curline'><a href='../S/691.html#L151'>file</a>              151 userland/testbin/rmtest/rmtest.c 	if (file &gt;= 0) {</span>
+<span class='curline'><a href='../S/691.html#L152'>file</a>              152 userland/testbin/rmtest/rmtest.c 		close(file);</span>
+<span class='curline'><a href='../S/709.html#L52'>file</a>               52 userland/testbin/tail/tail.c tail(int file, off_t where, const char *filename)</span>
+<span class='curline'><a href='../S/709.html#L56'>file</a>               56 userland/testbin/tail/tail.c 	if (lseek(file, where, SEEK_SET)&lt;0) {</span>
+<span class='curline'><a href='../S/709.html#L60'>file</a>               60 userland/testbin/tail/tail.c 	while ((len = read(file, buffer, sizeof(buffer))) &gt; 0) {</span>
+<span class='curline'><a href='../S/709.html#L68'>file</a>               68 userland/testbin/tail/tail.c 	int file;</span>
+<span class='curline'><a href='../S/709.html#L73'>file</a>               73 userland/testbin/tail/tail.c 	file = open(argv[1], O_RDONLY);</span>
+<span class='curline'><a href='../S/709.html#L74'>file</a>               74 userland/testbin/tail/tail.c 	if (file &lt; 0) {</span>
+<span class='curline'><a href='../S/709.html#L77'>file</a>               77 userland/testbin/tail/tail.c 	tail(file, atoi(argv[2]), argv[1]);</span>
+<span class='curline'><a href='../S/709.html#L78'>file</a>               78 userland/testbin/tail/tail.c 	close(file);</span>
+</pre>
+</body>
+</html>

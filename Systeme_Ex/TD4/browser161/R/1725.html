@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>panic</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/61.html#L117'>panic</a>             117 kern/arch/mips/locore/trap.c 	panic("I don't know how to handle this\n");</span>
+<span class='curline'><a href='../S/61.html#L260'>panic</a>             260 kern/arch/mips/locore/trap.c 		panic("Bus error exception, PC=0x%x\n", tf-&gt;tf_epc);</span>
+<span class='curline'><a href='../S/61.html#L315'>panic</a>             315 kern/arch/mips/locore/trap.c 	panic("I can't handle this... I think I'll just die now...\n");</span>
+<span class='curline'><a href='../S/69.html#L133'>panic</a>             133 kern/arch/mips/vm/dumbvm.c 	panic("dumbvm tried to do tlb shootdown?!\n");</span>
+<span class='curline'><a href='../S/69.html#L153'>panic</a>             153 kern/arch/mips/vm/dumbvm.c 		panic("dumbvm: got VM_FAULT_READONLY\n");</span>
+<span class='curline'><a href='../S/73.html#L340'>panic</a>             340 kern/arch/sys161/dev/lamebus_machdep.c 			panic("Unknown interrupt; cause register is %08x\n",</span>
+<span class='curline'><a href='../S/88.html#L146'>panic</a>             146 kern/dev/generic/random.c 		panic("No random device\n");</span>
+<span class='curline'><a href='../S/88.html#L155'>panic</a>             155 kern/dev/generic/random.c 		panic("No random device\n");</span>
+<span class='curline'><a href='../S/96.html#L148'>panic</a>             148 kern/dev/lamebus/emu.c 		panic("emu%d: got fatal result code %d\n", sc-&gt;e_unit, code);</span>
+<span class='curline'><a href='../S/96.html#L522'>panic</a>             522 kern/dev/lamebus/emu.c 		panic("emu%d: reclaim vnode %u not in vnode pool\n",</span>
+<span class='curline'><a href='../S/99.html#L318'>panic</a>             318 kern/dev/lamebus/lamebus.c 		panic("lamebus_mark: slot %d already in use\n", slot);</span>
+<span class='curline'><a href='../S/99.html#L338'>panic</a>             338 kern/dev/lamebus/lamebus.c 		panic("lamebus_mark: slot %d not marked in use\n", slot);</span>
+<span class='curline'><a href='../S/99.html#L361'>panic</a>             361 kern/dev/lamebus/lamebus.c 		panic("lamebus_attach_interrupt: slot %d not marked in use\n",</span>
+<span class='curline'><a href='../S/99.html#L387'>panic</a>             387 kern/dev/lamebus/lamebus.c 		panic("lamebus_detach_interrupt: slot %d not marked in use\n",</span>
+<span class='curline'><a href='../S/99.html#L571'>panic</a>             571 kern/dev/lamebus/lamebus.c 		panic("lamebus: too many (%d) dud interrupts\n", duds);</span>
+<span class='curline'><a href='../S/99.html#L647'>panic</a>             647 kern/dev/lamebus/lamebus.c 		panic("lamebus_init: Out of memory\n");</span>
+<span class='curline'><a href='../S/112.html#L106'>panic</a>             106 kern/dev/lamebus/lser.c 		panic("lser: Not clear to write\n");</span>
+<span class='curline'><a href='../S/124.html#L220'>panic</a>             220 kern/fs/semfs/semfs_fsops.c 		panic("Out of memory creating semfs\n");</span>
+<span class='curline'><a href='../S/124.html#L224'>panic</a>             224 kern/fs/semfs/semfs_fsops.c 		panic("Attaching semfs: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/127.html#L69'>panic</a>              69 kern/fs/sfs/sfs_balloc.c 		panic("sfs: %s: balloc: invalid block %u\n",</span>
+<span class='curline'><a href='../S/127.html#L98'>panic</a>              98 kern/fs/sfs/sfs_balloc.c 		panic("sfs: %s: sfs_bused called on out of range block %u\n",</span>
+<span class='curline'><a href='../S/128.html#L99'>panic</a>              99 kern/fs/sfs/sfs_bmap.c 			panic("sfs: %s: Data block %u (block %u of file %u) "</span>
+<span class='curline'><a href='../S/128.html#L192'>panic</a>             192 kern/fs/sfs/sfs_bmap.c 		panic("sfs: %s: Data block %u (block %u of file %u) "</span>
+<span class='curline'><a href='../S/129.html#L91'>panic</a>              91 kern/fs/sfs/sfs_dir.c 		panic("sfs: %s: directory %u: Invalid size %llu\n",</span>
+<span class='curline'><a href='../S/129.html#L232'>panic</a>             232 kern/fs/sfs/sfs_dir.c 		panic("sfs: %s: name %s (inode %u) in dir %u has "</span>
+<span class='curline'><a href='../S/131.html#L129'>panic</a>             129 kern/fs/sfs/sfs_inode.c 		panic("sfs: %s: reclaim vnode %u not in vnode pool\n",</span>
+<span class='curline'><a href='../S/131.html#L169'>panic</a>             169 kern/fs/sfs/sfs_inode.c 			panic("sfs: %s: Found inode %u in unallocated block\n",</span>
+<span class='curline'><a href='../S/131.html#L194'>panic</a>             194 kern/fs/sfs/sfs_inode.c 		panic("sfs: %s: Tried to load inode %u from "</span>
+<span class='curline'><a href='../S/131.html#L230'>panic</a>             230 kern/fs/sfs/sfs_inode.c 		panic("sfs: %s: loadvnode: Invalid inode type "</span>
+<span class='curline'><a href='../S/132.html#L79'>panic</a>              79 kern/fs/sfs/sfs_io.c 		panic("sfs: %s: DEVOP_IO returned EINVAL\n",</span>
+<span class='curline'><a href='../S/133.html#L200'>panic</a>             200 kern/fs/sfs/sfs_vnops.c 	panic("sfs: %s: gettype: Invalid inode type (inode %u, type %u)\n",</span>
+<span class='curline'><a href='../S/133.html#L503'>panic</a>             503 kern/fs/sfs/sfs_vnops.c 		panic("sfs: %s: rename: Cannot recover\n",</span>
+<span class='curline'><a href='../S/172.html#L182'>panic</a>             182 kern/include/lib.h __DEAD void panic(const char *format, ...) __PF(1,2);</span>
+<span class='curline'><a href='../S/201.html#L71'>panic</a>              71 kern/lib/kprintf.c 		panic("Could not create kprintf_lock\n");</span>
+<span class='curline'><a href='../S/201.html#L214'>panic</a>             214 kern/lib/kprintf.c 	panic("Assertion failed: %s, at %s:%d (%s)\n",</span>
+<span class='curline'><a href='../S/202.html#L60'>panic</a>              60 kern/lib/misc.c 	panic("Invalid error code %d\n", errcode);</span>
+<span class='curline'><a href='../S/204.html#L49'>panic</a>              49 kern/lib/uio.c 		panic("uiomove: Invalid uio_rw %d\n", (int) uio-&gt;uio_rw);</span>
+<span class='curline'><a href='../S/204.html#L78'>panic</a>              78 kern/lib/uio.c 				panic("uiomove: ran out of buffers\n");</span>
+<span class='curline'><a href='../S/204.html#L107'>panic</a>             107 kern/lib/uio.c 			    panic("uiomove: Invalid uio_segflg %d\n",</span>
+<span class='curline'><a href='../S/205.html#L200'>panic</a>             200 kern/main/main.c 	panic("reboot operation failed\n");</span>
+<span class='curline'><a href='../S/206.html#L267'>panic</a>             267 kern/main/menu.c 	panic("User requested panic\n");</span>
+<span class='curline'><a href='../S/206.html#L792'>panic</a>             792 kern/main/menu.c 				panic("Failure processing kernel arguments\n");</span>
+<span class='curline'><a href='../S/208.html#L183'>panic</a>             183 kern/proc/proc.c 		panic("proc_create for kproc failed\n");</span>
+<span class='curline'><a href='../S/210.html#L106'>panic</a>             106 kern/syscall/runprogram.c 	panic("enter_new_process returned\n");</span>
+<span class='curline'><a href='../S/214.html#L69'>panic</a>              69 kern/test/fstest.c 			panic("fstest: sem_create failed\n");</span>
+<span class='curline'><a href='../S/214.html#L332'>panic</a>             332 kern/test/fstest.c 			panic("readstress: thread_fork failed: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L394'>panic</a>             394 kern/test/fstest.c 			panic("thread_fork failed %s\n", strerror(err));</span>
+<span class='curline'><a href='../S/214.html#L448'>panic</a>             448 kern/test/fstest.c 			panic("writestress2: thread_fork failed: %s\n",</span>
+<span class='curline'><a href='../S/214.html#L521'>panic</a>             521 kern/test/fstest.c 			panic("longstress: thread_fork failed %s\n",</span>
+<span class='curline'><a href='../S/214.html#L663'>panic</a>             663 kern/test/fstest.c 			panic("createstress: thread_fork failed %s\n",</span>
+<span class='curline'><a href='../S/215.html#L124'>panic</a>             124 kern/test/kmalloctest.c 		panic("kmallocstress: sem_create failed\n");</span>
+<span class='curline'><a href='../S/215.html#L133'>panic</a>             133 kern/test/kmalloctest.c 			panic("kmallocstress: thread_fork failed: %s\n",</span>
+<span class='curline'><a href='../S/215.html#L206'>panic</a>             206 kern/test/kmalloctest.c 		panic("kmalloctest3: failed on pointer block array\n");</span>
+<span class='curline'><a href='../S/215.html#L212'>panic</a>             212 kern/test/kmalloctest.c 			panic("kmalloctest3: failed on pointer block %u\n", i);</span>
+<span class='curline'><a href='../S/215.html#L230'>panic</a>             230 kern/test/kmalloctest.c 			panic("kmalloctest3: failed.\n");</span>
+<span class='curline'><a href='../S/215.html#L269'>panic</a>             269 kern/test/kmalloctest.c 			panic("kmalloctest3: failed.\n");</span>
+<span class='curline'><a href='../S/215.html#L323'>panic</a>             323 kern/test/kmalloctest.c 			panic("kmalloctest4: thread %lu: "</span>
+<span class='curline'><a href='../S/215.html#L358'>panic</a>             358 kern/test/kmalloctest.c 		panic("kmalloctest4: sem_create failed\n");</span>
+<span class='curline'><a href='../S/215.html#L368'>panic</a>             368 kern/test/kmalloctest.c 			panic("kmallocstress: thread_fork failed: %s\n",</span>
+<span class='curline'><a href='../S/217.html#L82'>panic</a>              82 kern/test/semunit.c 		panic("semunit: whoops: sem_create failed\n");</span>
+<span class='curline'><a href='../S/217.html#L120'>panic</a>             120 kern/test/semunit.c 		panic("semunit: thread_fork failed\n");</span>
+<span class='curline'><a href='../S/217.html#L164'>panic</a>             164 kern/test/semunit.c 		panic("semu1: whoops: sem_create failed\n");</span>
+<span class='curline'><a href='../S/217.html#L191'>panic</a>             191 kern/test/semunit.c 	panic("semu2: sem_create accepted a null name\n");</span>
+<span class='curline'><a href='../S/217.html#L205'>panic</a>             205 kern/test/semunit.c 	panic("semu3: sem_destroy accepted a null semaphore\n");</span>
+<span class='curline'><a href='../S/217.html#L246'>panic</a>             246 kern/test/semunit.c 		panic("semu5: sem_create failed\n");</span>
+<span class='curline'><a href='../S/217.html#L271'>panic</a>             271 kern/test/semunit.c 	panic("semu6: wchan_destroy with waiters succeeded\n");</span>
+<span class='curline'><a href='../S/217.html#L574'>panic</a>             574 kern/test/semunit.c 	panic("semu14: V tolerated count wraparound\n");</span>
+<span class='curline'><a href='../S/217.html#L588'>panic</a>             588 kern/test/semunit.c 	panic("semu15: V tolerated null semaphore\n");</span>
+<span class='curline'><a href='../S/217.html#L653'>panic</a>             653 kern/test/semunit.c 		panic("semu17: whoops: thread_fork failed\n");</span>
+<span class='curline'><a href='../S/217.html#L748'>panic</a>             748 kern/test/semunit.c 		panic("semu19: whoops: thread_fork failed\n");</span>
+<span class='curline'><a href='../S/217.html#L787'>panic</a>             787 kern/test/semunit.c 	panic("semu20: P tolerated being in an interrupt handler\n");</span>
+<span class='curline'><a href='../S/217.html#L804'>panic</a>             804 kern/test/semunit.c 	panic("semu21: P tolerated being in an interrupt handler\n");</span>
+<span class='curline'><a href='../S/217.html#L818'>panic</a>             818 kern/test/semunit.c 	panic("semu22: P tolerated null semaphore\n");</span>
+<span class='curline'><a href='../S/218.html#L61'>panic</a>              61 kern/test/synchtest.c 			panic("synchtest: sem_create failed\n");</span>
+<span class='curline'><a href='../S/218.html#L67'>panic</a>              67 kern/test/synchtest.c 			panic("synchtest: lock_create failed\n");</span>
+<span class='curline'><a href='../S/218.html#L73'>panic</a>              73 kern/test/synchtest.c 			panic("synchtest: cv_create failed\n");</span>
+<span class='curline'><a href='../S/218.html#L79'>panic</a>              79 kern/test/synchtest.c 			panic("synchtest: sem_create failed\n");</span>
+<span class='curline'><a href='../S/218.html#L121'>panic</a>             121 kern/test/synchtest.c 			panic("semtest: thread_fork failed: %s\n",</span>
+<span class='curline'><a href='../S/218.html#L210'>panic</a>             210 kern/test/synchtest.c 			panic("locktest: thread_fork failed: %s\n",</span>
+<span class='curline'><a href='../S/218.html#L287'>panic</a>             287 kern/test/synchtest.c 			panic("cvtest: thread_fork failed: %s\n",</span>
+<span class='curline'><a href='../S/218.html#L379'>panic</a>             379 kern/test/synchtest.c 		panic("cvtest2: thread_fork failed\n");</span>
+<span class='curline'><a href='../S/218.html#L383'>panic</a>             383 kern/test/synchtest.c 		panic("cvtest2: thread_fork failed\n");</span>
+<span class='curline'><a href='../S/219.html#L65'>panic</a>              65 kern/test/threadlisttest.c 		panic("threadlisttest: Out of memory\n");</span>
+<span class='curline'><a href='../S/219.html#L71'>panic</a>              71 kern/test/threadlisttest.c 		panic("threadlisttest: Out of memory\n");</span>
+<span class='curline'><a href='../S/220.html#L50'>panic</a>              50 kern/test/threadtest.c 			panic("threadtest: sem_create failed\n");</span>
+<span class='curline'><a href='../S/220.html#L109'>panic</a>             109 kern/test/threadtest.c 			panic("threadtest: thread_fork failed %s)\n",</span>
+<span class='curline'><a href='../S/221.html#L152'>panic</a>             152 kern/test/tt3.c 			panic("thread_fork failed: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/221.html#L157'>panic</a>             157 kern/test/tt3.c 		panic("thread_fork failed: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/221.html#L229'>panic</a>             229 kern/test/tt3.c 			panic("thread_fork failed: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/222.html#L71'>panic</a>              71 kern/thread/clock.c 		panic("Couldn't create lbolt\n");</span>
+<span class='curline'><a href='../S/223.html#L93'>panic</a>              93 kern/thread/hangman.c 	panic("Deadlock.\n");</span>
+<span class='curline'><a href='../S/223.html#L122'>panic</a>             122 kern/thread/hangman.c 		panic("hangman_wait: already waiting for something?\n");</span>
+<span class='curline'><a href='../S/223.html#L144'>panic</a>             144 kern/thread/hangman.c 		panic("hangman_acquire: not waiting for lock %s (%p)\n",</span>
+<span class='curline'><a href='../S/223.html#L149'>panic</a>             149 kern/thread/hangman.c 		panic("hangman_acquire: lock %s (%p) still held by %s (%p)\n",</span>
+<span class='curline'><a href='../S/223.html#L172'>panic</a>             172 kern/thread/hangman.c 		panic("hangman_release: waiting for something?\n");</span>
+<span class='curline'><a href='../S/223.html#L176'>panic</a>             176 kern/thread/hangman.c 		panic("hangman_release: not the holder\n");</span>
+<span class='curline'><a href='../S/224.html#L86'>panic</a>              86 kern/thread/spinlock.c 			panic("Deadlock on spinlock %p\n", splk);</span>
+<span class='curline'><a href='../S/227.html#L172'>panic</a>             172 kern/thread/thread.c 		panic("cpu_create: Out of memory\n");</span>
+<span class='curline'><a href='../S/227.html#L193'>panic</a>             193 kern/thread/thread.c 		panic("cpu_create: array_add: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/227.html#L199'>panic</a>             199 kern/thread/thread.c 		panic("cpu_create: thread_create failed\n");</span>
+<span class='curline'><a href='../S/227.html#L215'>panic</a>             215 kern/thread/thread.c 			panic("cpu_create: couldn't allocate stack");</span>
+<span class='curline'><a href='../S/227.html#L247'>panic</a>             247 kern/thread/thread.c 		panic("cpu_create: proc_addthread:: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/227.html#L600'>panic</a>             600 kern/thread/thread.c 		panic("Illegal S_RUN in thread_switch\n");</span>
+<span class='curline'><a href='../S/227.html#L800'>panic</a>             800 kern/thread/thread.c 	panic("braaaaaaaiiiiiiiiiiinssssss\n");</span>
+<span class='curline'><a href='../S/227.html#L1150'>panic</a>            1150 kern/thread/thread.c 		panic("ipi_tlbshootdown: Too many shootdowns queued\n");</span>
+<span class='curline'><a href='../S/229.html#L369'>panic</a>             369 kern/vfs/device.c 		panic("While creating vnode for device: vnode_init: %s\n",</span>
+<span class='curline'><a href='../S/230.html#L108'>panic</a>             108 kern/vfs/devnull.c 		panic("Could not add null device: out of memory\n");</span>
+<span class='curline'><a href='../S/230.html#L122'>panic</a>             122 kern/vfs/devnull.c 		panic("Could not add null device: %s\n", strerror(result));</span>
+<span class='curline'><a href='../S/233.html#L106'>panic</a>             106 kern/vfs/vfslist.c 		panic("vfs: Could not create knowndevs array\n");</span>
+<span class='curline'><a href='../S/233.html#L111'>panic</a>             111 kern/vfs/vfslist.c 		panic("vfs: Could not create vfs big lock\n");</span>
+<span class='curline'><a href='../S/236.html#L136'>panic</a>             136 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: null vnode\n", opstr);</span>
+<span class='curline'><a href='../S/236.html#L139'>panic</a>             139 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: deadbeef vnode\n", opstr);</span>
+<span class='curline'><a href='../S/236.html#L143'>panic</a>             143 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: null ops pointer\n", opstr);</span>
+<span class='curline'><a href='../S/236.html#L146'>panic</a>             146 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: deadbeef ops pointer\n", opstr);</span>
+<span class='curline'><a href='../S/236.html#L150'>panic</a>             150 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: ops with bad magic number %lx\n",</span>
+<span class='curline'><a href='../S/236.html#L159'>panic</a>             159 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: deadbeef fs pointer\n", opstr);</span>
+<span class='curline'><a href='../S/236.html#L165'>panic</a>             165 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: negative refcount %d\n", opstr,</span>
+<span class='curline'><a href='../S/236.html#L169'>panic</a>             169 kern/vfs/vnode.c 		panic("vnode_check: vop_%s: zero refcount\n", opstr);</span>
+<span class='curline'><a href='../S/239.html#L862'>panic</a>             862 kern/vm/kmalloc.c 	panic("Subpage allocator cannot handle allocation of size %zu\n",</span>
+<span class='curline'><a href='../S/239.html#L1096'>panic</a>            1096 kern/vm/kmalloc.c 		panic("kfree: subpage free of invalid addr %p\n", ptr);</span>
+</pre>
+</body>
+</html>

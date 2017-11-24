@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>usem</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/672.html#L90'>usem</a>               90 userland/testbin/multiexec/multiexec.c semcreate(const char *tag, struct usem *sem)</span>
+<span class='curline'><a href='../S/672.html#L106'>usem</a>              106 userland/testbin/multiexec/multiexec.c semopen(struct usem *sem)</span>
+<span class='curline'><a href='../S/672.html#L116'>usem</a>              116 userland/testbin/multiexec/multiexec.c semclose(struct usem *sem)</span>
+<span class='curline'><a href='../S/672.html#L123'>usem</a>              123 userland/testbin/multiexec/multiexec.c semdestroy(struct usem *sem)</span>
+<span class='curline'><a href='../S/672.html#L130'>usem</a>              130 userland/testbin/multiexec/multiexec.c semP(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/672.html#L142'>usem</a>              142 userland/testbin/multiexec/multiexec.c semV(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/672.html#L165'>usem</a>              165 userland/testbin/multiexec/multiexec.c 	struct usem s1, s2;</span>
+<span class='curline'><a href='../S/676.html#L244'>usem</a>              244 userland/testbin/parallelvm/parallelvm.c semcreate(const char *tag, struct usem *sem)</span>
+<span class='curline'><a href='../S/676.html#L260'>usem</a>              260 userland/testbin/parallelvm/parallelvm.c semopen(struct usem *sem)</span>
+<span class='curline'><a href='../S/676.html#L270'>usem</a>              270 userland/testbin/parallelvm/parallelvm.c semclose(struct usem *sem)</span>
+<span class='curline'><a href='../S/676.html#L277'>usem</a>              277 userland/testbin/parallelvm/parallelvm.c semdestroy(struct usem *sem)</span>
+<span class='curline'><a href='../S/676.html#L284'>usem</a>              284 userland/testbin/parallelvm/parallelvm.c semP(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/676.html#L296'>usem</a>              296 userland/testbin/parallelvm/parallelvm.c semV(struct usem *sem, size_t num)</span>
+<span class='curline'><a href='../S/676.html#L332'>usem</a>              332 userland/testbin/parallelvm/parallelvm.c 	struct usem s1, s2;</span>
+<span class='curline'><a href='../S/695.html#L46'>usem</a>               46 userland/testbin/schedpong/main.c struct usem startsem;</span>
+<span class='curline'><a href='../S/697.html#L46'>usem</a>               46 userland/testbin/schedpong/pong.c static struct usem sems[MAXCOUNT];</span>
+<span class='curline'><a href='../S/702.html#L45'>usem</a>               45 userland/testbin/schedpong/usem.c usem_init(struct usem *sem, const char *namefmt, ...)</span>
+<span class='curline'><a href='../S/702.html#L62'>usem</a>               62 userland/testbin/schedpong/usem.c usem_open(struct usem *sem)</span>
+<span class='curline'><a href='../S/702.html#L71'>usem</a>               71 userland/testbin/schedpong/usem.c usem_close(struct usem *sem)</span>
+<span class='curline'><a href='../S/702.html#L79'>usem</a>               79 userland/testbin/schedpong/usem.c usem_cleanup(struct usem *sem)</span>
+<span class='curline'><a href='../S/702.html#L85'>usem</a>               85 userland/testbin/schedpong/usem.c Pn(struct usem *sem, unsigned count)</span>
+<span class='curline'><a href='../S/702.html#L100'>usem</a>              100 userland/testbin/schedpong/usem.c P(struct usem *sem)</span>
+<span class='curline'><a href='../S/702.html#L106'>usem</a>              106 userland/testbin/schedpong/usem.c Vn(struct usem *sem, unsigned count)</span>
+<span class='curline'><a href='../S/702.html#L124'>usem</a>              124 userland/testbin/schedpong/usem.c V(struct usem *sem)</span>
+<span class='curline'><a href='../S/703.html#L46'>usem</a>               46 userland/testbin/schedpong/usem.h __PF(2, 3) void usem_init(struct usem *sem, const char *namefmt, ...);</span>
+<span class='curline'><a href='../S/703.html#L47'>usem</a>               47 userland/testbin/schedpong/usem.h void usem_open(struct usem *sem);</span>
+<span class='curline'><a href='../S/703.html#L48'>usem</a>               48 userland/testbin/schedpong/usem.h void usem_close(struct usem *sem);</span>
+<span class='curline'><a href='../S/703.html#L49'>usem</a>               49 userland/testbin/schedpong/usem.h void usem_cleanup(struct usem *sem);</span>
+<span class='curline'><a href='../S/703.html#L50'>usem</a>               50 userland/testbin/schedpong/usem.h void Pn(struct usem *sem, unsigned count);</span>
+<span class='curline'><a href='../S/703.html#L51'>usem</a>               51 userland/testbin/schedpong/usem.h void P(struct usem *sem);</span>
+<span class='curline'><a href='../S/703.html#L52'>usem</a>               52 userland/testbin/schedpong/usem.h void Vn(struct usem *sem, unsigned count);</span>
+<span class='curline'><a href='../S/703.html#L53'>usem</a>               53 userland/testbin/schedpong/usem.h void V(struct usem *sem);</span>
+<span class='curline'><a href='../S/719.html#L123'>usem</a>              123 userland/testbin/usemtest/usemtest.c usem_init(struct usem *sem, const char *tag, unsigned num)</span>
+<span class='curline'><a href='../S/719.html#L136'>usem</a>              136 userland/testbin/usemtest/usemtest.c usem_open(struct usem *sem)</span>
+<span class='curline'><a href='../S/719.html#L146'>usem</a>              146 userland/testbin/usemtest/usemtest.c usem_close(struct usem *sem)</span>
+<span class='curline'><a href='../S/719.html#L155'>usem</a>              155 userland/testbin/usemtest/usemtest.c usem_cleanup(struct usem *sem)</span>
+<span class='curline'><a href='../S/719.html#L162'>usem</a>              162 userland/testbin/usemtest/usemtest.c P(struct usem *sem)</span>
+<span class='curline'><a href='../S/719.html#L178'>usem</a>              178 userland/testbin/usemtest/usemtest.c V(struct usem *sem)</span>
+<span class='curline'><a href='../S/719.html#L197'>usem</a>              197 userland/testbin/usemtest/usemtest.c child_plain(struct usem *gosem, struct usem *waitsem, unsigned num)</span>
+<span class='curline'><a href='../S/719.html#L219'>usem</a>              219 userland/testbin/usemtest/usemtest.c child_with_own_fd(struct usem *gosem, struct usem *waitsem, unsigned num)</span>
+<span class='curline'><a href='../S/719.html#L230'>usem</a>              230 userland/testbin/usemtest/usemtest.c baseparent(struct usem *gosems, struct usem *waitsems)</span>
+<span class='curline'><a href='../S/719.html#L288'>usem</a>              288 userland/testbin/usemtest/usemtest.c 	struct usem gosems[NUMJOBS], waitsems[NUMJOBS];</span>
+<span class='curline'><a href='../S/719.html#L320'>usem</a>              320 userland/testbin/usemtest/usemtest.c concparent(struct usem *gosems, struct usem *waitsems)</span>
+<span class='curline'><a href='../S/719.html#L343'>usem</a>              343 userland/testbin/usemtest/usemtest.c 	struct usem gosems[NUMJOBS], waitsems[NUMJOBS];</span>
+</pre>
+</body>
+</html>

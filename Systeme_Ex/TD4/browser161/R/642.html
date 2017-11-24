@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>TESTSIZE</title>
+<meta name='robots' content='noindex,nofollow' />
+<meta name='generator' content='GLOBAL-6.5.7' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet' type='text/css' href='../style.css' />
+</head>
+<body>
+<pre>
+<span class='curline'><a href='../S/212.html#L43'>TESTSIZE</a>           43 kern/test/arraytest.c 	int testarray[TESTSIZE];</span>
+<span class='curline'><a href='../S/212.html#L46'>TESTSIZE</a>           46 kern/test/arraytest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/212.html#L53'>TESTSIZE</a>           53 kern/test/arraytest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/212.html#L60'>TESTSIZE</a>           60 kern/test/arraytest.c 	KASSERT(n==TESTSIZE);</span>
+<span class='curline'><a href='../S/212.html#L62'>TESTSIZE</a>           62 kern/test/arraytest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/212.html#L67'>TESTSIZE</a>           67 kern/test/arraytest.c 	KASSERT(n==TESTSIZE);</span>
+<span class='curline'><a href='../S/212.html#L69'>TESTSIZE</a>           69 kern/test/arraytest.c 	for (j=0; j&lt;TESTSIZE*4; j++) {</span>
+<span class='curline'><a href='../S/212.html#L70'>TESTSIZE</a>           70 kern/test/arraytest.c 		i = random()%TESTSIZE;</span>
+<span class='curline'><a href='../S/212.html#L75'>TESTSIZE</a>           75 kern/test/arraytest.c 	KASSERT(n==TESTSIZE);</span>
+<span class='curline'><a href='../S/212.html#L77'>TESTSIZE</a>           77 kern/test/arraytest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/212.html#L78'>TESTSIZE</a>           78 kern/test/arraytest.c 		array_set(a, i, &amp;testarray[TESTSIZE-i-1]);</span>
+<span class='curline'><a href='../S/212.html#L81'>TESTSIZE</a>           81 kern/test/arraytest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/212.html#L83'>TESTSIZE</a>           83 kern/test/arraytest.c 		KASSERT(*p == TESTSIZE-i-1);</span>
+<span class='curline'><a href='../S/212.html#L86'>TESTSIZE</a>           86 kern/test/arraytest.c 	r = array_setsize(a, TESTSIZE/2);</span>
+<span class='curline'><a href='../S/212.html#L89'>TESTSIZE</a>           89 kern/test/arraytest.c 	for (i=0; i&lt;TESTSIZE/2; i++) {</span>
+<span class='curline'><a href='../S/212.html#L91'>TESTSIZE</a>           91 kern/test/arraytest.c 		KASSERT(*p == TESTSIZE-i-1);</span>
+<span class='curline'><a href='../S/212.html#L96'>TESTSIZE</a>           96 kern/test/arraytest.c 	for (i=1; i&lt;TESTSIZE/2 - 1; i++) {</span>
+<span class='curline'><a href='../S/212.html#L98'>TESTSIZE</a>           98 kern/test/arraytest.c 		KASSERT(*p == TESTSIZE-i-2);</span>
+<span class='curline'><a href='../S/212.html#L101'>TESTSIZE</a>          101 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L105'>TESTSIZE</a>          105 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L107'>TESTSIZE</a>          107 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-3);</span>
+<span class='curline'><a href='../S/212.html#L112'>TESTSIZE</a>          112 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/212.html#L116'>TESTSIZE</a>          116 kern/test/arraytest.c 	array_setsize(a, TESTSIZE*10);</span>
+<span class='curline'><a href='../S/212.html#L118'>TESTSIZE</a>          118 kern/test/arraytest.c 	KASSERT(*p == TESTSIZE-1);</span>
+<span class='curline'><a href='../S/213.html#L41'>TESTSIZE</a>           41 kern/test/bitmaptest.c 	char data[TESTSIZE];</span>
+<span class='curline'><a href='../S/213.html#L50'>TESTSIZE</a>           50 kern/test/bitmaptest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/213.html#L54'>TESTSIZE</a>           54 kern/test/bitmaptest.c 	b = bitmap_create(TESTSIZE);</span>
+<span class='curline'><a href='../S/213.html#L57'>TESTSIZE</a>           57 kern/test/bitmaptest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/213.html#L61'>TESTSIZE</a>           61 kern/test/bitmaptest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/213.html#L66'>TESTSIZE</a>           66 kern/test/bitmaptest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/213.html#L75'>TESTSIZE</a>           75 kern/test/bitmaptest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/213.html#L83'>TESTSIZE</a>           83 kern/test/bitmaptest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+<span class='curline'><a href='../S/213.html#L93'>TESTSIZE</a>           93 kern/test/bitmaptest.c 		KASSERT(x &lt; TESTSIZE);</span>
+<span class='curline'><a href='../S/213.html#L99'>TESTSIZE</a>           99 kern/test/bitmaptest.c 	for (i=0; i&lt;TESTSIZE; i++) {</span>
+</pre>
+</body>
+</html>
