@@ -1,5 +1,5 @@
 Fumeur_ab = [a, b] {
-	etat = 5;
+	etat = 4;
 	init = 0;
 
 	1 = a;
@@ -10,13 +10,13 @@ Fumeur_ab = [a, b] {
 	0 -> 2 [P_b];
 	1 -> 3 [P_b];
 	2 -> 3 [P_a];
-	3 -> 4 [fume];
+	3 -> 0 [fume];
 
 };;
 
 Fumeur_ac = [a, c] {
 	
-	etat = 5;
+	etat = 4;
 	init = 0;
 
 	1 = a;
@@ -27,13 +27,13 @@ Fumeur_ac = [a, c] {
 	0 -> 2 [P_c];
 	1 -> 3 [P_c];
 	2 -> 3 [P_a];
-	3 -> 4 [fume];
+	3 -> 0 [fume];
 
 };;
 
 Fumeur_bc = [b, c] {
 	
-	etat = 5;
+	etat = 4;
 	init = 0;
 
 	1 = b;
@@ -44,7 +44,7 @@ Fumeur_bc = [b, c] {
 	0 -> 2 [P_c];
 	1 -> 3 [P_c];
 	2 -> 3 [P_b];
-	3 -> 4 [fume];
+	3 -> 0 [fume];
 
 };;
 
@@ -83,14 +83,17 @@ Systeme = <Fumeur_ab f1, Fumeur_ac f2, Fumeur_bc f3, Agent agent, Sem a, Sem b, 
 	<_, _, P_b, _, _, P, _>;
 	<_, _, P_c, _, _, _, P>;
 
-	<fume, _, _, signal, _, _, _>;
+	/*<fume, _, _, signal, _, _, _>;
 	<_, fume, _, signal, _, _, _>;
-	<_, _, fume, signal, _, _, _>;
+	<_, _, fume, signal, _, _, _>; */
 
 };;
 
-Systeme += prop <- !AG((a.libre && b.libre)->EF(f1.a && f1.b));;
-todot etats_acc.dot Systeme;;
-
+Systeme += prop <- EF(f1.a && f1.b);;
+todot etats_acc1.dot Systeme;;
+Systeme += prop <- EF(f2.a && f2.c);;
+todot etats_acc2.dot Systeme;;
+Systeme += prop <- EF(f3.b && f3.c);;
+todot etats_acc3.dot Systeme;;
 
 

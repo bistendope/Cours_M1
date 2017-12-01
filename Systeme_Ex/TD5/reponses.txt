@@ -1,0 +1,48 @@
+QUESTION 1:
+-Qu'arrive-t-il à un thread lorsqu'il quitte (i.e. appelle thread_exit()) ? 
+Il est détaché du processus et mis en mode zombie.
+Et lorsqu'il s'endort ?
+On switch avec le prochain thread en attende dans la file.
+
+-Quelle(s) fonction(s) traite(nt) les changements de contexte ?
+C'est thread_switch qui traite les actions de changement de contexte.
+
+-Quel est le rôle de chacun des états dans lequel un thread peut se trouver ?
+S_RUN: indique que le thread est en cours d'execution.
+S_READY: dans la file d'attente et prêt à être exécuté
+S_SLEEP: dans la file d'attente et endormi
+S_ZOMBIE: plus dans la file d'attente mais pas encore suprimé
+
+-Que signifie désactiver les interruptions ?  
+Désactiver les interruptions permet d'être sûr que le code entre la désactivation et la réactivation des interruptions est exécuté d'une seule traite.
+-Comment fait-on cela dans le code ?
+On appelle splhigh pour désactiver les interruptions, puis on remet le niveau priorité normale avec splx.
+-Pourquoi et où est-ce utile dans le système de gestion de threads ?
+C'est utlisé dans la méthode "thread_switch()" car certaines opérations critiques telles que le changement de contexte doivent être exécutées en étant de ne pas être interrompues.
+
+-Que se passe-t-il lorsqu'un thread veut réveiller un autre thread ? 
+Quand un thread veut réveiller un autre thread, il appelle wchan_wakeone(). Le thread réveillé est passé dans l'état S_READY et mis à la fin de la file de threads.
+-Quelle(s) condition(s) font qu'un thread endormi est à nouveau exécuté ? 
+Il faut le thread endormi soit réveillé avec wchan_wakeone(), puis qu'un appel à thread_switch choisisse ce thread pour être à nouveau exécuté.
+
+QUESTION 2:
+-Quelle est la fonction chargée de choisir le prochain thread à exécuter ?
+schedule()
+
+-Comment cette fonction choisit-elle ce prochain thread ?
+Si aucune fonction d'ordonnancement n'est définie, schedule() alloue les temps d'exécution de manière "round-robin".
+
+-Quel est le rôle de l'horloge matérielle joue-t-elle dans l'ordonnancement ? 
+L'horloge matérielle va appeler périodiquement la fonction schedule() (ici toutes les 4 ms).
+
+-Quelle est la fonction indépendante de l'architecture appelée sur une interruption d'horloge ? 
+thread_yield().
+
+QUESTION 3:
+-Décrivez comment wchan_sleep() et wchan_wakeall() sont utilisés pour mettre en oeuvre les sémaphores.
+P appelle wchan_sleep()tant que le compteur de la sémaphore est égal à 0.
+V appelle wchan_wakeone() pour réveiller tous les threads suspendus sur la sémaphore courante.
+
+-
+
+-Pourquoi l'API de verrous (mutex) d'OS/161 propose-t-elle lock_do_i_hold() mais pas lock_get_holder() ? 

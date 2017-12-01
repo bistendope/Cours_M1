@@ -29,7 +29,7 @@ void copy(const char *src, const char *dst, mode_t mode)
   if(close(fds));
 }
 
-int main(int argc, char *argv[])
+int main_cp(int argc, char *argv[])
 {
   struct stat buf;
   if(argc != 3) {
@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
     exit(1);
   }
   copy(argv[1], argv[2], buf.st_mode&0777);
+  return 0;
 }
 
 

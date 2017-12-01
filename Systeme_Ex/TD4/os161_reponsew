@@ -1,0 +1,40 @@
+question 4
+La gestion de la mémoire peut être différente  d'une architecture à l'autre.
+Pour pouvoir avoir plusieurs implémentations liées à des architectures différentes installées à la fois, on doit séparer les fonctions spécifiques à chaque implémentation. Sinon il faudra tout réinstaller à chaque fois.
+
+question 6
+Scénario 1: 2,3,4
+Scénario 2: 1,2 car on ajoute un nouveau fichier au système, et 3 pour mettre à jour les dépendances.
+Scénario 3: 1,2,3,4
+Scénario 4: 4
+Scénario 5: 2,4
+
+Question 8  
+int vfs_open(char *path, int openflags, mode_t mode, struct vnode **ret);
+void vfs_close(struct vnode *vn);
+int vfs_readlink(char *path, struct uio *data);
+int vfs_symlink(const char *contents, char *path);
+int vfs_mkdir(char *path, mode_t mode);
+int vfs_link(char *oldpath, char *newpath);
+int vfs_remove(char *path);
+int vfs_rmdir(char *path);
+int vfs_rename(char *oldpath, char *newpath);
+int vfs_chdir(char *path);
+int vfs_getcwd(struct uio *buf);
+
+Question 9:
+Toutes les fonctions de vnode_ops
+Non, il faut juste incrémenter le refcount avec vnode_incref().
+
+Question 10:
+numéro reboot = 119
+Cette valeur n'est pas accessible aux programmes utilisateurs, pour des raisons de sécurité.
+
+Question 11:
+Il faut initialiser le scheduler en premier car c'est lui qui initialise la file d'attente des threads.
+
+question 17
+vn_countlock
+
+question 18:
+

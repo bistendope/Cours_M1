@@ -1,0 +1,19 @@
+NAME
+     time -- time command execution
+
+SYNOPSIS
+     time utility [argument ...]
+
+DESCRIPTION
+     The time utility executes and times the specified utility.	 After the
+     utility finishes, time writes to the standard error stream, (in seconds):
+     the total time elapsed, the time used to execute the utility process and
+     the time consumed by system overhead.
+
+EXIT STATUS
+     If	utility	could be timed successfully, its exit status is	returned.  If
+     utility terminated	abnormally, a warning message is output	to stderr.  If
+     the utility was found but could not be run, the exit status is 126.  If
+     no	utility	could be found at all, the exit	status is 127.	If time
+     encounters	any other error, the exit status is between 1 and 125
+     included.
