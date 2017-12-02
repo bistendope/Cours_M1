@@ -1,0 +1,22 @@
+NAME
+     rmdir -- remove directories
+
+SYNOPSIS
+     rmdir directory ...
+
+DESCRIPTION
+     The rmdir utility removes the directory entry specified by	each directory
+     argument, provided	it is empty.
+
+     Arguments are processed in	the order given.  In order to remove both a
+     parent directory and a subdirectory of that parent, the subdirectory must
+     be	specified first	so the parent directory	is empty when rmdir tries to
+     remove it.
+
+EXIT STATUS
+     The rmdir utility exits with one of the following values:
+
+     0	     Each directory entry specified by a directory operand referred to
+	     an	empty directory	and was	removed	successfully.
+
+     >0	     An	error occurred.

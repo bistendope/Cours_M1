@@ -8,7 +8,7 @@ int chdir_cmd(char *argv[]){
 }
 
 int simple_cmd(char *argv[]){
-	pid_t blop,
+	pid_t blop;
 	int st;
 
 	if(argv[0] == NULL){
@@ -16,7 +16,7 @@ int simple_cmd(char *argv[]){
 		return 0;
 	}
 	
-	if(strcmp[argv[0]== "cd")==0){
+	if(strcmp(argv[0], "cd")==0){
 		return chdir_cmd(argv);
 		
 	}

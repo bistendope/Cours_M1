@@ -1,0 +1,12 @@
+NAME
+     cp	-- copy	files
+
+SYNOPSIS
+     cp source_file target_file
+
+DESCRIPTION
+     The cp	utility	copies the contents of the
+     source_file to the	target_file.
+
+EXIT STATUS
+     The cp utility exits 0 on success,	and >0 if an error occurs.

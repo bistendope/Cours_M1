@@ -1,6 +1,6 @@
 #include "toolbox.h"
 
-int main(int argc, char *argv[])
+int main_rmdir(int argc, char *argv[])
 {
   if(argc != 2) {
     fprintf(stderr, "usage: %s directory_name\n", argv[0]);

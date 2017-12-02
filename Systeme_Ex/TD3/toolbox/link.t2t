@@ -1,0 +1,17 @@
+LN(1)			FreeBSD	General	Commands Manual			 LN(1)
+
+NAME
+     ln, link -- link files
+
+SYNOPSIS
+     link source_file target_file
+
+DESCRIPTION
+     The ln utility creates a new directory entry (linked file)	for the	file
+     name specified by target_file.  The target_file will be created with the
+     same file modes as	the source_file.  It is	useful for maintaining multi-
+     ple copies	of a file in many places at once without using up storage for
+     the ``copies''; instead, a	link ``points''	to the original	copy.  There
+     are two types of links; hard links	and symbolic links.  How a link
+     ``points''	to a file is one of the	differences between a hard and sym-
+     bolic link.
