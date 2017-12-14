@@ -11,7 +11,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: fr.miage.orleans.tp:modeleDemineur:4.0-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="modeleDemineur" />
   </component>
 </module>

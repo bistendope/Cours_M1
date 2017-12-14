@@ -1,0 +1,39 @@
+Turn=[libre, uti1, uti2]{
+	etat=3;
+	init = 0;
+	0=libre;
+	1=uti1;
+	2=uti2;
+	0->1[prend1];
+	0->2[prend2];
+	1->1[estCe1];
+	2->2[estCe2];
+	1->2[prend2];
+	2->1[prend1];
+};;
+
+Processus=[crit, debut, fin, attente]{
+    etat=4;
+    init=0;
+    0=debut;
+    1=attente;
+    2=crit;
+    3=fin;
+    0->1[vaAttendre];
+    1->2[vaCrit];
+    2->3[execCrit];
+};;
+
+systeme = <Turn t, Processus p1, Processus p2>{
+    
+    <prend1,vaAttendre,_>;
+    <estCe2,vaCrit,_>;
+    <_,execCrit,_>;
+    
+    <prend2,_,vaAttendre>;
+    <estCe1,_,vaCrit>;
+    <_,_,execCrit>;
+};;
+
+
+todot primitive1.dot systeme;;

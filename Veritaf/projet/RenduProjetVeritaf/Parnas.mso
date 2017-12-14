@@ -1,0 +1,134 @@
+ Agent = [libre] {
+
+        etat = 2;
+        init = 1;
+
+        1 = libre;
+
+        0 -> 1 [V];
+        1 -> 0 [P];
+
+};;
+
+Sem = [libre] {
+
+        etat = 2;
+        init = 0;
+
+        1 = libre;
+
+        0 -> 1 [V];
+        1 -> 0 [P];
+
+};;
+
+Mutex = [libre] {
+
+        etat = 2;
+        init = 1;
+
+        1 = libre;
+
+        0 -> 1 [V];
+        1 -> 0 [P];
+
+};;
+
+Compteur = [] {
+
+        etat = 7;
+        init = 0;
+
+        0 -> 1 [Incr1n1];
+        2 -> 3 [Incr1n2];
+        4 -> 5 [Incr1n3];
+
+        0 -> 2 [Incr2n1];
+        1 -> 3 [Incr2n2];
+        4 -> 6 [Incr2n3];
+
+        0 -> 4 [Incr4n1];
+        1 -> 5 [Incr4n2];
+        2 -> 6 [Incr4n3];
+
+  	0 -> 0 [Decr];
+        1 -> 0 [Decr];
+        2 -> 0 [Decr];
+        3 -> 0 [Decr];
+        4 -> 0 [Decr];
+        5 -> 0 [Decr];
+        6 -> 0 [Decr];
+
+
+};;
+
+Systeme = <Agent s, Sem a, Sem b, Sem c, Sem X, Sem Y, Sem Z, Compteur t, Sem S1, Sem S2, Sem S3, Sem S4, Sem S5, Sem S6> {
+
+        <P, _, V, V, _, _, _, _, _, _, _, _, _, _>;
+        <P, V, _, V, _, _, _, _, _, _, _, _, _, _>;
+        <P, V, V, _, _, _, _, _, _, _, _, _, _, _>;
+
+	
+        <_, P, _, _, _, _, _, Incr1n1, V, _, _, _, _, _>;
+        <_, P, _, _, _, _, _, Incr1n2, _, P, V, _, _, _>;
+        <_, P, _, _, _, _, _, Incr1n3, _, _, _, P, V, _>;
+
+        <_, _, P, _, _, _, _, Incr2n1, _, V, _, _, _, _>;
+        <_, _, P, _, _, _, _, Incr2n2, P, _, V, _, _, _>;
+        <_, _, P, _, _, _, _, Incr2n3, _, _, _, P, _, V>;
+
+        <_, _, _, P, _, _, _, Incr4n1, _, _, _, V, _, _>;
+        <_, _, _, P, _, _, _, Incr4n2, P, _, _, _, V, _>;
+        <_, _, _, P, _, _, _, Incr4n3, _, P, _, _, _, V>;
+
+
+
+        <_, _, _, _, V, _, _, Decr, _, _, _, _, _, P>;
+        <_, _, _, _, _, V, _, Decr, _, _, _, _, P, _>;
+        <_, _, _, _, _, _, V, Decr, _, _, P, _, _, _>;
+
+
+        <V, _, _, _, P, _, _, _, _, _, _, _, _, _>;
+        <V, _, _, _, _, P, _, _, _, _, _, _, _, _>;
+        <V, _, _, _, _, _, P, _, _, _, _, _, _, _>;
+
+
+};; 
+
+todot Parnas.dot Systeme;;
+
+/*CTL*/
+
+Systeme+= prop <- AG(!s.libre -> EF( (X.libre && !Y.libre && !Z.libre) || (!X.libre && Y.libre && !Z.libre) || (!X.libre && !Y.libre && Z.libre)));;
+todot ParnasCTL.dot Systeme;;
+
+
+/*LTL G(!s.libre -> F( (X.libre && !Y.libre && !Z.libre) || (!X.libre && Y.libre && !Z.libre) || (!X.libre && !Y.libre && Z.libre)))*/
+
+autosurete =  {
+	etat = 3;
+	acc = 1;
+	init = 0;
+	0 - !X -> 1;
+	1 - X1 || X2 || X3 -> 2;
+	1 - !X1 || !X2 || !X3 -> 1;
+	1 - X1 && X2 -> 1;
+	1 - X1 && X3 -> 1;
+	1 - X3 && X2 -> 1;
+	2 - true -> 2 [0];
+};;
+
+
+
+Systeme_LTL= automaton Systeme;;
+resultat_LTL = SystemeAB_LTL && autosurete[X <- s.libre,X1 <- X.libre,X2 <- Y.libre,X3 <- Z.libre];;
+resultat = reduce resultat_LTL;;
+todot resultatParnas.dot resultat;;
+
+
+
+
+
+
+
+

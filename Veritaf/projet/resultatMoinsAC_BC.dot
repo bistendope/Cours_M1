@@ -1,0 +1,11 @@
+digraph system {
+_0[label="", shape=none ];
+_0->0;
+1136->1136 [label= "!a.libre.!b.libre.!c.libre.dead.!f1.a.!f1.b.!f2.a.!f2.c.f3.b.f3.c.!propAB.!propAC.propBC,[0]"];
+112->1136 [label= "!a.libre.!b.libre.!c.libre.dead.!f1.a.!f1.b.!f2.a.!f2.c.f3.b.f3.c.!propAB.!propAC.propBC"];
+592->112 [label= "!a.libre.!b.libre.c.libre.!dead.!f1.a.!f1.b.!f2.a.!f2.c.f3.b.!f3.c.!propAB.!propAC.propBC"];
+352->112 [label= "!a.libre.b.libre.!c.libre.!dead.!f1.a.!f1.b.!f2.a.!f2.c.!f3.b.f3.c.!propAB.!propAC.propBC"];
+832->592 [label= "!a.libre.b.libre.c.libre.!dead.!f1.a.!f1.b.!f2.a.!f2.c.!f3.b.!f3.c.!propAB.!propAC.propBC"];
+832->352 [label= "!a.libre.b.libre.c.libre.!dead.!f1.a.!f1.b.!f2.a.!f2.c.!f3.b.!f3.c.!propAB.!propAC.propBC"];
+0->832 [label= "!a.libre.!b.libre.!c.libre.!dead.!f1.a.!f1.b.!f2.a.!f2.c.!f3.b.!f3.c.propAB.!propAC.propBC"];
+}

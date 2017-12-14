@@ -1,0 +1,27 @@
+digraph system {
+_0[label="", shape=none ];
+_0->0;
+73 [label= "73 [f1.a, f2.c]"];
+97 [label= "97 [f1.a, f3.c]"];
+577 [label= "577 [c.libre, f1.a]"];
+76 [label= "76 [f2.a, f2.c]"];
+100 [label= "100 [f2.a, f3.c]"];
+580 [label= "580 [c.libre, f2.a]"];
+200 [label= "200 [a.libre, f2.c]"];
+224 [label= "224 [a.libre, f3.c]"];
+704 [label= "704 [a.libre, c.libre]"];
+0 [label= "0 "];
+577->73 [label= ""];
+577->97 [label= ""];
+200->73 [label= ""];
+224->97 [label= ""];
+704->577 [label= ""];
+580->76 [label= ""];
+580->100 [label= ""];
+200->76 [label= ""];
+224->100 [label= ""];
+704->580 [label= ""];
+704->200 [label= ""];
+704->224 [label= ""];
+0->704 [label= ""];
+}
