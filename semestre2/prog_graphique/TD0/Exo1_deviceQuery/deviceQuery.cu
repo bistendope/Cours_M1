@@ -55,17 +55,22 @@ int main()
 /*                                                                                                                 
  Quelques questions à se poser :                                                                                   
                                                                                                                    
-+ Quelle est la compute capability de la carte graphique ?                                                         
++ Quelle est la compute capability de la carte graphique ?      
+                                                   
 + Quelles sont les  dimensions maximales d'un bloc (en X, en Y, en Z)?
+
 + Supposons que nous lançons une grille de blocs unidimensionelle (seulement sur X). 
 Si la dimension maximale de la grille est de 65525 sur notre matériel et celle d'un 
 bloc de 1024, quel est le nombre maxmal de threads que l'on peut lancer sur notre GPU?
+	-1024*65525
+	
 + Sous quelles conditions un programmeur pourrait choisir de ne pas utiliser ce nombre
-maximum de threads?         
+maximum de threads?      
+	- On n'en a pas forcément besoin d'autant
+	- Si ça ne tombe pas juste
 + D'après vous, qu'est-ce qui peut empêcher un programme de lancer le nombre maximal
 de threads sur un GPU?
-Rien
     
-+ La double précision est-elle supportée sur votre carte graphique?
-                                                
++ Le parallélisme dynamique est-il supporté sur votre carte graphique?
+	- yes (Titan et Titan X, 970M également)
 */
