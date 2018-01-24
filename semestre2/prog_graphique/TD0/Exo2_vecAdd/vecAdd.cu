@@ -31,9 +31,15 @@ int main( int argc, char* argv[] )
 
   //////////////////////////////////////////
   // Allocate memory for each vector on host
+  h_a = (float*) malloc(bytes);
+  h_b = (float*) malloc(bytes);
+  h_c = (float*) malloc(bytes);
 
   /////////////////////////////////////////
   // Allocate memory for each vector on GPU
+  cudaMalloc ((void**)&d_a , bytes);
+  cudaMalloc ((void**)&d_b , bytes);
+  cudaMalloc ((void**)&d_c , bytes);
 
   int i;
   // Initialize vectors on host
@@ -45,26 +51,30 @@ int main( int argc, char* argv[] )
   /////////////////////////////////////////
   // Copy host vectors to device
   // Use cudaMemcpy...
+  cudaMemcpy ( d_a, &h_a , bytes, cudaMemcpyHostToDevice);
+  cudaMemcpy ( d_b, &h_b , bytes, cudaMemcpyHostToDevice);
 
 
   int blockSize, gridSize;
 
   /////////////////////////////////////////
   // Number of threads in each thread block
-  blockSize = ??;
+  blockSize = 1024;
 
   ////////////////////////////////////////
   // Number of thread blocks in grid
-  gridSize = ??;
+  gridSize = 100;
 
 
   ///////////////////////////////////////
   // Execute the kernel
-  vecAdd<<<??, ??>>>(d_a, d_b, d_c, n);
+  vecAdd<<<blockSize, gridSize>>>(d_a, d_b, d_c, n);
 
   ///////////////////////////////////////
   // Copy array back to host
   // Use cudaMemcpy
+  
+  cudaMemcpy(&h_c ,d_c, bytes, cudaMemcpyDeviceToHost);
 
   // Sum up vector c and print result divided by n, this should equal 1 within error
   float sum = 0;
@@ -74,9 +84,16 @@ int main( int argc, char* argv[] )
 
   /////////////////////////////////////////
   // Release device memory
+  
+  cudaFree ( d_a ) ;
+  cudaFree ( d_b ) ;
+  cudaFree ( d_c ) ;
 
   ////////////////////////////////////////
   // Release host memory
+  free(h_a);
+  free(h_b);
+  free(h_c);
 
   return 0;
 }
