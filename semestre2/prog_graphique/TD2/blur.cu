@@ -122,8 +122,26 @@ texture<unsigned int, 2, cudaReadModeElementType> tex;
 // Vous utiliserez tex2D(texture, x, y)
 // pour lire une valeur dans la texture
 __global__ void blur_tex(pixel* img_out, int cols, int rows, int ray){
-	
+  int x = blockIdx.x*blockDim.x + threadIdx.x;
+  int y = blockIdx.y*blockDim.y + threadIdx.y;
+
   
+  if(x < cols && y < rows){
+  	int i=0, j=0;
+  	int r=0, g=0, b=0;
+  	int pixelsATraiter = (2*ray+1)*(2*ray+1);
+  	
+  	for(i=-ray; i<=ray; i++){
+  		for(j=-ray*3; j<=ray*3; j+=3){
+  			r+= tex2D(tex, (3*x+j), (y+i));
+  			g+= tex2D(tex, (3*x+j+1), (y+i));
+  			b+= tex2D(tex, (3*x+j+2), (y+i));
+  		}
+  	}
+  
+  	r/=pixelsATraiter;g/=pixelsATraiter;b/=pixelsATraiter;
+  	PPM_ASSIGN(img_out[y*cols+x ], r, g, b);
+  }
 }
 
 
@@ -153,6 +171,29 @@ __global__ void blur_tex(pixel* img_out, int cols, int rows, int ray){
 
 */
 void blur_tex (pixel* ppm_in, pixel* ppm_out, size_t size, int cols, int rows, pixval maxval, int ray) {
+  pixel* d_ppm_out;
+  cudaMalloc(&d_ppm_out, size);
+  cudaChannelFormatDesc channelDesc = 
+      cudaCreateChannelDesc(32,0,0,0, cudaChannelFormatKindUnsigned);
+  cudaArray* cuArray;
+  cudaMallocArray(&cuArray, &channelDesc, cols*3, rows);
+  
+  cudaMemcpyToArray(cuArray, 0, 0, ppm_in, sizeof(unsigned int)*3*cols*rows, cudaMemcpyHostToDevice);
+  tex.addressMode[0] = cudaAddressModeWrap;
+  tex.addressMode[1] = cudaAddressModeWrap;
+  tex.filterMode = cudaFilterModePoint;
+  tex.normalized = false;
+  
+  cudaBindTextureToArray(tex, cuArray, channelDesc);
+  
+  dim3 DimBlock(16, 16, 1);
+  dim3 DimGrid((rows + DimBlock.x-1)/DimBlock.x, (cols + DimBlock.y -1)/DimBlock.y, 1);
+  blur_tex<<<DimGrid, DimBlock>>>(d_ppm_out, cols, rows, ray);
+  cudaMemcpy(ppm_out, d_ppm_out, size, cudaMemcpyDeviceToHost);
+  
+  cudaFree(d_ppm_out);
+  cudaUnbindTexture(tex);
+  cudaFree(cuArray);
 }
  
 
@@ -190,7 +231,7 @@ int main(int argc, char* argv[]){
   long size = cols*rows*sizeof(pixel);  
   ppm_out = (pixel*)malloc(size);
   
-  int ray = 25;
+  int ray = 10;
   
   TIME(blur(ppm_in, ppm_out, size, cols, rows, maxval, ray));	 
   writeppm(out, ppm_out, cols, rows, maxval, 1);
