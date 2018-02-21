@@ -1,0 +1,36 @@
+iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE # adressage dynamique
+		
+		-j SNAT --to 1.2.3.4
+		
+		à mettre dans rtN.startup
+		
+iptables -t nat -A POSTROUTING -o eth1 -j SNAT --to 1.2.3.4
+iptables -t nat -A PREROUTING -p tcp --dport 22 -j DNAT --to 10.1.0.1:22
+//iptables -P INPUT DROP pas sur
+
+Partie 3
+
+iptables -F #vider les chaines
+	 -x # supprimer les chaines
+	 
+iptables -P INPUT DROP #on ferme
+iptables -P OUTPUT DROP # les
+iptables -P FORWARD DROP #connexions
+
+On commence d'abord par tout interdire, puis on n'autorise que ce qui doit passer. Comme ça c'est un peu safe.
+
+iptables -A FORWARD -i eth1 -p tcp --dport 22 -j ACCEPT
+
+iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -i eth0 -j ACCEPT
+iptables -A OUTPUT -o eth0 -j ACCEPT
+
+#TUNNELS
+daytime -> pc12 10.1.0.2
+ssh->pc11
+nat->rt1->1.2.3.4
+pc32 ssh -N -L :9013:10.1.0.2:13 1.2.3.4 #établir le tunnel (-N: on n'active pas le service distant, on sert juste de tunnel)
+pc31 nc 10.3.0.2 9013 #on emprunte le tunnel
+
+
