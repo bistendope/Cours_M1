@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="application/javascript">
+        function soumettre(){
+            xmlhttp = new XMLHttpRequest();
+            var url = "http://localhost:8080/sondages/";
+            xmlhttp.open('POST', url, true);
+            var body="{'question'='" + document.getElementById("question").value + "','reponses'=[";
+            var nbr=
+        }
+
+        function ajoutReponse(){
+            var reponses=document.getElementById(reponses);
+            ligne=reponses.insertRow();
+            cellule=ligne.insertCell();
+            cellule.innerHTML="Choix n°" + reponses.rows.length + ":";
+            cellule=ligne.insertCell();
+            input=document.createElement("input");
+            input.type="text";
+            input.id="r"+reponses.rows.length;
+            cellule.innerHTML=input.outerHTML;
+
+        }
+
+
+    </script>
+</head>
+<body>
+Question: <input id="question">
+<table id="reponses">
+
+</table>
+</body>
+</html>

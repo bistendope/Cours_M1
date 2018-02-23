@@ -27,7 +27,7 @@ public class SondageController {
 
         s1.addReponses("oui");
         s1.addReponses("non");
-        s1.addReponses("c est quoi la question");
+        s1.addReponses("c'est quoi la question");
         s1.voter(new Vote("Albert", "oui"));
         s1.voter(new Vote("Bernard", "non"));
         ms.put(s1.getId(), s1);
@@ -44,7 +44,7 @@ public class SondageController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Sondage> findSondageById(@PathVariable("id") long id) {
         if (sondages.containsKey(id)) {
-            return new ResponseEntity<Sondage>(sondages.get(id), HttpStatus.ACCEPTED);
+            return new ResponseEntity<Sondage>(sondages.get(id), HttpStatus.OK);
         }
         else {
             return new ResponseEntity<Sondage>(HttpStatus.BAD_REQUEST);
@@ -67,7 +67,7 @@ public class SondageController {
             Sondage s = sondages.get(id);
             s.setQuestion(question);
             s.setReponses(responses);
-            return new ResponseEntity<Sondage>(s, HttpStatus.ACCEPTED);
+            return new ResponseEntity<Sondage>(s, HttpStatus.OK);
         }
         else {
             return new ResponseEntity<Sondage>(HttpStatus.BAD_REQUEST);
@@ -94,7 +94,7 @@ public class SondageController {
     @RequestMapping(value = "/{id}/votes/", method = RequestMethod.GET)
     public ResponseEntity<Set<Vote>> findVotes(@PathVariable("id") long id) {
         if (sondages.containsKey(id)) {
-            return new ResponseEntity<Set<Vote>>(sondages.get(id).getVotes(), HttpStatus.ACCEPTED);
+            return new ResponseEntity<Set<Vote>>(sondages.get(id).getVotes(), HttpStatus.OK);
         }
         else {
             return new ResponseEntity<Set<Vote>>(HttpStatus.BAD_REQUEST);

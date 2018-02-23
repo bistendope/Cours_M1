@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script language="javascript">
         var xmlhttp;
+        var listeSondages;
         function init() {
             // put more code here in case you are concerned about browsers that do not provide XMLHttpRequest object directly
             xmlhttp = new XMLHttpRequest();
@@ -20,7 +21,7 @@
                         listeSondages=document.getElementById("sondages");
                         for(i=0;i<sondages.length;i++){
                             sondage=sondages[i];
-                            listeSondages.options[i+1]=new Option(sondage.question, sondage.id);
+                            listeSondages.options[i]=new Option(sondage.question, sondage.id);
                         }
                     }
                     else
@@ -31,8 +32,13 @@
 
         function getSondage() {
             var baseurl = document.getElementById("baseurl").value;
-            var sondageid = document.getElementById("sondageid").value;
-            var url = baseurl + "/sondages/" + sondageid;
+            var sondages = document.getElementById("sondages");
+            var sondageId = sondages.options[sondages.selectedIndex].value;
+            var details=document.getElementById("details");
+            details.innerHTML="";
+            var url = baseurl + "/sondages/" + sondageId;
+            var ligne;
+
             xmlhttp.open('GET',url,true);
             xmlhttp.send(null);
 
@@ -40,14 +46,23 @@
                 if (xmlhttp.readyState == 4) {
                     if ( xmlhttp.status == 200) {
                         var sondage = JSON.parse(xmlhttp.responseText);
+                        for(var i=0; i<sondage.reponses.length; i++){
+                            ligne=details.insertRow();
+                            cellule = ligne.insertCell();
+                            cellule.innerHTML="<b>Choix n°" +i + "</b>";
+                            cellule=ligne.insertCell();
+                            cellule.innerHTML=sondage.reponses[i];
 
-                        document.getElementById("libelle").value = sondage.libelle;
+                        }
+                        document.getElementById("libelle").value = sondage.question;
                     }
                     else
                         alert("Error!!! -> " + xmlhttp.responseText);
                 }
             };
         }
+
+
     </script>
 </head>
 <body onload="init()">
@@ -70,10 +85,11 @@ cell.innerHTML=....
 
         </select><br/>
 
-        Id du Sondage
-        <input type="text" id="sondageid" size="10"/>
         <input type="button" value="Lire le sondage" onclick="getSondage()"/>
 
+<table id="details">
+
+</table>
 
 <br/>
 Options :

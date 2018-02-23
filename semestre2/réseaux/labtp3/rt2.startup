@@ -1,6 +1,10 @@
 ifconfig eth0 10.2.0.254/16
 ifconfig eth1 2.3.4.5/24
 route add default gw 2.3.4.1
+<<<<<<< HEAD
 /etc/init.d/dhcp3-server start
 
 iptables -t nat -A POSTROUTING -o eth1 -j SNAT --to 1.2.3.4
+=======
+
+>>>>>>> aa869401ea4bc3b2d3b2a355cdeaf7e0c65b416d
