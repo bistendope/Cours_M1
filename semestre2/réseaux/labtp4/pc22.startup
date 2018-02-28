@@ -1,0 +1,2 @@
+ip link set eth0 up
+ipv6 address FE80::4 link-local

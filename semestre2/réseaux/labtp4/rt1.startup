@@ -1,0 +1,6 @@
+#allumer les interfaces
+
+#allouer manuellement les adresses à chaque interface
+
+#activer l'ip-forwarding
+echo 1 > proc/sys/net/ipv6/conf/all/forwarding

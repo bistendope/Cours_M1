@@ -1,0 +1,6 @@
+#activer l'interface
+ip link set eth0 up
+
+#allouer manuellement une adresse unique locale
+
+ip -6 addr add fd01::aaaa/64
