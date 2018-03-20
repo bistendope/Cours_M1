@@ -1,6 +1,6 @@
 algae <- read.table("donnees.txt", header=TRUE)
-algae
 
+algae
 hist(mxPH, prob=T, xlab='', main='Histogram of mxPH', ylim=0:1)
 lines(density(mxPH, na.rm=T))
 

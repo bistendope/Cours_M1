@@ -16,13 +16,13 @@ using namespace std;
 
 // Nouveau tableau de coordonnées
 static GLfloat coordonnees[] = {
-  0,0,0,       // sommet 0
-  0.5,0,0,     // 1
+  0,0,0,       // sommet 0 x
+  0.5,0,0,     // 1 x 
   0.5,0.5,0,   //2
   0,0.5,0,     //3
-  0,0,0.5,     //4
-  0.5,0,0.5,   //5
-  0.5,0.5,0.5, //6
+  0,0,0.5,     //4 x
+  0.5,0,0.5,   //5 x 
+  0.5,0.5,0.5, //6 x 
   0,0.5,0.5    //7
 };
 
@@ -52,6 +52,16 @@ GLuint indices[] = {
   2,7,6,
   0,1,4,
   1,4,5
+};
+
+
+GLuint indicesPyramide[] = {
+	0,4,6,
+	0,6,1,
+	1,6,5,
+	4,5,6,
+	4,5,0,
+	0,1,5
 };
 
 // Un tableau de plus donc 3 identifiants ...
@@ -87,7 +97,7 @@ void init() {
   // Mais ATTENTION il faut toujours que ce buffer soit activé avant le dessin
   // Ici c'est le dernier VBO "bindé".
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboid[2]);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER,3*12*sizeof(GLuint),indices,GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3*6*sizeof(GLuint), indicesPyramide, GL_STATIC_DRAW);
 
   
 }

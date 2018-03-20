@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named code01_trajectoire
+
+# Build rule for target.
+code01_trajectoire: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 code01_trajectoire
+.PHONY : code01_trajectoire
+
+# fast build rule for target.
+code01_trajectoire/fast:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/build
+.PHONY : code01_trajectoire/fast
+
+#=============================================================================
 # Target rules for targets named code05_dessin
 
 # Build rule for target.
@@ -175,12 +188,40 @@ code04_dessin/fast:
 	$(MAKE) -f CMakeFiles/code04_dessin.dir/build.make CMakeFiles/code04_dessin.dir/build
 .PHONY : code04_dessin/fast
 
+Common/lecture_trajectoire.o: Common/lecture_trajectoire.cpp.o
+
+.PHONY : Common/lecture_trajectoire.o
+
+# target to build an object file
+Common/lecture_trajectoire.cpp.o:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/lecture_trajectoire.cpp.o
+.PHONY : Common/lecture_trajectoire.cpp.o
+
+Common/lecture_trajectoire.i: Common/lecture_trajectoire.cpp.i
+
+.PHONY : Common/lecture_trajectoire.i
+
+# target to preprocess a source file
+Common/lecture_trajectoire.cpp.i:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/lecture_trajectoire.cpp.i
+.PHONY : Common/lecture_trajectoire.cpp.i
+
+Common/lecture_trajectoire.s: Common/lecture_trajectoire.cpp.s
+
+.PHONY : Common/lecture_trajectoire.s
+
+# target to generate assembly for a file
+Common/lecture_trajectoire.cpp.s:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/lecture_trajectoire.cpp.s
+.PHONY : Common/lecture_trajectoire.cpp.s
+
 Common/shaders_utilities.o: Common/shaders_utilities.cpp.o
 
 .PHONY : Common/shaders_utilities.o
 
 # target to build an object file
 Common/shaders_utilities.cpp.o:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.o
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Common/shaders_utilities.cpp.o
 	$(MAKE) -f CMakeFiles/code01_dessin.dir/build.make CMakeFiles/code01_dessin.dir/Common/shaders_utilities.cpp.o
 	$(MAKE) -f CMakeFiles/code03_dessin.dir/build.make CMakeFiles/code03_dessin.dir/Common/shaders_utilities.cpp.o
@@ -194,6 +235,7 @@ Common/shaders_utilities.i: Common/shaders_utilities.cpp.i
 
 # target to preprocess a source file
 Common/shaders_utilities.cpp.i:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.i
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Common/shaders_utilities.cpp.i
 	$(MAKE) -f CMakeFiles/code01_dessin.dir/build.make CMakeFiles/code01_dessin.dir/Common/shaders_utilities.cpp.i
 	$(MAKE) -f CMakeFiles/code03_dessin.dir/build.make CMakeFiles/code03_dessin.dir/Common/shaders_utilities.cpp.i
@@ -207,12 +249,40 @@ Common/shaders_utilities.s: Common/shaders_utilities.cpp.s
 
 # target to generate assembly for a file
 Common/shaders_utilities.cpp.s:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code01_dessin.dir/build.make CMakeFiles/code01_dessin.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code03_dessin.dir/build.make CMakeFiles/code03_dessin.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code02_dessin.dir/build.make CMakeFiles/code02_dessin.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code04_dessin.dir/build.make CMakeFiles/code04_dessin.dir/Common/shaders_utilities.cpp.s
 .PHONY : Common/shaders_utilities.cpp.s
+
+Common/xdrfile.o: Common/xdrfile.c.o
+
+.PHONY : Common/xdrfile.o
+
+# target to build an object file
+Common/xdrfile.c.o:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/xdrfile.c.o
+.PHONY : Common/xdrfile.c.o
+
+Common/xdrfile.i: Common/xdrfile.c.i
+
+.PHONY : Common/xdrfile.i
+
+# target to preprocess a source file
+Common/xdrfile.c.i:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/xdrfile.c.i
+.PHONY : Common/xdrfile.c.i
+
+Common/xdrfile.s: Common/xdrfile.c.s
+
+.PHONY : Common/xdrfile.s
+
+# target to generate assembly for a file
+Common/xdrfile.c.s:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/xdrfile.c.s
+.PHONY : Common/xdrfile.c.s
 
 Cours1/code01_dessin.o: Cours1/code01_dessin.cpp.o
 
@@ -349,6 +419,33 @@ Cours1/code05_dessin.cpp.s:
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Cours1/code05_dessin.cpp.s
 .PHONY : Cours1/code05_dessin.cpp.s
 
+TD1/code01_trajectoire.o: TD1/code01_trajectoire.cpp.o
+
+.PHONY : TD1/code01_trajectoire.o
+
+# target to build an object file
+TD1/code01_trajectoire.cpp.o:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/TD1/code01_trajectoire.cpp.o
+.PHONY : TD1/code01_trajectoire.cpp.o
+
+TD1/code01_trajectoire.i: TD1/code01_trajectoire.cpp.i
+
+.PHONY : TD1/code01_trajectoire.i
+
+# target to preprocess a source file
+TD1/code01_trajectoire.cpp.i:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/TD1/code01_trajectoire.cpp.i
+.PHONY : TD1/code01_trajectoire.cpp.i
+
+TD1/code01_trajectoire.s: TD1/code01_trajectoire.cpp.s
+
+.PHONY : TD1/code01_trajectoire.s
+
+# target to generate assembly for a file
+TD1/code01_trajectoire.cpp.s:
+	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/TD1/code01_trajectoire.cpp.s
+.PHONY : TD1/code01_trajectoire.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -356,15 +453,22 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... code01_trajectoire"
 	@echo "... code05_dessin"
 	@echo "... code01_dessin"
 	@echo "... code03_dessin"
 	@echo "... code02_dessin"
 	@echo "... edit_cache"
 	@echo "... code04_dessin"
+	@echo "... Common/lecture_trajectoire.o"
+	@echo "... Common/lecture_trajectoire.i"
+	@echo "... Common/lecture_trajectoire.s"
 	@echo "... Common/shaders_utilities.o"
 	@echo "... Common/shaders_utilities.i"
 	@echo "... Common/shaders_utilities.s"
+	@echo "... Common/xdrfile.o"
+	@echo "... Common/xdrfile.i"
+	@echo "... Common/xdrfile.s"
 	@echo "... Cours1/code01_dessin.o"
 	@echo "... Cours1/code01_dessin.i"
 	@echo "... Cours1/code01_dessin.s"
@@ -380,6 +484,9 @@ help:
 	@echo "... Cours1/code05_dessin.o"
 	@echo "... Cours1/code05_dessin.i"
 	@echo "... Cours1/code05_dessin.s"
+	@echo "... TD1/code01_trajectoire.o"
+	@echo "... TD1/code01_trajectoire.i"
+	@echo "... TD1/code01_trajectoire.s"
 .PHONY : help
 
 

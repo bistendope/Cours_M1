@@ -133,17 +133,34 @@ void Display(void) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   glUseProgram(programID);
-
+  
+  auto translation2 = glm::translate(glm::mat4(1.f), glm::vec3(-0.5f,-0.5f,-0.5f)
+  
+  angle+=1.f;
+  auto rotation_auto = glm::rotate(glm::mat4(1.f), degree_to_radian(angle), glm::vec3(0.f, 1.f, 0.f));
   // Mise à jour de la matrice Model
-  Model = translation * rotation * trans_initial;
+  Model = translation * rotation * trans_initial * translation3 * rotation_auto * translation2;
   MVP =  Model;
   // Transmission de la matrice à la carte graphique
   // Il est temps d'aller regarder le shader TransformVertexShader.vert
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
   
-  glDrawElements(GL_TRIANGLES, 3*12, GL_UNSIGNED_INT, NULL);   
+  glDrawElements(GL_TRIANGLES, 3*12, GL_UNSIGNED_INT, NULL);  
+  
+  auto rotation2 = glm::rotate(glm::mat4(1.f), degree_to_radian(180.f), glm::vec3(1.f, 0.f, 0.f));
+  
+  auto rotation3 = glm::rotate(glm::mat4(1.f), degree_to_radian(270.f), glm::vec3(0.f, 1.f, 0.f));
+  
+  MVP = Model * translation3 * rotation3 * rotation2 * translation2;
+  glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+  
+  glDrawElements(GL_TRIANGLES, 3*6, GL_UNSIGNED_INT, NULL); 
   
   glutSwapBuffers();
+}
+
+void IdleFunc(){
+	glutPostRedisplay();
 }
 
 // Fonction appelée lorsque une touche du clavier est utilisée (à l'exception des touches spéciales pageUp, pageDown,...)
@@ -279,6 +296,7 @@ int main(int argc, char** argv)
   glutSpecialFunc(ClavierSpecial);
   glutMouseFunc(Souris);
   glutMotionFunc(Motion);
+  glutIdleFunc(IdleFunc);
 
   // Désormais la boucle infinie traite les interactions via le clavier et la souris.
   glutMainLoop () ;

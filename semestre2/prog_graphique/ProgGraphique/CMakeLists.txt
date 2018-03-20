@@ -57,7 +57,13 @@ target_link_libraries(code05_dessin
 	${ALL_LIBS}
 )
 
-
+add_executable(code01_trajectoire
+	TD1/code01_trajectoire.cpp Common/shaders_utilities.cpp Common/lecture_trajectoire.cpp Common/xdrfile.c
+)
+target_link_libraries(code01_trajectoire
+  ${ALL_LIBS}
+  )
+      
 add_custom_command(
   TARGET code01_dessin POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/code01_dessin${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/Cours1/"
@@ -81,4 +87,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/code05_dessin${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/Cours1/"
   )
 
+add_custom_command(
+  TARGET code01_trajectoire POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/code01_trajectoire${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/TD1/"
+  )
 
