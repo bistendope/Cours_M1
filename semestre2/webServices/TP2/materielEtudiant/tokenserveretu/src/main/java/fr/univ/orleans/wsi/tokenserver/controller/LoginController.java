@@ -53,8 +53,15 @@ public class LoginController {
 
     @GetMapping("/checkToken")
     public ResponseEntity<String> checkToken(@RequestHeader(AUTHORIZATION)String token) {
-        //TODO
+        try {
+            Jws<Claims> claim = Jwts.parser().setSigningKey(MACLE.getBytes()).parseClaimsJws(token.replaceFirst(TOKEN_PREFIX, ""));
+            String login = claim.getBody().getSubject();
+            if (loginPassword.containsKey(login)) {
+                return ResponseEntity.ok(login);
+            }
+        }catch (Exception e){
 
-        return null;
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
