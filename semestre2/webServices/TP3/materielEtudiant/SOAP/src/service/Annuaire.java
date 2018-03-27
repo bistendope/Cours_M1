@@ -1,6 +1,5 @@
 package service;
 
-import exception.NotFoundException;
 import modele.Personne;
 
 import javax.jws.WebService;
@@ -17,15 +16,10 @@ public class Annuaire {
         annuaire.put("exbrayat", new Personne("exbrayat","matthieu","0238000000"));
     };
     public String searchTelephone(String nom) {
-
-        Personne p = null;
-        try {
-            p = annuaire.get(nom);
-            if (p==null) throw new NotFoundException("Pas trouvé !");
-        } catch (NotFoundException e) {
-            e.printStackTrace();
+        Personne p =  annuaire.get(nom);
+        if (p==null) {
+            return "Pas trouve";
         }
-
         return p.getTelephone();
     }
     public void addPersonne(Personne p) {

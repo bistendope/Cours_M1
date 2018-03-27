@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. --><xs:schema xmlns:tns="http://service/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service/">
+
+<xs:element name="addPersonne" type="tns:addPersonne"></xs:element>
+
+<xs:element name="addPersonneList" type="tns:addPersonneList"></xs:element>
+
+<xs:element name="addPersonneListResponse" type="tns:addPersonneListResponse"></xs:element>
+
+<xs:element name="addPersonneResponse" type="tns:addPersonneResponse"></xs:element>
+
+<xs:element name="getAllNom" type="tns:getAllNom"></xs:element>
+
+<xs:element name="getAllNomResponse" type="tns:getAllNomResponse"></xs:element>
+
+<xs:element name="searchTelephone" type="tns:searchTelephone"></xs:element>
+
+<xs:element name="searchTelephoneResponse" type="tns:searchTelephoneResponse"></xs:element>
+
+<xs:complexType name="addPersonne">
+<xs:sequence>
+<xs:element name="arg0" type="tns:personne" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="personne">
+<xs:sequence>
+<xs:element name="nom" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="prenom" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="telephone" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addPersonneResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAllNom">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAllNomResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchTelephone">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchTelephoneResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addPersonneList">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg1" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg2" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addPersonneListResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+</xs:schema>
