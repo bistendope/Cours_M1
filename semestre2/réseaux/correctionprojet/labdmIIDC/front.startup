@@ -1,0 +1,28 @@
+ifconfig eth0 10.0.0.1/8
+# TODO : configurer eth1 et iptables
+ifconfig eth1 194.167.110.61/26
+
+# Envoi des paquets pour lana sur eth1 de back
+route add -net 172.28.242.240/16 gw 194.167.110.1
+
+/etc/init.d/quagga start
+
+iptables -P FORWARD DROP
+
+# Acceptation des connexions venant de l'exterieur et visant le port 53 de dns
+iptables -A FORWARD -i eth0 -p tcp --dport 53 -d 194.167.110.58/26 -j ACCEPT 
+iptables -A FORWARD -i eth0 -p udp --dport 53 -d 194.167.110.58/26 -j ACCEPT
+
+# Acceptation des connexions venant de l'exterieur et visant le port 80 de www
+iptables -A FORWARD -i eth0 -p tcp --dport 80 -d 194.167.110.59/26 -j ACCEPT 
+
+# Acceptation des connexions venant de l'exterieur et visant le port 22 de ssh
+iptables -A FORWARD -i eth0 -p tcp --dport 22 -d 194.167.110.60/26 -j ACCEPT 
+
+# Acceptation des connexions venant du reseau lana ou dmz
+iptables -A FORWARD -i eth1 -j ACCEPT 
+
+# Acceptation une fois la connexion effectuee
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+iptables -A FORWARD -s 2.3.4.110 -p tcp --dport ssh -j ACCEPT
+

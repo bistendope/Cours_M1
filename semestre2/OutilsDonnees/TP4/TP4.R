@@ -46,3 +46,5 @@ temp <- manyNAs (algae, 0.20)
 cleanAlgae <- centerImputation(temp)
 
 apply(Mode(algae))
+
+

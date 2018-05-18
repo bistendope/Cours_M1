@@ -11,6 +11,7 @@ CMakeFiles/code01_trajectoire.dir/Common/lecture_trajectoire.cpp.o: ../Common/xd
 CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.o: ../Common/shaders_utilities.cpp
 CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.o: ../Common/shaders_utilities.hpp
 
+CMakeFiles/code01_trajectoire.dir/TD1/code01_trajectoire.cpp.o: ../Common/icosaedre.hpp
 CMakeFiles/code01_trajectoire.dir/TD1/code01_trajectoire.cpp.o: ../Common/lecture_trajectoire.hpp
 CMakeFiles/code01_trajectoire.dir/TD1/code01_trajectoire.cpp.o: ../Common/shaders_utilities.hpp
 CMakeFiles/code01_trajectoire.dir/TD1/code01_trajectoire.cpp.o: ../Common/xdrfile.h

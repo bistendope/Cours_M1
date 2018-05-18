@@ -1,0 +1,15 @@
+alice: auvergne
+www: bourgogne
+ssh: bourgogne
+dns: bourgogne
+bob: bourgogne
+charlie: boxc
+boxc: ispc
+dnsnet: dnsroot
+dnscom: dnsroot
+bourgogne: dnsnet
+auvergne: dnsnet
+ispc: dnsnet
+cold: dnsnet
+jmail: dnscom
+perdu: dnscom

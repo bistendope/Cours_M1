@@ -1,0 +1,5 @@
+ifconfig eth0 192.168.0.1/24
+ifconfig eth1 2.3.4.110/24
+route add default gw 2.3.4.5
+/etc/init.d/dhcp3-server start
+iptables -t nat -A POSTROUTING -o eth1 -j SNAT --to 2.3.4.110

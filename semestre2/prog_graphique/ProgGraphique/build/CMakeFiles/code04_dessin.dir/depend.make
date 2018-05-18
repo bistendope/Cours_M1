@@ -4,6 +4,4 @@
 CMakeFiles/code04_dessin.dir/Common/shaders_utilities.cpp.o: ../Common/shaders_utilities.cpp
 CMakeFiles/code04_dessin.dir/Common/shaders_utilities.cpp.o: ../Common/shaders_utilities.hpp
 
-CMakeFiles/code04_dessin.dir/Cours1/code04_dessin.cpp.o: ../Common/shaders_utilities.hpp
-CMakeFiles/code04_dessin.dir/Cours1/code04_dessin.cpp.o: ../Cours1/code04_dessin.cpp
 

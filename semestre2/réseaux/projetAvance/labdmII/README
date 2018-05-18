@@ -1,0 +1,72 @@
+= devoir de TP de M1 réseaux II =
+
+L'objectif de ce devoir est de configurer DHCP, NAT et règles de
+pare-feu pour un petit réseau bi-site en permettant la traversée de
+connexions SSH.
+
+
+== The big picture ==
+
+Alice et Bob ont créé l'entreprise Alice&Bob sur 2 sites, chacun
+étant responsable de l'un des deux. Les deux sites disposent de blocs
+d'adresses (cf les paramètres affectés aux membres de votre binôme
+sur la page Celene) et doivent autoriser la communication entre les
+sites tout en définissant quelques règles de sécurité.
+
+De son côté Alice dispose d'un bloc d'adresses privées (cf paramètres
+du binôme) pour le réseau local derrière  un routeur (auvergne). Le
+réseau local s'appelle lana et contient entre autres la machine (alice).
+
+Bob, lui, utilise un bloc d'adresses publiques (cf paramètres du
+binôme) pour le réseau local (lanb) derrière un routeur (bourgogne). Son
+site héberge un serveur DNS sur le serveur (dns) pour le domaine
+aliceetbob.net, un serveur HTTP sur le serveur (www) pour la page web
+www.aliceetbob.net et un serveur SSH sur le serveur (ssh).
+
+Les routeurs (auvergne) et (bourgogne) déploient des règles de pare-feu
+pour assurer les propriétés suivantes :
+ - toute connexion initiée en lana est autorisée à traverser (auvergne) ;
+ - toute connexion initiée en lanb est autorisée à traverser (bourgogne) ;
+ - une connexion initiée en lana est autorisée à traverser (bourgogne) ;
+ - une connexion initiée en lanb ne peut traverser (auvergne) que pour
+   rejoindre le port 22 d'alice ;
+ - une connexion initiée à l'extérieur ne peut traverser (auvergne) ;
+ - une connexion initiée à l'extérieur ne peut traverser (bourgogne) que
+   pour rejoindre le port 22 de (ssh), le port 53 de (dns) ou le port 80
+   de (www).
+
+
+== Ce qui est à configurer ==
+
+Votre travail consiste à configurer les machines et services suivants :
+ - configurer (auvergne) pour qu'il fournisse DHCP, NAT et pare-feu iptables
+   conforme à la description ci-dessus ;
+ - configurer (bourgogne) pour qu'il fournisse DHCP et pare-feu iptables
+   conforme à la description ci-dessus ;
+ - configurer la zone DNS dns/etc/bind/db.net.aliceetbob
+ - modifier l'adresse du NS pour aliceetbob.net dans dnsnet/etc/bind/db.net
+ - configurer les serveurs (dns), (ssh) et (www)
+ - modifier bob/root/.ssh/ et alice/home/guest/.ssh/ pour que depuis la
+   machine bob il soit possible de se connecter par ssh à alice en temps
+   qu'utilisateur guest en saisissant simplement la commande ``ssh alice``
+
+Pour tester votre configuration, vérifier que (charlie) peut se connecter au
+serveur web à l'aide de la commande ``lynx http://www.aliceetbob.net``,
+qu'(alice) peut se connecter à http://www.perdu.com et au serveur ssh en DMZ
+à l'aide de ``ssh ssh.aliceetbob.net``. Vérifier que (bob) peut se connecter
+en tant que guest à la machine (alice) à l'aide de la commande ``ssh alice``.
+Enfin vérifier que les routeurs filtrent bien les connexions interdites par
+les règles de pare-feu décrites ci-dessus.
+
+
+== Modalités de retour du devoir ==
+
+Le devoir est à traiter en binôme. La solution est à déposer sous la
+forme d'une archive au format .tar.gz sur la page Celene du cours.
+L'archive doit contenir :
+ - un rapport au format PDF qui reprend les noms des membres du binôme,
+   les paramètres utilisés et expliquant le travail effectué, illustrant
+   les étapes de configuration et les tests effectués, à grand renfort
+   de copies d'écran des machines et de wireshark.
+ - le lab modifié par vos soins.
+

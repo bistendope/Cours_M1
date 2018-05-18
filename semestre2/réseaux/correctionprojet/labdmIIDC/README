@@ -1,0 +1,73 @@
+= devoir de TP de M1 réseaux II =
+
+L'objectif de ce devoir est de configurer DHCP, NAT et règles de
+pare-feu pour un petit réseau avec DMZ en permettant la traversée de
+connexions SSH.
+
+
+== The big picture ==
+
+Alice est de retour, auto-entrepreneur, elle a troqué son réseau
+domestique pour un réseau auto-hébergé et a fait l'acquisition du
+domaine DNS blue.net et d'un préfixe réseau public (cf les paramètres
+affectés aux membres de votre binôme sur la page Celene).
+
+Elle a organisé son réseau en deux sous-réseaux :
+ - lana utilise des adresses privées (cf paramètres du binôme) et
+   héberge des machines (alice) derrière un routeur (back) ;
+ - dmz utilise le préfixe public (cf paramètres du binôme) et héberge
+   différents services (ssh, dns, www) dans une DMZ encadrée par
+   les routeurs (back) et (front).
+
+La DMZ fourni les services suivants :
+ - serveur DNS sur le serveur (dns) pour gérer le domaine blue.net ;
+ - serveur SSH sur le serveur (ssh) pour un accès depuis l'extérieur ;
+ - serveur HTTP sur le serveur (www) pour www.blue.net.
+
+Les routeurs (back) et (front) déploient des règles de pare-feu pour
+assurer les propriétés suivantes :
+ - toute connexion initiée en lana est autorisée à traverser (back) ;
+ - toute connexion initiée en lana ou dmz est autorisée à traverser (front) ;
+ - une connexion initiée en dmz ne peut traverser (back) que pour
+   rejoindre le port 22 de (alice).
+ - une connexion initiée à l'extérieur ne peut traverser (front) que
+   pour rejoindre le port 22 de (ssh), le port 53 de (dns) ou 
+   le port 80 de (www).
+
+
+== Ce qui est à configurer ==
+
+Votre travail consiste à configurer les machines et services suivants :
+ - configurer (back) pour qu'il fournisse DHCP, NAT et pare-feu iptables
+   conforme à la description ci-dessus ;
+ - configurer (front) pour qu'il fournisse un pare-feu iptables conforme à
+   la description ci-dessus ;
+ - configurer la zone DNS dns/etc/bind/db.blue
+ - modifier l'adresse du NS pour blue.net dans dnsnet/etc/bind/db.net
+ - configurer les serveurs (dns), (ssh) et (www)
+ - modifier bob/root/.ssh/ et alice/home/guest/.ssh/ pour que depuis la
+   machine bob il soit possible de se connecter par ssh à alice en temps
+   qu'utilisateur guest en saisissant simplement la commande ``ssh alice``
+
+
+Pour tester votre configuration, vérifier que (bob) peut se connecter au
+serveur web à l'aide de la commande ``lynx http://www.blue.net``,
+qu'(alice) peut se connecter à http://www.perdu.com, que (bob) peut se
+connecter au serveur ssh en DMZ à l'aide de ``ssh ssh.blue.net``. Enfin,
+vérifier que (bob) peut se connecter en tant que guest à la machine
+(alice) à l'aide de la commande ``ssh alice``. Enfin vérifier que les
+routeurs filtrent bien les connexions interdites par les règles de
+pare-feu décrites ci-dessus.
+
+
+== Modalités de retour du devoir ==
+
+Le devoir est à traiter en binôme. La solution est à déposer sous la
+forme d'une archive au format .tar.gz sur la page Celene du cours.
+L'archive doit contenir :
+ - un rapport au format PDF qui reprend les noms des membres du binôme,
+   les paramètres utilisés et expliquant le travail effectué, illustrant
+   les étapes de configuration et les tests effectués, à grand renfort
+   de copies d'écran des machines et de wireshark.
+ - le lab modifié par vos soins.
+

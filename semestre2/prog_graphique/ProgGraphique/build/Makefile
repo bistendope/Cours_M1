@@ -124,6 +124,32 @@ code01_trajectoire/fast:
 .PHONY : code01_trajectoire/fast
 
 #=============================================================================
+# Target rules for targets named code02_lumiere
+
+# Build rule for target.
+code02_lumiere: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 code02_lumiere
+.PHONY : code02_lumiere
+
+# fast build rule for target.
+code02_lumiere/fast:
+	$(MAKE) -f CMakeFiles/code02_lumiere.dir/build.make CMakeFiles/code02_lumiere.dir/build
+.PHONY : code02_lumiere/fast
+
+#=============================================================================
+# Target rules for targets named code01_lumiere
+
+# Build rule for target.
+code01_lumiere: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 code01_lumiere
+.PHONY : code01_lumiere
+
+# fast build rule for target.
+code01_lumiere/fast:
+	$(MAKE) -f CMakeFiles/code01_lumiere.dir/build.make CMakeFiles/code01_lumiere.dir/build
+.PHONY : code01_lumiere/fast
+
+#=============================================================================
 # Target rules for targets named code05_dessin
 
 # Build rule for target.
@@ -222,6 +248,8 @@ Common/shaders_utilities.o: Common/shaders_utilities.cpp.o
 # target to build an object file
 Common/shaders_utilities.cpp.o:
 	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.o
+	$(MAKE) -f CMakeFiles/code02_lumiere.dir/build.make CMakeFiles/code02_lumiere.dir/Common/shaders_utilities.cpp.o
+	$(MAKE) -f CMakeFiles/code01_lumiere.dir/build.make CMakeFiles/code01_lumiere.dir/Common/shaders_utilities.cpp.o
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Common/shaders_utilities.cpp.o
 	$(MAKE) -f CMakeFiles/code01_dessin.dir/build.make CMakeFiles/code01_dessin.dir/Common/shaders_utilities.cpp.o
 	$(MAKE) -f CMakeFiles/code03_dessin.dir/build.make CMakeFiles/code03_dessin.dir/Common/shaders_utilities.cpp.o
@@ -236,6 +264,8 @@ Common/shaders_utilities.i: Common/shaders_utilities.cpp.i
 # target to preprocess a source file
 Common/shaders_utilities.cpp.i:
 	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.i
+	$(MAKE) -f CMakeFiles/code02_lumiere.dir/build.make CMakeFiles/code02_lumiere.dir/Common/shaders_utilities.cpp.i
+	$(MAKE) -f CMakeFiles/code01_lumiere.dir/build.make CMakeFiles/code01_lumiere.dir/Common/shaders_utilities.cpp.i
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Common/shaders_utilities.cpp.i
 	$(MAKE) -f CMakeFiles/code01_dessin.dir/build.make CMakeFiles/code01_dessin.dir/Common/shaders_utilities.cpp.i
 	$(MAKE) -f CMakeFiles/code03_dessin.dir/build.make CMakeFiles/code03_dessin.dir/Common/shaders_utilities.cpp.i
@@ -250,6 +280,8 @@ Common/shaders_utilities.s: Common/shaders_utilities.cpp.s
 # target to generate assembly for a file
 Common/shaders_utilities.cpp.s:
 	$(MAKE) -f CMakeFiles/code01_trajectoire.dir/build.make CMakeFiles/code01_trajectoire.dir/Common/shaders_utilities.cpp.s
+	$(MAKE) -f CMakeFiles/code02_lumiere.dir/build.make CMakeFiles/code02_lumiere.dir/Common/shaders_utilities.cpp.s
+	$(MAKE) -f CMakeFiles/code01_lumiere.dir/build.make CMakeFiles/code01_lumiere.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code01_dessin.dir/build.make CMakeFiles/code01_dessin.dir/Common/shaders_utilities.cpp.s
 	$(MAKE) -f CMakeFiles/code03_dessin.dir/build.make CMakeFiles/code03_dessin.dir/Common/shaders_utilities.cpp.s
@@ -419,6 +451,60 @@ Cours1/code05_dessin.cpp.s:
 	$(MAKE) -f CMakeFiles/code05_dessin.dir/build.make CMakeFiles/code05_dessin.dir/Cours1/code05_dessin.cpp.s
 .PHONY : Cours1/code05_dessin.cpp.s
 
+Cours2/code01_lumiere.o: Cours2/code01_lumiere.cpp.o
+
+.PHONY : Cours2/code01_lumiere.o
+
+# target to build an object file
+Cours2/code01_lumiere.cpp.o:
+	$(MAKE) -f CMakeFiles/code01_lumiere.dir/build.make CMakeFiles/code01_lumiere.dir/Cours2/code01_lumiere.cpp.o
+.PHONY : Cours2/code01_lumiere.cpp.o
+
+Cours2/code01_lumiere.i: Cours2/code01_lumiere.cpp.i
+
+.PHONY : Cours2/code01_lumiere.i
+
+# target to preprocess a source file
+Cours2/code01_lumiere.cpp.i:
+	$(MAKE) -f CMakeFiles/code01_lumiere.dir/build.make CMakeFiles/code01_lumiere.dir/Cours2/code01_lumiere.cpp.i
+.PHONY : Cours2/code01_lumiere.cpp.i
+
+Cours2/code01_lumiere.s: Cours2/code01_lumiere.cpp.s
+
+.PHONY : Cours2/code01_lumiere.s
+
+# target to generate assembly for a file
+Cours2/code01_lumiere.cpp.s:
+	$(MAKE) -f CMakeFiles/code01_lumiere.dir/build.make CMakeFiles/code01_lumiere.dir/Cours2/code01_lumiere.cpp.s
+.PHONY : Cours2/code01_lumiere.cpp.s
+
+Cours2/code02_lumiere.o: Cours2/code02_lumiere.cpp.o
+
+.PHONY : Cours2/code02_lumiere.o
+
+# target to build an object file
+Cours2/code02_lumiere.cpp.o:
+	$(MAKE) -f CMakeFiles/code02_lumiere.dir/build.make CMakeFiles/code02_lumiere.dir/Cours2/code02_lumiere.cpp.o
+.PHONY : Cours2/code02_lumiere.cpp.o
+
+Cours2/code02_lumiere.i: Cours2/code02_lumiere.cpp.i
+
+.PHONY : Cours2/code02_lumiere.i
+
+# target to preprocess a source file
+Cours2/code02_lumiere.cpp.i:
+	$(MAKE) -f CMakeFiles/code02_lumiere.dir/build.make CMakeFiles/code02_lumiere.dir/Cours2/code02_lumiere.cpp.i
+.PHONY : Cours2/code02_lumiere.cpp.i
+
+Cours2/code02_lumiere.s: Cours2/code02_lumiere.cpp.s
+
+.PHONY : Cours2/code02_lumiere.s
+
+# target to generate assembly for a file
+Cours2/code02_lumiere.cpp.s:
+	$(MAKE) -f CMakeFiles/code02_lumiere.dir/build.make CMakeFiles/code02_lumiere.dir/Cours2/code02_lumiere.cpp.s
+.PHONY : Cours2/code02_lumiere.cpp.s
+
 TD1/code01_trajectoire.o: TD1/code01_trajectoire.cpp.o
 
 .PHONY : TD1/code01_trajectoire.o
@@ -454,6 +540,8 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... code01_trajectoire"
+	@echo "... code02_lumiere"
+	@echo "... code01_lumiere"
 	@echo "... code05_dessin"
 	@echo "... code01_dessin"
 	@echo "... code03_dessin"
@@ -484,6 +572,12 @@ help:
 	@echo "... Cours1/code05_dessin.o"
 	@echo "... Cours1/code05_dessin.i"
 	@echo "... Cours1/code05_dessin.s"
+	@echo "... Cours2/code01_lumiere.o"
+	@echo "... Cours2/code01_lumiere.i"
+	@echo "... Cours2/code01_lumiere.s"
+	@echo "... Cours2/code02_lumiere.o"
+	@echo "... Cours2/code02_lumiere.i"
+	@echo "... Cours2/code02_lumiere.s"
 	@echo "... TD1/code01_trajectoire.o"
 	@echo "... TD1/code01_trajectoire.i"
 	@echo "... TD1/code01_trajectoire.s"

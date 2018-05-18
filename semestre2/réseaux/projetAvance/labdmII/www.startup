@@ -1,0 +1,2 @@
+dhclient eth0
+apache2ctl start

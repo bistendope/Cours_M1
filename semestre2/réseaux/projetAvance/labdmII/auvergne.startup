@@ -1,0 +1,28 @@
+ifconfig eth0 10.0.0.4/8 #rezo
+# TODO : configurer eth1 , DHCP, NAT et iptables
+ifconfig eth1 192.168.1.72  # lana
+/etc/init.d/quagga start
+
+
+# Lancemenent du serveur dhcp
+/etc/init.d/dhcp3-server start 
+
+
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -P FORWARD DROP
+
+# Acceptation de toutes les connexions venant de lana
+iptables -A FORWARD -i eth1 -j ACCEPT 
+
+# Acceptation une fois la connexion effectuee
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
+
+
+iptables -t nat -A PREROUTING -p tcp -s 194.167.0.64/26 \
+        -j DNAT --dport 22 --to 192.168.1.64/26
+
+
+# Acceptation de toutes les connexions venant de lanb visant le port 22 d'alice
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 22 -j DNAT --to 192.168.1.73
+iptables -A FORWARD -i eth0 -p tcp --dport 22 -s 194.167.0.64/26 -j ACCEPT 

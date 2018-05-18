@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+/home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/Common/icosaedre.hpp
+
 /home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/Common/lecture_trajectoire.cpp
 iostream
 -
@@ -67,4 +69,6 @@ glm/glm.hpp
 -
 glm/gtc/matrix_transform.hpp
 -
+../Common/icosaedre.hpp
+/home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/Common/icosaedre.hpp
 

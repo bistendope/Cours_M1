@@ -1,0 +1,23 @@
+# TODO : configurer interfaces, DHCP, NAT, iptables
+ifconfig eth0 172.28.242.254/28
+ifconfig eth1 194.167.110.1/26
+
+# Lancemenent du serveur dhcp
+/etc/init.d/dhcp3-server start 
+iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
+iptables -P FORWARD DROP
+
+# Acceptation de toutes les connexions venant de dmz visant le port 22 d'alice
+iptables -A FORWARD -i eth1 -p tcp --dport 22 -d 172.28.242.241/28 -j ACCEPT 
+iptables -A FORWARD -i eth1 -p tcp --dport 22 -j ACCEPT
+iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 22 -j DNAT --to 172.28.242.241
+
+
+# Acceptation de toutes les connexions venant de lana
+iptables -A FORWARD -i eth0 -j ACCEPT 
+
+# Acceptation une fois la connexion effectuee
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
+# Ajout d'une route par défaut vers l'interface eth1 de front
+route add default gw 194.167.110.61 eth1 

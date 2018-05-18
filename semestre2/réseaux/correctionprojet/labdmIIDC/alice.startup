@@ -1,0 +1,6 @@
+dhclient
+/etc/init.d/ssh start
+chmod og-w /home/guest
+chown -R guest:guest /home/guest/
+chmod 700 /home/guest/.ssh
+chmod 600 /home/guest/.ssh/*

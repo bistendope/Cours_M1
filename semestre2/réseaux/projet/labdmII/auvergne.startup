@@ -1,0 +1,3 @@
+ifconfig eth0 10.0.0.4/8
+# TODO : configurer eth1 , DHCP, NAT et iptables
+/etc/init.d/quagga start

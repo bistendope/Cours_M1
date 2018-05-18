@@ -57,13 +57,33 @@ target_link_libraries(code05_dessin
 	${ALL_LIBS}
 )
 
+add_executable(code01_lumiere
+  Cours2/code01_lumiere.cpp Common/shaders_utilities.cpp
+  )
+target_link_libraries(code01_lumiere
+  ${ALL_LIBS}
+  )
+
+
+add_executable(code02_lumiere
+  Cours2/code02_lumiere.cpp Common/shaders_utilities.cpp
+  )
+target_link_libraries(code02_lumiere
+  ${ALL_LIBS}
+  )
+
+
+
 add_executable(code01_trajectoire
 	TD1/code01_trajectoire.cpp Common/shaders_utilities.cpp Common/lecture_trajectoire.cpp Common/xdrfile.c
 )
 target_link_libraries(code01_trajectoire
-  ${ALL_LIBS}
-  )
-      
+	${ALL_LIBS}
+)
+
+
+
+
 add_custom_command(
   TARGET code01_dessin POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/code01_dessin${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/Cours1/"
@@ -88,7 +108,27 @@ add_custom_command(
   )
 
 add_custom_command(
+  TARGET code01_lumiere POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/code01_lumiere${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/Cours2/"
+  )
+
+add_custom_command(
+  TARGET code02_lumiere POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/code02_lumiere${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/Cours2/"
+  )
+
+
+
+add_custom_command(
   TARGET code01_trajectoire POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/code01_trajectoire${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/TD1/"
   )
+
+
+
+
+# SOURCE_GROUP(common REGULAR_EXPRESSION ".*/common/.*" )
+# SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
+
+
 

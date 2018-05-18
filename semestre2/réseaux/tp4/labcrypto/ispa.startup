@@ -1,0 +1,4 @@
+ifconfig eth0 10.0.0.1/8
+ifconfig eth1 1.2.3.4/24
+/etc/init.d/quagga start
+/etc/init.d/bind start

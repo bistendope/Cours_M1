@@ -1,0 +1,2 @@
+# TODO : configurer eth0
+/etc/init.d/bind start

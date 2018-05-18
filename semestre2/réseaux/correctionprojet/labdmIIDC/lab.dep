@@ -1,0 +1,13 @@
+alice: back
+www: front
+ssh: front
+dns: front
+bob: boxb
+boxb: ispb
+dnsnet: dnsroot
+dnscom: dnsroot
+back: dnsnet
+ispb: dnsnet
+cold: dnsnet
+jmail: dnscom
+perdu: dnscom

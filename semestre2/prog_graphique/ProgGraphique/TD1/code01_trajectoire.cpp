@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/freeglut.h>
-#include "../Common/icosaedre.hpp"
+
 #include <math.h>
 #include <fstream>
 
@@ -12,17 +12,22 @@
 // Include GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-using namespace glm;
 
+#include "../Common/icosaedre.hpp"
+
+using namespace glm;
 using namespace std;
 
 // Pour la fenêtre
 
-GLfloat* coordonnees;
+GLfloat* atomes;
 GLfloat* couleurs;
-GLfloat* icosaedres;
-GLfloat* indices;
-GLfloat* couleurs_icosaedres;
+
+GLfloat* coordonnees;
+GLfloat* couleurs_par_atome;
+GLfloat* translations_par_sommet;
+
+unsigned int* indices;
 
 float stepTrans=1.0;
 int mouseXOld, mouseYOld;
@@ -30,7 +35,7 @@ bool leftbutton = false;
 bool rightbutton = false;
 bool middlebutton = false;
 
-GLuint vboID[2];
+GLuint vboID[4];
 GLuint vaoID;
 GLuint programID;
 
@@ -46,8 +51,8 @@ glm::mat4 rotation;
 
 
 XDRFILE * xdrFile;
-const char* trajectoire_file;
-const char* couleur_file;
+const char* file_trajectoire;
+const char* file_couleur;
 GLint NbAtoms;
 GLfloat bbox[6];
 GLfloat centre[3];
@@ -57,12 +62,6 @@ int stepstep;
 float tps;
 float box[9];
 
-/*
-correction: nombre de points dans un icosaedre * nb d'icosaedres
-créer un tableau d'icosaedres de cette taille
-recopier n fois l'icosaedre present dans icosaedre.hpp
-envoyer tout ça à la carte graphique
-*/
 
 
 void get_first_frame()
@@ -72,93 +71,107 @@ void get_first_frame()
       // La lecture de l'entête permet de récupérer des informations générales sur les trajectoires
       // NbAtoms : nombre d'atomes pour chaque frame
       // On peut donc allouer une taille aux tableaux des attributs
-      coordonnees = new float[3*NbAtoms];    
-      couleurs = new float[3*NbAtoms];   
-      icosaedres = new GLfloat [NbAtoms * 36]; 
-      indices = new GLfloat [NbAtoms * 60]; 
-      couleurs_icosaedres = new GLfloat [NbAtoms * kekchose];
+      atomes = new float[3*NbAtoms];
+      coordonnees = new float[NbAtoms*3*12];      
+      couleurs_par_atome = new float[3*NbAtoms];
+      couleurs = new float[NbAtoms*3*12];
+      translations_par_sommet = new float[NbAtoms*3*12];
+      indices = new unsigned int[60*NbAtoms];
       char c;  
-
-
-      // gestion des couleurs à partir d'un fichier qui décrit une frame
-      // Pour chaque atome on vient lire la couleur sous forme RGB
+      
       ifstream f;
       float rgb[3];
-      f.open(couleur_file,ios::in);
+      f.open(file_couleur,ios::in);
 
       int index = 0;
       f>>c;
       while (!f.eof()){
 	choix_couleur(c,rgb);
-	couleurs[index] = rgb[0];
-	couleurs[index+1] = rgb[1];
-	couleurs[index+2] = rgb[2];
+	couleurs_par_atome[index] = rgb[0];
+	couleurs_par_atome[index+1] = rgb[1];
+	couleurs_par_atome[index+2] = rgb[2];
 	index+=3;
 	f>>c;
       }
       f.close();
 
-      // Lecture des positions des atomes
-      // le tableau coordonnees contient x,y,z pour chaque atome 
-      xdrfile_getframe_positions(NbAtoms, coordonnees, xdrFile);
+      xdrfile_getframe_positions(NbAtoms, atomes, xdrFile);
 
-      // construction de la bounding box afin de placer la caméra etc
-      bbox[0] = coordonnees[0];
-      bbox[1] = coordonnees[1];
-      bbox[2] = coordonnees[2];
-      bbox[3] = coordonnees[0];
-      bbox[4] = coordonnees[1];
-      bbox[5] = coordonnees[2];
+      bbox[0] = atomes[0];
+      bbox[1] = atomes[1];
+      bbox[2] = atomes[2];
+      bbox[3] = atomes[0];
+      bbox[4] = atomes[1];
+      bbox[5] = atomes[2];
       for (int i=1; i<NbAtoms; i++) {
-	if (coordonnees[3*i]<bbox[0])
-	  bbox[0] = coordonnees[3*i];
-	if (coordonnees[3*i+1]<bbox[1])
-	  bbox[1] = coordonnees[3*i+1];
-	if (coordonnees[3*i+2]<bbox[2])
-	  bbox[2] = coordonnees[3*i+2];
-	if (coordonnees[3*i]>bbox[3])
-	  bbox[3] = coordonnees[3*i];
-	if (coordonnees[3*i+1]>bbox[4])
-	  bbox[4] = coordonnees[3*i+1];
-	if (coordonnees[3*i+2]>bbox[5])
-	  bbox[5] = coordonnees[3*i+2];
+	if (atomes[3*i]<bbox[0])
+	  bbox[0] = atomes[3*i];
+	if (atomes[3*i+1]<bbox[1])
+	  bbox[1] = atomes[3*i+1];
+	if (atomes[3*i+2]<bbox[2])
+	  bbox[2] = atomes[3*i+2];
+	if (atomes[3*i]>bbox[3])
+	  bbox[3] = atomes[3*i];
+	if (atomes[3*i+1]>bbox[4])
+	  bbox[4] = atomes[3*i+1];
+	if (atomes[3*i+2]>bbox[5])
+	  bbox[5] = atomes[3*i+2];
       }
     }
     centre[0] = bbox[0]+(bbox[3]-bbox[0])/2;
     centre[1] = bbox[1]+(bbox[4]-bbox[1])/2;
     centre[2] = bbox[2]+(bbox[5]-bbox[2])/2;
-    //ajout
-    for(uint32_t i=0;i<NbAtoms; i++){
-    	for(uint32_t j=0; j<12; j++){
-    		couleurs_icosaedres[i*36+j*3]=couleurs[3*i];
-    		couleurs_icosaedres[i*36+j*3+1]=couleurs[3*i+1];
-    		couleurs_icosaedres[i*36+j*3+2]=couleurs[3*i+2];
-    	}
-    
-    	for (uint32_t j=0; j<36; j++){
-    		icosaedres[i* 36 + j] = sommets[j];
-    	}
-    	couleurs_icosaedres[i*36]=couleurs[i];
-    	
-    	for(uint32_t j=0; j<60; j++){
-    		indices[i*60+j] = indices_par_icosaedre[j];
-    	}
-    }
-    //ajout
   }
 
-}
 
-// Fonction supplémentaire pour lire une frame à l'infini
-// cf idle()
+  // On recopie les sommets de l'icosaèdre autant de fois qu'il y a d'atomes
+  for (int i=0; i<NbAtoms; i++)
+    for (int j=0; j<36; j++)
+      coordonnees[i*36+j] = sommets[j];
+
+  // On recopie la couleur par atome pour chaque icosaèdre
+  for (int i=0; i<NbAtoms; i++)
+    for (int j=0; j<12; j++) {
+      couleurs[i*36+j*3] = couleurs_par_atome[3*i];
+      couleurs[i*36+j*3+1] = couleurs_par_atome[3*i+1];
+      couleurs[i*36+j*3+2] = couleurs_par_atome[3*i+2];
+    }
+  
+  // On recopie la translation à effectuer sur chaque sommet
+  for (int i=0; i<NbAtoms; i++)
+    for (int j=0; j<12; j++) {
+      translations_par_sommet[i*36+j*3] = atomes[3*i];
+      translations_par_sommet[i*36+j*3+1] = atomes[3*i+1];
+      translations_par_sommet[i*36+j*3+2] = atomes[3*i+2];
+    }
+  
+  for (int i=0; i<NbAtoms; i++)
+    for (int j=0; j<60; j++)
+      indices[i*60+j] = 12*i+indices_par_icosaedre[j];
+  
+  
+}
+ 
+
+
+
 void get_frame()
 {
   if (xdrfile_getframe_header(&NbAtoms, &stepstep, &tps, box, xdrFile)!=1)  
-    xdrfile_getframe_positions(NbAtoms, coordonnees, xdrFile);
+    xdrfile_getframe_positions(NbAtoms, atomes, xdrFile);
   else {
     xdrfile_close(xdrFile);
-    xdrFile = xdrfile_open(trajectoire_file,"r");
+    xdrFile = xdrfile_open(file_trajectoire,"r");
   }
+
+  for (int i=0; i<NbAtoms; i++)
+    for (int j=0; j<12; j++) {
+      translations_par_sommet[i*36+j*3] = atomes[3*i];
+      translations_par_sommet[i*36+j*3+1] = atomes[3*i+1];
+      translations_par_sommet[i*36+j*3+2] = atomes[3*i+2];
+    }
+
+  
 }
 
 
@@ -171,24 +184,32 @@ void init() {
   glClearDepth(1.0);
   glEnable(GL_DEPTH_TEST);
   
-  programID = LoadShaders( "../Shaders/TransformVertexShader.vert", "../Shaders/ColorFragShader.frag");
+  programID = LoadShaders( "../Shaders/TrajectoireVertexShader.vert", "../Shaders/ColorFragShader.frag");
   get_first_frame();
   
   
   glGenVertexArrays(1, &vaoID);
   glBindVertexArray(vaoID);
   
-  glGenBuffers(2,vboID);
+  glGenBuffers(4,vboID);
   
   glBindBuffer(GL_ARRAY_BUFFER, vboID[0]);
-  glBufferData(GL_ARRAY_BUFFER,3*NbAtoms*sizeof(float),coordonnees,GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER,3*12*NbAtoms*sizeof(float),coordonnees,GL_STATIC_DRAW);
   glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
   glEnableVertexAttribArray(0);
-   
+  
   glBindBuffer(GL_ARRAY_BUFFER, vboID[1]);
-  glBufferData(GL_ARRAY_BUFFER,3*NbAtoms*sizeof(float),couleurs,GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER,3*12*NbAtoms*sizeof(float),couleurs,GL_STATIC_DRAW);
   glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(void*)0);
   glEnableVertexAttribArray(1);
+
+  glBindBuffer(GL_ARRAY_BUFFER, vboID[2]);
+  glBufferData(GL_ARRAY_BUFFER,3*12*NbAtoms*sizeof(float),translations_par_sommet,GL_DYNAMIC_DRAW);
+  glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+  glEnableVertexAttribArray(2);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID[3]);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER,NbAtoms*60*sizeof(GLuint),indices,GL_STATIC_DRAW);
   
 
   MatrixID = glGetUniformLocation(programID, "MVP");
@@ -220,25 +241,22 @@ void Display(void) {
 
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
   
-  
-  glPointSize(5);
+  //  cout << "avant le dessin" << endl;
+  glDrawElements(GL_TRIANGLES, 60*NbAtoms, GL_UNSIGNED_INT, NULL);
+  //  cout << "après le dessin" << endl;
 
-  glDrawArrays(GL_POINTS,0,NbAtoms);
   
   glutSwapBuffers();
   
 }
 
-// Dans la boucle infini glut quand on a rien à faire on lit une
-// nouvelle frame
 void Idle()
 {
   
   get_frame();
   
-  glBindBuffer(GL_ARRAY_BUFFER, vboID[0]);
-  glBufferData(GL_ARRAY_BUFFER,3*NbAtoms*sizeof(float),coordonnees,GL_DYNAMIC_DRAW);
-  
+  glBindBuffer(GL_ARRAY_BUFFER, vboID[2]);
+  glBufferData(GL_ARRAY_BUFFER,3*12*NbAtoms*sizeof(float),translations_par_sommet,GL_DYNAMIC_DRAW);
   glutPostRedisplay();
   
 }
@@ -337,10 +355,10 @@ void Motion (int x, int y)
 int main(int argc, char** argv)
 {
 
-  trajectoire_file = argv[1];
-  couleur_file = argv[2];
+  file_trajectoire = argv[1];
+  file_couleur = argv[2];
   
-  xdrFile = xdrfile_open(trajectoire_file,"r"); //Ouverture du fichier en lecture
+  xdrFile = xdrfile_open(file_trajectoire,"r"); //Ouverture du fichier en lecture
 
   glutInit (&argc,argv) ;
   glutInitContextVersion(3, 3);
@@ -374,3 +392,4 @@ int main(int argc, char** argv)
   return 0 ;
   
 }
+

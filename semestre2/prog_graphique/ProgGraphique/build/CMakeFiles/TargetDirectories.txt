@@ -1,5 +1,7 @@
 /home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/build/CMakeFiles/rebuild_cache.dir
 /home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/build/CMakeFiles/code01_trajectoire.dir
+/home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/build/CMakeFiles/code02_lumiere.dir
+/home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/build/CMakeFiles/code01_lumiere.dir
 /home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/build/CMakeFiles/code05_dessin.dir
 /home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/build/CMakeFiles/code01_dessin.dir
 /home/etud/o2122130/Cours_M1/semestre2/prog_graphique/ProgGraphique/build/CMakeFiles/code03_dessin.dir

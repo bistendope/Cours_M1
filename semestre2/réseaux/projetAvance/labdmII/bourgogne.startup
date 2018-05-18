@@ -1,0 +1,35 @@
+ifconfig eth0 10.0.0.1/8
+# TODO : configurer eth1 , DHCP et iptables
+/etc/init.d/quagga start
+ifconfig eth1 194.167.0.69  # lanb
+
+
+# Lancemenent du serveur dhcp
+/etc/init.d/dhcp3-server start 
+
+
+#autorise communication avec routeur depuis lanb
+iptables -A INPUT -i eth1 -j ACCEPT
+
+# Acceptation de toutes les connexions venant de lanb
+iptables -A FORWARD -i eth1 -j ACCEPT 
+
+# Acceptation une fois la connexion effectuee
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
+
+# Acceptation de toutes les connexions venant de lana
+iptables -A FORWARD -i eth0 -p tcp -s 10.0.0.4/8 -j ACCEPT 
+
+
+
+
+# Acceptation de toutes les connexions exterieures visant le port 22 du ssh
+iptables -A FORWARD -i eth0 -p tcp -dport 22 -d 194.167.0.72 -j ACCEPT 
+
+# Acceptation de toutes les connexions exterieures visant le port 53 du dns
+iptables -A FORWARD -i eth0 -p tcp --dport 53 -d 194.167.0.70 -j ACCEPT 
+iptables -A FORWARD -i eth0 -p udp --dport 53 -d 194.167.0.70 -j ACCEPT
+
+# Acceptation de toutes les connexions exterieures visant le port 80 du www
+iptables -A FORWARD -i eth0 -p tcp --dport 80 -d 194.167.0.71 -j ACCEPT 

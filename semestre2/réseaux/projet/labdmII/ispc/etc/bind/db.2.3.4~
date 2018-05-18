@@ -1,0 +1,13 @@
+$TTL	60000
+@		IN	SOA	4.3.2.in-addr.arpa.	nobody.nowhere. (
+			1 ; serial
+			28 ; refresh
+			14 ; retry
+			3600000 ; expire
+			0 ; negative cache ttl
+			)
+@			IN	NS	5.4.3.2.in-addr.arpa.
+5.4.3.2.in-addr.arpa.	IN	A	2.3.4.5
+
+5	PTR	rt.red.net.
+110	PTR	bob.red.net.

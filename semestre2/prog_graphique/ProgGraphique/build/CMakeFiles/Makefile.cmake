@@ -46,6 +46,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/code01_trajectoire.dir/DependInfo.cmake"
+  "CMakeFiles/code02_lumiere.dir/DependInfo.cmake"
+  "CMakeFiles/code01_lumiere.dir/DependInfo.cmake"
   "CMakeFiles/code05_dessin.dir/DependInfo.cmake"
   "CMakeFiles/code01_dessin.dir/DependInfo.cmake"
   "CMakeFiles/code03_dessin.dir/DependInfo.cmake"
